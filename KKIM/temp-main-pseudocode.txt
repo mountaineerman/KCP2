@@ -1,0 +1,20 @@
+// 	Actual MainProgram - High-level flow:
+// 	
+// 	Initial:
+// 		-Establish connection to kRPC
+// 		-Establish connection to kMega
+// 		-Establish connection to Phone
+// 	Loop:
+// 		-Confirm connection to kRPC
+// 		-Confirm connection to kMega
+// 		-Confirm connection between kMega and kNano 
+// 		-Confirm connection to Phone
+//		 
+// 		A-Fetch latest kRPC values
+// 		B-Fetch latest kMega values
+// 		C-Update KIM object states based on A and B
+// 			-Send "packet" to kMega
+// 			-Send controlling signals to kRPC
+// 			-Send "packet" to Phone
+// 
+// 		-Idle
