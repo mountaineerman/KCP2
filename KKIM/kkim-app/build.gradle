@@ -9,7 +9,10 @@ plugins {
 dependencies {
     implementation project(':utilities')
 	implementation fileTree(dir: "libs", includes: ['krpc-java-0.4.8.jar'])
-
+    implementation 'com.google.protobuf:protobuf-java:3.11.0'	// kRPC Client library depends on protobuf version 3
+    
+    // kRPC Client library dependency (https://mvnrepository.com/artifact/org.javatuples/javatuples)
+	compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
 }
 
 application {

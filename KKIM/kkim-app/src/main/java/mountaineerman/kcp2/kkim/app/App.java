@@ -7,12 +7,29 @@ import mountaineerman.kcp2.kkim.list.LinkedList;
 
 import static mountaineerman.kcp2.kkim.utilities.StringUtils.join;
 import static mountaineerman.kcp2.kkim.utilities.StringUtils.split;
+
+import java.io.IOException;
+
+import krpc.client.Connection;
+import krpc.client.RPCException;
+import krpc.client.services.KRPC;
+
 import static mountaineerman.kcp2.kkim.app.MessageUtils.getMessage;
 
 public class App {
-    public static void main(String[] args) {
-        LinkedList tokens;
-        tokens = split(getMessage());
-        System.out.println(join(tokens));
-    }
+	public static void main(String[] args) {
+		System.out.println(">>>>> kkim-app: In main method");
+		LinkedList tokens;
+		tokens = split(getMessage());
+		System.out.println(join(tokens));
+
+		try (Connection connection = Connection.newInstance()) {
+			KRPC krpc = KRPC.newInstance(connection);
+			System.out.println("Connected to kRPC version " + krpc.getStatus().getVersion());
+		} catch (RPCException e) {
+			System.out.println("Caught RPCException " + e.getMessage());
+		} catch (IOException e2) {
+			System.out.println("Caught IOException " + e2.getMessage());
+		}
+	}
 }
