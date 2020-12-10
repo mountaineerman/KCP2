@@ -3,6 +3,7 @@
  */
 package mountaineerman.kcp2.kkim.app;
 
+import mountaineerman.kcp2.kkim.kmega.KMegaApi;
 import mountaineerman.kcp2.kkim.list.LinkedList;
 
 import static mountaineerman.kcp2.kkim.utilities.StringUtils.join;
@@ -19,17 +20,20 @@ import static mountaineerman.kcp2.kkim.app.MessageUtils.getMessage;
 public class App {
 	public static void main(String[] args) {
 		System.out.println(">>>>> kkim-app: In main method");
+
 		LinkedList tokens;
 		tokens = split(getMessage());
 		System.out.println(join(tokens));
+
+		System.out.println(KMegaApi.getHelloWorld());
 
 		try (Connection connection = Connection.newInstance()) {
 			KRPC krpc = KRPC.newInstance(connection);
 			System.out.println("Connected to kRPC version " + krpc.getStatus().getVersion());
 		} catch (RPCException e) {
-			System.out.println("Caught RPCException " + e.getMessage());
-		} catch (IOException e2) {
-			System.out.println("Caught IOException " + e2.getMessage());
+			System.out.println("Caught RPCException: " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Caught IOException: " + e.getMessage());
 		}
 	}
 }

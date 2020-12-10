@@ -8,5 +8,4 @@
  */
 
 rootProject.name = 'KKIM'
-/* include('app', 'list', 'utilities') */
-include('kkim-app', 'list', 'utilities')
+include('kkim-app', 'kkim-kmega-api', 'list', 'utilities')

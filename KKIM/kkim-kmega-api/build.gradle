@@ -1,0 +1,6 @@
+plugins {
+    id 'mountaineerman.kcp2.kkim.java-library-conventions'
+}
+
+dependencies {
+}
