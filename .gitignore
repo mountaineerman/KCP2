@@ -3,3 +3,10 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore Eclipse project configuration files that begin with '.' and subfolders 'bin'
+**/.project
+**/.cproject
+**/.settings
+**/.classpath
+**/bin/**
