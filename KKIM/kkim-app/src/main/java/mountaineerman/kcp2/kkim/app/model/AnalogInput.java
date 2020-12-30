@@ -14,11 +14,12 @@ public class AnalogInput extends Part {
 	
 	/**
 	 * @param name
+	 * @param moduleID
 	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value. Minimum: 0
 	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value. Maximum: 1023
 	 */
-	public AnalogInput(String name, int lowerCalibrationLimit, int upperCalibrationLimit) {
-		super(name);
+	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {
+		super(name, moduleID);
 		
 		validateAnalogValue(lowerCalibrationLimit, "lowerCalibrationLimit");
 		validateAnalogValue(upperCalibrationLimit, "upperCalibrationLimit");

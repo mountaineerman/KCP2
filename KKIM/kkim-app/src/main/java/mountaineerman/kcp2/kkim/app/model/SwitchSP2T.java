@@ -5,8 +5,8 @@ public class SwitchSP2T extends Part {
 	/** true = HIGH/ON, false = LOW/OFF */
 	private Boolean status;
 	
-	public SwitchSP2T(String name) {
-		super(name);
+	public SwitchSP2T(String name, ModuleID moduleID) {
+		super(name, moduleID);
 	}
 
 	public Boolean getStatus() {

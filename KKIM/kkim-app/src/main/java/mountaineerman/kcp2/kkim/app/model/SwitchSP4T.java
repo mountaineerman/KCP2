@@ -5,8 +5,8 @@ public class SwitchSP4T extends Part {
 
 	private SwitchSP4TPosition position;
 
-	public SwitchSP4T(String name) {
-		super(name);
+	public SwitchSP4T(String name, ModuleID moduleID) {
+		super(name, moduleID);
 	}
 
 	public SwitchSP4TPosition getPosition() {

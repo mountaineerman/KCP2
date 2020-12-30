@@ -13,27 +13,27 @@ class AnalogInputTest {
 		// Constructor
 		//=================================================================================================================
 		// VALID
-		new AnalogInput("FakePotentiometer", 0, 1023); // Maximum possible valid range
+		new AnalogInput("FakePotentiometer", ModuleID.A, 0, 1023); // Maximum possible valid range
 
 		// INVALID
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			new AnalogInput("FakePotentiometer", -1, 1023); // Lower Limit too low
+			new AnalogInput("FakePotentiometer", ModuleID.A, -1, 1023); // Lower Limit too low
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			new AnalogInput("FakePotentiometer", 0, 1024); // Upper Limit too high
+			new AnalogInput("FakePotentiometer", ModuleID.A, 0, 1024); // Upper Limit too high
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			new AnalogInput("FakePotentiometer", -1, 1024); // Lower Limit too low, Upper Limit too high
+			new AnalogInput("FakePotentiometer", ModuleID.A, -1, 1024); // Lower Limit too low, Upper Limit too high
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			new AnalogInput("FakePotentiometer", 1000, 10); // Limits reversed
+			new AnalogInput("FakePotentiometer", ModuleID.A, 1000, 10); // Limits reversed
 		});
 		
 		//=================================================================================================================
 		// setCalibratedValue
 		//=================================================================================================================
 		/*import java.util.Scanner;
-		AnalogInput experimentalAnalogInput = new AnalogInput("Test1", 500, 1023);
+		AnalogInput experimentalAnalogInput = new AnalogInput("Test1", ModuleID.A, 500, 1023);
 		Scanner scanner = new Scanner(System.in);
 		
 		while(true)	{
