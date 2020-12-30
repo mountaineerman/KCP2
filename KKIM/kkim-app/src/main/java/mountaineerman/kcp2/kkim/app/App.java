@@ -3,6 +3,7 @@
  */
 package mountaineerman.kcp2.kkim.app;
 
+import mountaineerman.kcp2.kkim.app.model.AnalogInput; //TODO replace with library?
 import mountaineerman.kcp2.kkim.kmega.KMegaApi;
 import mountaineerman.kcp2.kkim.list.LinkedList;
 
@@ -16,7 +17,7 @@ import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.services.KRPC;
 
-//Temp: Serial Communication library for testing connection between KKIM and KMega
+//TODO Temporarily Serial Communication library for testing connection between KKIM and KMega:
 import com.fazecast.jSerialComm.*;
 
 import static mountaineerman.kcp2.kkim.app.MessageUtils.getMessage;
@@ -42,17 +43,11 @@ public class App
 		 * 
 		 * KKIM
 		 * 		Refresh frequency
+		 * 		AnalogInput calibration limits
 		 */
 		
 		
-		//TEMP:
-		System.out.println(">>>>> kkim-app: In main method");
 
-		LinkedList tokens;
-		tokens = split(getMessage());
-		System.out.println(join(tokens));
-
-		System.out.println(KMegaApi.getHelloWorld());
 		
 		/* 	High-level flow:
 		 * 	
@@ -77,7 +72,14 @@ public class App
 		 */
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		System.out.println("Starting KKIM-kRPC connection test...");
+		/*System.out.println(">>>>> kkim-app: In main method");
+		LinkedList tokens;
+		tokens = split(getMessage());
+		System.out.println(join(tokens));
+		System.out.println(KMegaApi.getHelloWorld());
+		*/
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*System.out.println("Starting KKIM-kRPC connection test...");
 		try (Connection connection = Connection.newInstance())
 		{
 			KRPC krpc = KRPC.newInstance(connection);
@@ -85,10 +87,10 @@ public class App
 		}
 		catch (RPCException e) {System.out.println("Caught RPCException: " + e.getMessage());}
 		catch (IOException e)  {System.out.println("Caught IOException: " + e.getMessage());}
-		
+		*/
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//https://fazecast.github.io/jSerialComm/
+		/*//https://fazecast.github.io/jSerialComm/
 		System.out.println("Starting KKIM-KMega connection test...");
 		
 		SerialPort comPort = SerialPort.getCommPort("COM4");
@@ -108,7 +110,7 @@ public class App
 			      System.out.println("Read " + numRead + " bytes: " + Arrays.toString(newData));
 			   }
 			}
-		);
+		);*/
 	}
 }
 

@@ -8,28 +8,48 @@ public class AnalogInput extends Part {
 	/** Range: 0-1023 */
 	private int calibratedValue;
 	/** Range: 0-1023 */
-	private int lowerValueCalibrationLimit;
+	private int lowerCalibrationLimit;
 	/** Range: 0-1023 */
-	private int upperValueCalibrationLimit;
+	private int upperCalibrationLimit;
 	
 	/**
 	 * @param name
-	 * @param lowerValueLimit - Lower physical calibration offset for raw value
-	 * @param upperValueLimit - Upper physical calibration offset for raw value
+	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value
+	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value
 	 */
-	public AnalogInput(String name, int lowerValueCalibrationLimit, int upperValueCalibrationLimit) {
+	public AnalogInput(String name, int lowerCalibrationLimit, int upperCalibrationLimit) {
 		super(name);
 		
-		validateAnalogValue(lowerValueCalibrationLimit, "lowerValueCalibrationLimit");
-		validateAnalogValue(upperValueCalibrationLimit, "upperValueCalibrationLimit");
-		this.lowerValueCalibrationLimit = lowerValueCalibrationLimit;
-		this.upperValueCalibrationLimit = upperValueCalibrationLimit;
+		validateAnalogValue(lowerCalibrationLimit, "lowerCalibrationLimit");
+		validateAnalogValue(upperCalibrationLimit, "upperCalibrationLimit");
+		validateCalibrationLimits(lowerCalibrationLimit, upperCalibrationLimit);
+		this.lowerCalibrationLimit = lowerCalibrationLimit;
+		this.upperCalibrationLimit = upperCalibrationLimit;
 	}
 	
+	//TODO Ensure this is: A) hard crash for calibration limits, B) triggers WARNING flag for rawValues
 	private void validateAnalogValue(int analogValue, String valueType) {
-		if( analogValue < STANDARD_MIN_VALUE || analogValue > STANDARD_MAX_VALUE) {
-			String message = String.format("%s (%d) is out of allowed standard range (%d-%d).", valueType, analogValue, STANDARD_MIN_VALUE, STANDARD_MAX_VALUE);
+		if(analogValue < STANDARD_MIN_VALUE || analogValue > STANDARD_MAX_VALUE) {
+			String message = String.format("%s '%s' (%d) is outside of allowed range (%d-%d).", this.name, valueType, analogValue, STANDARD_MIN_VALUE, STANDARD_MAX_VALUE);
 			throw new IllegalArgumentException(message);
 		}
 	}
+
+	private void validateCalibrationLimits(int lowerCalibrationLimit, int upperCalibrationLimit) {
+		if(lowerCalibrationLimit >= upperCalibrationLimit) {
+			String message = String.format("The %s lowerCalibrationLimit (%d) is greater than or equal to the upperCalibrationLimit (%d).", this.name, lowerCalibrationLimit, upperCalibrationLimit);
+			throw new IllegalArgumentException(message);
+		}
+	}
+	
+	public int getCalibratedValue() {
+		return calibratedValue;
+	}
+
+	public void setCalibratedValue(int rawValue) {
+		validateAnalogValue(rawValue, "rawValue");
+		this.calibratedValue = rawValue * (STANDARD_MAX_VALUE - STANDARD_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit);
+	}
+	
+	
 }

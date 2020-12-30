@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.app.model;
 
+//TODO Decide on this approach or to determine position based on 2 SP2T switches
 public class SwitchSP3T extends Part {
 
 	private SwitchSP3TPosition position;
