@@ -1,0 +1,19 @@
+package mountaineerman.kcp2.kkim.app.model;
+
+public class SwitchSP3T extends Part {
+
+	private SwitchSP3TPosition position;
+
+	public SwitchSP3T(String name) {
+		super(name);
+	}
+
+	public SwitchSP3TPosition getPosition() {
+		return position;
+	}
+
+	public void setPosition(SwitchSP3TPosition position) {
+		this.position = position;
+	}
+
+}
