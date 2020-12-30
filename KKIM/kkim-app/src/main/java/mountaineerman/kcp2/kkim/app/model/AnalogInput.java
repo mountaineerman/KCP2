@@ -2,8 +2,8 @@ package mountaineerman.kcp2.kkim.app.model;
 
 public class AnalogInput extends Part {
 
-	private static int STANDARD_MIN_VALUE = 0;
-	private static int STANDARD_MAX_VALUE = 1023;
+	private static int ANALOGREAD_MIN_VALUE = 0;
+	private static int ANALOGREAD_MAX_VALUE = 1023;
 
 	/** Range: 0-1023 */
 	private int calibratedValue;
@@ -14,8 +14,8 @@ public class AnalogInput extends Part {
 	
 	/**
 	 * @param name
-	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value
-	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value
+	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value. Minimum: 0
+	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value. Maximum: 1023
 	 */
 	public AnalogInput(String name, int lowerCalibrationLimit, int upperCalibrationLimit) {
 		super(name);
@@ -29,8 +29,8 @@ public class AnalogInput extends Part {
 	
 	//TODO Ensure this is: A) hard crash for calibration limits, B) triggers WARNING flag for rawValues
 	private void validateAnalogValue(int analogValue, String valueType) {
-		if(analogValue < STANDARD_MIN_VALUE || analogValue > STANDARD_MAX_VALUE) {
-			String message = String.format("%s '%s' (%d) is outside of allowed range (%d-%d).", this.name, valueType, analogValue, STANDARD_MIN_VALUE, STANDARD_MAX_VALUE);
+		if(analogValue < ANALOGREAD_MIN_VALUE || analogValue > ANALOGREAD_MAX_VALUE) {
+			String message = String.format("%s '%s' (%d) is outside of allowed range (%d-%d).", this.name, valueType, analogValue, ANALOGREAD_MIN_VALUE, ANALOGREAD_MAX_VALUE);
 			throw new IllegalArgumentException(message);
 		}
 	}
@@ -47,8 +47,17 @@ public class AnalogInput extends Part {
 	}
 
 	public void setCalibratedValue(int rawValue) {
+		
 		validateAnalogValue(rawValue, "rawValue");
-		this.calibratedValue = rawValue * (STANDARD_MAX_VALUE - STANDARD_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit);
+		
+		if(rawValue < this.lowerCalibrationLimit) {
+			rawValue = this.lowerCalibrationLimit;
+		}
+		if(rawValue > this.upperCalibrationLimit) {
+			rawValue = this.upperCalibrationLimit;
+		}
+		
+		this.calibratedValue = (rawValue - this.lowerCalibrationLimit) * (ANALOGREAD_MAX_VALUE - ANALOGREAD_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit);
 	}
 	
 	

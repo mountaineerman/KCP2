@@ -32,7 +32,15 @@ class AnalogInputTest {
 		//=================================================================================================================
 		// setCalibratedValue
 		//=================================================================================================================
-		AnalogInput
+		/*import java.util.Scanner;
+		AnalogInput experimentalAnalogInput = new AnalogInput("Test1", 500, 1023);
+		Scanner scanner = new Scanner(System.in);
+		
+		while(true)	{
+			String message = scanner.nextLine();
+			experimentalAnalogInput.setCalibratedValue(Integer.parseInt(message));
+			System.out.println(experimentalAnalogInput.getCalibratedValue());
+		}*/
 	}
 
 }
