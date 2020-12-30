@@ -50,7 +50,59 @@ public class App
 		// ==============================================================================
 		// PARTS
 		// ==============================================================================
-		//TODO SP2T Switches
+		SwitchSP2T stagingButton = new SwitchSP2T("stagingButton", ModuleID.A);
+		SwitchSP2T brakeButton = new SwitchSP2T("brakeButton", ModuleID.A);
+		
+		SwitchSP2T abortButton = new SwitchSP2T("abortButton", ModuleID.B);
+		SwitchSP2T trimPitchSwitch = new SwitchSP2T("trimPitchSwitch", ModuleID.B);
+		SwitchSP2T trimYawSwitch = new SwitchSP2T("trimYawSwitch", ModuleID.B);
+		SwitchSP2T trimRollSwitch = new SwitchSP2T("trimRollSwitch", ModuleID.B);
+		SwitchSP2T timeWarpUpButton = new SwitchSP2T("timeWarpUpButton", ModuleID.B);
+		SwitchSP2T timeWarpDownButton = new SwitchSP2T("timeWarpDownButton", ModuleID.B);
+		SwitchSP2T joystickButton = new SwitchSP2T("joystickButton", ModuleID.B);
+		
+		SwitchSP2T SAS_Switch = new SwitchSP2T("SAS_Switch", ModuleID.D);
+		SwitchSP2T RCS_Switch = new SwitchSP2T("RCS_Switch", ModuleID.D);
+		SwitchSP2T lightsSwitch = new SwitchSP2T("lightsSwitch", ModuleID.D);
+		SwitchSP2T gearSwitch = new SwitchSP2T("gearSwitch", ModuleID.D);
+		SwitchSP2T brakeSwitch = new SwitchSP2T("brakeSwitch", ModuleID.D);
+		SwitchSP2T mapSwitch = new SwitchSP2T("mapSwitch", ModuleID.D);
+		SwitchSP2T muteSwitch = new SwitchSP2T("muteSwitch", ModuleID.D);
+		SwitchSP2T autoHoldButton = new SwitchSP2T("autoHoldButton", ModuleID.D);
+		SwitchSP2T autoProgradeButton = new SwitchSP2T("autoProgradeButton", ModuleID.D);
+		SwitchSP2T autoRetrogradeButton = new SwitchSP2T("autoRetrogradeButton", ModuleID.D);
+		SwitchSP2T autoNormalButton = new SwitchSP2T("autoNormalButton", ModuleID.D);
+		SwitchSP2T autoAntiNormalButton = new SwitchSP2T("autoAntiNormalButton", ModuleID.D);
+		SwitchSP2T autoRadialInButton = new SwitchSP2T("autoRadialInButton", ModuleID.D);
+		SwitchSP2T autoRadialOutButton = new SwitchSP2T("autoRadialOutButton", ModuleID.D);
+		SwitchSP2T autoTargetButton = new SwitchSP2T("autoTargetButton", ModuleID.D);
+		SwitchSP2T autoAntiTargetButton = new SwitchSP2T("autoAntiTargetButton", ModuleID.D);
+		SwitchSP2T autoManeuverButton = new SwitchSP2T("autoManeuverButton", ModuleID.D);
+		
+		SwitchSP2T ag1Switch = new SwitchSP2T("ag1Switch", ModuleID.E);
+		SwitchSP2T ag2Switch = new SwitchSP2T("ag2Switch", ModuleID.E);
+		SwitchSP2T ag3Switch = new SwitchSP2T("ag3Switch", ModuleID.E);
+		SwitchSP2T ag4SwitchScience = new SwitchSP2T("ag4SwitchScience", ModuleID.E);
+		SwitchSP2T ag5SwitchReset = new SwitchSP2T("ag5SwitchReset", ModuleID.E);
+		SwitchSP2T ag6SwitchSolar = new SwitchSP2T("ag6SwitchSolar", ModuleID.E);
+		SwitchSP2T ag7SwitchLadder = new SwitchSP2T("ag7SwitchLadder", ModuleID.E);
+		SwitchSP2T ag8SwitchATNV = new SwitchSP2T("ag8SwitchATNV", ModuleID.E);
+		SwitchSP2T ag9SwitchFairing = new SwitchSP2T("ag9SwitchFairing", ModuleID.E);
+		SwitchSP2T ag10SwitchChute = new SwitchSP2T("ag10SwitchChute", ModuleID.E);
+		
+		SwitchSP2T trimMasterSwitch = new SwitchSP2T("trimMasterSwitch", ModuleID.F);
+		
+		SwitchSP2T heatLifeSwitch = new SwitchSP2T("heatLifeSwitch", ModuleID.G);
+		
+		SwitchSP2T glassTLButton = new SwitchSP2T("glassTLButton", ModuleID.H);
+		SwitchSP2T glassCLButton = new SwitchSP2T("glassCLButton", ModuleID.H);
+		SwitchSP2T glassBLButton = new SwitchSP2T("glassBLButton", ModuleID.H);
+		SwitchSP2T glassTRButton = new SwitchSP2T("glassTRButton", ModuleID.H);
+		SwitchSP2T glassCRButton = new SwitchSP2T("glassCRButton", ModuleID.H);
+		SwitchSP2T glassBRButton = new SwitchSP2T("glassBRButton", ModuleID.H);
+		
+		SwitchSP2T mnprpIntakeSwitch = new SwitchSP2T("mnprpIntakeSwitch", ModuleID.I);
+		
 		//TODO SP3T Switches
 		//TODO SP4T Switch
 		
