@@ -147,7 +147,19 @@ public class App
 		PWM_LED glassBR_LED = new PWM_LED("glassBR_LED", ModuleID.H);
 		
 		//TODO RGB PWM LEDs
-		//TODO StepperMotors
+		
+		StepperMotor heatLifeStepper = new StepperMotor("heatLifeStepper", ModuleID.C);
+		StepperMotor gforceStepper = new StepperMotor("gforceStepper", ModuleID.C);
+		StepperMotor machStepper = new StepperMotor("machStepper", ModuleID.G);
+		StepperMotor pitchStepper = new StepperMotor("pitchStepper", ModuleID.G);
+		StepperMotor fuelStepper = new StepperMotor("fuelStepper", ModuleID.I);
+		StepperMotor chargeStepper = new StepperMotor("chargeStepper", ModuleID.I);
+		StepperMotor mnpIntStepper = new StepperMotor("mnpIntStepper", ModuleID.I);
+		StepperMotor densityStepper = new StepperMotor("densityStepper", ModuleID.GT);
+		StepperMotor speedStepper = new StepperMotor("speedStepper", ModuleID.GT);
+		StepperMotor vertSpeedStepper = new StepperMotor("vertSpeedStepper", ModuleID.GT);
+		StepperMotor radAltStepper = new StepperMotor("radAltStepper", ModuleID.GT);
+		
 		//TODO NEMA17StepperMotor
 		//TODO AltitudeGauge
 		
