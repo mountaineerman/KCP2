@@ -1,7 +1,7 @@
 package mountaineerman.kcp2.kkim.app.model;
 
 /** Pulse-Width Modulation (dimmable) Light Emitting Diode */
-public class PWM_LED extends Part {
+public class LED_PWM extends Part {
 	
 	private static int DUTY_CYCLE_MIN = 0;
 	private static int DUTY_CYCLE_MAX = 100;
@@ -21,7 +21,7 @@ public class PWM_LED extends Part {
 	 *     -http://www.adafruit.com/products/1429 */
 	private int pwm;
 	
-	public PWM_LED(String name, ModuleID moduleID) {
+	public LED_PWM(String name, ModuleID moduleID) {
 		super(name, moduleID);
 		this.dutyCycle = 0;
 		this.pwm = 0;

@@ -5,12 +5,12 @@ package mountaineerman.kcp2.kkim.app.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class PWM_LED_Test {
+class LED_PWM_Test {
 
 	@Test
 	void testSetDutyCycle() {
 		
-		PWM_LED brakePWMLED = new PWM_LED("brakePWMLED", ModuleID.A);
+		LED_PWM brakePWMLED = new LED_PWM("brakePWMLED", ModuleID.A);
 		
 		// VALID
 		brakePWMLED.setDutyCycle(0);

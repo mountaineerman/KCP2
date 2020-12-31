@@ -132,33 +132,33 @@ public class App
 		// =================================================================================================================
 		// PARTS - Outputs
 		// =================================================================================================================
-		PWM_LED moduleABrakeLED = new PWM_LED("moduleABrakeLED", ModuleID.A);
+		LED_PWM moduleABrakeLED = new LED_PWM("moduleABrakeLED", ModuleID.A);
 		
-		PWM_LED moduleDBrakeLED = new PWM_LED("moduleDBrakeLED", ModuleID.D);
-		PWM_LED autoHoldLED = new PWM_LED("autoHoldLED", ModuleID.D);
-		PWM_LED autoProgradeLED = new PWM_LED("autoProgradeLED", ModuleID.D);
-		PWM_LED autoRetrogradeLED = new PWM_LED("autoRetrogradeLED", ModuleID.D);
-		PWM_LED autoManeuverLED = new PWM_LED("autoManeuverLED", ModuleID.D);
+		LED_PWM moduleDBrakeLED = new LED_PWM("moduleDBrakeLED", ModuleID.D);
+		LED_PWM autoHoldLED = new LED_PWM("autoHoldLED", ModuleID.D);
+		LED_PWM autoProgradeLED = new LED_PWM("autoProgradeLED", ModuleID.D);
+		LED_PWM autoRetrogradeLED = new LED_PWM("autoRetrogradeLED", ModuleID.D);
+		LED_PWM autoManeuverLED = new LED_PWM("autoManeuverLED", ModuleID.D);
 		
-		PWM_LED fairingLED = new PWM_LED("fairingLED", ModuleID.E);
-		PWM_LED chuteLED = new PWM_LED("chuteLED", ModuleID.E);
-		PWM_LED SP3T_Speed_ORB_LED = new PWM_LED("SP3T_Speed_ORB_LED", ModuleID.E);
-		PWM_LED SP3T_Mode_PLN_LED = new PWM_LED("SP3T_Mode_PLN_LED", ModuleID.E);
-		PWM_LED SP3T_Pitch_30_LED = new PWM_LED("SP3T_Pitch_30_LED", ModuleID.E);
+		LED_PWM fairingLED = new LED_PWM("fairingLED", ModuleID.E);
+		LED_PWM chuteLED = new LED_PWM("chuteLED", ModuleID.E);
+		LED_PWM SP3T_Speed_ORB_LED = new LED_PWM("SP3T_Speed_ORB_LED", ModuleID.E);
+		LED_PWM SP3T_Mode_PLN_LED = new LED_PWM("SP3T_Mode_PLN_LED", ModuleID.E);
+		LED_PWM SP3T_Pitch_30_LED = new LED_PWM("SP3T_Pitch_30_LED", ModuleID.E);
 		
-		PWM_LED backlight100LED = new PWM_LED("backlight100LED", ModuleID.F);
-		PWM_LED backlight75LED = new PWM_LED("backlight75LED", ModuleID.F);
-		PWM_LED backlight50LED = new PWM_LED("backlight50LED", ModuleID.F);
-		PWM_LED backlight25LED = new PWM_LED("backlight25LED", ModuleID.F);
+		LED_PWM backlight100LED = new LED_PWM("backlight100LED", ModuleID.F);
+		LED_PWM backlight75LED = new LED_PWM("backlight75LED", ModuleID.F);
+		LED_PWM backlight50LED = new LED_PWM("backlight50LED", ModuleID.F);
+		LED_PWM backlight25LED = new LED_PWM("backlight25LED", ModuleID.F);
 		
-		PWM_LED commsLED = new PWM_LED("commsLED", ModuleID.G);
+		LED_PWM commsLED = new LED_PWM("commsLED", ModuleID.G);
 		
-		PWM_LED glassTL_LED = new PWM_LED("glassTL_LED", ModuleID.H);
-		PWM_LED glassCL_LED = new PWM_LED("glassCL_LED", ModuleID.H);
-		PWM_LED glassBL_LED = new PWM_LED("glassBL_LED", ModuleID.H);
-		PWM_LED glassTR_LED = new PWM_LED("glassTR_LED", ModuleID.H);
-		PWM_LED glassCR_LED = new PWM_LED("glassCR_LED", ModuleID.H);
-		PWM_LED glassBR_LED = new PWM_LED("glassBR_LED", ModuleID.H);
+		LED_PWM glassTL_LED = new LED_PWM("glassTL_LED", ModuleID.H);
+		LED_PWM glassCL_LED = new LED_PWM("glassCL_LED", ModuleID.H);
+		LED_PWM glassBL_LED = new LED_PWM("glassBL_LED", ModuleID.H);
+		LED_PWM glassTR_LED = new LED_PWM("glassTR_LED", ModuleID.H);
+		LED_PWM glassCR_LED = new LED_PWM("glassCR_LED", ModuleID.H);
+		LED_PWM glassBR_LED = new LED_PWM("glassBR_LED", ModuleID.H);
 		
 		//TODO RGB PWM LEDs
 		
