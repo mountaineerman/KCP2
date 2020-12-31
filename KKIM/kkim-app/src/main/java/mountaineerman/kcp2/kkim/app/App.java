@@ -307,7 +307,7 @@ public class App
 		StepperMotor radAltStepper = new StepperMotor("radAltStepper", ModuleID.GT);
 		
 		// ========================================== NEMA17StepperMotor ===================================================
-		//TODO NEMA17StepperMotor
+		StepperMotorNEMA17 headingStepper = new StepperMotorNEMA17("headingStepper", ModuleID.G);
 		
 		// ========================================== AltitudeGauge ========================================================
 		AltitudeGauge altitudeGauge = new AltitudeGauge("altitudeGauge", ModuleID.GT);

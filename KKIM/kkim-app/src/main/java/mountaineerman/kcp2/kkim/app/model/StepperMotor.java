@@ -1,9 +1,9 @@
 package mountaineerman.kcp2.kkim.app.model;
 
 /** x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.
- * Maximum Rotation Angle = 315 degrees
- * Steps per degree = 12
- * Steps per full rotation = 3780
+ * Maximum Rotation Angle = 315 degrees.
+ * Steps per degree = 12.
+ * Steps per full rotation = 3780.
  * See:
  *    -Stepper: https://www.adafruit.com/product/2424
  *    -Driver: https://www.tindie.com/products/propwashsim/vid6606-sti6606-4x-stepper-driver-board-kit/ */
@@ -12,7 +12,7 @@ public class StepperMotor extends Part {
 	private static int STEPPER_CCW_LIMIT = 0;
 	private static int STEPPER_CW_LIMIT = 3779;
 	
-	/** A number describing the desired stepper motor step position.
+	/** A number describing the desired stepper motor position, in steps.
 	 * Range: [0-3779] [STEPPER_CCW_LIMIT-STEPPER_CW_LIMIT] 
 	 * e.g., desiredPosition of 0 is the farthest CCW position possible.
 	 * e.g., desiredPosition of 3779 is the farthest CW position possible. */
