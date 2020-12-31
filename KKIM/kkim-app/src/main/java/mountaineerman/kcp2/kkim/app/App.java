@@ -48,23 +48,27 @@ public class App
 		 * 		LED_PWM dimmer (overall; general override for specific LED)
 		 * 		LED_PWM_RGB modes (colours)
 		 * 		StepperMotor soft limits
+		 * 		SwitchMom ignore time
 		 */
+		
+		
+		
 		
 		// =================================================================================================================
 		// PARTS - Inputs
 		// =================================================================================================================
 		
-		// ========================================== SwitchSP2T ===========================================================
-		SwitchSP2T stagingButton = new SwitchSP2T("stagingButton", ModuleID.A);
-		SwitchSP2T brakeButton = new SwitchSP2T("brakeButton", ModuleID.A);
+		// ========================================== SwitchSP2T / SwitchMom ===============================================
+		SwitchMom stagingButton = new SwitchMom("stagingButton", ModuleID.A);
+		SwitchMom brakeButton = new SwitchMom("brakeButton", ModuleID.A);
 		
-		SwitchSP2T abortButton = new SwitchSP2T("abortButton", ModuleID.B);
+		SwitchMom abortButton = new SwitchMom("abortButton", ModuleID.B);
 		SwitchSP2T trimPitchSwitch = new SwitchSP2T("trimPitchSwitch", ModuleID.B);
 		SwitchSP2T trimYawSwitch = new SwitchSP2T("trimYawSwitch", ModuleID.B);
 		SwitchSP2T trimRollSwitch = new SwitchSP2T("trimRollSwitch", ModuleID.B);
-		SwitchSP2T timeWarpUpButton = new SwitchSP2T("timeWarpUpButton", ModuleID.B);
-		SwitchSP2T timeWarpDownButton = new SwitchSP2T("timeWarpDownButton", ModuleID.B);
-		SwitchSP2T joystickButton = new SwitchSP2T("joystickButton", ModuleID.B);
+		SwitchMom timeWarpUpButton = new SwitchMom("timeWarpUpButton", ModuleID.B);
+		SwitchMom timeWarpDownButton = new SwitchMom("timeWarpDownButton", ModuleID.B);
+		SwitchMom joystickButton = new SwitchMom("joystickButton", ModuleID.B);
 		
 		SwitchSP2T SAS_Switch = new SwitchSP2T("SAS_Switch", ModuleID.D);
 		SwitchSP2T RCS_Switch = new SwitchSP2T("RCS_Switch", ModuleID.D);
@@ -73,56 +77,56 @@ public class App
 		SwitchSP2T brakeSwitch = new SwitchSP2T("brakeSwitch", ModuleID.D);
 		SwitchSP2T mapSwitch = new SwitchSP2T("mapSwitch", ModuleID.D);
 		SwitchSP2T muteSwitch = new SwitchSP2T("muteSwitch", ModuleID.D);
-		SwitchSP2T autoHoldButton = new SwitchSP2T("autoHoldButton", ModuleID.D);
-		SwitchSP2T autoProgradeButton = new SwitchSP2T("autoProgradeButton", ModuleID.D);
-		SwitchSP2T autoRetrogradeButton = new SwitchSP2T("autoRetrogradeButton", ModuleID.D);
-		SwitchSP2T autoNormalButton = new SwitchSP2T("autoNormalButton", ModuleID.D);
-		SwitchSP2T autoAntiNormalButton = new SwitchSP2T("autoAntiNormalButton", ModuleID.D);
-		SwitchSP2T autoRadialInButton = new SwitchSP2T("autoRadialInButton", ModuleID.D);
-		SwitchSP2T autoRadialOutButton = new SwitchSP2T("autoRadialOutButton", ModuleID.D);
-		SwitchSP2T autoTargetButton = new SwitchSP2T("autoTargetButton", ModuleID.D);
-		SwitchSP2T autoAntiTargetButton = new SwitchSP2T("autoAntiTargetButton", ModuleID.D);
-		SwitchSP2T autoManeuverButton = new SwitchSP2T("autoManeuverButton", ModuleID.D);
+		SwitchMom autoHoldButton = new SwitchMom("autoHoldButton", ModuleID.D);
+		SwitchMom autoProgradeButton = new SwitchMom("autoProgradeButton", ModuleID.D);
+		SwitchMom autoRetrogradeButton = new SwitchMom("autoRetrogradeButton", ModuleID.D);
+		SwitchMom autoNormalButton = new SwitchMom("autoNormalButton", ModuleID.D);
+		SwitchMom autoAntiNormalButton = new SwitchMom("autoAntiNormalButton", ModuleID.D);
+		SwitchMom autoRadialInButton = new SwitchMom("autoRadialInButton", ModuleID.D);
+		SwitchMom autoRadialOutButton = new SwitchMom("autoRadialOutButton", ModuleID.D);
+		SwitchMom autoTargetButton = new SwitchMom("autoTargetButton", ModuleID.D);
+		SwitchMom autoAntiTargetButton = new SwitchMom("autoAntiTargetButton", ModuleID.D);
+		SwitchMom autoManeuverButton = new SwitchMom("autoManeuverButton", ModuleID.D);
 		
-		SwitchSP2T ag1Switch = new SwitchSP2T("ag1Switch", ModuleID.E);
-		SwitchSP2T ag2Switch = new SwitchSP2T("ag2Switch", ModuleID.E);
-		SwitchSP2T ag3Switch = new SwitchSP2T("ag3Switch", ModuleID.E);
-		SwitchSP2T ag4SwitchScience = new SwitchSP2T("ag4SwitchScience", ModuleID.E);
-		SwitchSP2T ag5SwitchReset = new SwitchSP2T("ag5SwitchReset", ModuleID.E);
-		SwitchSP2T ag6SwitchSolar = new SwitchSP2T("ag6SwitchSolar", ModuleID.E);
-		SwitchSP2T ag7SwitchLadder = new SwitchSP2T("ag7SwitchLadder", ModuleID.E);
-		SwitchSP2T ag8SwitchATNV = new SwitchSP2T("ag8SwitchATNV", ModuleID.E);
-		SwitchSP2T ag9SwitchFairing = new SwitchSP2T("ag9SwitchFairing", ModuleID.E);
-		SwitchSP2T ag10SwitchChute = new SwitchSP2T("ag10SwitchChute", ModuleID.E);
+		SwitchMom ag1Switch = new SwitchMom("ag1Switch", ModuleID.E);
+		SwitchMom ag2Switch = new SwitchMom("ag2Switch", ModuleID.E);
+		SwitchMom ag3Switch = new SwitchMom("ag3Switch", ModuleID.E);
+		SwitchMom ag4SwitchScience = new SwitchMom("ag4SwitchScience", ModuleID.E);
+		SwitchMom ag5SwitchReset = new SwitchMom("ag5SwitchReset", ModuleID.E);
+		SwitchMom ag6SwitchSolar = new SwitchMom("ag6SwitchSolar", ModuleID.E);
+		SwitchMom ag7SwitchLadder = new SwitchMom("ag7SwitchLadder", ModuleID.E);
+		SwitchMom ag8SwitchATNV = new SwitchMom("ag8SwitchATNV", ModuleID.E);
+		SwitchMom ag9SwitchFairing = new SwitchMom("ag9SwitchFairing", ModuleID.E);
+		SwitchMom ag10SwitchChute = new SwitchMom("ag10SwitchChute", ModuleID.E);
 		
 		SwitchSP2T trimMasterSwitch = new SwitchSP2T("trimMasterSwitch", ModuleID.F);
 		
 		SwitchSP2T heatLifeSwitch = new SwitchSP2T("heatLifeSwitch", ModuleID.G);
 		
-		SwitchSP2T glassTLButton = new SwitchSP2T("glassTLButton", ModuleID.H);
-		SwitchSP2T glassCLButton = new SwitchSP2T("glassCLButton", ModuleID.H);
-		SwitchSP2T glassBLButton = new SwitchSP2T("glassBLButton", ModuleID.H);
-		SwitchSP2T glassTRButton = new SwitchSP2T("glassTRButton", ModuleID.H);
-		SwitchSP2T glassCRButton = new SwitchSP2T("glassCRButton", ModuleID.H);
-		SwitchSP2T glassBRButton = new SwitchSP2T("glassBRButton", ModuleID.H);
+		SwitchMom glassTLButton = new SwitchMom("glassTLButton", ModuleID.H);
+		SwitchMom glassCLButton = new SwitchMom("glassCLButton", ModuleID.H);
+		SwitchMom glassBLButton = new SwitchMom("glassBLButton", ModuleID.H);
+		SwitchMom glassTRButton = new SwitchMom("glassTRButton", ModuleID.H);
+		SwitchMom glassCRButton = new SwitchMom("glassCRButton", ModuleID.H);
+		SwitchMom glassBRButton = new SwitchMom("glassBRButton", ModuleID.H);
 		
 		SwitchSP2T mnprpIntakeSwitch = new SwitchSP2T("mnprpIntakeSwitch", ModuleID.I);
 		
 		// ========================================== SwitchSP3T ===========================================================
-		SwitchSP2T tempTopSwitch = new SwitchSP2T("speedSurfaceSwitch", ModuleID.E);
-		SwitchSP2T tempBottomSwitch = new SwitchSP2T("speedTargetSwitch", ModuleID.E);
-		SwitchSP3T sp3tSpeedSwitch = new SwitchSP3T("sp3tSpeedSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
-		tempTopSwitch = null; tempBottomSwitch = null;
+		SwitchSP2T tempTopSensor = new SwitchSP2T("sp3tSpeedSurfaceSensor", ModuleID.E);
+		SwitchSP2T tempBottomSensor = new SwitchSP2T("sp3tSpeedTargetSensor", ModuleID.E);
+		SwitchSP3T sp3tSpeedSwitch = new SwitchSP3T("sp3tSpeedSwitch", ModuleID.E, tempTopSensor, tempBottomSensor);
+		tempTopSensor = null; tempBottomSensor = null;
 		
-		tempTopSwitch = new SwitchSP2T("mnvrRocketSwitch", ModuleID.E);
-		tempBottomSwitch = new SwitchSP2T("mnvrRoverSwitch", ModuleID.E);
-		SwitchSP3T sp3tMnvrSwitch = new SwitchSP3T("sp3tMnvrSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
-		tempTopSwitch = null; tempBottomSwitch = null;
+		tempTopSensor = new SwitchSP2T("sp3tMnvrRocketSensor", ModuleID.E);
+		tempBottomSensor = new SwitchSP2T("sp3tMnvrRoverSensor", ModuleID.E);
+		SwitchSP3T sp3tMnvrSwitch = new SwitchSP3T("sp3tMnvrSwitch", ModuleID.E, tempTopSensor, tempBottomSensor);
+		tempTopSensor = null; tempBottomSensor = null;
 		
-		tempTopSwitch = new SwitchSP2T("pitch90Switch", ModuleID.E);
-		tempBottomSwitch = new SwitchSP2T("pitch9Switch", ModuleID.E);
-		SwitchSP3T sp3tPitchSwitch = new SwitchSP3T("sp3tPitchSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
-		tempTopSwitch = null; tempBottomSwitch = null;
+		tempTopSensor = new SwitchSP2T("sp3tPitch90Sensor", ModuleID.E);
+		tempBottomSensor = new SwitchSP2T("sp3tPitch9Sensor", ModuleID.E);
+		SwitchSP3T sp3tPitchSwitch = new SwitchSP3T("sp3tPitchSwitch", ModuleID.E, tempTopSensor, tempBottomSensor);
+		tempTopSensor = null; tempBottomSensor = null;
 		
 		// ========================================== SwitchSP4T ===========================================================
 		SwitchSP2T tempSensorAB = new SwitchSP2T("inputRangeSensorAB", ModuleID.F);
