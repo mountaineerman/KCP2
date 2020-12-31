@@ -23,8 +23,7 @@ public class LED_PWM extends Part {
 	
 	public LED_PWM(String name, ModuleID moduleID) {
 		super(name, moduleID);
-		this.dutyCycle = 0;
-		this.pwm = 0;
+		this.setDutyCycle(DUTY_CYCLE_MIN);
 	}
 
 	public int getDutyCycle() {
