@@ -310,7 +310,10 @@ public class App
 		//TODO NEMA17StepperMotor
 		
 		// ========================================== AltitudeGauge ========================================================
-		//TODO AltitudeGauge
+		AltitudeGauge altitudeGauge = new AltitudeGauge("altitudeGauge", ModuleID.GT);
+		
+		
+		
 		
 		
 		
