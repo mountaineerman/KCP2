@@ -31,7 +31,7 @@ public class AnalogInput extends Part {
 	//TODO Ensure this is: A) hard crash for calibration limits, B) triggers WARNING flag for rawValues
 	private void validateAnalogValue(int analogValue, String valueType) {
 		if(analogValue < ANALOGREAD_MIN_VALUE || analogValue > ANALOGREAD_MAX_VALUE) {
-			String message = String.format("%s '%s' (%d) is outside of allowed range (%d-%d).", this.name, valueType, analogValue, ANALOGREAD_MIN_VALUE, ANALOGREAD_MAX_VALUE);
+			String message = String.format("%s '%s' (%d) is outside of allowed range [%d-%d].", this.name, valueType, analogValue, ANALOGREAD_MIN_VALUE, ANALOGREAD_MAX_VALUE);
 			throw new IllegalArgumentException(message);
 		}
 	}
