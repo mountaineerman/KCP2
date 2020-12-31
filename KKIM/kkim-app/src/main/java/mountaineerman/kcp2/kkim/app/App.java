@@ -125,7 +125,10 @@ public class App
 		tempTopSwitch = null; tempBottomSwitch = null;
 		
 		// ========================================== SwitchSP4T ===========================================================
-		//TODO SP4T Switch
+		SwitchSP2T tempSensorAB = new SwitchSP2T("inputRangeSensorAB", ModuleID.F);
+		SwitchSP2T tempSensorCD = new SwitchSP2T("inputRangeSensorCD", ModuleID.F);
+		SwitchSP4T inputRangeSP4TSwitch = new SwitchSP4T("inputRangeSP4TSwitch", ModuleID.F, tempSensorAB, tempSensorCD);
+		tempSensorAB = null; tempSensorCD = null;
 		
 		// ========================================== AnalogInput ==========================================================
 		AnalogInput throttlePot = new AnalogInput("throttlePot", ModuleID.A, 0, 1023);
@@ -155,10 +158,10 @@ public class App
 		LED_PWM SP3T_Mode_PLN_LED = new LED_PWM("SP3T_Mode_PLN_LED", ModuleID.E);
 		LED_PWM SP3T_Pitch_30_LED = new LED_PWM("SP3T_Pitch_30_LED", ModuleID.E);
 		
-		LED_PWM backlight100LED = new LED_PWM("backlight100LED", ModuleID.F);
-		LED_PWM backlight75LED = new LED_PWM("backlight75LED", ModuleID.F);
-		LED_PWM backlight50LED = new LED_PWM("backlight50LED", ModuleID.F);
-		LED_PWM backlight25LED = new LED_PWM("backlight25LED", ModuleID.F);
+		LED_PWM inputRange100LED = new LED_PWM("inputRange100LED", ModuleID.F);
+		LED_PWM inputRange75LED = new LED_PWM("inputRange75LED", ModuleID.F);
+		LED_PWM inputRange50LED = new LED_PWM("inputRange50LED", ModuleID.F);
+		LED_PWM inputRange25LED = new LED_PWM("inputRange25LED", ModuleID.F);
 		
 		LED_PWM commsLED = new LED_PWM("commsLED", ModuleID.G);
 		

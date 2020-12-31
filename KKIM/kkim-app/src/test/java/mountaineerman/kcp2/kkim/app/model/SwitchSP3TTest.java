@@ -10,9 +10,10 @@ class SwitchSP3TTest {
 	@Test
 	void testUpdatePosition() {
 		
-		SwitchSP2T topSwitch = new SwitchSP2T("testSP3T_topSwitch", ModuleID.A);
-		SwitchSP2T bottomSwitch = new SwitchSP2T("testSP3T_bottomSwitch", ModuleID.A);
-		SwitchSP3T testSP3TSwitch = new SwitchSP3T("testSP3TSwitch", ModuleID.A, topSwitch, bottomSwitch);
+		SwitchSP2T tempTopSwitch = new SwitchSP2T("testSP3T_topSwitch", ModuleID.A);
+		SwitchSP2T tempBottomSwitch = new SwitchSP2T("testSP3T_bottomSwitch", ModuleID.A);
+		SwitchSP3T testSP3TSwitch = new SwitchSP3T("testSP3TSwitch", ModuleID.A, tempTopSwitch, tempBottomSwitch);
+		tempTopSwitch = null; tempBottomSwitch = null;
 		
 		// VALID
 		testSP3TSwitch.setTopSensorStatus(true);
