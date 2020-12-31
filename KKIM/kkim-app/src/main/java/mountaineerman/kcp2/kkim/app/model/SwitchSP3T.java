@@ -6,10 +6,10 @@ public class SwitchSP3T extends Part {
 	private SwitchSP2T bottomSensor;
 	private SwitchSP3TPosition position;
 	
-	public SwitchSP3T(String name, ModuleID moduleID, SwitchSP2T top_switch, SwitchSP2T bottom_switch) {
+	public SwitchSP3T(String name, ModuleID moduleID, SwitchSP2T topSensor, SwitchSP2T bottomSensor) {
 		super(name, moduleID);
-		this.topSensor = top_switch; //TODO confirm format
-		this.bottomSensor = bottom_switch; //TODO confirm format
+		this.topSensor = topSensor; //TODO confirm format
+		this.bottomSensor = bottomSensor; //TODO confirm format
 	}
 
 	public SwitchSP3TPosition getPosition() {
