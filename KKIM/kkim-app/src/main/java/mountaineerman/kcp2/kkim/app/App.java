@@ -45,11 +45,12 @@ public class App
 		 * KKIM
 		 * 		Refresh frequency
 		 * 		AnalogInput calibration limits
+		 * 		PWM LED maximum brightness (overall; general override for specific LED) / scaling offset...
 		 */
 		
-		// ==============================================================================
-		// PARTS
-		// ==============================================================================
+		// =================================================================================================================
+		// PARTS - Inputs
+		// =================================================================================================================
 		SwitchSP2T stagingButton = new SwitchSP2T("stagingButton", ModuleID.A);
 		SwitchSP2T brakeButton = new SwitchSP2T("brakeButton", ModuleID.A);
 		
@@ -114,6 +115,43 @@ public class App
 		AnalogInput multiUsePot = new AnalogInput("multiUsePot", ModuleID.F, 0, 1023);
 		AnalogInput currentSensor = new AnalogInput("currentSensor", ModuleID.F, 0, 1023);
 		
+		// =================================================================================================================
+		// PARTS - Outputs
+		// =================================================================================================================
+		PWM_LED moduleABrakeLED = new PWM_LED("moduleABrakeLED", ModuleID.A);
+		
+		PWM_LED moduleDBrakeLED = new PWM_LED("moduleDBrakeLED", ModuleID.D);
+		PWM_LED autoHoldLED = new PWM_LED("autoHoldLED", ModuleID.D);
+		PWM_LED autoProgradeLED = new PWM_LED("autoProgradeLED", ModuleID.D);
+		PWM_LED autoRetrogradeLED = new PWM_LED("autoRetrogradeLED", ModuleID.D);
+		PWM_LED autoManeuverLED = new PWM_LED("autoManeuverLED", ModuleID.D);
+		
+		PWM_LED fairingLED = new PWM_LED("fairingLED", ModuleID.E);
+		PWM_LED chuteLED = new PWM_LED("chuteLED", ModuleID.E);
+		PWM_LED SP3T_Speed_ORB_LED = new PWM_LED("SP3T_Speed_ORB_LED", ModuleID.E);
+		PWM_LED SP3T_Mode_PLN_LED = new PWM_LED("SP3T_Mode_PLN_LED", ModuleID.E);
+		PWM_LED SP3T_Pitch_30_LED = new PWM_LED("SP3T_Pitch_30_LED", ModuleID.E);
+		
+		PWM_LED backlight100LED = new PWM_LED("backlight100LED", ModuleID.F);
+		PWM_LED backlight75LED = new PWM_LED("backlight75LED", ModuleID.F);
+		PWM_LED backlight50LED = new PWM_LED("backlight50LED", ModuleID.F);
+		PWM_LED backlight25LED = new PWM_LED("backlight25LED", ModuleID.F);
+		
+		PWM_LED commsLED = new PWM_LED("commsLED", ModuleID.G);
+		
+		PWM_LED glassTL_LED = new PWM_LED("glassTL_LED", ModuleID.H);
+		PWM_LED glassCL_LED = new PWM_LED("glassCL_LED", ModuleID.H);
+		PWM_LED glassBL_LED = new PWM_LED("glassBL_LED", ModuleID.H);
+		PWM_LED glassTR_LED = new PWM_LED("glassTR_LED", ModuleID.H);
+		PWM_LED glassCR_LED = new PWM_LED("glassCR_LED", ModuleID.H);
+		PWM_LED glassBR_LED = new PWM_LED("glassBR_LED", ModuleID.H);
+		
+		//TODO RGB PWM LEDs
+		//TODO StepperMotors
+		//TODO NEMA17StepperMotor
+		//TODO AltitudeGauge
+		
+		// =================================================================================================================
 		
 		/* 	High-level flow:
 		 * 	
