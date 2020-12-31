@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class AnalogInputTest {
 
-	@Test // TODO Replace with @ParameterizedTest?
+	@Test
 	void testAnalogInput() {
 		//=================================================================================================================
 		// Constructor

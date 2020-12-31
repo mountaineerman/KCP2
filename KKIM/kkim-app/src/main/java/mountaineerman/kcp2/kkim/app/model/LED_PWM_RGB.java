@@ -15,10 +15,20 @@ public class LED_PWM_RGB extends Part {
 		this.setMode(LED_RGB_Mode.OFF);
 	}
 	
-	//TODO How will LED_PWM_RGB assign red/green/blue pwm values to Packet?
-
 	public LED_RGB_Mode getMode() {
-		return mode;
+		return this.mode;
+	}
+
+	public int getRedPWMValue() {
+		return this.redLED.getPWM();
+	}
+
+	public int getGrnPWMValue() {
+		return this.grnLED.getPWM();
+	}
+
+	public int getBluPWMValue() {
+		return this.bluLED.getPWM();
 	}
 
 	public void setMode(LED_RGB_Mode mode) {

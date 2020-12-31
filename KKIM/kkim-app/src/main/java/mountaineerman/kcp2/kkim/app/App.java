@@ -139,6 +139,9 @@ public class App
 		AnalogInput multiUsePot = new AnalogInput("multiUsePot", ModuleID.F, 0, 1023);
 		AnalogInput currentSensor = new AnalogInput("currentSensor", ModuleID.F, 0, 1023);
 		
+		
+		
+		
 		// =================================================================================================================
 		// PARTS - Outputs
 		// =================================================================================================================
