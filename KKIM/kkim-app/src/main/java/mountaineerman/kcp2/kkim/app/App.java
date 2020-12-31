@@ -104,7 +104,21 @@ public class App
 		
 		SwitchSP2T mnprpIntakeSwitch = new SwitchSP2T("mnprpIntakeSwitch", ModuleID.I);
 		
-		//TODO SP3T Switches
+		SwitchSP2T tempTopSwitch = new SwitchSP2T("speedSurfaceSwitch", ModuleID.E);
+		SwitchSP2T tempBottomSwitch = new SwitchSP2T("speedTargetSwitch", ModuleID.E);
+		SwitchSP3T sp3tSpeedSwitch = new SwitchSP3T("sp3tSpeedSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
+		tempTopSwitch = null; tempBottomSwitch = null;
+		
+		tempTopSwitch = new SwitchSP2T("mnvrRocketSwitch", ModuleID.E);
+		tempBottomSwitch = new SwitchSP2T("mnvrRoverSwitch", ModuleID.E);
+		SwitchSP3T sp3tMnvrSwitch = new SwitchSP3T("sp3tMnvrSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
+		tempTopSwitch = null; tempBottomSwitch = null;
+		
+		tempTopSwitch = new SwitchSP2T("pitch90Switch", ModuleID.E);
+		tempBottomSwitch = new SwitchSP2T("pitch9Switch", ModuleID.E);
+		SwitchSP3T sp3tPitchSwitch = new SwitchSP3T("sp3tPitchSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
+		tempTopSwitch = null; tempBottomSwitch = null;
+		
 		//TODO SP4T Switch
 		
 		AnalogInput throttlePot = new AnalogInput("throttlePot", ModuleID.A, 0, 1023);
@@ -154,7 +168,7 @@ public class App
 		StepperMotor pitchStepper = new StepperMotor("pitchStepper", ModuleID.G);
 		StepperMotor fuelStepper = new StepperMotor("fuelStepper", ModuleID.I);
 		StepperMotor chargeStepper = new StepperMotor("chargeStepper", ModuleID.I);
-		StepperMotor mnpIntStepper = new StepperMotor("mnpIntStepper", ModuleID.I);
+		StepperMotor mnprpIntakeStepper = new StepperMotor("mnprpIntakeStepper", ModuleID.I);
 		StepperMotor densityStepper = new StepperMotor("densityStepper", ModuleID.GT);
 		StepperMotor speedStepper = new StepperMotor("speedStepper", ModuleID.GT);
 		StepperMotor vertSpeedStepper = new StepperMotor("vertSpeedStepper", ModuleID.GT);
