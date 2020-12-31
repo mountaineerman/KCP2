@@ -45,12 +45,16 @@ public class App
 		 * KKIM
 		 * 		Refresh frequency
 		 * 		AnalogInput calibration limits
-		 * 		PWM LED maximum brightness (overall; general override for specific LED) / scaling offset...
+		 * 		LED_PWM dimmer (overall; general override for specific LED)
+		 * 		LED_PWM_RGB modes (colours)
+		 * 		StepperMotor soft limits
 		 */
 		
 		// =================================================================================================================
 		// PARTS - Inputs
 		// =================================================================================================================
+		
+		// ========================================== SwitchSP2T ===========================================================
 		SwitchSP2T stagingButton = new SwitchSP2T("stagingButton", ModuleID.A);
 		SwitchSP2T brakeButton = new SwitchSP2T("brakeButton", ModuleID.A);
 		
@@ -104,6 +108,7 @@ public class App
 		
 		SwitchSP2T mnprpIntakeSwitch = new SwitchSP2T("mnprpIntakeSwitch", ModuleID.I);
 		
+		// ========================================== SwitchSP3T ===========================================================
 		SwitchSP2T tempTopSwitch = new SwitchSP2T("speedSurfaceSwitch", ModuleID.E);
 		SwitchSP2T tempBottomSwitch = new SwitchSP2T("speedTargetSwitch", ModuleID.E);
 		SwitchSP3T sp3tSpeedSwitch = new SwitchSP3T("sp3tSpeedSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
@@ -119,8 +124,10 @@ public class App
 		SwitchSP3T sp3tPitchSwitch = new SwitchSP3T("sp3tPitchSwitch", ModuleID.E, tempTopSwitch, tempBottomSwitch);
 		tempTopSwitch = null; tempBottomSwitch = null;
 		
+		// ========================================== SwitchSP4T ===========================================================
 		//TODO SP4T Switch
 		
+		// ========================================== AnalogInput ==========================================================
 		AnalogInput throttlePot = new AnalogInput("throttlePot", ModuleID.A, 0, 1023);
 		//TODO create joystick mapping between axis number and Rotation (Pitch/Yaw/Roll), Translation (Up-Down/Left-Right/In-Out):
 		AnalogInput joystickAxis1Pot = new AnalogInput("joystickAxis1Pot", ModuleID.B, 0, 1023); 
@@ -132,6 +139,8 @@ public class App
 		// =================================================================================================================
 		// PARTS - Outputs
 		// =================================================================================================================
+		
+		// ========================================== LED_PWM ==============================================================
 		LED_PWM moduleABrakeLED = new LED_PWM("moduleABrakeLED", ModuleID.A);
 		
 		LED_PWM moduleDBrakeLED = new LED_PWM("moduleDBrakeLED", ModuleID.D);
@@ -160,8 +169,128 @@ public class App
 		LED_PWM glassCR_LED = new LED_PWM("glassCR_LED", ModuleID.H);
 		LED_PWM glassBR_LED = new LED_PWM("glassBR_LED", ModuleID.H);
 		
-		//TODO RGB PWM LEDs
+		// ========================================== LED_PWM_RGB ==========================================================
+		LED_PWM tempRedLED = new LED_PWM("heatRedLED", ModuleID.C);
+		LED_PWM tempGrnLED = new LED_PWM("heatGrnLED", ModuleID.C);
+		LED_PWM tempBluLED = new LED_PWM("heatBluLED", ModuleID.C);
+		LED_PWM_RGB heatRGBLED = new LED_PWM_RGB("heatRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
 		
+		tempRedLED = new LED_PWM("lifeRedLED", ModuleID.C);
+		tempGrnLED = new LED_PWM("lifeGrnLED", ModuleID.C);
+		tempBluLED = new LED_PWM("lifeBluLED", ModuleID.C);
+		LED_PWM_RGB lifeRGBLED = new LED_PWM_RGB("lifeRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("gforceRedLED", ModuleID.C);
+		tempGrnLED = new LED_PWM("gforceGrnLED", ModuleID.C);
+		tempBluLED = new LED_PWM("gforceBluLED", ModuleID.C);
+		LED_PWM_RGB gforceRGBLED = new LED_PWM_RGB("gforceRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("autoNormalRedLED", ModuleID.D);
+		tempBluLED = new LED_PWM("autoNormalBluLED", ModuleID.D);
+		LED_PWM_RGB autoNormalRGBLED = new LED_PWM_RGB("autoNormalRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
+		tempRedLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("autoAntiNormalRedLED", ModuleID.D);
+		tempBluLED = new LED_PWM("autoAntiNormalBluLED", ModuleID.D);
+		LED_PWM_RGB autoAntiNormalRGBLED = new LED_PWM_RGB("autoAntiNormalRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
+		tempRedLED = null; tempBluLED = null;
+		
+		tempGrnLED = new LED_PWM("autoRadialInGrnLED", ModuleID.D);
+		tempBluLED = new LED_PWM("autoRadialInBluLED", ModuleID.D);
+		LED_PWM_RGB autoRadialInRGBLED = new LED_PWM_RGB("autoRadialInRGBLED", ModuleID.D, null, tempGrnLED, tempBluLED);
+		tempGrnLED = null; tempBluLED = null;
+		
+		tempGrnLED = new LED_PWM("autoRadialOutGrnLED", ModuleID.D);
+		tempBluLED = new LED_PWM("autoRadialOutBluLED", ModuleID.D);
+		LED_PWM_RGB autoRadialOutRGBLED = new LED_PWM_RGB("autoRadialOutRGBLED", ModuleID.D, null, tempGrnLED, tempBluLED);
+		tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("autoTargetRedLED", ModuleID.D);
+		tempBluLED = new LED_PWM("autoTargetBluLED", ModuleID.D);
+		LED_PWM_RGB autoTargetRGBLED = new LED_PWM_RGB("autoTargetRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
+		tempRedLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("autoAntiTargetRedLED", ModuleID.D);
+		tempBluLED = new LED_PWM("autoAntiTargetBluLED", ModuleID.D);
+		LED_PWM_RGB autoAntiTargetRGBLED = new LED_PWM_RGB("autoAntiTargetRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
+		tempRedLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("machRedLED", ModuleID.G);
+		tempGrnLED = new LED_PWM("machGrnLED", ModuleID.G);
+		tempBluLED = new LED_PWM("machBluLED", ModuleID.G);
+		LED_PWM_RGB machRGBLED = new LED_PWM_RGB("machRGBLED", ModuleID.G, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("pitchRedLED", ModuleID.G);
+		tempGrnLED = new LED_PWM("pitchGrnLED", ModuleID.G);
+		tempBluLED = new LED_PWM("pitchBluLED", ModuleID.G);
+		LED_PWM_RGB pitchRGBLED = new LED_PWM_RGB("pitchRGBLED", ModuleID.G, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("headingRedLED", ModuleID.G);
+		tempGrnLED = new LED_PWM("headingGrnLED", ModuleID.G);
+		tempBluLED = new LED_PWM("headingBluLED", ModuleID.G);
+		LED_PWM_RGB headingRGBLED = new LED_PWM_RGB("headingRGBLED", ModuleID.G, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("fuelRedLED", ModuleID.I);
+		tempGrnLED = new LED_PWM("fuelGrnLED", ModuleID.I);
+		tempBluLED = new LED_PWM("fuelBluLED", ModuleID.I);
+		LED_PWM_RGB fuelRGBLED = new LED_PWM_RGB("fuelRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("chargeRedLED", ModuleID.I);
+		tempGrnLED = new LED_PWM("chargeGrnLED", ModuleID.I);
+		tempBluLED = new LED_PWM("chargeBluLED", ModuleID.I);
+		LED_PWM_RGB chargeRGBLED = new LED_PWM_RGB("chargeRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("deltaChargeRedLED", ModuleID.I);
+		tempGrnLED = new LED_PWM("deltaChargeGrnLED", ModuleID.I);
+		tempBluLED = new LED_PWM("deltaChargeBluLED", ModuleID.I);
+		LED_PWM_RGB deltaChargeRGBLED = new LED_PWM_RGB("deltaChargeRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("mnprpRedLED", ModuleID.I);
+		tempGrnLED = new LED_PWM("mnprpGrnLED", ModuleID.I);
+		tempBluLED = new LED_PWM("mnprpBluLED", ModuleID.I);
+		LED_PWM_RGB mnprpRGBLED = new LED_PWM_RGB("mnprpRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("intakeRedLED", ModuleID.I);
+		tempGrnLED = new LED_PWM("intakeGrnLED", ModuleID.I);
+		tempBluLED = new LED_PWM("intakeBluLED", ModuleID.I);
+		LED_PWM_RGB intakeRGBLED = new LED_PWM_RGB("intakeRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("densityRedLED", ModuleID.GT);
+		tempGrnLED = new LED_PWM("densityGrnLED", ModuleID.GT);
+		tempBluLED = new LED_PWM("densityBluLED", ModuleID.GT);
+		LED_PWM_RGB densityRGBLED = new LED_PWM_RGB("densityRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("speedRedLED", ModuleID.GT);
+		tempGrnLED = new LED_PWM("speedGrnLED", ModuleID.GT);
+		tempBluLED = new LED_PWM("speedBluLED", ModuleID.GT);
+		LED_PWM_RGB speedRGBLED = new LED_PWM_RGB("speedRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("vertSpeedRedLED", ModuleID.GT);
+		tempGrnLED = new LED_PWM("vertSpeedGrnLED", ModuleID.GT);
+		tempBluLED = new LED_PWM("vertSpeedBluLED", ModuleID.GT);
+		LED_PWM_RGB vertSpeedRGBLED = new LED_PWM_RGB("vertSpeedRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		tempRedLED = new LED_PWM("radAltRedLED", ModuleID.GT);
+		tempGrnLED = new LED_PWM("radAltGrnLED", ModuleID.GT);
+		tempBluLED = new LED_PWM("radAltBluLED", ModuleID.GT);
+		LED_PWM_RGB radAltRGBLED = new LED_PWM_RGB("radAltRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
+		tempRedLED = null; tempGrnLED = null; tempBluLED = null;
+		
+		// ========================================== StepperMotor =========================================================
 		StepperMotor heatLifeStepper = new StepperMotor("heatLifeStepper", ModuleID.C);
 		StepperMotor gforceStepper = new StepperMotor("gforceStepper", ModuleID.C);
 		StepperMotor machStepper = new StepperMotor("machStepper", ModuleID.G);
@@ -174,8 +303,17 @@ public class App
 		StepperMotor vertSpeedStepper = new StepperMotor("vertSpeedStepper", ModuleID.GT);
 		StepperMotor radAltStepper = new StepperMotor("radAltStepper", ModuleID.GT);
 		
+		// ========================================== NEMA17StepperMotor ===================================================
 		//TODO NEMA17StepperMotor
+		
+		// ========================================== AltitudeGauge ========================================================
 		//TODO AltitudeGauge
+		
+		
+		
+		
+		
+		
 		
 		// =================================================================================================================
 		
