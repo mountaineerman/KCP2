@@ -1,16 +1,19 @@
 #include <Arduino.h>
-//#include <SevenSeg.h>
+#include <SevenSeg.h>
 
-void setup()
-{
-	Serial.begin(115200);
+//#include "LocalArduinoLibraries/..."
+
+#include "configuration.h"
+
+#include "Parts/LED.h"
+//#include "Parts/ThreeDigitSevenSegmentDisplay.h"
+//#include "Parts/AltitudeGauge.h"
+
+void setup() {
+	Serial.begin(BAUD_RATE);
 	Serial.println("Hello World! (from Arduino Nano)");
 }
 
-int n = 0;
+void loop() {
 
-void loop()
-{
-	Serial.println(n++);
-	delay(1000);
 }
