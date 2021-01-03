@@ -1,29 +1,36 @@
 #include <Arduino.h>
-#include <MuxShield.h>
 
-void setup()
-{
-	//Serial.begin(115200);
-	//Serial.println("Hello World! (from Arduino Mega)");
+#include "LocalArduinoLibraries/MuxShield.h"
 
-	MuxShield mux;
-	mux.setMode(1,DIGITAL_IN_PULLUP);
-	mux.setMode(2,DIGITAL_IN);
-	mux.setMode(3,DIGITAL_IN);
+#include "configuration.h"
+
+#include "Parts/SwitchSP2T.h"
+//#include "Parts/AnalogInput.h"
+//#include "Parts/LED_PWM.h"
+//#include "Parts/StepperMotor.h"
+//#include "Parts/NEMA17StepperMotor.h"
+//#include "Parts/AltitudeGauge.h"
+
+MuxShield mux;
+
+void setup() {
+
+	mux.setMode(MULTIPLEXER_IO_ROW_1,DIGITAL_IN_PULLUP);
+	mux.setMode(MULTIPLEXER_IO_ROW_2,DIGITAL_IN);
+	mux.setMode(MULTIPLEXER_IO_ROW_3,DIGITAL_IN);
+
+	Serial.begin(BAUD_RATE);
+	Serial.println("Hello World! (from Arduino Mega)");
 }
 
-int n = 0;
+void loop() {
 
-void loop()
-{
-	//Serial.println(n++);
-	//delay(1000);
 }
 
 // ==============================================================================================
 // INPUTS
 // ==============================================================================================
-class Switch
+/*class Switch
 {
 	private:
 		uint8_t pinNumber; //Range: 0-53, A0-A15. Note: A0-A15 are aliases to some sort of number.
@@ -80,6 +87,7 @@ bool Switch::getStatus()
 {
 	return status;
 }
+*/
 
 /* ==============================================================================================
  * INPUTS
