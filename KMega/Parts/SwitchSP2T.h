@@ -1,29 +1,30 @@
 #ifndef SwitchSP2T_h
 #define SwitchSP2T_h
 
-//#include "Arduino.h"
-//
-//#define DIGITAL_IN   0
-//#define DIGITAL_OUT  1
-//#define ANALOG_IN    2
-//#define DIGITAL_IN_PULLUP    3
-//
-//
-//class MuxShield
-//{
-//public:
-//    MuxShield();
-//    MuxShield(int S0, int S1, int S2, int S3, int OUTMD,int IOS1, int IOS2, int IOS3, int IO1, int IO2, int IO3);
-//    void setMode(int mux, int mode);
-//    void digitalWriteMS(int mux, int chan, int val);
-//    int digitalReadMS(int mux, int chan);
-//    int analogReadMS(int mux, int chan);
-//
-//private:
-//    int _S0,_S1,_S2,_S3,_OUTMD,_IOS1,_IOS2,_IOS3,_IO1,_IO2,_IO3;
-//    int _LE1,_LE2,_LE3,_M1,_M2,_M3;
-//
-//
-//};
+#include "Arduino.h"
+#include "LocalArduinoLibraries/MuxShield.h"
+
+//NOTE: No input validation is performed
+class SwitchSP2T
+{
+public:
+	//Arduino-monitored switch
+	SwitchSP2T(uint8_t pinNumber, bool isPullupInput);
+	//Multiplexer-monitored switch
+	SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxRowNumber, MuxShield& mux);
+	void refreshStatus();
+	bool getStatus();
+private:
+	/* Arduino Mega Range: 0-53 (digital pins), A0-A15 (analog pins (aliases for 54-69)).
+	 * Multiplexer Range: 0-15 */
+	uint8_t pinNumber;
+	bool isPullupInput;
+	bool isMuxInput; //If true, it is a Multiplexer input. If false, it is an Arduino Mega input.
+	uint8_t muxRowNumber; //Range: 1-3
+	/* TRUE = HIGH (ON)
+	 * FALSE = LOW (OFF) */
+	bool status;
+	MuxShield& mux;
+};
 
 #endif

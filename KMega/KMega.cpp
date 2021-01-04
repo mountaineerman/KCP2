@@ -27,92 +27,9 @@ void loop() {
 
 }
 
-// ==============================================================================================
-// INPUTS
-// ==============================================================================================
-/*class Switch
-{
-	private:
-		uint8_t pinNumber; //Range: 0-53, A0-A15. Note: A0-A15 are aliases to some sort of number.
-						   //                     They are not used for switches for the KCP2.
-		bool isPullupInput;
-		bool isMuxInput;
-		uint8_t muxRowNumber; //Range: 1-3
-		bool status;
-	public:
-		void refreshStatus();
-		bool getStatus();
-};
-
-Switch::Switch(unsigned char pinNum, bool isPI)
-{
-	pinNumber = pinNum;
-	isPullupInput = isPI;
-	isMuxInput = false;
-
-	if (isPullupInput)
-		pinMode(pinNumber, INPUT_PULLUP);
-	else
-		pinMode(pinNumber, INPUT);
-}
-
-Switch::Switch(unsigned char pinNum, bool isPI, bool isMI, unsigned char muxRN)
-{
-	pinNumber = pinNum;
-	isPullupInput = isPI;
-	isMuxInput = isMI;
-	muxRowNumber = muxRN;
-
-	if(!isMuxInput) //This constructor is exclusively for when the input is read via the Multiplexer
-	{
-		//TBD:ABORT
-	}
-
-	//TBD: Verify the Mux's Row's input type (INPUT_PULLUP/INPUT) matches isPullupInput. ABORT if it does not
-}
-
-void Switch::refreshStatus()
-{
-	if(isMuxInput)
-	{
-		//TBD
-	}
-	else //Read via Arduino
-	{
-		digitalRead(pinNumber);
-	}
-}
-
-bool Switch::getStatus()
-{
-	return status;
-}
-*/
-
 /* ==============================================================================================
  * INPUTS
  * ==============================================================================================
- * Switch
- * 		pinNumber (range: Mux: 				 0-15          )
- * 				  (		  Mega: Theoretical: 0-53, A0-A15  )
- * 				  (		  Mega: By design:   3-21          )
- *
- * 		muxNumber (range: 1-3)
- *
- * 		bool isPullupInput
- * 				TRUE:  pinMode=INPUT_PULLUP
- * 				FALSE: pinMode=INPUT
- *
- * 		bool isMuxInput
- * 				TRUE:  Read via MUX
- * 				FALSE: Read via Mega
- *
- * 		bool status
- * 				TRUE:  HIGH
- * 				FALSE: LOW
- *
- * 		refreshStatus()
- * 		getStatus()
  *
  *
  * AnalogInput
@@ -145,8 +62,6 @@ bool Switch::getStatus()
  *
  *
  * PWM_LED
- * 	>Fixed PWM variant... (if Minimalist KKIM>KMega API option is selected)
- * 	>Variable PWM variant...
  * (Written exclusively for being driven by LED Driver Boards, because of design constraints)
  *
  * 		channel (range: LED Driver Board:  Board1:0-23,Board2:24-47,Board3:48-71,Board4:72-95 )
