@@ -5,7 +5,7 @@
 #include "configuration.h"
 
 #include "Parts/SwitchSP2T.h"
-//#include "Parts/AnalogInput.h"
+#include "Parts/AnalogInput.h"
 //#include "Parts/LED_PWM.h"
 //#include "Parts/StepperMotor.h"
 //#include "Parts/NEMA17StepperMotor.h"
@@ -28,21 +28,6 @@ void loop() {
 }
 
 /* ==============================================================================================
- * INPUTS
- * ==============================================================================================
- *
- *
- * AnalogInput
- * 		pinNumber (range: Theoretical: A0-A15  )
- * 				  (		  By Design:   A10-A15 )
- *
- * 		short pinReading (range: 0-1023)
- *
- *		refreshPinReading()
- * 		getPinReading()
- *
- *
- * ==============================================================================================
  * OUTPUTS
  * ==============================================================================================
  * LED
