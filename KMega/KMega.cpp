@@ -1,5 +1,9 @@
 #include <Arduino.h>
 
+//Libraries Managed by Eclipse
+#include "Adafruit_TLC5947.h"
+
+//Local Arduino Libraries (downloaded manually and imported into Eclipse)
 #include "LocalArduinoLibraries/MuxShield.h"
 
 #include "configuration.h"
@@ -14,15 +18,28 @@
 #include "Parts/NEMA17StepperMotor.h"
 #include "Parts/AltitudeGauge.h"
 
-MuxShield mux;
 
-//TODO Initialize Parts...
+
+//INITIALIZE PARTS
+MuxShield mux; //TODO replace with other constructor call
+
+Adafruit_TLC5947 ledDriverBoards = Adafruit_TLC5947(NUMBER_OF_LED_DRIVER_BOARDS, LED_DRIVER_BOARDS_CLOCK, LED_DRIVER_BOARDS_DATA_IN, LED_DRIVER_BOARDS_LATCH);
+
+//TODO Initialize remaining parts...
+
+#include "LocalArduinoLibraries/MuxShield.h"
+
 
 void setup() {
 
 	mux.setMode(MULTIPLEXER_IO_ROW_1,DIGITAL_IN_PULLUP);
 	mux.setMode(MULTIPLEXER_IO_ROW_2,DIGITAL_IN);
 	mux.setMode(MULTIPLEXER_IO_ROW_3,DIGITAL_IN);
+
+	ledDriverBoards.begin();
+	//TODO replace the following 2 lines with an LED OVERRIDE function... Add bit to interface...
+	pinMode(LED_DRIVER_BOARDS_OVERRIDE, OUTPUT);
+	digitalWrite(LED_DRIVER_BOARDS_OVERRIDE, LOW);
 
 	Serial.begin(BAUD_RATE);
 	Serial.println("Hello World! (from Arduino Mega)");
@@ -50,15 +67,6 @@ void loop() {
  *
  * 		setStatus(bool)
  *
- *
- * PWM_LED
- * (Written exclusively for being driven by LED Driver Boards, because of design constraints)
- *
- * 		channel (range: LED Driver Board:  Board1:0-23,Board2:24-47,Board3:48-71,Board4:72-95 )
- *
- *		short PWM_Value (range: 0-4095)
- *
- *		setPWMValue(short)
  *
  *
  * StepperMotor
