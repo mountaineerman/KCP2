@@ -4,14 +4,19 @@
 
 #include "configuration.h"
 
+//INPUTS
 #include "Parts/SwitchSP2T.h"
 #include "Parts/AnalogInput.h"
-//#include "Parts/LED_PWM.h"
-//#include "Parts/StepperMotor.h"
-//#include "Parts/NEMA17StepperMotor.h"
-//#include "Parts/AltitudeGauge.h"
+//OUTPUTS
+//#include "Parts/LED.h" //Note: not used because of hardware design
+#include "Parts/LED_PWM.h"
+#include "Parts/StepperMotor.h"
+#include "Parts/NEMA17StepperMotor.h"
+#include "Parts/AltitudeGauge.h"
 
 MuxShield mux;
+
+//TODO Initialize Parts...
 
 void setup() {
 
