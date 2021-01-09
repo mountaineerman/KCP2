@@ -33,10 +33,6 @@ public class App
 		/*
 		 * TODO SETTINGS PLACEHOLDER
 		 * 
-		 * KMega
-		 * 		COM port ("COM4")
-		 * 		COM port BAUD rate
-		 * 		Refresh frequency
 		 * KNano
 		 * 		COM port ("COM6")
 		 * 		COM port BAUD rate
