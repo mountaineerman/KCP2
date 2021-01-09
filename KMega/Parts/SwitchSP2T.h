@@ -14,6 +14,9 @@ public:
 	SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxRowNumber, MuxShield& mux);
 	void refreshStatus();
 	bool getStatus();
+protected:
+	//Used for simulation only:
+	void setStatus(bool simulatedStatus);
 private:
 	/* Arduino Mega Range: 0-53 (digital pins), A0-A15 (analog pins (aliases for 54-69)).
 	 * Multiplexer Range: 0-15 */

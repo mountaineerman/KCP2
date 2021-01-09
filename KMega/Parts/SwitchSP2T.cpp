@@ -36,3 +36,8 @@ void SwitchSP2T::refreshStatus() {
 bool SwitchSP2T::getStatus() {
 	return this->status;
 }
+
+//Used for simulation only:
+void SwitchSP2T::setStatus(bool simulatedStatus) {
+	this->status = simulatedStatus;
+}
