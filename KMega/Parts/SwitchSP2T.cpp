@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "SwitchSP2T.h"
+#include "../LocalArduinoLibraries/MuxShield.h"
 
 //Arduino-monitored switch
 SwitchSP2T::SwitchSP2T(uint8_t pinNumber, bool isPullupInput) { // @suppress("Class members should be properly initialized")
