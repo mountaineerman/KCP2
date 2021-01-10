@@ -8,8 +8,12 @@
 
 //Computer Interface
 static const String COMMUNICATION_PORT = "COM4";
-static const int BAUD_RATE = 115200;
+static const unsigned long COMPUTER_BAUD_RATE = 115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
 static const int REFRESH_PERIOD_IN_MILLISECONDS = 25;
+
+//KNano Interface
+static const unsigned long KNANO_BAUD_RATE = COMPUTER_BAUD_RATE;
+static const float STARTING_ALTITUDE = -1.0e1;
 
 //Multiplexer
 static const int MULTIPLEXER_IO_ROW_1 = 1;
