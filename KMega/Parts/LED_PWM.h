@@ -4,7 +4,9 @@
 #include "Arduino.h"
 #include "Adafruit_TLC5947.h"
 
-/* Note: theoretically, a PWM LED could be driven by an Arduino Board or a driver board.
+/* Light Emitting Diode capable of being dimmed via Pulse-Width Modulation
+ *
+ * Note: theoretically, a PWM LED could be driven by an Arduino Board or a driver board.
  * However, for KCP2, the hardware design is such that all PWM LEDs are driven by the
  * TLC5947 LED Driver Chip (http://www.adafruit.com/products/1429). This class is written
  * with this limitation in mind.

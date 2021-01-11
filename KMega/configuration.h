@@ -23,6 +23,12 @@ static const int MULTIPLEXER_IO_ROW_3 = 3;
 //LED Driver Boards
 static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
 
+//Stepper Motors
+static const float STEPPER_MAX_SPEED = 100.0; //Maximum Permitted Speed (steps per second). Default = 1. The maximum speed achievable depends on your processor and clock speed.
+static const float STEPPER_MAX_ACCELERATION = 20.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared).
+static const long STEPPER_SOFT_RESET_SIZE = 10; //(in steps)
+static const long STEPPER_CCW_LIMIT = 0;
+static const long STEPPER_CW_LIMIT = 3779;
 
 
 
@@ -51,10 +57,10 @@ static const int PIN_MUX_S1 = 4;
 static const int PIN_MONOPROPELLANT_INTAKEAIR_SWITCH = 5;
 static const int PIN_MUX_S2 = 6;
 static const int PIN_MUX_S3 = 7;
-static const int LED_DRIVER_BOARDS_LATCH = 8; 	//"LAT"
-static const int LED_DRIVER_BOARDS_OVERRIDE = 9;//"/OE". Set High to disable all LEDs. Set Low otherwise.
-static const int LED_DRIVER_BOARDS_CLOCK = 10;	//"CLK"
-static const int LED_DRIVER_BOARDS_DATA_IN = 11;//"DIN"
+static const int PIN_LED_DRIVER_BOARDS_LATCH = 8; 	//"LAT"
+static const int PIN_LED_DRIVER_BOARDS_OVERRIDE = 9;//"/OE". Set High to disable all LEDs. Set Low otherwise.
+static const int PIN_LED_DRIVER_BOARDS_CLOCK = 10;	//"CLK"
+static const int PIN_LED_DRIVER_BOARDS_DATA_IN = 11;//"DIN"
 static const int PIN_GLASS_COCKPIT_TL_SWITCH = 12;
 static const int PIN_GLASS_COCKPIT_CL_SWITCH = 13;
 static const int PIN_GLASS_COCKPIT_BL_SWITCH = 14;
