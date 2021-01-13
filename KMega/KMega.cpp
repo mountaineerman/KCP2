@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include "Arduino.h"
 
 //Libraries Managed by Eclipse
 #include "Adafruit_TLC5947.h"
@@ -15,7 +15,7 @@
 //#include "Parts/LED.h" //Not used because of hardware design
 #include "Parts/LED_PWM.h"
 #include "Parts/StepperMotor.h"
-#include "Parts/NEMA17StepperMotor.h"
+#include "Parts/StepperMotorNEMA17.h"
 #include "Parts/AltitudeGauge.h"
 
 
@@ -38,8 +38,8 @@ void setup() {
 
 	ledDriverBoards.begin();
 	//TODO replace the following 2 lines with an LED OVERRIDE function... And add a bit to kkim>kmega interface...
-	pinMode(LED_DRIVER_BOARDS_OVERRIDE, OUTPUT);
-	digitalWrite(LED_DRIVER_BOARDS_OVERRIDE, LOW);
+	pinMode(PIN_LED_DRIVER_BOARDS_OVERRIDE, OUTPUT);
+	digitalWrite(PIN_LED_DRIVER_BOARDS_OVERRIDE, LOW);
 
 	Serial.begin(COMPUTER_BAUD_RATE);
 	Serial.println("Hello World! (from Arduino Mega)");

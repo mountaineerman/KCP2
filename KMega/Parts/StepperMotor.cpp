@@ -1,14 +1,16 @@
 #include "Arduino.h"
 #include "StepperMotor.h"
 #include "AccelStepper.h"
-#include "configuration.h"
+#include "../configuration.h"
 
-StepperMotor::StepperMotor(uint8_t pinStep, uint8_t pinDirection) {
+StepperMotor::StepperMotor(uint8_t pinStep, uint8_t pinDirection)
+	: stepper(AccelStepper::DRIVER, this->pinStep, this->pinDirection) {
+
 	this->pinStep = pinStep;
 	this->pinDirection = pinDirection;
 	this->kkimDesiredPosition = 0;
 
-	this->stepper = new AccelStepper(AccelStepper::DRIVER, this->pinStep, this->pinDirection);
+	//Finish stepper setup:
 	this->stepper.setMaxSpeed(STEPPER_MAX_SPEED);
 	this->stepper.setAcceleration(STEPPER_MAX_ACCELERATION);
 

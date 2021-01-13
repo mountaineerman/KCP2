@@ -30,6 +30,11 @@ static const long STEPPER_SOFT_RESET_SIZE = 10; //(in steps)
 static const long STEPPER_CCW_LIMIT = 0;
 static const long STEPPER_CW_LIMIT = 3779;
 
+//Heading Gauge NEMA17 Stepper Motor
+static const float NEMA17_MAX_SPEED = 100.0; //Maximum Permitted Speed (steps per second). Default = 1. The maximum speed achievable depends on your processor and clock speed.
+static const float NEMA17_MAX_ACCELERATION = 20.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared).
+static const long NEMA17_CCW_LIMIT = 0;
+static const long NEMA17_CW_LIMIT = 1599;
 
 
 //Arduino Mega Pin Assignment
