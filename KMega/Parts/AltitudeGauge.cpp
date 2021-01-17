@@ -10,7 +10,7 @@ AltitudeGauge::AltitudeGauge() {
 
 void AltitudeGauge::setAltitude(float altitude) {
 	this->altitude = altitude;
-	Serial1.println(this->altitude);
+	//Serial1.println(this->altitude);
 }
 
 float AltitudeGauge::getAltitude() {
