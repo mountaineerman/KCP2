@@ -6,6 +6,7 @@
 
 #include <Arduino.h>
 
+//KMega Interface
 static const String COMMUNICATION_PORT = "COM6";
 static const int BAUD_RATE = 115200;
 static const int REFRESH_PERIOD_IN_MILLISECONDS = 25;
