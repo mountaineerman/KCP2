@@ -9,7 +9,7 @@
 class LED
 {
 public:
-	LED(uint16_t pin);
+	LED(uint8_t pin);
 	void setState(bool state);
 protected:
 	//Used for debugging only:
