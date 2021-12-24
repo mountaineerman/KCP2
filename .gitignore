@@ -1,3 +1,6 @@
+# Ignore Symlink to Arduino directory
+Arduino.lnk
+
 # Ignore Gradle project-specific cache directory
 .gradle
 
