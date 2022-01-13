@@ -1,6 +1,6 @@
-#include "Arduino.h"
-#include "LED_PWM.h"
-#include "Adafruit_TLC5947.h"
+#include <Arduino.h>
+#include "C:\dev\KCP2\KMega\Model\PartTypes\LED_PWM.h"
+#include "C:\dev\KCP2\KMega\LocalArduinoLibraries\Adafruit_TLC5947\Adafruit_TLC5947.h"
 
 LED_PWM::LED_PWM(uint16_t channel, Adafruit_TLC5947& ledDriverBoards) {
 	this->channel = channel;

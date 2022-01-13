@@ -1,8 +1,8 @@
 #ifndef LED_PWM_h
 #define LED_PWM_h
 
-#include "Arduino.h"
-#include "Adafruit_TLC5947.h"
+#include <Arduino.h>
+#include "C:\dev\KCP2\KMega\LocalArduinoLibraries\Adafruit_TLC5947\Adafruit_TLC5947.h"
 
 /* Light Emitting Diode capable of being dimmed via Pulse-Width Modulation
  *

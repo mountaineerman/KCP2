@@ -1,6 +1,6 @@
-#include "Arduino.h"
-#include "ControlPanel.h"
-#include "configuration.h"
+#include <Arduino.h>
+#include "C:\dev\KCP2\KMega\Model\ControlPanel.h"
+#include "C:\dev\KCP2\KMega\configuration.h"
 
 ControlPanel::ControlPanel() {
 	this->mux = new MuxShield();

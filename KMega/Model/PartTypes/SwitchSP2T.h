@@ -1,8 +1,8 @@
 #ifndef SwitchSP2T_h
 #define SwitchSP2T_h
 
-#include "Arduino.h"
-#include "../LocalArduinoLibraries/MuxShield.h"
+#include <Arduino.h>
+#include "C:\dev\KCP2\KMega\LocalArduinoLibraries\MuxShield\MuxShield.h"
 
 //NOTE: No input validation is performed
 class SwitchSP2T

@@ -1,6 +1,6 @@
-#include "Arduino.h"
-#include "ModuleA.h"
-#include <string>
+#include <Arduino.h>
+#include <string.h>
+#include "C:\dev\KCP2\KMega\Model\Modules\ModuleA.h"
 
 ModuleA::ModuleA() {
 	

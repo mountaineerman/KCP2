@@ -1,8 +1,8 @@
 #ifndef StepperMotor_h
 #define StepperMotor_h
 
-#include "Arduino.h"
-#include "AccelStepper.h"
+#include <Arduino.h>
+#include "C:\dev\KCP2\KMega\LocalArduinoLibraries\AccelStepper\src\AccelStepper.h"
 
 /* x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.
  *

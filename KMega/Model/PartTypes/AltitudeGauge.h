@@ -1,7 +1,7 @@
 #ifndef AltitudeGauge_h
 #define AltitudeGauge_h
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 //Purpose: forward the altitude information from KKIM to KNano
 class AltitudeGauge
