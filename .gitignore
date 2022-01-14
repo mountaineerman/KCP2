@@ -1,6 +1,9 @@
 # Ignore Symlink to Arduino directory
 Arduino.lnk
 
+# Ignore Arduino Library Test
+LibraryExperiment
+
 # Ignore Gradle project-specific cache directory
 .gradle
 
