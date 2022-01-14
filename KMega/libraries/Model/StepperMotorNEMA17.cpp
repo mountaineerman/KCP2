@@ -1,7 +1,7 @@
 #include <Arduino.h>
-#include "C:\dev\KCP2\KMega\configuration.h"
-#include "C:\dev\KCP2\KMega\Model\PartTypes\StepperMotorNEMA17.h"
-#include "C:\dev\KCP2\KMega\LocalArduinoLibraries\AccelStepper\src\AccelStepper.h"
+#include "..\..\configuration.h"
+#include <StepperMotorNEMA17.h>
+#include <AccelStepper.h>
 
 StepperMotorNEMA17::StepperMotorNEMA17(uint8_t pinStep, uint8_t pinDirection, uint8_t pinSleep, uint8_t pinMS1, uint8_t pinMS2)
 	: stepper(AccelStepper::DRIVER, this->pinStep, this->pinDirection) {

@@ -1,19 +1,21 @@
 #include <stdlib.h>
 #include <Arduino.h>
 
-#include "C:\dev\KCP2\KMega\configuration.h"
-#include "C:\dev\KCP2\KMega\Model\ControlPanel.h"
-
+#include "configuration.h"
+#include <ControlPanel.h>
 
 //INITIALIZE COMMON PARTS
-//ControlPanel controlPanel;
+ControlPanel controlPanel;
 
 void setup() {
 	Serial.begin(COMPUTER_BAUD_RATE);
+	Serial.println("Hello world!");
 }
 
 void loop() {
 	//controlPanel.diagnosticMode();
+	//Serial.println("");
+	//delay(1000);
 	exit(EXIT_SUCCESS);
 }
 

@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include "C:\dev\KCP2\KMega\Model\ControlPanel.h"
-#include "C:\dev\KCP2\KMega\configuration.h"
+#include <ControlPanel.h>
+#include "../../configuration.h"
 
 ControlPanel::ControlPanel() {
 	this->mux = new MuxShield();
@@ -15,30 +15,30 @@ ControlPanel::ControlPanel() {
 	digitalWrite(PIN_LED_DRIVER_BOARDS_OVERRIDE, LOW); //Set to LOW to enable the outputs.
 	
 	this->moduleA = new ModuleA();
-	this->moduleB = new ModuleB();
-	this->moduleC = new ModuleC();
-	this->moduleD = new ModuleD();
-	this->moduleE = new ModuleE();
-	this->moduleF = new ModuleF();
-	this->moduleG = new ModuleG();
-	this->moduleH = new ModuleH();
-	this->moduleI = new ModuleI();
-	this->moduleGT = new ModuleGT();
+	//this->moduleB = new ModuleB();
+	//this->moduleC = new ModuleC();
+	//this->moduleD = new ModuleD();
+	//this->moduleE = new ModuleE();
+	//this->moduleF = new ModuleF();
+	//this->moduleG = new ModuleG();
+	//this->moduleH = new ModuleH();
+	//this->moduleI = new ModuleI();
+	//this->moduleGT = new ModuleGT();
 }
 
 void ControlPanel::refreshInputs() {
 	this->moduleA.refreshInputs();
-	this->moduleB.refreshInputs();
-	this->moduleD.refreshInputs();
-	this->moduleE.refreshInputs();
-	this->moduleF.refreshInputs();
-	this->moduleG.refreshInputs();
-	this->moduleH.refreshInputs();
-	this->moduleI.refreshInputs();
+	//this->moduleB.refreshInputs();
+	//this->moduleD.refreshInputs();
+	//this->moduleE.refreshInputs();
+	//this->moduleF.refreshInputs();
+	//this->moduleG.refreshInputs();
+	//this->moduleH.refreshInputs();
+	//this->moduleI.refreshInputs();
 }
 
 void ControlPanel::diagnosticMode() {
-
+/*
 	Serial.println("Activating Diagnostic Mode...");
 	delay(3000);
 	
@@ -48,13 +48,13 @@ void ControlPanel::diagnosticMode() {
 		if(this->moduleH.<TR Switch>.getStatus()) { // Test All Inputs
 			for(int i=1; i<=30; i++){ Serial.println(); }
 			Serial.print(this->moduleA.getInputStatus());
-			Serial.print(this->moduleB.getInputStatus());
-			Serial.print(this->moduleD.getInputStatus());
-			Serial.print(this->moduleE.getInputStatus());
-			Serial.print(this->moduleF.getInputStatus());
-			Serial.print(this->moduleG.getInputStatus());
-			Serial.print(this->moduleH.getInputStatus());
-			Serial.print(this->moduleI.getInputStatus());
+			//Serial.print(this->moduleB.getInputStatus());
+			//Serial.print(this->moduleD.getInputStatus());
+			//Serial.print(this->moduleE.getInputStatus());
+			//Serial.print(this->moduleF.getInputStatus());
+			//Serial.print(this->moduleG.getInputStatus());
+			//Serial.print(this->moduleH.getInputStatus());
+			//Serial.print(this->moduleI.getInputStatus());
 			delay(10);
 		} else if (this->moduleH.<CR Switch>.getStatus()) { // Test All Outputs Simultaneously
 			//TODO:Turn on all LEDs
@@ -70,4 +70,5 @@ void ControlPanel::diagnosticMode() {
 			delay(1000);
 		}
 	}while(true); //TODO: Add a way to break out of this diagnostic mode
+*/
 }

@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include "C:\dev\KCP2\KMega\configuration.h"
-#include "C:\dev\KCP2\KMega\Model\PartTypes\AltitudeGauge.h"
+#include "..\..\configuration.h"
+#include <AltitudeGauge.h>
 
 
 AltitudeGauge::AltitudeGauge() {

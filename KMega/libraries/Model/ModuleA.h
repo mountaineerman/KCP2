@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 #include <string.h>
-#include "C:\dev\KCP2\KMega\Model\PartTypes\SwitchSP2T.h"
-#include "C:\dev\KCP2\KMega\Model\PartTypes\AnalogInput.h"
-#include "C:\dev\KCP2\KMega\Model\PartTypes\LED_PWM.h"
+#include <SwitchSP2T.h>
+#include <AnalogInput.h>
+#include <LED_PWM.h>
 
 
 /* Module A

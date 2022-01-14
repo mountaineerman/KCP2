@@ -2,7 +2,7 @@
 #define StepperMotorNEMA17_h
 
 #include <Arduino.h>
-#include "C:\dev\KCP2\KMega\LocalArduinoLibraries\AccelStepper\src\AccelStepper.h"
+#include <AccelStepper.h>
 
 /* NEMA17 Stepper Motor controlled via the Sparkfun EasyDriver.
  *

@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "C:\dev\KCP2\KMega\Model\PartTypes\AnalogInput.h"
+#include <AnalogInput.h>
 
 AnalogInput::AnalogInput(uint8_t pinNumber) { // @suppress("Class members should be properly initialized")
 	this->pinNumber = pinNumber;
