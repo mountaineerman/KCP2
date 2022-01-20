@@ -14,11 +14,19 @@
 class ModuleA
 {
 public:
-	ModuleA();
-	void refreshInputs();
+	ModuleA(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards);
+	void refreshInputStatus();
 	String getInputStatus();
-//protected:
-//private:
+	//TODO: Get input status in packet-like form?
+	void setAllLEDsOff();
+	void setAllLEDsOn();
+	void testLEDsSequentially();
+	
+	//Parts:
+	AnalogInput analogInput_Throttle;
+	SwitchSP2T switch_BrakeButton;
+	SwitchSP2T switch_StagingButton;
+	LED_PWM ledPWM_BrakeModA;
 };
 
 #endif

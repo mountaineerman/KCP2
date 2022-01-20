@@ -4,13 +4,14 @@
 AnalogInput::AnalogInput(uint8_t pinNumber) { // @suppress("Class members should be properly initialized")
 	this->pinNumber = pinNumber;
 	//Note: no pinMode initialization is required for analog inputs
+	Serial.println("AnalogInput Constructor");
 }
 
-void AnalogInput::refreshPinReading() {
+void AnalogInput::refreshInputStatus() {
 	this->pinReading = analogRead(this->pinNumber);
 }
 
-int AnalogInput::getPinReading() {
+int AnalogInput::getInputStatus() {
 	return this->pinReading;
 }
 

@@ -3,7 +3,7 @@
 #include <MuxShield.h>
 
 //Arduino-monitored switch
-SwitchSP2T::SwitchSP2T(uint8_t pinNumber, bool isPullupInput) { // @suppress("Class members should be properly initialized")
+SwitchSP2T::SwitchSP2T(uint8_t pinNumber, bool isPullupInput) {
 	this->pinNumber = pinNumber;
 	this->isPullupInput = isPullupInput;
 	this->isMuxInput = false;
@@ -13,28 +13,45 @@ SwitchSP2T::SwitchSP2T(uint8_t pinNumber, bool isPullupInput) { // @suppress("Cl
 	} else {
 		pinMode(pinNumber, INPUT);
 	}
+	//Serial.println("SwitchSP2T Constructor");
 }
 
 //Multiplexer-monitored switch
-SwitchSP2T::SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxRowNumber, MuxShield& mux) { // @suppress("Class members should be properly initialized")
+SwitchSP2T::SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxRowNumber, MuxShield& mux)
+	: mux(mux)
+{
 	this->pinNumber = muxColumnNumber;
 	this->isPullupInput = isPullupInput;
 	this->isMuxInput = true;
 	this->muxRowNumber = muxRowNumber;
-	this->mux = mux;
+	//this->mux = mux;
 
 	//Note: Pullup mode is set for the multiplexer by row (separately), not by pin. See MuxShield::setMode(...)
+	Serial.println("SwitchSP2T Constructor");
 }
 
-void SwitchSP2T::refreshStatus() {
+void SwitchSP2T::refreshInputStatus() {
+	//if(this->isMuxInput) {
+	//	this->status = this->mux.digitalReadMS(this->muxRowNumber,this->pinNumber);
+	//} else { //Read via Arduino
+	//	this->status = digitalRead(this->pinNumber);
+	//}
+	bool rawStatus;
+	
 	if(this->isMuxInput) {
-		this->status = this->mux.digitalReadMS(this->muxRowNumber,this->pinNumber);
+		rawStatus = this->mux.digitalReadMS(this->muxRowNumber,this->pinNumber);
 	} else { //Read via Arduino
-		this->status = digitalRead(this->pinNumber);
+		rawStatus = digitalRead(this->pinNumber);
+	}
+	
+	if(this->isPullupInput) {
+		this->status = !rawStatus;
+	} else {
+		this->status = rawStatus;
 	}
 }
 
-bool SwitchSP2T::getStatus() {
+bool SwitchSP2T::getInputStatus() {
 	return this->status;
 }
 

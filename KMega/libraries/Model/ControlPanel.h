@@ -2,10 +2,12 @@
 #define CONTROL_PANEL_h
 
 #include <Arduino.h>
+
 #include <MuxShield.h>
 #include <Adafruit_TLC5947.h>
+
 #include <ModuleA.h>
-//#include <ModuleB.h>
+#include <ModuleB.h>
 //#include <ModuleC.h>
 //#include <ModuleD.h>
 //#include <ModuleE.h>
@@ -21,24 +23,36 @@
  */
 class ControlPanel
 {
+private:
+	void diagnosticMode_testAllInputs();
+	void diagnosticMode_testAllLEDs();
+	void diagnosticMode_testLEDsSequentially();
+	void diagnosticMode_testStepperMotors();
+
+	MuxShield mux; //TODO: const? Does it need to be public?
+	Adafruit_TLC5947 ledDriverBoards; //TODO: const? Does it need to be public?
+
 public:
-	ControlPanel();
-	void refreshInputs();
-	void diagnosticMode();
-	void stepperCalibrationMode();
+	ModuleA moduleA;
+	ModuleB moduleB;
+	//ModuleC moduleC;
+	//ModuleD moduleD;
+	//ModuleE moduleE;
+	//ModuleF moduleF;
+	//ModuleG moduleG;
+	//ModuleH moduleH;
+	//ModuleI moduleI;
+	//ModuleGT moduleGT;
 	
-	MuxShield& mux;
-	Adafruit_TLC5947& ledDriverBoards;
-	ModuleA& moduleA;
-	//ModuleB& moduleB;
-	//ModuleC& moduleC;
-	//ModuleD& moduleD;
-	//ModuleE& moduleE;
-	//ModuleF& moduleF;
-	//ModuleG& moduleG;
-	//ModuleH& moduleH;
-	//ModuleI& moduleI;
-	//ModuleGT& moduleGT;
+	ControlPanel();
+	void refreshInputStatus();//TODO: Create Interface via virtual method
+	String getInputStatus();  //TODO: Create Interface via virtual method
+	void setAllLEDsOff();
+	void setAllLEDsOn();
+	void testLEDsSequentially();
+	void runDiagnosticMode();
+	void activateLEDOverride();
+	void disableLEDOverride();
 };
 
 #endif

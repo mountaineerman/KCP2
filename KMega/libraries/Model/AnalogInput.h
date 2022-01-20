@@ -8,8 +8,8 @@ class AnalogInput
 {
 public:
 	AnalogInput(uint8_t pinNumber);
-	void refreshPinReading();
-	int getPinReading();
+	void refreshInputStatus();
+	int getInputStatus();
 protected:
 	//Used for simulation only:
 	void setPinReading(int simulatedPinReading);

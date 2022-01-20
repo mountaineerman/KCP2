@@ -12,8 +12,8 @@ public:
 	SwitchSP2T(uint8_t pinNumber, bool isPullupInput);
 	//Multiplexer-monitored switch
 	SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxRowNumber, MuxShield& mux);
-	void refreshStatus();
-	bool getStatus();
+	void refreshInputStatus();
+	bool getInputStatus();
 protected:
 	//Used for simulation only:
 	void setStatus(bool simulatedStatus);
