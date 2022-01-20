@@ -31,11 +31,7 @@ SwitchSP2T::SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxR
 }
 
 void SwitchSP2T::refreshInputStatus() {
-	//if(this->isMuxInput) {
-	//	this->status = this->mux.digitalReadMS(this->muxRowNumber,this->pinNumber);
-	//} else { //Read via Arduino
-	//	this->status = digitalRead(this->pinNumber);
-	//}
+
 	bool rawStatus;
 	
 	if(this->isMuxInput) {
@@ -53,6 +49,10 @@ void SwitchSP2T::refreshInputStatus() {
 
 bool SwitchSP2T::getInputStatus() {
 	return this->status;
+}
+
+String SwitchSP2T::getInputStatusAsString() {
+	return String(this->status);
 }
 
 //Used for simulation only:

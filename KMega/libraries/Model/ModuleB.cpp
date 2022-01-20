@@ -34,16 +34,16 @@ void ModuleB::refreshInputStatus() {
 	this->switch_RollTrim.refreshInputStatus();
 }
 
-String ModuleB::getInputStatus() {
+String ModuleB::getInputStatusAsString() {
 	return String("Module B ============================================================================") +
-		   "\nanalogInput_Joystick_Pitch:" + this->analogInput_Joystick_Pitch.getInputStatus() +
-		   "\nanalogInput_Joystick_Yaw:" + this->analogInput_Joystick_Yaw.getInputStatus() +
-		   "\nanalogInput_Joystick_Roll:" + this->analogInput_Joystick_Roll.getInputStatus() +
-		   "\nswitch_Joystick:" + this->switch_Joystick.getInputStatus() +
-		   "\nswitch_TimeWarpDown:" + this->switch_TimeWarpDown.getInputStatus() +
-		   "\nswitch_TimeWarpUp:" + this->switch_TimeWarpUp.getInputStatus() +
-		   "\nswitch_AbortButton:" + this->switch_AbortButton.getInputStatus() +
-		   "\nswitch_PitchTrim:" + this->switch_PitchTrim.getInputStatus() +
-		   "\nswitch_YawTrim:" + this->switch_YawTrim.getInputStatus() +
-		   "\nswitch_RollTrim:" + this->switch_RollTrim.getInputStatus() + "\n";
+		   "\nanalogInput_Joystick_Pitch:" + this->analogInput_Joystick_Pitch.getInputStatusAsString() +
+		   "\nanalogInput_Joystick_Yaw:" + this->analogInput_Joystick_Yaw.getInputStatusAsString() +
+		   "\nanalogInput_Joystick_Roll:" + this->analogInput_Joystick_Roll.getInputStatusAsString() +
+		   "\nswitch_Joystick:" + this->switch_Joystick.getInputStatusAsString() +
+		   "\nswitch_TimeWarpDown:" + this->switch_TimeWarpDown.getInputStatusAsString() +
+		   "\nswitch_TimeWarpUp:" + this->switch_TimeWarpUp.getInputStatusAsString() +
+		   "\nswitch_AbortButton:" + this->switch_AbortButton.getInputStatusAsString() +
+		   "\nswitch_PitchTrim:" + this->switch_PitchTrim.getInputStatusAsString() +
+		   "\nswitch_YawTrim:" + this->switch_YawTrim.getInputStatusAsString() +
+		   "\nswitch_RollTrim:" + this->switch_RollTrim.getInputStatusAsString() + "\n";
 }

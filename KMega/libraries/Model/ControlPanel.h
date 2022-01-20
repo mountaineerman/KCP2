@@ -6,6 +6,9 @@
 #include <MuxShield.h>
 #include <Adafruit_TLC5947.h>
 
+#include <Interface_Input.h>
+//#include <Interface_LEDAggregator.h>
+
 #include <ModuleA.h>
 #include <ModuleB.h>
 //#include <ModuleC.h>
@@ -21,7 +24,7 @@
 
 /* MkII Control Panel
  */
-class ControlPanel
+class ControlPanel : public Interface_Input
 {
 private:
 	void diagnosticMode_testAllInputs();
@@ -45,12 +48,16 @@ public:
 	//ModuleGT moduleGT;
 	
 	ControlPanel();
-	void refreshInputStatus();//TODO: Create Interface via virtual method
-	String getInputStatus();  //TODO: Create Interface via virtual method
+	void refreshInputStatus();
+	String getInputStatusAsString();
+	//TODO: getInputStatusAsPacket
+	
 	void setAllLEDsOff();
 	void setAllLEDsOn();
 	void testLEDsSequentially();
+	
 	void runDiagnosticMode();
+	
 	void activateLEDOverride();
 	void disableLEDOverride();
 };

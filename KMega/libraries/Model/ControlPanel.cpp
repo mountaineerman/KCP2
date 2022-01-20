@@ -49,15 +49,15 @@ void ControlPanel::refreshInputStatus() {
 	//this->moduleI.refreshInputStatus();
 }
 
-String ControlPanel::getInputStatus() {
-	return this->moduleA.getInputStatus() +
-		   this->moduleB.getInputStatus();// +
-		   //this->moduleD.getInputStatus() +
-		   //this->moduleE.getInputStatus() +
-		   //this->moduleF.getInputStatus() +
-		   //this->moduleG.getInputStatus() +
-		   //this->moduleH.getInputStatus() +
-		   //this->moduleI.getInputStatus();
+String ControlPanel::getInputStatusAsString() {
+	return this->moduleA.getInputStatusAsString() +
+		   this->moduleB.getInputStatusAsString();// +
+		   //this->moduleD.getInputStatusAsString() +
+		   //this->moduleE.getInputStatusAsString() +
+		   //this->moduleF.getInputStatusAsString() +
+		   //this->moduleG.getInputStatusAsString() +
+		   //this->moduleH.getInputStatusAsString() +
+		   //this->moduleI.getInputStatusAsString();
 }
 
 void ControlPanel::setAllLEDsOff() {
@@ -134,12 +134,12 @@ void ControlPanel::diagnosticMode_testAllInputs() {
 	Serial.setTimeout(1000);//Lower delay
 	String userInput;
 	
-	while(true) {//TODO confirm loop refresh cycle is bound by readStringUntil delay
+	while(true) {
 		
 		clearScreen();
 		Serial.println("Testing All Inputs. Enter '0' at any time to return to the main menu.");
 		this->refreshInputStatus();
-		Serial.println(this->getInputStatus());
+		Serial.println(this->getInputStatusAsString());
 		
 		userInput = Serial.readStringUntil('\n');
 		//Serial.println(userInput);

@@ -21,11 +21,11 @@ void ModuleA::refreshInputStatus() {
 	this->switch_StagingButton.refreshInputStatus();
 }
 
-String ModuleA::getInputStatus() {
+String ModuleA::getInputStatusAsString() {
 	return String("Module A ============================================================================") +
-		   "\nanalogInput_Throttle:" + this->analogInput_Throttle.getInputStatus() +
-		   "\nswitch_BrakeButton:" + this->switch_BrakeButton.getInputStatus() +
-		   "\nswitch_StagingButton:" + this->switch_StagingButton.getInputStatus() + "\n";
+		   "\nanalogInput_Throttle:" + this->analogInput_Throttle.getInputStatusAsString() +
+		   "\nswitch_BrakeButton:" + this->switch_BrakeButton.getInputStatusAsString() +
+		   "\nswitch_StagingButton:" + this->switch_StagingButton.getInputStatusAsString() + "\n";
 }
 
 void ModuleA::setAllLEDsOff() {

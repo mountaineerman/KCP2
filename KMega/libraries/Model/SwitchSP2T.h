@@ -2,10 +2,12 @@
 #define SwitchSP2T_h
 
 #include <Arduino.h>
+#include <string.h>
 #include <MuxShield.h>
+#include <Interface_Input.h>
 
 //NOTE: No input validation is performed
-class SwitchSP2T
+class SwitchSP2T : public Interface_Input
 {
 public:
 	//Arduino-monitored switch
@@ -13,7 +15,8 @@ public:
 	//Multiplexer-monitored switch
 	SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxRowNumber, MuxShield& mux);
 	void refreshInputStatus();
-	bool getInputStatus();
+	String getInputStatusAsString();
+	bool getInputStatus();//TODO rename
 protected:
 	//Used for simulation only:
 	void setStatus(bool simulatedStatus);

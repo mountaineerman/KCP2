@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include <AnalogInput.h>
 
-AnalogInput::AnalogInput(uint8_t pinNumber) { // @suppress("Class members should be properly initialized")
+AnalogInput::AnalogInput(uint8_t pinNumber) {
 	this->pinNumber = pinNumber;
 	//Note: no pinMode initialization is required for analog inputs
-	Serial.println("AnalogInput Constructor");
+	//Serial.println("AnalogInput Constructor");
 }
 
 void AnalogInput::refreshInputStatus() {
@@ -13,6 +13,10 @@ void AnalogInput::refreshInputStatus() {
 
 int AnalogInput::getInputStatus() {
 	return this->pinReading;
+}
+
+String AnalogInput::getInputStatusAsString() {
+	return String(this->pinReading);
 }
 
 //Used for simulation only:

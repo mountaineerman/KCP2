@@ -2,14 +2,17 @@
 #define AnalogInput_h
 
 #include <Arduino.h>
+#include <string.h>
+#include <Interface_Input.h>
 
 //NOTE: No input validation is performed
-class AnalogInput
+class AnalogInput : public Interface_Input
 {
 public:
 	AnalogInput(uint8_t pinNumber);
 	void refreshInputStatus();
-	int getInputStatus();
+	String getInputStatusAsString();
+	int getInputStatus(); //TODO rename
 protected:
 	//Used for simulation only:
 	void setPinReading(int simulatedPinReading);

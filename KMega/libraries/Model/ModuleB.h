@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <string.h>
+#include <Interface_Input.h>
 #include <SwitchSP2T.h>
 #include <AnalogInput.h>
 
@@ -10,12 +11,12 @@
 /* Module B
  *
  * Joystick, Trim Controls, Abort, Time Warp */
-class ModuleB
+class ModuleB : public Interface_Input
 {
 public:
 	ModuleB(MuxShield& mux);
 	void refreshInputStatus();
-	String getInputStatus();
+	String getInputStatusAsString();
 	//TODO: Get input status in packet-like form?
 	
 	//Parts:

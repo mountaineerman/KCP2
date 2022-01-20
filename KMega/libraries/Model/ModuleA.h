@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <string.h>
+#include <Interface_Input.h>
 #include <SwitchSP2T.h>
 #include <AnalogInput.h>
 #include <LED_PWM.h>
@@ -11,13 +12,12 @@
 /* Module A
  *
  * Throttle, Staging, and Brake Button */
-class ModuleA
+class ModuleA : public Interface_Input
 {
 public:
 	ModuleA(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards);
 	void refreshInputStatus();
-	String getInputStatus();
-	//TODO: Get input status in packet-like form?
+	String getInputStatusAsString();
 	void setAllLEDsOff();
 	void setAllLEDsOn();
 	void testLEDsSequentially();
