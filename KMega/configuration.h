@@ -6,23 +6,186 @@
 
 #include <Arduino.h>
 
+//===========================================================================================================================================================================
 //Computer Interface
 static const String COMMUNICATION_PORT = "COM4";
-static const unsigned long COMPUTER_BAUD_RATE = 115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
+static const unsigned long COMPUTER_BAUD_RATE = 38400;//TODO raise rate://115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
 static const int REFRESH_PERIOD_IN_MILLISECONDS = 25;
+static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time kMega will wait before timing out during a serial read operation
 
+//===========================================================================================================================================================================
 //KNano Interface
 static const unsigned long KNANO_BAUD_RATE = COMPUTER_BAUD_RATE;
 static const float STARTING_ALTITUDE = -1.0e1;
 
+//===========================================================================================================================================================================
 //Multiplexer
 static const int MULTIPLEXER_IO_ROW_1 = 1;
 static const int MULTIPLEXER_IO_ROW_2 = 2;
 static const int MULTIPLEXER_IO_ROW_3 = 3;
 
+//ROW 1 (Input Pullup)
+// 0 UNASSIGNED
+static const int PIN_MUX_BRAKE_BUTTON = 1;
+static const int PIN_MUX_JOYSTICK_BUTTON = 2;
+static const int PIN_MUX_BRAKE_SWITCH = 3;
+static const int PIN_MUX_AUTOPILOT_HOLD_BUTTON = 4;
+static const int PIN_MUX_AUTOPILOT_PROGRADE_BUTTON = 5;
+static const int PIN_MUX_AUTOPILOT_RETROGRADE_BUTTON = 6;
+static const int PIN_MUX_AUTOPILOT_NORMAL_BUTTON = 7;
+static const int PIN_MUX_AUTOPILOT_ANTINORMAL_BUTTON = 8;
+static const int PIN_MUX_AUTOPILOT_RADIALIN_BUTTON = 9;
+static const int PIN_MUX_AUTOPILOT_RADIALOUT_BUTTON = 10;
+static const int PIN_MUX_AUTOPILOT_TARGET_BUTTON = 11;
+static const int PIN_MUX_AUTOPILOT_ANTITARGET_BUTTON = 12;
+static const int PIN_MUX_AUTOPILOT_MANEUVER = 13;
+static const int PIN_MUX_FAIRING_BUTTON = 14;
+static const int PIN_MUX_CHUTE_BUTTON = 15;
+
+//ROW 2 (Input)
+static const int PIN_MUX_STAGING_BUTTON = 0;
+static const int PIN_MUX_ABORT_BUTTON = 1;
+static const int PIN_MUX_PITCH_TRIM_SWITCH = 2;
+static const int PIN_MUX_YAW_TRIM_SWITCH = 3;
+static const int PIN_MUX_ROLL_TRIM_SWITCH = 4;
+static const int PIN_MUX_SAS_SWITCH = 5;
+static const int PIN_MUX_RCS_SWITCH = 6;
+static const int PIN_MUX_LIGHTS_SWITCH = 7;
+static const int PIN_MUX_GEAR_SWITCH = 8;
+static const int PIN_MUX_MAP_SWITCH = 9;
+static const int PIN_MUX_MUTE_SWITCH = 10;
+// 11 UNASSIGNED
+// 12 UNASSIGNED
+static const int PIN_MUX_SFC_SWITCH = 13;
+static const int PIN_MUX_TGT_SWITCH = 14;
+static const int PIN_MUX_RKT_SWITCH = 15;
+
+//ROW 3 (Input)
+static const int PIN_MUX_RVR_SWITCH = 0;
+static const int PIN_MUX_90_DEG_SWITCH = 1;
+static const int PIN_MUX_9_DEG_SWITCH = 2;
+static const int PIN_MUX_TRIM_SWITCH = 3;
+static const int PIN_MUX_ACTION_GROUP_1_SWITCH = 4;
+static const int PIN_MUX_ACTION_GROUP_2_SWITCH = 5;
+static const int PIN_MUX_ACTION_GROUP_3_SWITCH = 6;
+static const int PIN_MUX_SCIENCE_SWITCH = 7;
+static const int PIN_MUX_RESET_SWITCH = 8;
+static const int PIN_MUX_SOLAR_SWITCH = 9;
+static const int PIN_MUX_LADDER_SWITCH = 10;
+static const int PIN_MUX_AUTONAVIGATION_SWITCH = 11;
+// 12 UNASSIGNED
+// 13 UNASSIGNED
+// 14 UNASSIGNED
+// 15 UNASSIGNED
+
+//===========================================================================================================================================================================
 //LED Driver Boards
 static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
+static const int PWM_LED_MINIMUM = 0;
+static const int PWM_LED_MAXIMUM = 4095;
 
+// Board 1 (Currently #3 in BOM) //TODO: Confirm board order (1/2/3/4)
+static const int PIN_LEDDB_GLASS_COCKPIT_TL = 0;
+static const int PIN_LEDDB_GLASS_COCKPIT_CL = 1;
+static const int PIN_LEDDB_GLASS_COCKPIT_BL = 2;
+static const int PIN_LEDDB_GLASS_COCKPIT_TR = 3;
+static const int PIN_LEDDB_GLASS_COCKPIT_CR = 4;
+static const int PIN_LEDDB_GLASS_COCKPIT_BR = 5;
+static const int PIN_LEDDB_ORB_LED = 6;
+static const int PIN_LEDDB_PLN_LED = 7;
+static const int PIN_LEDDB_30_DEG_LED = 8;
+static const int PIN_LEDDB_FAIRING_LED = 9;
+static const int PIN_LEDDB_CHUTE_LED = 10;
+static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;
+static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;
+static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;
+static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;
+static const int PIN_LEDDB_COMMS_LED = 15;
+static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;
+static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;
+static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;
+// 19 UNASSIGNED
+// 20 UNASSIGNED
+// 21 UNASSIGNED
+// 22 UNASSIGNED
+// 23 UNASSIGNED
+// Board 2 //TODO: Confirm board order (1/2/3/4)
+static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_RED = 24;	//0
+static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_GRN = 25;	//1
+static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_BLU = 26;	//2
+static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_RED = 27;	//3
+static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_GRN = 28;	//4
+static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_BLU = 29;	//5
+static const int PIN_LEDDB_HEAT_RGBLED_RED = 30;			//6
+static const int PIN_LEDDB_HEAT_RGBLED_GRN = 31;			//7
+static const int PIN_LEDDB_HEAT_RGBLED_BLU = 32;			//8
+static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_RED = 33;	//9
+static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_GRN = 34;	//10
+static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_BLU = 35;	//11
+static const int PIN_LEDDB_GFORCE_RGBLED_RED = 36;			//12
+static const int PIN_LEDDB_GFORCE_RGBLED_GRN = 37;			//13
+static const int PIN_LEDDB_GFORCE_RGBLED_BLU = 38;			//14
+static const int PIN_LEDDB_MACH_RGBLED_RED = 39;			//15
+static const int PIN_LEDDB_MACH_RGBLED_GRN = 40;			//16
+static const int PIN_LEDDB_MACH_RGBLED_BLU = 41;			//17
+static const int PIN_LEDDB_PITCH_RGBLED_RED = 42;			//18
+static const int PIN_LEDDB_PITCH_RGBLED_GRN = 43;			//19
+static const int PIN_LEDDB_PITCH_RGBLED_BLU = 44;			//20
+static const int PIN_LEDDB_HEADING_RGBLED_RED = 45;			//21
+static const int PIN_LEDDB_HEADING_RGBLED_GRN = 46;			//22
+static const int PIN_LEDDB_HEADING_RGBLED_BLU = 47;			//23
+// Board 3 (Currently #1 in BOM) //TODO: Confirm board order (1/2/3/4)
+static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//0
+static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//1
+static const int PIN_LEDDB_AUTOPILOT_LED_HOLD = 50;				//2
+static const int PIN_LEDDB_AUTOPILOT_LED_PROGRADE = 51;			//3
+static const int PIN_LEDDB_AUTOPILOT_LED_RETROGRADE = 52;		//4
+static const int PIN_LEDDB_AUTOPILOT_LED_NORMAL_RED = 53;		//5
+static const int PIN_LEDDB_AUTOPILOT_LED_NORMAL_BLU = 54;		//6
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTINORMAL_RED = 55;	//7
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTINORMAL_BLUE = 56;	//8
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALIN_GRN = 57;		//9
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALIN_BLU = 58;		//10
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALOUT_GRN = 59;	//11
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALOUT_BLU = 60;	//12
+static const int PIN_LEDDB_AUTOPILOT_LED_TARGET_RED = 61;		//13
+static const int PIN_LEDDB_AUTOPILOT_LED_TARGET_BLU = 62;		//14
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTITARGET_RED = 63;	//15
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTITARGET_BLU = 64;	//16
+static const int PIN_LEDDB_AUTOPILOT_LED_MANEUVER = 65;			//17
+static const int PIN_LEDDB_FUEL_RGBLED_RED = 66;				//18
+static const int PIN_LEDDB_FUEL_RGBLED_GRN = 67;				//19
+static const int PIN_LEDDB_FUEL_RGBLED_BLU = 68;				//20
+static const int PIN_LEDDB_CHARGE_RGBLED_RED = 69;				//21
+static const int PIN_LEDDB_CHARGE_RGBLED_GRN = 70;				//22
+static const int PIN_LEDDB_CHARGE_RGBLED_BLU = 71;				//23
+// Board 4 //TODO: Confirm board order (1/2/3/4)
+static const int PIN_LEDDB_DENSITY_RGBLED_RED = 72;		//0
+static const int PIN_LEDDB_DENSITY_RGBLED_GRN = 73;		//1
+static const int PIN_LEDDB_DENSITY_RGBLED_BLU = 74;		//2
+static const int PIN_LEDDB_SPEED_RGBLED_RED = 75;		//3
+static const int PIN_LEDDB_SPEED_RGBLED_GRN = 76;		//4
+static const int PIN_LEDDB_SPEED_RGBLED_BLU = 77;		//5
+static const int PIN_LEDDB_VERTSPEED_RGBLED_RED = 78;	//6
+static const int PIN_LEDDB_VERTSPEED_RGBLED_GRN = 79;	//7
+static const int PIN_LEDDB_VERTSPEED_RGBLED_BLU = 80;	//8
+static const int PIN_LEDDB_RADARALT_RGBLED_RED = 81;	//9
+static const int PIN_LEDDB_RADARALT_RGBLED_GRN = 82;	//10
+static const int PIN_LEDDB_RADARALT_RGBLED_BLU = 83;	//11
+// 12 UNASSIGNED
+// 13 UNASSIGNED
+// 14 UNASSIGNED
+// 15 UNASSIGNED
+// 16 UNASSIGNED
+// 17 UNASSIGNED
+// 18 UNASSIGNED
+// 19 UNASSIGNED
+// 20 UNASSIGNED
+// 21 UNASSIGNED
+// 22 UNASSIGNED
+// 23 UNASSIGNED
+
+//===========================================================================================================================================================================
 //Stepper Motors
 static const float STEPPER_MAX_SPEED = 100.0; //Maximum Permitted Speed (steps per second). Default = 1. The maximum speed achievable depends on your processor and clock speed.
 static const float STEPPER_MAX_ACCELERATION = 20.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared).
@@ -30,14 +193,21 @@ static const long STEPPER_SOFT_RESET_SIZE = 10; //(in steps)
 static const long STEPPER_CCW_LIMIT = 0;
 static const long STEPPER_CW_LIMIT = 3779;
 
+//===========================================================================================================================================================================
 //Heading Gauge NEMA17 Stepper Motor
 static const float NEMA17_MAX_SPEED = 100.0; //Maximum Permitted Speed (steps per second). Default = 1. The maximum speed achievable depends on your processor and clock speed.
 static const float NEMA17_MAX_ACCELERATION = 20.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared).
 static const long NEMA17_CCW_LIMIT = 0;
 static const long NEMA17_CW_LIMIT = 1599;
 
+//===========================================================================================================================================================================
+//Control Panel
+static const int DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS = 500; //In Diagnostic Mode, the amount of time a single LED will be turned on for before moving on to the next LED.
 
-//Arduino Mega Pin Assignment
+//===========================================================================================================================================================================
+//Arduino Mega
+static const int ANALOG_INPUT_MAXIMUM = 1023;
+
 static const int PIN_MUX_IO_1 = A0;
 static const int PIN_MUX_IO_2 = A1;
 static const int PIN_MUX_IO_3 = A2;
@@ -50,9 +220,9 @@ static const int PIN_MUX_IO_3 = A2;
 //A9 UNASSIGNED
 static const int PIN_CURRENT_SENSOR = A10;
 static const int PIN_THROTTLE = A11;
-static const int PIN_JOYSTICK_AXIS_1 = A12;
-static const int PIN_JOYSTICK_AXIS_2 = A13;
-static const int PIN_JOYSTICK_AXIS_3 = A14;
+static const int PIN_JOYSTICK_PITCH = A12;
+static const int PIN_JOYSTICK_YAW = A13;
+static const int PIN_JOYSTICK_ROLL = A14;
 static const int PIN_MULTI_PURPOSE_POTENTIOMETER = A15;
 //0 UNASSIGNED (Computer Communication Serial Channel - RX)
 //1 UNASSIGNED (Computer Communication Serial Channel - TX)
@@ -103,8 +273,8 @@ static const int PIN_EASYDRIVER_MS1 = 45;
 static const int PIN_EASYDRIVER_MS2 = 46;
 static const int PIN_EASYDRIVER_STEP = 47;
 static const int PIN_EASYDRIVER_DIR = 48;
-//49 UNASSIGNED
-//50 UNASSIGNED
+static const int PIN_4POS_SWITCH_AB = 49;
+static const int PIN_4POS_SWITCH_CD = 50;
 //51 UNASSIGNED
 //52 UNASSIGNED
 //53 UNASSIGNED
