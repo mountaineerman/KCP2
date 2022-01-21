@@ -36,9 +36,9 @@ static const int PIN_MUX_AUTOPILOT_NORMAL_BUTTON = 7;
 static const int PIN_MUX_AUTOPILOT_ANTINORMAL_BUTTON = 8;
 static const int PIN_MUX_AUTOPILOT_RADIALIN_BUTTON = 9;
 static const int PIN_MUX_AUTOPILOT_RADIALOUT_BUTTON = 10;
-static const int PIN_MUX_AUTOPILOT_TARGET_BUTTON = 11;
-static const int PIN_MUX_AUTOPILOT_ANTITARGET_BUTTON = 12;
-static const int PIN_MUX_AUTOPILOT_MANEUVER = 13;
+static const int PIN_MUX_AUTOPILOT_ANTITARGET_BUTTON = 11;
+static const int PIN_MUX_AUTOPILOT_MANEUVER = 12;
+static const int PIN_MUX_AUTOPILOT_TARGET_BUTTON = 13;
 static const int PIN_MUX_FAIRING_BUTTON = 14;
 static const int PIN_MUX_CHUTE_BUTTON = 15;
 
@@ -84,31 +84,31 @@ static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
 static const int PWM_LED_MINIMUM = 0;
 static const int PWM_LED_MAXIMUM = 4095;
 
-// Board 1 (Currently #3 in BOM) //TODO: Confirm board order (1/2/3/4)
-static const int PIN_LEDDB_GLASS_COCKPIT_TL = 0;
-static const int PIN_LEDDB_GLASS_COCKPIT_CL = 1;
-static const int PIN_LEDDB_GLASS_COCKPIT_BL = 2;
-static const int PIN_LEDDB_GLASS_COCKPIT_TR = 3;
-static const int PIN_LEDDB_GLASS_COCKPIT_CR = 4;
-static const int PIN_LEDDB_GLASS_COCKPIT_BR = 5;
-static const int PIN_LEDDB_ORB_LED = 6;
-static const int PIN_LEDDB_PLN_LED = 7;
-static const int PIN_LEDDB_30_DEG_LED = 8;
-static const int PIN_LEDDB_FAIRING_LED = 9;
-static const int PIN_LEDDB_CHUTE_LED = 10;
-static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;
-static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;
-static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;
-static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;
-static const int PIN_LEDDB_COMMS_LED = 15;
-static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;
-static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;
-static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;
-// 19 UNASSIGNED
-// 20 UNASSIGNED
-// 21 UNASSIGNED
-// 22 UNASSIGNED
-// 23 UNASSIGNED
+// Board 1 (Currently #3 in BOM) //TODO: Confirm board order (1/2/3/4) //WTF?
+static const int PIN_LEDDB_GLASS_COCKPIT_TL = 24;		//static const int PIN_LEDDB_GLASS_COCKPIT_TL = 0;
+static const int PIN_LEDDB_GLASS_COCKPIT_CL = 25;		//static const int PIN_LEDDB_GLASS_COCKPIT_CL = 1;
+static const int PIN_LEDDB_GLASS_COCKPIT_BL = 26;		//static const int PIN_LEDDB_GLASS_COCKPIT_BL = 2;
+static const int PIN_LEDDB_GLASS_COCKPIT_TR = 27;		//static const int PIN_LEDDB_GLASS_COCKPIT_TR = 3;
+static const int PIN_LEDDB_GLASS_COCKPIT_CR = 28;		//static const int PIN_LEDDB_GLASS_COCKPIT_CR = 4;
+static const int PIN_LEDDB_GLASS_COCKPIT_BR = 29;		//static const int PIN_LEDDB_GLASS_COCKPIT_BR = 5;
+//static const int PIN_LEDDB_ORB_LED = 6;				//static const int PIN_LEDDB_ORB_LED = 6;
+//static const int PIN_LEDDB_PLN_LED = 7;				//static const int PIN_LEDDB_PLN_LED = 7;
+//static const int PIN_LEDDB_30_DEG_LED = 8;			//static const int PIN_LEDDB_30_DEG_LED = 8;
+//static const int PIN_LEDDB_FAIRING_LED = 9;			//static const int PIN_LEDDB_FAIRING_LED = 9;
+//static const int PIN_LEDDB_CHUTE_LED = 10;			//static const int PIN_LEDDB_CHUTE_LED = 10;
+static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;		//static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;
+static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;		//static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;
+static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;		//static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;
+static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;		//static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;
+//static const int PIN_LEDDB_COMMS_LED = 15;			//static const int PIN_LEDDB_COMMS_LED = 15;
+//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;	//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;
+//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;	//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;
+//static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;	//static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;
+														// 19 UNASSIGNED
+														// 20 UNASSIGNED
+														// 21 UNASSIGNED
+														// 22 UNASSIGNED
+														// 23 UNASSIGNED
 // Board 2 //TODO: Confirm board order (1/2/3/4)
 static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_RED = 24;	//0
 static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_GRN = 25;	//1
@@ -134,7 +134,7 @@ static const int PIN_LEDDB_PITCH_RGBLED_BLU = 44;			//20
 static const int PIN_LEDDB_HEADING_RGBLED_RED = 45;			//21
 static const int PIN_LEDDB_HEADING_RGBLED_GRN = 46;			//22
 static const int PIN_LEDDB_HEADING_RGBLED_BLU = 47;			//23
-// Board 3 (Currently #1 in BOM) //TODO: Confirm board order (1/2/3/4)
+// Board 3 (Currently #1 in BOM) //TODO: Confirm board order (1/2/3/4) //VERIFIED
 static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//0
 static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//1
 static const int PIN_LEDDB_AUTOPILOT_LED_HOLD = 50;				//2
@@ -202,7 +202,7 @@ static const long NEMA17_CW_LIMIT = 1599;
 
 //===========================================================================================================================================================================
 //Control Panel
-static const int DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS = 500; //In Diagnostic Mode, the amount of time a single LED will be turned on for before moving on to the next LED.
+static const int DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS = 1000; //In Diagnostic Mode, the amount of time a single LED will be turned on for before moving on to the next LED.
 
 //===========================================================================================================================================================================
 //Arduino Mega

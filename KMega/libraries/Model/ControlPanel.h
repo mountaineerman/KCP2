@@ -7,16 +7,16 @@
 #include <Adafruit_TLC5947.h>
 
 #include <Interface_Input.h>
-//#include <Interface_LEDAggregator.h>
+#include <Interface_LEDAggregator.h>
 
 #include <ModuleA.h>
 #include <ModuleB.h>
 //#include <ModuleC.h>
-//#include <ModuleD.h>
+#include <ModuleD.h>
 //#include <ModuleE.h>
-//#include <ModuleF.h>
+#include <ModuleF.h>
 //#include <ModuleG.h>
-//#include <ModuleH.h>
+#include <ModuleH.h>
 //#include <ModuleI.h>
 //#include <ModuleGT.h>
 
@@ -24,7 +24,7 @@
 
 /* MkII Control Panel
  */
-class ControlPanel : public Interface_Input
+class ControlPanel : public Interface_Input, public Interface_LEDAggregator
 {
 private:
 	void diagnosticMode_testAllInputs();
@@ -39,11 +39,11 @@ public:
 	ModuleA moduleA;
 	ModuleB moduleB;
 	//ModuleC moduleC;
-	//ModuleD moduleD;
+	ModuleD moduleD;
 	//ModuleE moduleE;
-	//ModuleF moduleF;
+	ModuleF moduleF;
 	//ModuleG moduleG;
-	//ModuleH moduleH;
+	ModuleH moduleH;
 	//ModuleI moduleI;
 	//ModuleGT moduleGT;
 	

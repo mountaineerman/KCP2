@@ -14,11 +14,11 @@ ControlPanel::ControlPanel()
 	, moduleA(mux, ledDriverBoards)
 	, moduleB(mux)
 //	, moduleC(ledDriverBoards)
-//	, moduleD(mux, ledDriverBoards)
+	, moduleD(mux, ledDriverBoards)
 //	, moduleE(mux, ledDriverBoards)
-//	, moduleF(mux, ledDriverBoards)
+	, moduleF(mux, ledDriverBoards)
 //	, moduleG(ledDriverBoards)
-//	, moduleH(ledDriverBoards)
+	, moduleH(ledDriverBoards)
 //	, moduleI(ledDriverBoards)
 //	, moduleGT(ledDriverBoards)
 {
@@ -41,33 +41,33 @@ ControlPanel::ControlPanel()
 void ControlPanel::refreshInputStatus() {
 	this->moduleA.refreshInputStatus();
 	this->moduleB.refreshInputStatus();
-	//this->moduleD.refreshInputStatus();
+	this->moduleD.refreshInputStatus();
 	//this->moduleE.refreshInputStatus();
-	//this->moduleF.refreshInputStatus();
+	this->moduleF.refreshInputStatus();
 	//this->moduleG.refreshInputStatus();
-	//this->moduleH.refreshInputStatus();
+	this->moduleH.refreshInputStatus();
 	//this->moduleI.refreshInputStatus();
 }
 
 String ControlPanel::getInputStatusAsString() {
 	return this->moduleA.getInputStatusAsString() +
-		   this->moduleB.getInputStatusAsString();// +
-		   //this->moduleD.getInputStatusAsString() +
+		   this->moduleB.getInputStatusAsString() +
+		   this->moduleD.getInputStatusAsString() +
 		   //this->moduleE.getInputStatusAsString() +
-		   //this->moduleF.getInputStatusAsString() +
+		   this->moduleF.getInputStatusAsString();// +
 		   //this->moduleG.getInputStatusAsString() +
-		   //this->moduleH.getInputStatusAsString() +
+		   //this->moduleH.getInputStatusAsString();// + //TODO: figure out overflow error (empty after adding Module H)???
 		   //this->moduleI.getInputStatusAsString();
 }
 
 void ControlPanel::setAllLEDsOff() {
 	this->moduleA.setAllLEDsOff();
 	//this->moduleC.setAllLEDsOff();
-	//this->moduleD.setAllLEDsOff();
+	this->moduleD.setAllLEDsOff();
 	//this->moduleE.setAllLEDsOff();
-	//this->moduleF.setAllLEDsOff();
+	this->moduleF.setAllLEDsOff();
 	//this->moduleG.setAllLEDsOff();
-	//this->moduleH.setAllLEDsOff();
+	this->moduleH.setAllLEDsOff();
 	//this->moduleI.setAllLEDsOff();
 	//this->moduleGT.setAllLEDsOff();
 }
@@ -75,11 +75,11 @@ void ControlPanel::setAllLEDsOff() {
 void ControlPanel::setAllLEDsOn() {
 	this->moduleA.setAllLEDsOn();
 	//this->moduleC.setAllLEDsOn();
-	//this->moduleD.setAllLEDsOn();
+	this->moduleD.setAllLEDsOn();
 	//this->moduleE.setAllLEDsOn();
-	//this->moduleF.setAllLEDsOn();
+	this->moduleF.setAllLEDsOn();
 	//this->moduleG.setAllLEDsOn();
-	//this->moduleH.setAllLEDsOn();
+	this->moduleH.setAllLEDsOn();
 	//this->moduleI.setAllLEDsOn();
 	//this->moduleGT.setAllLEDsOn();
 }
@@ -87,11 +87,11 @@ void ControlPanel::setAllLEDsOn() {
 void ControlPanel::testLEDsSequentially() {
 	this->moduleA.testLEDsSequentially();
 	//this->moduleC.testLEDsSequentially();
-	//this->moduleD.testLEDsSequentially();
+	this->moduleD.testLEDsSequentially();
 	//this->moduleE.testLEDsSequentially();
-	//this->moduleF.testLEDsSequentially();
+	this->moduleF.testLEDsSequentially();
 	//this->moduleG.testLEDsSequentially();
-	//this->moduleH.testLEDsSequentially();
+	this->moduleH.testLEDsSequentially();
 	//this->moduleI.testLEDsSequentially();
 	//this->moduleGT.testLEDsSequentially();
 }
@@ -131,7 +131,7 @@ void ControlPanel::runDiagnosticMode() {
 
 void ControlPanel::diagnosticMode_testAllInputs() {
 	
-	Serial.setTimeout(1000);//Lower delay
+	Serial.setTimeout(2000);//Lower delay
 	String userInput;
 	
 	while(true) {
@@ -151,7 +151,7 @@ void ControlPanel::diagnosticMode_testAllInputs() {
 	}
 }
 
-void ControlPanel::diagnosticMode_testAllLEDs() { //TODO
+void ControlPanel::diagnosticMode_testAllLEDs() {
 	
 	clearScreen();
 	Serial.println("Testing All LEDs. Enter '0' at any time to return to the main menu.");
@@ -159,7 +159,7 @@ void ControlPanel::diagnosticMode_testAllLEDs() { //TODO
 	
 	String userInput;
 	
-	while(true) {//TODO confirm loop refresh cycle is bound by readStringUntil delay
+	while(true) {
 		
 		userInput = Serial.readStringUntil('\n');
 		//Serial.println(userInput);
@@ -201,19 +201,19 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 			this->testLEDsSequentially();
 		} else if(userInput == "a") {
 			this->moduleA.testLEDsSequentially();
-		}// else if(userInput == "c") {
+		//} else if(userInput == "c") {
 		//	this-> moduleC.testLEDsSequentially();
-		//} else if(userInput == "d") {
-		//	this->moduleD.testLEDsSequentially();
+		} else if(userInput == "d") {
+			this->moduleD.testLEDsSequentially();
 		//} else if(userInput == "e") {
 		//	this->moduleE.testLEDsSequentially();
-		//} else if(userInput == "f") {
-		//	this->moduleF.testLEDsSequentially();
+		} else if(userInput == "f") {
+			this->moduleF.testLEDsSequentially();
 		//} else if(userInput == "g") {
 		//	this->moduleG.testLEDsSequentially();
-		//} else if(userInput == "h") {
-		//	this->moduleH.testLEDsSequentially();
-		//} else if(userInput == "i") {
+		} else if(userInput == "h") {
+			this->moduleH.testLEDsSequentially();
+		}// else if(userInput == "i") {
 		//	this->moduleI.testLEDsSequentially();
 		//} else if(userInput == "gt") {
 		//	this->moduleGT.testLEDsSequentially();
