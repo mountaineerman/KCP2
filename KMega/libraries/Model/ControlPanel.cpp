@@ -49,15 +49,25 @@ void ControlPanel::refreshInputStatus() {
 	//this->moduleI.refreshInputStatus();
 }
 
-String ControlPanel::getInputStatusAsString() {
-	return this->moduleA.getInputStatusAsString() +
-		   this->moduleB.getInputStatusAsString() +
-		   this->moduleD.getInputStatusAsString() +
-		   //this->moduleE.getInputStatusAsString() +
-		   this->moduleF.getInputStatusAsString();// +
-		   //this->moduleG.getInputStatusAsString() +
-		   //this->moduleH.getInputStatusAsString();// + //TODO: figure out overflow error (empty after adding Module H)???
-		   //this->moduleI.getInputStatusAsString();
+String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow error (empty after adding Module H)???)
+	//return this->moduleA.getInputStatusAsString() +
+	//	   this->moduleB.getInputStatusAsString() +
+	//	   this->moduleD.getInputStatusAsString() +
+	//	   //this->moduleE.getInputStatusAsString() +
+	//	   this->moduleF.getInputStatusAsString();// +
+	//	   //this->moduleG.getInputStatusAsString() +
+	//	   //this->moduleH.getInputStatusAsString();// + //TODO: figure out overflow error (empty after adding Module H)???
+	//	   //this->moduleI.getInputStatusAsString();
+	
+	Serial.print(this->moduleA.getInputStatusAsString());
+	Serial.print(this->moduleB.getInputStatusAsString());
+	Serial.print(this->moduleD.getInputStatusAsString());
+	//Serial.print(this->moduleE.getInputStatusAsString());
+	Serial.print(this->moduleF.getInputStatusAsString());
+	//Serial.print(this->moduleG.getInputStatusAsString());
+	Serial.print(this->moduleH.getInputStatusAsString());
+	//Serial.print(this->moduleI.getInputStatusAsString());
+	return(String(""));
 }
 
 void ControlPanel::setAllLEDsOff() {
@@ -139,7 +149,7 @@ void ControlPanel::diagnosticMode_testAllInputs() {
 		clearScreen();
 		Serial.println("Testing All Inputs. Enter '0' at any time to return to the main menu.");
 		this->refreshInputStatus();
-		Serial.println(this->getInputStatusAsString());
+		this->getInputStatusAsString();//TODO: Fix: //Serial.println(this->getInputStatusAsString());
 		
 		userInput = Serial.readStringUntil('\n');
 		//Serial.println(userInput);

@@ -96,10 +96,10 @@ static const int PIN_LEDDB_GLASS_COCKPIT_BR = 29;		//static const int PIN_LEDDB_
 //static const int PIN_LEDDB_30_DEG_LED = 8;			//static const int PIN_LEDDB_30_DEG_LED = 8;
 //static const int PIN_LEDDB_FAIRING_LED = 9;			//static const int PIN_LEDDB_FAIRING_LED = 9;
 //static const int PIN_LEDDB_CHUTE_LED = 10;			//static const int PIN_LEDDB_CHUTE_LED = 10;
-static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;		//static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;
-static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;		//static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;
-static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;		//static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;
-static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;		//static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;
+static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;		//static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;	//OK *confusion noises*
+static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;		//static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;	//OK *confusion noises*
+static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;		//static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;	//OK *confusion noises*
+static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;		//static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;	//OK *confusion noises*
 //static const int PIN_LEDDB_COMMS_LED = 15;			//static const int PIN_LEDDB_COMMS_LED = 15;
 //static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;	//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;
 //static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;	//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;
