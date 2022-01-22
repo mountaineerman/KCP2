@@ -11,7 +11,7 @@
 
 #include <ModuleA.h>
 #include <ModuleB.h>
-//#include <ModuleC.h>
+#include <ModuleC.h>
 #include <ModuleD.h>
 //#include <ModuleE.h>
 #include <ModuleF.h>
@@ -38,7 +38,7 @@ private:
 public:
 	ModuleA moduleA;
 	ModuleB moduleB;
-	//ModuleC moduleC;
+	ModuleC moduleC;
 	ModuleD moduleD;
 	//ModuleE moduleE;
 	ModuleF moduleF;

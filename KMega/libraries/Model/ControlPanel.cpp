@@ -13,7 +13,7 @@ ControlPanel::ControlPanel()
 	, ledDriverBoards(NUMBER_OF_LED_DRIVER_BOARDS, PIN_LED_DRIVER_BOARDS_CLOCK, PIN_LED_DRIVER_BOARDS_DATA_IN, PIN_LED_DRIVER_BOARDS_LATCH)//,
 	, moduleA(mux, ledDriverBoards)
 	, moduleB(mux)
-//	, moduleC(ledDriverBoards)
+	, moduleC(ledDriverBoards)
 	, moduleD(mux, ledDriverBoards)
 //	, moduleE(mux, ledDriverBoards)
 	, moduleF(mux, ledDriverBoards)
@@ -72,7 +72,7 @@ String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow
 
 void ControlPanel::setAllLEDsOff() {
 	this->moduleA.setAllLEDsOff();
-	//this->moduleC.setAllLEDsOff();
+	this->moduleC.setAllLEDsOff();
 	this->moduleD.setAllLEDsOff();
 	//this->moduleE.setAllLEDsOff();
 	this->moduleF.setAllLEDsOff();
@@ -84,7 +84,7 @@ void ControlPanel::setAllLEDsOff() {
 
 void ControlPanel::setAllLEDsOn() {
 	this->moduleA.setAllLEDsOn();
-	//this->moduleC.setAllLEDsOn();
+	this->moduleC.setAllLEDsOn();
 	this->moduleD.setAllLEDsOn();
 	//this->moduleE.setAllLEDsOn();
 	this->moduleF.setAllLEDsOn();
@@ -96,7 +96,7 @@ void ControlPanel::setAllLEDsOn() {
 
 void ControlPanel::testLEDsSequentially() {
 	this->moduleA.testLEDsSequentially();
-	//this->moduleC.testLEDsSequentially();
+	this->moduleC.testLEDsSequentially();
 	this->moduleD.testLEDsSequentially();
 	//this->moduleE.testLEDsSequentially();
 	this->moduleF.testLEDsSequentially();
@@ -211,8 +211,8 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 			this->testLEDsSequentially();
 		} else if(userInput == "a") {
 			this->moduleA.testLEDsSequentially();
-		//} else if(userInput == "c") {
-		//	this-> moduleC.testLEDsSequentially();
+		} else if(userInput == "c") {
+			this-> moduleC.testLEDsSequentially();
 		} else if(userInput == "d") {
 			this->moduleD.testLEDsSequentially();
 		//} else if(userInput == "e") {
