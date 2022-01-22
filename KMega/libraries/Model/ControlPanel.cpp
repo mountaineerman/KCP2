@@ -36,7 +36,8 @@ ControlPanel::ControlPanel()
 	//Serial.println("ControlPanelConstructor");
 }
 
-
+//ControlPanel::~ControlPanel() { //TODO: Reset stepper motor positions
+//}
 
 void ControlPanel::refreshInputStatus() {
 	this->moduleA.refreshInputStatus();
@@ -104,6 +105,13 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleH.testLEDsSequentially();
 	//this->moduleI.testLEDsSequentially();
 	//this->moduleGT.testLEDsSequentially();
+}
+
+void ControlPanel::resetStepperToStartingPosition() {
+	this->moduleC.resetStepperToStartingPosition();
+	//this->moduleG.resetStepperToStartingPosition();
+	//this->moduleI.resetStepperToStartingPosition();
+	//this->moduleGT.resetStepperToStartingPosition();
 }
 
 void ControlPanel::runDiagnosticMode() {
@@ -231,59 +239,111 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 	}
 }
 
-void ControlPanel::diagnosticMode_testStepperMotors() { //TODO
-	clearScreen();
-	Serial.println("Testing Stepper Motors.");
-	delay(2000);
-String userInput;
-
-//	while(true) {
-//		//<Clear screen>
-//		Serial.println("Select a stepper motor to test:");
-//		Serial.println("[0] Return to main menu");
-//		Serial.println("[1] Heat/Life");
-//		Serial.println("[2] G-Force");
-//		Serial.println("[3] Mach Number");
-//		Serial.println("[4] Pitch");
-//		Serial.println("[5] Heading");
-//		Serial.println("[6] Fuel");
-//		Serial.println("[7] Charge");
-//		Serial.println("[8] Monopropellant/Intake Air");
-//		Serial.println("[9] Radar Altitude");
-//		Serial.println("[10] Vertical Speed");
-//		Serial.println("[11] Speed");
-//		Serial.println("[12] Air Density");
-//		
-//		userInput = Serial.readStringUntil('\n');
-//		
-//		if(userInput == '0') {
-//			return;
-//		} else if(userInput == '1') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '2') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '3') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '4') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '5') {
+void ControlPanel::diagnosticMode_testStepperMotors() {
+	
+	String userInput;
+	
+	while(true) {
+		clearScreen();
+		Serial.println("Testing Stepper Motors. Select a stepper motor to test:");
+		Serial.println("[0] Return to main menu");
+		Serial.println("[1] Heat/Life");
+		Serial.println("[2] G-Force");
+		Serial.println("[3] Mach Number");
+		Serial.println("[4] Pitch");
+		Serial.println("[5] Heading");
+		Serial.println("[6] Fuel");
+		Serial.println("[7] Charge");
+		Serial.println("[8] Monopropellant/Intake Air");
+		Serial.println("[9] Radar Altitude");
+		Serial.println("[10] Vertical Speed");
+		Serial.println("[11] Speed");
+		Serial.println("[12] Air Density");
+		
+		userInput = Serial.readStringUntil('\n');
+		
+		if(userInput == "0") {
+			return;
+		} else if(userInput == "1") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_HeatLife);
+		} else if(userInput == "2") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_Gforce);
+//		} else if(userInput == "3") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleG.<Motor>);
+//		} else if(userInput == "4") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleG.<Motor>);
+//		} else if(userInput == "5") {
 //			//TBD
-//		} else if(userInput == '6') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '7') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '8') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '9') {
-//			testGearedStepperMotor(<Motor>);
-//		} else if(userInput == '10') {
-//			testGearedStepperMotor(<Motor>);
+//		} else if(userInput == "6") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
+//		} else if(userInput == "7") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
+//		} else if(userInput == "8") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
+//		} else if(userInput == "9") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
+//		} else if(userInput == "10") {
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
 //		} else if(userInput == "11") {
-//			testGearedStepperMotor(<Motor>);
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
 //		} else if(userInput == "12") {
-//			testGearedStepperMotor(<Motor>);
-//		}
-//	}
+//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
+		}
+	}
+}
+
+void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperMotor& stepperMotorUnderTest) { 
+	
+	String userInput;
+	
+	while(true) {
+		clearScreen();
+		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(STEPPER_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.println("");
+		Serial.println("Select one of the following options:");
+		Serial.println("[0] Return to previous menu");
+		Serial.println("[1] Move to maximum CCW position");
+		Serial.println("[2] Move to maximum CW position");
+		Serial.println("[3] Manual Control Mode (via Joystick) [TODO]");
+		Serial.println("[4] Move 1000 steps CCW");
+		Serial.println("[5] Move 1000 steps CW");
+		Serial.println("[6] Move 100 steps CCW");
+		Serial.println("[7] Move 100 steps CW");
+		Serial.println("[8] Move 10 steps CCW");
+		Serial.println("[9] Move 10 steps CW");
+		
+		userInput = Serial.readStringUntil('\n');
+		
+		if(userInput == "0") {
+			return;
+		} else if(userInput == "1") {
+			stepperMotorUnderTest.setDesiredPosition(STEPPER_CCW_LIMIT);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "2") {
+			stepperMotorUnderTest.setDesiredPosition(STEPPER_CW_LIMIT);
+			stepperMotorUnderTest.runToDesiredPosition();
+//		} else if(userInput == '3') {
+//			//TODO
+		} else if(userInput == "4") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-1000);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "5") {
+			stepperMotorUnderTest.setDesiredRelativePosition(1000);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "6") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-100);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "7") {
+			stepperMotorUnderTest.setDesiredRelativePosition(100);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "8") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-10);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "9") {
+			stepperMotorUnderTest.setDesiredRelativePosition(10);
+			stepperMotorUnderTest.runToDesiredPosition();			
+		}
+	}
 }
 
 //Regardless of what status the LEDs driven by the LED Driver Boards are, turn them off
@@ -295,3 +355,38 @@ void ControlPanel::activateLEDOverride() {
 void ControlPanel::disableLEDOverride() {
 	digitalWrite(PIN_LED_DRIVER_BOARDS_OVERRIDE, LOW);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

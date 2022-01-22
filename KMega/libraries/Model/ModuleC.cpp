@@ -14,7 +14,8 @@ ModuleC::ModuleC(Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_GFORCE_Red		(PIN_LEDDB_GFORCE_RGBLED_RED, 		ledDriverBoards)
 	, ledPWM_GFORCE_Green	(PIN_LEDDB_GFORCE_RGBLED_GRN, 		ledDriverBoards)
 	, ledPWM_GFORCE_Blue	(PIN_LEDDB_GFORCE_RGBLED_BLU, 		ledDriverBoards)
-	//TODO: Steppers
+	, stepper_HeatLife		(PIN_VID6606_1_FREQUENCY_HEATLIFE,	PIN_VID6606_1_DIRECTION_HEATLIFE)
+	, stepper_Gforce		(PIN_VID6606_1_FREQUENCY_GFORCE,	PIN_VID6606_1_DIRECTION_GFORCE)
 {
 	//Serial.println("ModuleC Constructor");
 }
@@ -62,3 +63,47 @@ void ModuleC::testLEDsSequentially() {
 	blinkLED(this->ledPWM_GFORCE_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
+
+void ModuleC::resetStepperToStartingPosition() {
+	this->stepper_HeatLife.resetStepperToStartingPosition();
+	this->stepper_Gforce.resetStepperToStartingPosition();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

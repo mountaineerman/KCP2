@@ -3,21 +3,25 @@
 
 #include <Arduino.h>
 #include <Interface_LEDAggregator.h>
+#include <Interface_StepperMotorAggregator.h>
 #include <LED_PWM.h>
-//TODO: Steppers
+#include <StepperMotor.h>
+#include <StepperMotorNEMA17.h>
 
 
 /* Module C
  *
  * Heat, Life Support, G-Force */
-class ModuleC : public Interface_LEDAggregator
+class ModuleC : public Interface_LEDAggregator, public Interface_StepperMotorAggregator
 {
 public:
 	ModuleC(Adafruit_TLC5947& ledDriverBoards);
+	
 	void setAllLEDsOff();
 	void setAllLEDsOn();
 	void testLEDsSequentially();
-	//TODO: Steppers
+	
+	void resetStepperToStartingPosition();
 	
 	//Parts:
 	LED_PWM ledPWM_HEAT_Red;
@@ -29,7 +33,8 @@ public:
 	LED_PWM ledPWM_GFORCE_Red;
 	LED_PWM ledPWM_GFORCE_Green;
 	LED_PWM ledPWM_GFORCE_Blue;
-	//TODO: Steppers
+	StepperMotor stepper_HeatLife;
+	StepperMotor stepper_Gforce;
 };
 
 #endif

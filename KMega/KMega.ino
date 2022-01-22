@@ -17,6 +17,7 @@ void loop() {
 	
 	ControlPanel controlPanel;
 	controlPanel.runDiagnosticMode();
+	controlPanel.resetStepperToStartingPosition();
 	
 	Serial.println("Main Menu. Terminating meow...");
 	

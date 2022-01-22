@@ -8,6 +8,7 @@
 
 #include <Interface_Input.h>
 #include <Interface_LEDAggregator.h>
+#include <Interface_StepperMotorAggregator.h>
 
 #include <ModuleA.h>
 #include <ModuleB.h>
@@ -24,18 +25,25 @@
 
 /* MkII Control Panel
  */
-class ControlPanel : public Interface_Input, public Interface_LEDAggregator
+class ControlPanel
+	: public Interface_Input
+	, public Interface_LEDAggregator
+	, public Interface_StepperMotorAggregator //TODO rename to: Interface_StepperMotor
 {
 private:
 	void diagnosticMode_testAllInputs();
 	void diagnosticMode_testAllLEDs();
 	void diagnosticMode_testLEDsSequentially();
 	void diagnosticMode_testStepperMotors();
+	void diagnosticMode_testGearedStepperMotor(StepperMotor& stepperMotorUnderTest);
 
 	MuxShield mux; //TODO: const? Does it need to be public?
 	Adafruit_TLC5947 ledDriverBoards; //TODO: const? Does it need to be public?
 
 public:
+	ControlPanel();
+	//~ControlPanel();
+	
 	ModuleA moduleA;
 	ModuleB moduleB;
 	ModuleC moduleC;
@@ -47,7 +55,6 @@ public:
 	//ModuleI moduleI;
 	//ModuleGT moduleGT;
 	
-	ControlPanel();
 	void refreshInputStatus();
 	String getInputStatusAsString();
 	//TODO: getInputStatusAsPacket
@@ -55,6 +62,8 @@ public:
 	void setAllLEDsOff();
 	void setAllLEDsOn();
 	void testLEDsSequentially();
+	
+	void resetStepperToStartingPosition();
 	
 	void runDiagnosticMode();
 	
