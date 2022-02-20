@@ -147,6 +147,82 @@ void ControlPanel::runDiagnosticMode() {
 	}
 }
 
+/*
+MuxShield mux;
+
+void setup() {
+	
+	mux.setMode(MULTIPLEXER_IO_ROW_1,DIGITAL_IN_PULLUP); //VERIFIED
+	mux.setMode(MULTIPLEXER_IO_ROW_2,DIGITAL_IN);		   //VERIFIED
+	mux.setMode(MULTIPLEXER_IO_ROW_3,DIGITAL_IN);		   //TODO is this right?
+	
+	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
+	Serial.begin(COMPUTER_BAUD_RATE);
+	delay(1000);
+}
+
+void loop() {
+	Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();Serial.println();
+	String X = String("Mux ============================================================================") +
+	"\nROW1 (Input Pullup):" +
+	"\n(0)  unassigned: " + mux.digitalReadMS(1,0) +
+	"\n(1)  BRAKE_BUTTON: " + mux.digitalReadMS(1,1) +
+	"\n(2)  JOYSTICK_BUTTON: " + mux.digitalReadMS(1,2) +
+	"\n(3)  BRAKE_SWITCH: " + mux.digitalReadMS(1,3) +
+	"\n(4)  AUTOPILOT_HOLD_BUTTON: " + mux.digitalReadMS(1,4) +
+	"\n(5)  AUTOPILOT_PROGRADE_BUTTON: " + mux.digitalReadMS(1,5) +
+	"\n(6)  AUTOPILOT_RETROGRADE_BUTTON: " + mux.digitalReadMS(1,6) +
+	"\n(7)  AUTOPILOT_NORMAL_BUTTON: " + mux.digitalReadMS(1,7) +
+	"\n(8)  AUTOPILOT_ANTINORMAL_BUTTON: " + mux.digitalReadMS(1,8) +
+	"\n(9)  AUTOPILOT_RADIALIN_BUTTON: " + mux.digitalReadMS(1,9) +
+	"\n(10) AUTOPILOT_RADIALOUT_BUTTON: " + mux.digitalReadMS(1,10) +
+	"\n(11) AUTOPILOT_ANTITARGET_BUTTON: " + mux.digitalReadMS(1,11) +
+	"\n(12) AUTOPILOT_MANEUVER: " + mux.digitalReadMS(1,12) +
+	"\n(13) AUTOPILOT_TARGET_BUTTON: " + mux.digitalReadMS(1,13) +
+	"\n(14) FAIRING_BUTTON: " + mux.digitalReadMS(1,14) +
+	"\n(15) CHUTE_BUTTON: " + mux.digitalReadMS(1,15) +
+	"\n" +
+	"\nROW2 (Input):" +
+	"\n(0)  STAGING_BUTTON: " + mux.digitalReadMS(2,0) +
+	"\n(1)  ABORT_BUTTON: " + mux.digitalReadMS(2,1) +
+	"\n(2)  PITCH_TRIM_SWITCH: " + mux.digitalReadMS(2,2) +
+	"\n(3)  YAW_TRIM_SWITCH: " + mux.digitalReadMS(2,3) +
+	"\n(4)  ROLL_TRIM_SWITCH: " + mux.digitalReadMS(2,4) +
+	"\n(5)  SAS_SWITCH: " + mux.digitalReadMS(2,5) +
+	"\n(6)  RCS_SWITCH: " + mux.digitalReadMS(2,6) +
+	"\n(7)  LIGHTS_SWITCH: " + mux.digitalReadMS(2,7) +
+	"\n(8)  GEAR_SWITCH: " + mux.digitalReadMS(2,8) +
+	"\n(9)  MAP_SWITCH: " + mux.digitalReadMS(2,9) +
+	"\n(10) MUTE_SWITCH: " + mux.digitalReadMS(2,10) +
+	"\n(11) unassigned: " + mux.digitalReadMS(2,11) +
+	"\n(12) unassigned: " + mux.digitalReadMS(2,12) +
+	"\n(13) SFC_SWITCH: " + mux.digitalReadMS(2,13) +
+	"\n(14) TGT_SWITCH: " + mux.digitalReadMS(2,14) +
+	"\n(15) RKT_SWITCH: " + mux.digitalReadMS(2,15) +
+	"\n" +
+	"\nROW3 (Input):" +
+	"\n(0)  RVR_SWITCH: " + mux.digitalReadMS(3,0) +
+	"\n(1)  90_DEG_SWITCH: " + mux.digitalReadMS(3,1) +
+	"\n(2)  9_DEG_SWITCH: " + mux.digitalReadMS(3,2) +
+	"\n(3)  TRIM_SWITCH: " + mux.digitalReadMS(3,3) +
+	"\n(4)  ACTION_GROUP_1_SWITCH: " + mux.digitalReadMS(3,4) +
+	"\n(5)  ACTION_GROUP_2_SWITCH: " + mux.digitalReadMS(3,5) +
+	"\n(6)  ACTION_GROUP_3_SWITCH: " + mux.digitalReadMS(3,6) +
+	"\n(7)  SCIENCE_SWITCH: " + mux.digitalReadMS(3,7) +
+	"\n(8)  RESET_SWITCH: " + mux.digitalReadMS(3,8) +
+	"\n(9)  SOLAR_SWITCH: " + mux.digitalReadMS(3,9) +
+	"\n(10) LADDER_SWITCH: " + mux.digitalReadMS(3,10) +
+	"\n(11) AUTONAVIGATION_SWITCH: " + mux.digitalReadMS(3,11) +
+	"\n(12) unassigned: " + mux.digitalReadMS(3,12) +
+	"\n(13) unassigned: " + mux.digitalReadMS(3,13) +
+	"\n(14) unassigned: " + mux.digitalReadMS(3,14) +
+	"\n(15) unassigned: " + mux.digitalReadMS(3,15);
+	
+	Serial.println(X);
+	delay(9000);
+}
+*/
+
 void ControlPanel::diagnosticMode_testAllInputs() {
 	
 	Serial.setTimeout(2000);//Lower delay

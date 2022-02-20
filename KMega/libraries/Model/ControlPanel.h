@@ -36,6 +36,7 @@ private:
 	void diagnosticMode_testLEDsSequentially();
 	void diagnosticMode_testStepperMotors();
 	void diagnosticMode_testGearedStepperMotor(StepperMotor& stepperMotorUnderTest);
+	//TODO: Add diagnostic mode for MUX only (see commented code in ControlPanel.cpp)
 
 	MuxShield mux; //TODO: const? Does it need to be public?
 	Adafruit_TLC5947 ledDriverBoards; //TODO: const? Does it need to be public?
