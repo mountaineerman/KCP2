@@ -19,7 +19,7 @@
 //#include <ModuleG.h>
 #include <ModuleH.h>
 //#include <ModuleI.h>
-//#include <ModuleGT.h>
+#include <ModuleGT.h>
 
 
 
@@ -54,7 +54,7 @@ public:
 	//ModuleG moduleG;
 	ModuleH moduleH;
 	//ModuleI moduleI;
-	//ModuleGT moduleGT;
+	ModuleGT moduleGT;
 	
 	void refreshInputStatus();
 	String getInputStatusAsString();

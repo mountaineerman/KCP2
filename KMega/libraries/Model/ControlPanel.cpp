@@ -10,7 +10,7 @@
 
 ControlPanel::ControlPanel()
 	: mux()
-	, ledDriverBoards(NUMBER_OF_LED_DRIVER_BOARDS, PIN_LED_DRIVER_BOARDS_CLOCK, PIN_LED_DRIVER_BOARDS_DATA_IN, PIN_LED_DRIVER_BOARDS_LATCH)//,
+	, ledDriverBoards(NUMBER_OF_LED_DRIVER_BOARDS, PIN_LED_DRIVER_BOARDS_CLOCK, PIN_LED_DRIVER_BOARDS_DATA_IN, PIN_LED_DRIVER_BOARDS_LATCH)
 	, moduleA(mux, ledDriverBoards)
 	, moduleB(mux)
 	, moduleC(ledDriverBoards)
@@ -20,11 +20,11 @@ ControlPanel::ControlPanel()
 //	, moduleG(ledDriverBoards)
 	, moduleH(ledDriverBoards)
 //	, moduleI(ledDriverBoards)
-//	, moduleGT(ledDriverBoards)
+	, moduleGT(ledDriverBoards)
 {
 	this->mux.setMode(MULTIPLEXER_IO_ROW_1,DIGITAL_IN_PULLUP); //VERIFIED
 	this->mux.setMode(MULTIPLEXER_IO_ROW_2,DIGITAL_IN);		   //VERIFIED
-	this->mux.setMode(MULTIPLEXER_IO_ROW_3,DIGITAL_IN);		   //TODO is this right?
+	this->mux.setMode(MULTIPLEXER_IO_ROW_3,DIGITAL_IN);		   //VERIFIED
 	
 	//TODO: Remove://this->ledDriverBoards = new Adafruit_TLC5947(NUMBER_OF_LED_DRIVER_BOARDS, PIN_LED_DRIVER_BOARDS_CLOCK, PIN_LED_DRIVER_BOARDS_DATA_IN, PIN_LED_DRIVER_BOARDS_LATCH);
 	this->ledDriverBoards.begin();
@@ -57,7 +57,7 @@ String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow
 	//	   //this->moduleE.getInputStatusAsString() +
 	//	   this->moduleF.getInputStatusAsString();// +
 	//	   //this->moduleG.getInputStatusAsString() +
-	//	   //this->moduleH.getInputStatusAsString();// + //TODO: figure out overflow error (empty after adding Module H)???
+	//	   //this->moduleH.getInputStatusAsString();// +
 	//	   //this->moduleI.getInputStatusAsString();
 	
 	Serial.print(this->moduleA.getInputStatusAsString());
@@ -80,7 +80,7 @@ void ControlPanel::setAllLEDsOff() {
 	//this->moduleG.setAllLEDsOff();
 	this->moduleH.setAllLEDsOff();
 	//this->moduleI.setAllLEDsOff();
-	//this->moduleGT.setAllLEDsOff();
+	this->moduleGT.setAllLEDsOff();
 }
 
 void ControlPanel::setAllLEDsOn() {
@@ -92,7 +92,7 @@ void ControlPanel::setAllLEDsOn() {
 	//this->moduleG.setAllLEDsOn();
 	this->moduleH.setAllLEDsOn();
 	//this->moduleI.setAllLEDsOn();
-	//this->moduleGT.setAllLEDsOn();
+	this->moduleGT.setAllLEDsOn();
 }
 
 void ControlPanel::testLEDsSequentially() {
@@ -104,14 +104,14 @@ void ControlPanel::testLEDsSequentially() {
 	//this->moduleG.testLEDsSequentially();
 	this->moduleH.testLEDsSequentially();
 	//this->moduleI.testLEDsSequentially();
-	//this->moduleGT.testLEDsSequentially();
+	this->moduleGT.testLEDsSequentially();
 }
 
 void ControlPanel::resetStepperToStartingPosition() {
 	this->moduleC.resetStepperToStartingPosition();
 	//this->moduleG.resetStepperToStartingPosition();
 	//this->moduleI.resetStepperToStartingPosition();
-	//this->moduleGT.resetStepperToStartingPosition();
+	this->moduleGT.resetStepperToStartingPosition();
 }
 
 void ControlPanel::runDiagnosticMode() {
@@ -307,11 +307,11 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 		//	this->moduleG.testLEDsSequentially();
 		} else if(userInput == "h") {
 			this->moduleH.testLEDsSequentially();
-		}// else if(userInput == "i") {
+		//} else if(userInput == "i") {
 		//	this->moduleI.testLEDsSequentially();
-		//} else if(userInput == "gt") {
-		//	this->moduleGT.testLEDsSequentially();
-		//}
+		} else if(userInput == "gt") {
+			this->moduleGT.testLEDsSequentially();
+		}
 	}
 }
 
@@ -331,10 +331,10 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		Serial.println("[6] Fuel");
 		Serial.println("[7] Charge");
 		Serial.println("[8] Monopropellant/Intake Air");
-		Serial.println("[9] Radar Altitude");
-		Serial.println("[10] Vertical Speed");
-		Serial.println("[11] Speed");
-		Serial.println("[12] Air Density");
+		Serial.println("[9] Air Density");
+		Serial.println("[10] Speed");
+		Serial.println("[11] Vertical Speed");
+		Serial.println("[12] Radar Altitude");
 		
 		userInput = Serial.readStringUntil('\n');
 		
@@ -356,14 +356,14 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 //			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
 //		} else if(userInput == "8") {
 //			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
-//		} else if(userInput == "9") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
-//		} else if(userInput == "10") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
-//		} else if(userInput == "11") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
-//		} else if(userInput == "12") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.<Motor>);
+		} else if(userInput == "9") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_Density);
+		} else if(userInput == "10") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_Speed);
+		} else if(userInput == "11") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_VertSpeed);
+		} else if(userInput == "12") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_RadarAlt);
 		}
 	}
 }
