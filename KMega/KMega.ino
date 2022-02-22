@@ -3,8 +3,13 @@
 #include "configuration.h"
 #include <ControlPanel.h>
 
-
-
+/* REMINDER: 
+When programming KMega, set:
+	1. File > Preferences > Sketchbook location = C:\dev\KCP2\KMega
+	2. Tools > Board = //TBD
+	3. Tools > Processor = //TBD
+	4. Tools > Port = COM4 //TODO confirm
+*/
 
 void setup() {
 	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
