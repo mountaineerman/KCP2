@@ -12,8 +12,7 @@ public:
 	LED(uint8_t pin);
 	void setState(bool state);
 protected:
-	//Used for debugging only:
-	bool getState();
+	
 private:
 	 /* RANGE: 	Nano: Theoretical: 0-12, A0-A7
 	 * 			Nano: By design:   A1-A4

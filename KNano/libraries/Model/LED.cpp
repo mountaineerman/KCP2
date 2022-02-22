@@ -16,6 +16,6 @@ void LED::setState(bool state) {
 	}
 }
 
-bool LED::getState() {
-	return this->state;
-}
+//bool LED::getState() {
+//	return this->state;
+//}

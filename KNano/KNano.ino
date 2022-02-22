@@ -1,43 +1,32 @@
 #include "Arduino.h"
 
 #include "configuration.h"
-//#include <GaugeTower.h>
-//#include <SevenSeg.h>
-//#include "LocalArduinoLibraries/..."
+#include <GaugeTower.h>
 
-
-
-#include "Parts/LED.h"
-//#include "Parts/ThreeDigitSevenSegmentDisplay.h"
-//#include "Parts/AltitudeGauge.h"
-
-void setup() {
-	Serial.begin(BAUD_RATE);
-	Serial.println("Hello World! (from Arduino Nano)");
-}
-
-void loop() {
-
-}
+/* REMINDER: 
+When programming KNano, set:
+	1. File > Preferences > Sketchbook location = C:\dev\KCP2\KNano
+	2. Tools > Board = Arduino Nano
+	3. Tools > Processor = ATmega328P (Old Bootloader)
+	4. Tools > Port = COM6
+*/
 
 void setup() {
-	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
-	Serial.begin(COMPUTER_BAUD_RATE);
+	//Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
+	//Serial.begin(BAUD_RATE);
 	delay(1000);
 }
 
 void loop() {
 	delay(1000);
-	
-	ControlPanel controlPanel;
-	controlPanel.runDiagnosticMode();
-	controlPanel.resetStepperToStartingPosition();
-	
-	Serial.println("Main Menu. Terminating meow...");
+
+	GaugeTower gaugeTower;
+
+	while(true)
+	{
+		gaugeTower.testLEDsSequentially();
+	}
 	
 	delay(500);
 	exit(EXIT_SUCCESS);
-	
-	//27 rows per half-screen
-	//59 rows per full-screen
 }
