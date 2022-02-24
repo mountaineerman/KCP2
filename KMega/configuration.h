@@ -85,93 +85,96 @@ static const int PWM_LED_MINIMUM = 0;
 static const int PWM_LED_MAXIMUM = 4095;
 
 // Board 1 (Currently #3 in BOM) //TODO: Confirm board order (1/2/3/4) //WTF?
-static const int PIN_LEDDB_GLASS_COCKPIT_TL = 24;		//static const int PIN_LEDDB_GLASS_COCKPIT_TL = 0;
-static const int PIN_LEDDB_GLASS_COCKPIT_CL = 25;		//static const int PIN_LEDDB_GLASS_COCKPIT_CL = 1;
-static const int PIN_LEDDB_GLASS_COCKPIT_BL = 26;		//static const int PIN_LEDDB_GLASS_COCKPIT_BL = 2;
-static const int PIN_LEDDB_GLASS_COCKPIT_TR = 27;		//static const int PIN_LEDDB_GLASS_COCKPIT_TR = 3;
-static const int PIN_LEDDB_GLASS_COCKPIT_CR = 28;		//static const int PIN_LEDDB_GLASS_COCKPIT_CR = 4;
-static const int PIN_LEDDB_GLASS_COCKPIT_BR = 29;		//static const int PIN_LEDDB_GLASS_COCKPIT_BR = 5;
-//static const int PIN_LEDDB_ORB_LED = 6;				//static const int PIN_LEDDB_ORB_LED = 6;
-//static const int PIN_LEDDB_PLN_LED = 7;				//static const int PIN_LEDDB_PLN_LED = 7;
-//static const int PIN_LEDDB_30_DEG_LED = 8;			//static const int PIN_LEDDB_30_DEG_LED = 8;
-//static const int PIN_LEDDB_FAIRING_LED = 9;			//static const int PIN_LEDDB_FAIRING_LED = 9;
-//static const int PIN_LEDDB_CHUTE_LED = 10;			//static const int PIN_LEDDB_CHUTE_LED = 10;
-static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;		//static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;	//OK *confusion noises*
-static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;		//static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;	//OK *confusion noises*
-static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;		//static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;	//OK *confusion noises*
-static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;		//static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;	//OK *confusion noises*
-//static const int PIN_LEDDB_COMMS_LED = 15;			//static const int PIN_LEDDB_COMMS_LED = 15;
-//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;	//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;
-//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;	//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;
-//static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;	//static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;
-														// 19 UNASSIGNED
-														// 20 UNASSIGNED
-														// 21 UNASSIGNED
-														// 22 UNASSIGNED
-														// 23 UNASSIGNED
+//static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_RED = 24;		//???		(Pin 0)		[BOM LED2]
+//static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_GRN = 25;		//???		(Pin 1)		[BOM LED2]
+//static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_BLU = 26;		//???		(Pin 2)		[BOM LED2]
+//static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_RED = 27;	//???		(Pin 3)		[BOM LED2]
+//static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_GRN = 28;	//???		(Pin 4)		[BOM LED2]
+//static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_BLU = 29;	//???		(Pin 5)		[BOM LED2]!!!
+//static const int PIN_LEDDB_ORB_LED = 6;						//			(Pin 6)		[BOM LED3]!!!
+//static const int PIN_LEDDB_PLN_LED = 7;						//			(Pin 7)		[BOM LED3]
+//static const int PIN_LEDDB_30_DEG_LED = 8;					//			(Pin 8)		[BOM LED3]
+//static const int PIN_LEDDB_FAIRING_LED = 9;					//			(Pin 9)		[BOM LED3]
+//static const int PIN_LEDDB_CHUTE_LED = 10;					//			(Pin 10)	[BOM LED3]
+static const int PIN_LEDDB_TWIST_SWITCH_100 = 11;				//VERIFIED	(Pin 11)	[BOM LED3]
+static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;				//VERIFIED	(Pin 12)	[BOM LED3]
+static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;				//VERIFIED	(Pin 13)	[BOM LED3]
+static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;				//VERIFIED	(Pin 14)	[BOM LED3]
+//static const int PIN_LEDDB_COMMS_LED = 15;					//			(Pin 15)	[BOM LED3]
+//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;			//			(Pin 16)	[BOM LED3]
+//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;			//			(Pin 17)	[BOM LED3]
+//static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;			//			(Pin 18)	[BOM LED3]
+// 19 UNASSIGNED
+// 20 UNASSIGNED
+// 21 UNASSIGNED
+// 22 UNASSIGNED
+// 23 UNASSIGNED
+
 // Board 2 //TODO: Confirm board order (1/2/3/4)
-static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_RED = 24;	//0
-static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_GRN = 25;	//1
-static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_BLU = 26;	//2
-static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_RED = 27;	//3
-static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_GRN = 28;	//4
-static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_BLU = 29;	//5
-static const int PIN_LEDDB_HEAT_RGBLED_RED = 30;			//6
-static const int PIN_LEDDB_HEAT_RGBLED_GRN = 31;			//7
-static const int PIN_LEDDB_HEAT_RGBLED_BLU = 32;			//8
-static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_RED = 33;	//9
-static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_GRN = 34;	//10
-static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_BLU = 35;	//11
-static const int PIN_LEDDB_GFORCE_RGBLED_RED = 36;			//12
-static const int PIN_LEDDB_GFORCE_RGBLED_GRN = 37;			//13
-static const int PIN_LEDDB_GFORCE_RGBLED_BLU = 38;			//14
-static const int PIN_LEDDB_MACH_RGBLED_RED = 39;			//15
-static const int PIN_LEDDB_MACH_RGBLED_GRN = 40;			//16
-static const int PIN_LEDDB_MACH_RGBLED_BLU = 41;			//17
-static const int PIN_LEDDB_PITCH_RGBLED_RED = 42;			//18
-static const int PIN_LEDDB_PITCH_RGBLED_GRN = 43;			//19
-static const int PIN_LEDDB_PITCH_RGBLED_BLU = 44;			//20
-static const int PIN_LEDDB_HEADING_RGBLED_RED = 45;			//21
-static const int PIN_LEDDB_HEADING_RGBLED_GRN = 46;			//22
-static const int PIN_LEDDB_HEADING_RGBLED_BLU = 47;			//23
-// Board 3 (Currently #1 in BOM) //TODO: Confirm board order (1/2/3/4) //VERIFIED
-static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//0
-static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//1
-static const int PIN_LEDDB_AUTOPILOT_LED_HOLD = 50;				//2
-static const int PIN_LEDDB_AUTOPILOT_LED_PROGRADE = 51;			//3
-static const int PIN_LEDDB_AUTOPILOT_LED_RETROGRADE = 52;		//4
-static const int PIN_LEDDB_AUTOPILOT_LED_NORMAL_RED = 53;		//5
-static const int PIN_LEDDB_AUTOPILOT_LED_NORMAL_BLU = 54;		//6
-static const int PIN_LEDDB_AUTOPILOT_LED_ANTINORMAL_RED = 55;	//7
-static const int PIN_LEDDB_AUTOPILOT_LED_ANTINORMAL_BLUE = 56;	//8
-static const int PIN_LEDDB_AUTOPILOT_LED_RADIALIN_GRN = 57;		//9
-static const int PIN_LEDDB_AUTOPILOT_LED_RADIALIN_BLU = 58;		//10
-static const int PIN_LEDDB_AUTOPILOT_LED_RADIALOUT_GRN = 59;	//11
-static const int PIN_LEDDB_AUTOPILOT_LED_RADIALOUT_BLU = 60;	//12
-static const int PIN_LEDDB_AUTOPILOT_LED_TARGET_RED = 61;		//13
-static const int PIN_LEDDB_AUTOPILOT_LED_TARGET_BLU = 62;		//14
-static const int PIN_LEDDB_AUTOPILOT_LED_ANTITARGET_RED = 63;	//15
-static const int PIN_LEDDB_AUTOPILOT_LED_ANTITARGET_BLU = 64;	//16
-static const int PIN_LEDDB_AUTOPILOT_LED_MANEUVER = 65;			//17
-static const int PIN_LEDDB_FUEL_RGBLED_RED = 66;				//18
-static const int PIN_LEDDB_FUEL_RGBLED_GRN = 67;				//19
-static const int PIN_LEDDB_FUEL_RGBLED_BLU = 68;				//20
-static const int PIN_LEDDB_CHARGE_RGBLED_RED = 69;				//21
-static const int PIN_LEDDB_CHARGE_RGBLED_GRN = 70;				//22
-static const int PIN_LEDDB_CHARGE_RGBLED_BLU = 71;				//23
+static const int PIN_LEDDB_GLASS_COCKPIT_TL = 24;				//VERIFIED	(Pin 0)		[BOM LED3]
+static const int PIN_LEDDB_GLASS_COCKPIT_CL = 25;				//VERIFIED	(Pin 1)		[BOM LED3]
+static const int PIN_LEDDB_GLASS_COCKPIT_BL = 26;				//VERIFIED	(Pin 2)		[BOM LED3]
+static const int PIN_LEDDB_GLASS_COCKPIT_TR = 27;				//VERIFIED	(Pin 3)		[BOM LED3]
+static const int PIN_LEDDB_GLASS_COCKPIT_CR = 28;				//VERIFIED	(Pin 4)		[BOM LED3]
+static const int PIN_LEDDB_GLASS_COCKPIT_BR = 29;				//VERIFIED	(Pin 5)		[BOM LED3]!!!
+static const int PIN_LEDDB_HEAT_RGBLED_RED = 30;				//VERIFIED	(Pin 6)		[BOM LED2]!!!
+static const int PIN_LEDDB_HEAT_RGBLED_GRN = 31;				//VERIFIED	(Pin 7)		[BOM LED2]
+static const int PIN_LEDDB_HEAT_RGBLED_BLU = 32;				//VERIFIED	(Pin 8)		[BOM LED2]
+static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_RED = 33;		//VERIFIED	(Pin 9)		[BOM LED2]
+static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_GRN = 34;		//VERIFIED	(Pin 10)	[BOM LED2]
+static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_BLU = 35;		//VERIFIED	(Pin 11)	[BOM LED2]
+static const int PIN_LEDDB_GFORCE_RGBLED_RED = 36;				//VERIFIED	(Pin 12)	[BOM LED2]
+static const int PIN_LEDDB_GFORCE_RGBLED_GRN = 37;				//VERIFIED	(Pin 13)	[BOM LED2]
+static const int PIN_LEDDB_GFORCE_RGBLED_BLU = 38;				//VERIFIED	(Pin 14)	[BOM LED2]
+static const int PIN_LEDDB_MACH_RGBLED_RED = 39;				//			(Pin 15)	[BOM LED2]
+static const int PIN_LEDDB_MACH_RGBLED_GRN = 40;				//			(Pin 16)	[BOM LED2]
+static const int PIN_LEDDB_MACH_RGBLED_BLU = 41;				//			(Pin 17)	[BOM LED2]
+static const int PIN_LEDDB_PITCH_RGBLED_RED = 42;				//			(Pin 18)	[BOM LED2]
+static const int PIN_LEDDB_PITCH_RGBLED_GRN = 43;				//			(Pin 19)	[BOM LED2]
+static const int PIN_LEDDB_PITCH_RGBLED_BLU = 44;				//			(Pin 20)	[BOM LED2]
+static const int PIN_LEDDB_HEADING_RGBLED_RED = 45;				//			(Pin 21)	[BOM LED2]
+static const int PIN_LEDDB_HEADING_RGBLED_GRN = 46;				//			(Pin 22)	[BOM LED2]
+static const int PIN_LEDDB_HEADING_RGBLED_BLU = 47;				//			(Pin 23)	[BOM LED2]
+
+// Board 3 //TODO: Confirm board order (1/2/3/4)
+static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//VERIFIED	(Pin 0)		[BOM LED1]
+static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//			(Pin 1)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_HOLD = 50;				//			(Pin 2)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_PROGRADE = 51;			//			(Pin 3)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_RETROGRADE = 52;		//			(Pin 4)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_NORMAL_RED = 53;		//			(Pin 5)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_NORMAL_BLU = 54;		//			(Pin 6)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTINORMAL_RED = 55;	//			(Pin 7)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTINORMAL_BLUE = 56;	//			(Pin 8)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALIN_GRN = 57;		//			(Pin 9)		[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALIN_BLU = 58;		//			(Pin 10)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALOUT_GRN = 59;	//			(Pin 11)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_RADIALOUT_BLU = 60;	//			(Pin 12)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_TARGET_RED = 61;		//			(Pin 13)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_TARGET_BLU = 62;		//			(Pin 14)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTITARGET_RED = 63;	//			(Pin 15)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_ANTITARGET_BLU = 64;	//			(Pin 16)	[BOM LED1]
+static const int PIN_LEDDB_AUTOPILOT_LED_MANEUVER = 65;			//			(Pin 17)	[BOM LED1]
+static const int PIN_LEDDB_FUEL_RGBLED_RED = 66;				//			(Pin 18)	[BOM LED1]
+static const int PIN_LEDDB_FUEL_RGBLED_GRN = 67;				//			(Pin 19)	[BOM LED1]
+static const int PIN_LEDDB_FUEL_RGBLED_BLU = 68;				//			(Pin 20)	[BOM LED1]
+static const int PIN_LEDDB_CHARGE_RGBLED_RED = 69;				//			(Pin 21)	[BOM LED1]
+static const int PIN_LEDDB_CHARGE_RGBLED_GRN = 70;				//			(Pin 22)	[BOM LED1]
+static const int PIN_LEDDB_CHARGE_RGBLED_BLU = 71;				//			(Pin 23)	[BOM LED1]
+
 // Board 4 //TODO: Confirm board order (1/2/3/4)
-static const int PIN_LEDDB_DENSITY_RGBLED_RED = 72;		//0
-static const int PIN_LEDDB_DENSITY_RGBLED_GRN = 73;		//1
-static const int PIN_LEDDB_DENSITY_RGBLED_BLU = 74;		//2
-static const int PIN_LEDDB_SPEED_RGBLED_RED = 75;		//3
-static const int PIN_LEDDB_SPEED_RGBLED_GRN = 76;		//4
-static const int PIN_LEDDB_SPEED_RGBLED_BLU = 77;		//5
-static const int PIN_LEDDB_VERTSPEED_RGBLED_RED = 78;	//6
-static const int PIN_LEDDB_VERTSPEED_RGBLED_GRN = 79;	//7
-static const int PIN_LEDDB_VERTSPEED_RGBLED_BLU = 80;	//8
-static const int PIN_LEDDB_RADARALT_RGBLED_RED = 81;	//9
-static const int PIN_LEDDB_RADARALT_RGBLED_GRN = 82;	//10
-static const int PIN_LEDDB_RADARALT_RGBLED_BLU = 83;	//11
+static const int PIN_LEDDB_DENSITY_RGBLED_RED = 72;				//VERIFIED	(Pin 0)		[BOM LED4]
+static const int PIN_LEDDB_DENSITY_RGBLED_GRN = 73;				//VERIFIED	(Pin 1)		[BOM LED4]
+static const int PIN_LEDDB_DENSITY_RGBLED_BLU = 74;				//VERIFIED	(Pin 2)		[BOM LED4]
+static const int PIN_LEDDB_SPEED_RGBLED_RED = 75;				//VERIFIED	(Pin 3)		[BOM LED4]
+static const int PIN_LEDDB_SPEED_RGBLED_GRN = 76;				//VERIFIED	(Pin 4)		[BOM LED4]
+static const int PIN_LEDDB_SPEED_RGBLED_BLU = 77;				//VERIFIED	(Pin 5)		[BOM LED4]
+static const int PIN_LEDDB_VERTSPEED_RGBLED_RED = 78;			//VERIFIED	(Pin 6)		[BOM LED4]
+static const int PIN_LEDDB_VERTSPEED_RGBLED_GRN = 79;			//VERIFIED	(Pin 7)		[BOM LED4]
+static const int PIN_LEDDB_VERTSPEED_RGBLED_BLU = 80;			//VERIFIED	(Pin 8)		[BOM LED4]
+static const int PIN_LEDDB_RADARALT_RGBLED_RED = 81;			//VERIFIED	(Pin 9)		[BOM LED4]
+static const int PIN_LEDDB_RADARALT_RGBLED_GRN = 82;			//VERIFIED	(Pin 10)	[BOM LED4]
+static const int PIN_LEDDB_RADARALT_RGBLED_BLU = 83;			//VERIFIED	(Pin 11)	[BOM LED4]
 // 12 UNASSIGNED
 // 13 UNASSIGNED
 // 14 UNASSIGNED

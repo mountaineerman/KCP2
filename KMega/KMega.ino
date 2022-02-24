@@ -6,9 +6,9 @@
 /* REMINDER: 
 When programming KMega, set:
 	1. File > Preferences > Sketchbook location = C:\dev\KCP2\KMega
-	2. Tools > Board = //TBD
-	3. Tools > Processor = //TBD
-	4. Tools > Port = COM4 //TODO confirm
+	2. Tools > Board = Arduino Mega or Mega 2560
+	3. Tools > Processor = ATmega2560 (Mega 2560)
+	4. Tools > Port = COM4
 */
 
 void setup() {
