@@ -14,7 +14,7 @@
 #include <ModuleB.h>
 #include <ModuleC.h>
 #include <ModuleD.h>
-//#include <ModuleE.h>
+#include <ModuleE.h>
 #include <ModuleF.h>
 //#include <ModuleG.h>
 #include <ModuleH.h>
@@ -49,7 +49,7 @@ public:
 	ModuleB moduleB;
 	ModuleC moduleC;
 	ModuleD moduleD;
-	//ModuleE moduleE;
+	ModuleE moduleE;
 	ModuleF moduleF;
 	//ModuleG moduleG;
 	ModuleH moduleH;

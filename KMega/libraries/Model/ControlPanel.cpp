@@ -15,7 +15,7 @@ ControlPanel::ControlPanel()
 	, moduleB(mux)
 	, moduleC(ledDriverBoards)
 	, moduleD(mux, ledDriverBoards)
-//	, moduleE(mux, ledDriverBoards)
+	, moduleE(mux, ledDriverBoards)
 	, moduleF(mux, ledDriverBoards)
 //	, moduleG(ledDriverBoards)
 	, moduleH(ledDriverBoards)
@@ -43,7 +43,7 @@ void ControlPanel::refreshInputStatus() {
 	this->moduleA.refreshInputStatus();
 	this->moduleB.refreshInputStatus();
 	this->moduleD.refreshInputStatus();
-	//this->moduleE.refreshInputStatus();
+	this->moduleE.refreshInputStatus();
 	this->moduleF.refreshInputStatus();
 	//this->moduleG.refreshInputStatus();
 	this->moduleH.refreshInputStatus();
@@ -54,16 +54,16 @@ String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow
 	//return this->moduleA.getInputStatusAsString() +
 	//	   this->moduleB.getInputStatusAsString() +
 	//	   this->moduleD.getInputStatusAsString() +
-	//	   //this->moduleE.getInputStatusAsString() +
-	//	   this->moduleF.getInputStatusAsString();// +
+	//	   this->moduleE.getInputStatusAsString() +
+	//	   this->moduleF.getInputStatusAsString() +
 	//	   //this->moduleG.getInputStatusAsString() +
-	//	   //this->moduleH.getInputStatusAsString();// +
+	//	   this->moduleH.getInputStatusAsString();// +
 	//	   //this->moduleI.getInputStatusAsString();
 	
 	Serial.print(this->moduleA.getInputStatusAsString());
 	Serial.print(this->moduleB.getInputStatusAsString());
 	Serial.print(this->moduleD.getInputStatusAsString());
-	//Serial.print(this->moduleE.getInputStatusAsString());
+	Serial.print(this->moduleE.getInputStatusAsString());
 	Serial.print(this->moduleF.getInputStatusAsString());
 	//Serial.print(this->moduleG.getInputStatusAsString());
 	Serial.print(this->moduleH.getInputStatusAsString());
@@ -75,7 +75,7 @@ void ControlPanel::setAllLEDsOff() {
 	this->moduleA.setAllLEDsOff();
 	this->moduleC.setAllLEDsOff();
 	this->moduleD.setAllLEDsOff();
-	//this->moduleE.setAllLEDsOff();
+	this->moduleE.setAllLEDsOff();
 	this->moduleF.setAllLEDsOff();
 	//this->moduleG.setAllLEDsOff();
 	this->moduleH.setAllLEDsOff();
@@ -87,7 +87,7 @@ void ControlPanel::setAllLEDsOn() {
 	this->moduleA.setAllLEDsOn();
 	this->moduleC.setAllLEDsOn();
 	this->moduleD.setAllLEDsOn();
-	//this->moduleE.setAllLEDsOn();
+	this->moduleE.setAllLEDsOn();
 	this->moduleF.setAllLEDsOn();
 	//this->moduleG.setAllLEDsOn();
 	this->moduleH.setAllLEDsOn();
@@ -99,7 +99,7 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleA.testLEDsSequentially();
 	this->moduleC.testLEDsSequentially();
 	this->moduleD.testLEDsSequentially();
-	//this->moduleE.testLEDsSequentially();
+	this->moduleE.testLEDsSequentially();
 	this->moduleF.testLEDsSequentially();
 	//this->moduleG.testLEDsSequentially();
 	this->moduleH.testLEDsSequentially();
@@ -299,8 +299,8 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 			this-> moduleC.testLEDsSequentially();
 		} else if(userInput == "d") {
 			this->moduleD.testLEDsSequentially();
-		//} else if(userInput == "e") {
-		//	this->moduleE.testLEDsSequentially();
+		} else if(userInput == "e") {
+			this->moduleE.testLEDsSequentially();
 		} else if(userInput == "f") {
 			this->moduleF.testLEDsSequentially();
 		//} else if(userInput == "g") {
