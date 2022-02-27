@@ -238,7 +238,7 @@ static const int PIN_LED_DRIVER_BOARDS_LATCH = 8; 	//"LAT"
 static const int PIN_LED_DRIVER_BOARDS_OVERRIDE = 9;//"/OE". Set High to disable all LEDs. Set Low otherwise.
 static const int PIN_LED_DRIVER_BOARDS_CLOCK = 10;	//"CLK"
 static const int PIN_LED_DRIVER_BOARDS_DATA_IN = 11;//"DIN"
-static const int PIN_GLASS_COCKPIT_TL_SWITCH = 12;
+//12 UNASSIGNED. Appears faulty...
 static const int PIN_GLASS_COCKPIT_CL_SWITCH = 13;
 static const int PIN_GLASS_COCKPIT_BL_SWITCH = 14;
 static const int PIN_GLASS_COCKPIT_TR_SWITCH = 15;
@@ -278,7 +278,7 @@ static const int PIN_EASYDRIVER_DIR = 48;
 static const int PIN_4POS_SWITCH_AB = 49;
 static const int PIN_4POS_SWITCH_CD = 50;
 //51 UNASSIGNED
-//52 UNASSIGNED
+static const int PIN_GLASS_COCKPIT_TL_SWITCH = 52;
 //53 UNASSIGNED
 
 #endif
