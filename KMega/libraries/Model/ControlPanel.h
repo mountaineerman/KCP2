@@ -16,7 +16,7 @@
 #include <ModuleD.h>
 #include <ModuleE.h>
 #include <ModuleF.h>
-//#include <ModuleG.h>
+#include <ModuleG.h>
 #include <ModuleH.h>
 //#include <ModuleI.h>
 #include <ModuleGT.h>
@@ -36,6 +36,7 @@ private:
 	void diagnosticMode_testLEDsSequentially();
 	void diagnosticMode_testStepperMotors();
 	void diagnosticMode_testGearedStepperMotor(StepperMotor& stepperMotorUnderTest);
+	void diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest); //TODO remove
 	//TODO: Add diagnostic mode for MUX only (see commented code in ControlPanel.cpp)
 
 	MuxShield mux; //TODO: const? Does it need to be public?
@@ -51,7 +52,7 @@ public:
 	ModuleD moduleD;
 	ModuleE moduleE;
 	ModuleF moduleF;
-	//ModuleG moduleG;
+	ModuleG moduleG;
 	ModuleH moduleH;
 	//ModuleI moduleI;
 	ModuleGT moduleGT;

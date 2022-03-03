@@ -17,7 +17,7 @@ ControlPanel::ControlPanel()
 	, moduleD(mux, ledDriverBoards)
 	, moduleE(mux, ledDriverBoards)
 	, moduleF(mux, ledDriverBoards)
-//	, moduleG(ledDriverBoards)
+	, moduleG(ledDriverBoards)
 	, moduleH(ledDriverBoards)
 //	, moduleI(ledDriverBoards)
 	, moduleGT(ledDriverBoards)
@@ -45,7 +45,7 @@ void ControlPanel::refreshInputStatus() {
 	this->moduleD.refreshInputStatus();
 	this->moduleE.refreshInputStatus();
 	this->moduleF.refreshInputStatus();
-	//this->moduleG.refreshInputStatus();
+	this->moduleG.refreshInputStatus();
 	this->moduleH.refreshInputStatus();
 	//this->moduleI.refreshInputStatus();
 }
@@ -65,7 +65,7 @@ String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow
 	Serial.print(this->moduleD.getInputStatusAsString());
 	Serial.print(this->moduleE.getInputStatusAsString());
 	Serial.print(this->moduleF.getInputStatusAsString());
-	//Serial.print(this->moduleG.getInputStatusAsString());
+	Serial.print(this->moduleG.getInputStatusAsString());
 	Serial.print(this->moduleH.getInputStatusAsString());
 	//Serial.print(this->moduleI.getInputStatusAsString());
 	return(String(""));
@@ -77,7 +77,7 @@ void ControlPanel::setAllLEDsOff() {
 	this->moduleD.setAllLEDsOff();
 	this->moduleE.setAllLEDsOff();
 	this->moduleF.setAllLEDsOff();
-	//this->moduleG.setAllLEDsOff();
+	this->moduleG.setAllLEDsOff();
 	this->moduleH.setAllLEDsOff();
 	//this->moduleI.setAllLEDsOff();
 	this->moduleGT.setAllLEDsOff();
@@ -89,7 +89,7 @@ void ControlPanel::setAllLEDsOn() {
 	this->moduleD.setAllLEDsOn();
 	this->moduleE.setAllLEDsOn();
 	this->moduleF.setAllLEDsOn();
-	//this->moduleG.setAllLEDsOn();
+	this->moduleG.setAllLEDsOn();
 	this->moduleH.setAllLEDsOn();
 	//this->moduleI.setAllLEDsOn();
 	this->moduleGT.setAllLEDsOn();
@@ -101,7 +101,7 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleD.testLEDsSequentially();
 	this->moduleE.testLEDsSequentially();
 	this->moduleF.testLEDsSequentially();
-	//this->moduleG.testLEDsSequentially();
+	this->moduleG.testLEDsSequentially();
 	this->moduleH.testLEDsSequentially();
 	//this->moduleI.testLEDsSequentially();
 	this->moduleGT.testLEDsSequentially();
@@ -109,7 +109,7 @@ void ControlPanel::testLEDsSequentially() {
 
 void ControlPanel::resetStepperToStartingPosition() {
 	this->moduleC.resetStepperToStartingPosition();
-	//this->moduleG.resetStepperToStartingPosition();
+	this->moduleG.resetStepperToStartingPosition();
 	//this->moduleI.resetStepperToStartingPosition();
 	this->moduleGT.resetStepperToStartingPosition();
 }
@@ -303,8 +303,8 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 			this->moduleE.testLEDsSequentially();
 		} else if(userInput == "f") {
 			this->moduleF.testLEDsSequentially();
-		//} else if(userInput == "g") {
-		//	this->moduleG.testLEDsSequentially();
+		} else if(userInput == "g") {
+			this->moduleG.testLEDsSequentially();
 		} else if(userInput == "h") {
 			this->moduleH.testLEDsSequentially();
 		//} else if(userInput == "i") {
@@ -344,12 +344,12 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_HeatLife);
 		} else if(userInput == "2") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_Gforce);
-//		} else if(userInput == "3") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleG.<Motor>);
-//		} else if(userInput == "4") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleG.<Motor>);
-//		} else if(userInput == "5") {
-//			//TBD
+		} else if(userInput == "3") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Mach);
+		} else if(userInput == "4") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Pitch);
+		} else if(userInput == "5") {
+			this->diagnosticMode_testNEMA17StepperMotor(this->moduleG.stepper_Heading);//TODO: Combine StepperMotor with StepperMotorNEMA17?
 //		} else if(userInput == "6") {
 //			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
 //		} else if(userInput == "7") {
@@ -397,6 +397,61 @@ void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperM
 			stepperMotorUnderTest.runToDesiredPosition();
 		} else if(userInput == "2") {
 			stepperMotorUnderTest.setDesiredPosition(STEPPER_CW_LIMIT);
+			stepperMotorUnderTest.runToDesiredPosition();
+//		} else if(userInput == '3') {
+//			//TODO
+		} else if(userInput == "4") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-1000);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "5") {
+			stepperMotorUnderTest.setDesiredRelativePosition(1000);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "6") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-100);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "7") {
+			stepperMotorUnderTest.setDesiredRelativePosition(100);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "8") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-10);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "9") {
+			stepperMotorUnderTest.setDesiredRelativePosition(10);
+			stepperMotorUnderTest.runToDesiredPosition();			
+		}
+	}
+}
+
+
+void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest) { //TODO remove
+	
+	String userInput;
+	
+	while(true) {
+		clearScreen();
+		Serial.print("Stepper Motor Position ["); Serial.print(NEMA17_CCW_LIMIT); Serial.print("-"); Serial.print(NEMA17_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.println("");
+		Serial.println("Select one of the following options:");
+		Serial.println("[0] Return to previous menu");
+		Serial.println("[1] Move to maximum CCW position");
+		Serial.println("[2] Move to maximum CW position");
+		Serial.println("[3] Manual Control Mode (via Joystick) [TODO]");
+		Serial.println("[4] Move 1000 steps CCW");
+		Serial.println("[5] Move 1000 steps CW");
+		Serial.println("[6] Move 100 steps CCW");
+		Serial.println("[7] Move 100 steps CW");
+		Serial.println("[8] Move 10 steps CCW");
+		Serial.println("[9] Move 10 steps CW");
+		
+		userInput = Serial.readStringUntil('\n');
+		
+		if(userInput == "0") {
+			return;
+		} else if(userInput == "1") {
+			stepperMotorUnderTest.setDesiredPosition(NEMA17_CCW_LIMIT);
+			stepperMotorUnderTest.runToDesiredPosition();
+		} else if(userInput == "2") {
+			stepperMotorUnderTest.setDesiredPosition(NEMA17_CW_LIMIT);
 			stepperMotorUnderTest.runToDesiredPosition();
 //		} else if(userInput == '3') {
 //			//TODO

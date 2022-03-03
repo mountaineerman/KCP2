@@ -21,7 +21,7 @@
 class StepperMotor : public Interface_StepperMotorAggregator
 {
 public:
-	StepperMotor(uint8_t pinStep, uint8_t pinDirection);
+	StepperMotor(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted);
 	
 	//Set the desired position. Does not move the stepper, for that you must call run() or runToDesiredPosition()
 	void setDesiredPosition(long desiredPosition);//TODO add error checking for out-of-bounds values.
@@ -38,6 +38,7 @@ public:
 	//Move the motor to its CCW limit.
 	void resetStepperToStartingPosition();
 	
+	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	long getCurrentPosition();
 	
 private:
@@ -46,7 +47,10 @@ private:
 
 	//The Direction input the driver. High means forward, Low means reverse.
 	uint8_t pinDirection;
-
+	
+	//The configuration of the motor. Some motors are inverted, others are not. I think this depends on the wiring.
+	bool arePinsInverted;
+	
 	/* A number describing the desired stepper motor position, in steps.
 	 * Range: [0-3779] [STEPPER_CCW_LIMIT-STEPPER_CW_LIMIT]
 	 * e.g., desiredPosition of 0 is the farthest CCW position possible.

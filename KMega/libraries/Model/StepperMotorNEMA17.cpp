@@ -11,7 +11,7 @@ StepperMotorNEMA17::StepperMotorNEMA17(uint8_t pinStep, uint8_t pinDirection, ui
 	this->pinSleep = pinSleep;
 	this->pinMS1 = pinMS1;
 	this->pinMS2 = pinMS2;
-	this->kkimDesiredPosition = 0;
+	this->desiredPosition = 0;
 
 	/* Set MicroStep Resolution. Options:
 	 * 		MS1	MS2	Resolution			Step Angle		Steps per Rotation
@@ -27,13 +27,18 @@ StepperMotorNEMA17::StepperMotorNEMA17(uint8_t pinStep, uint8_t pinDirection, ui
 	//Finish stepper setup:
 	this->stepper.setMaxSpeed(NEMA17_MAX_SPEED);
 	this->stepper.setAcceleration(NEMA17_MAX_ACCELERATION);
+	//?this->stepper.setPinsInverted(this->arePinsInverted);
 	this->stepper.setEnablePin(this->pinSleep);
-	this->stepper.enableOutputs();
+	this->stepper.enableOutputs(); //TODO what is this?
 }
 
-void StepperMotorNEMA17::setKkimDesiredPosition(long desiredPosition) {
-	this->kkimDesiredPosition = desiredPosition;
-	this->stepper.moveTo(this->kkimDesiredPosition);
+void StepperMotorNEMA17::setDesiredPosition(long desiredPosition) {
+	this->desiredPosition = desiredPosition;
+	this->stepper.moveTo(this->desiredPosition);
+}
+
+void StepperMotorNEMA17::setDesiredRelativePosition(long desiredRelativePosition) {
+	this->stepper.move(desiredRelativePosition);
 }
 
 void StepperMotorNEMA17::run() {
@@ -41,17 +46,13 @@ void StepperMotorNEMA17::run() {
 	//TODO Try adding hibernation later (AccelStepper:  disableOutputs(); enableOutputs();)
 }
 
-void StepperMotorNEMA17::manualCalibration() {
-	//TODO
+void StepperMotorNEMA17::runToDesiredPosition() {
+	this->stepper.runToPosition();
 }
 
-void StepperMotorNEMA17::gracefulShutdown() {
-	this->stepper.runToNewPosition(NEMA17_CCW_LIMIT); //TODO replace with non-blocking mechanism
-	//TODO ignore kkimDesiredPosition;
-}
-
-long StepperMotorNEMA17::getKkimDesiredPosition() {
-	return this->kkimDesiredPosition;
+void StepperMotorNEMA17::resetStepperToStartingPosition() {
+	this->setDesiredPosition(NEMA17_CCW_LIMIT);//TODO replace with non-blocking mechanism
+	this->runToDesiredPosition();
 }
 
 long StepperMotorNEMA17::getCurrentPosition() {

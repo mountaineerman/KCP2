@@ -6,7 +6,6 @@
 #include <Interface_StepperMotorAggregator.h>
 #include <LED_PWM.h>
 #include <StepperMotor.h>
-#include <StepperMotorNEMA17.h>
 
 
 /* Module C
