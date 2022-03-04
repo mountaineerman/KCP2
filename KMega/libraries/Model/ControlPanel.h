@@ -18,7 +18,7 @@
 #include <ModuleF.h>
 #include <ModuleG.h>
 #include <ModuleH.h>
-//#include <ModuleI.h>
+#include <ModuleI.h>
 #include <ModuleGT.h>
 
 
@@ -39,8 +39,8 @@ private:
 	void diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest); //TODO remove
 	//TODO: Add diagnostic mode for MUX only (see commented code in ControlPanel.cpp)
 
-	MuxShield mux; //TODO: const? Does it need to be public?
-	Adafruit_TLC5947 ledDriverBoards; //TODO: const? Does it need to be public?
+	MuxShield mux;
+	Adafruit_TLC5947 ledDriverBoards;
 
 public:
 	ControlPanel();
@@ -54,7 +54,7 @@ public:
 	ModuleF moduleF;
 	ModuleG moduleG;
 	ModuleH moduleH;
-	//ModuleI moduleI;
+	ModuleI moduleI;
 	ModuleGT moduleGT;
 	
 	void refreshInputStatus();

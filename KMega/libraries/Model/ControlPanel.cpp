@@ -19,7 +19,7 @@ ControlPanel::ControlPanel()
 	, moduleF(mux, ledDriverBoards)
 	, moduleG(ledDriverBoards)
 	, moduleH(ledDriverBoards)
-//	, moduleI(ledDriverBoards)
+	, moduleI(ledDriverBoards)
 	, moduleGT(ledDriverBoards)
 {
 	this->mux.setMode(MULTIPLEXER_IO_ROW_1,DIGITAL_IN_PULLUP); //VERIFIED
@@ -47,7 +47,7 @@ void ControlPanel::refreshInputStatus() {
 	this->moduleF.refreshInputStatus();
 	this->moduleG.refreshInputStatus();
 	this->moduleH.refreshInputStatus();
-	//this->moduleI.refreshInputStatus();
+	this->moduleI.refreshInputStatus();
 }
 
 String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow error (empty after adding Module H)???)
@@ -67,7 +67,7 @@ String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow
 	Serial.print(this->moduleF.getInputStatusAsString());
 	Serial.print(this->moduleG.getInputStatusAsString());
 	Serial.print(this->moduleH.getInputStatusAsString());
-	//Serial.print(this->moduleI.getInputStatusAsString());
+	Serial.print(this->moduleI.getInputStatusAsString());
 	return(String(""));
 }
 
@@ -79,7 +79,7 @@ void ControlPanel::setAllLEDsOff() {
 	this->moduleF.setAllLEDsOff();
 	this->moduleG.setAllLEDsOff();
 	this->moduleH.setAllLEDsOff();
-	//this->moduleI.setAllLEDsOff();
+	this->moduleI.setAllLEDsOff();
 	this->moduleGT.setAllLEDsOff();
 }
 
@@ -91,7 +91,7 @@ void ControlPanel::setAllLEDsOn() {
 	this->moduleF.setAllLEDsOn();
 	this->moduleG.setAllLEDsOn();
 	this->moduleH.setAllLEDsOn();
-	//this->moduleI.setAllLEDsOn();
+	this->moduleI.setAllLEDsOn();
 	this->moduleGT.setAllLEDsOn();
 }
 
@@ -103,14 +103,14 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleF.testLEDsSequentially();
 	this->moduleG.testLEDsSequentially();
 	this->moduleH.testLEDsSequentially();
-	//this->moduleI.testLEDsSequentially();
+	this->moduleI.testLEDsSequentially();
 	this->moduleGT.testLEDsSequentially();
 }
 
 void ControlPanel::resetStepperToStartingPosition() {
 	this->moduleC.resetStepperToStartingPosition();
 	this->moduleG.resetStepperToStartingPosition();
-	//this->moduleI.resetStepperToStartingPosition();
+	this->moduleI.resetStepperToStartingPosition();
 	this->moduleGT.resetStepperToStartingPosition();
 }
 
@@ -307,8 +307,8 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 			this->moduleG.testLEDsSequentially();
 		} else if(userInput == "h") {
 			this->moduleH.testLEDsSequentially();
-		//} else if(userInput == "i") {
-		//	this->moduleI.testLEDsSequentially();
+		} else if(userInput == "i") {
+			this->moduleI.testLEDsSequentially();
 		} else if(userInput == "gt") {
 			this->moduleGT.testLEDsSequentially();
 		}
@@ -350,12 +350,12 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Pitch);
 		} else if(userInput == "5") {
 			this->diagnosticMode_testNEMA17StepperMotor(this->moduleG.stepper_Heading);//TODO: Combine StepperMotor with StepperMotorNEMA17?
-//		} else if(userInput == "6") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
-//		} else if(userInput == "7") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
-//		} else if(userInput == "8") {
-//			this->diagnosticMode_testGearedStepperMotor(this->moduleI.<Motor>);
+		} else if(userInput == "6") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Fuel);
+		} else if(userInput == "7") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Charge);
+		} else if(userInput == "8") {
+			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_MonopropellantIntake);
 		} else if(userInput == "9") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_Density);
 		} else if(userInput == "10") {

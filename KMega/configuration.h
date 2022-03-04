@@ -85,12 +85,12 @@ static const int PWM_LED_MINIMUM = 0;
 static const int PWM_LED_MAXIMUM = 4095;
 
 // Board 1 (Currently #3 in BOM) //TODO: Confirm board order (1/2/3/4) //WTF?
-//static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_RED = 24;		//???		(Pin 0)		[BOM LED2]
-//static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_GRN = 25;		//???		(Pin 1)		[BOM LED2]
-//static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_BLU = 26;		//???		(Pin 2)		[BOM LED2]
-//static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_RED = 27;	//???		(Pin 3)		[BOM LED2]
-//static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_GRN = 28;	//???		(Pin 4)		[BOM LED2]
-//static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_BLU = 29;	//???		(Pin 5)		[BOM LED2]!!!
+static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_RED = 0;			//			(Pin 0)		[BOM LED2]
+static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_GRN = 1;			//			(Pin 1)		[BOM LED2]
+static const int PIN_LEDDB_DELTA_CHARGE_RGBLED_BLU = 2;			//			(Pin 2)		[BOM LED2]
+static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_RED = 3;		//			(Pin 3)		[BOM LED2]
+static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_GRN = 4;		//			(Pin 4)		[BOM LED2]
+static const int PIN_LEDDB_MONOPROPELLANT_RGBLED_BLU = 5;		//			(Pin 5)		[BOM LED2]!!!
 static const int PIN_LEDDB_ORB_LED = 6;							//VERIFIED	(Pin 6)		[BOM LED3]!!!
 static const int PIN_LEDDB_PLN_LED = 7;							//VERIFIED	(Pin 7)		[BOM LED3]
 static const int PIN_LEDDB_30_DEG_LED = 8;						//VERIFIED	(Pin 8)		[BOM LED3]
@@ -101,9 +101,9 @@ static const int PIN_LEDDB_TWIST_SWITCH_75 = 12;				//VERIFIED	(Pin 12)	[BOM LED
 static const int PIN_LEDDB_TWIST_SWITCH_50 = 13;				//VERIFIED	(Pin 13)	[BOM LED3]
 static const int PIN_LEDDB_TWIST_SWITCH_25 = 14;				//VERIFIED	(Pin 14)	[BOM LED3]
 static const int PIN_LEDDB_COMMS_LED = 15;						//			(Pin 15)	[BOM LED3]
-//static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;			//			(Pin 16)	[BOM LED3]
-//static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;			//			(Pin 17)	[BOM LED3]
-//static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;			//			(Pin 18)	[BOM LED3]
+static const int PIN_LEDDB_INTAKE_RGBLED_RED = 16;				//			(Pin 16)	[BOM LED3]
+static const int PIN_LEDDB_INTAKE_RGBLED_GRN = 17;				//			(Pin 17)	[BOM LED3]
+static const int PIN_LEDDB_INTAKE_RGBLED_BLU = 18;				//			(Pin 18)	[BOM LED3]
 // 19 UNASSIGNED
 // 20 UNASSIGNED
 // 21 UNASSIGNED
@@ -126,15 +126,15 @@ static const int PIN_LEDDB_LIFE_SUPPORT_RGBLED_BLU = 35;		//VERIFIED	(Pin 11)	[B
 static const int PIN_LEDDB_GFORCE_RGBLED_RED = 36;				//VERIFIED	(Pin 12)	[BOM LED2]
 static const int PIN_LEDDB_GFORCE_RGBLED_GRN = 37;				//VERIFIED	(Pin 13)	[BOM LED2]
 static const int PIN_LEDDB_GFORCE_RGBLED_BLU = 38;				//VERIFIED	(Pin 14)	[BOM LED2]
-static const int PIN_LEDDB_MACH_RGBLED_RED = 39;				//			(Pin 15)	[BOM LED2]
-static const int PIN_LEDDB_MACH_RGBLED_GRN = 40;				//			(Pin 16)	[BOM LED2]
-static const int PIN_LEDDB_MACH_RGBLED_BLU = 41;				//			(Pin 17)	[BOM LED2]
-static const int PIN_LEDDB_PITCH_RGBLED_RED = 42;				//			(Pin 18)	[BOM LED2]
-static const int PIN_LEDDB_PITCH_RGBLED_GRN = 43;				//			(Pin 19)	[BOM LED2]
-static const int PIN_LEDDB_PITCH_RGBLED_BLU = 44;				//			(Pin 20)	[BOM LED2]
-static const int PIN_LEDDB_HEADING_RGBLED_RED = 45;				//			(Pin 21)	[BOM LED2]
-static const int PIN_LEDDB_HEADING_RGBLED_GRN = 46;				//			(Pin 22)	[BOM LED2]
-static const int PIN_LEDDB_HEADING_RGBLED_BLU = 47;				//			(Pin 23)	[BOM LED2]
+static const int PIN_LEDDB_MACH_RGBLED_RED = 39;				//VERIFIED	(Pin 15)	[BOM LED2]
+static const int PIN_LEDDB_MACH_RGBLED_GRN = 40;				//VERIFIED	(Pin 16)	[BOM LED2]
+static const int PIN_LEDDB_MACH_RGBLED_BLU = 41;				//VERIFIED	(Pin 17)	[BOM LED2]
+static const int PIN_LEDDB_PITCH_RGBLED_RED = 42;				//VERIFIED	(Pin 18)	[BOM LED2]
+static const int PIN_LEDDB_PITCH_RGBLED_GRN = 43;				//VERIFIED	(Pin 19)	[BOM LED2]
+static const int PIN_LEDDB_PITCH_RGBLED_BLU = 44;				//VERIFIED	(Pin 20)	[BOM LED2]
+static const int PIN_LEDDB_HEADING_RGBLED_RED = 45;				//VERIFIED	(Pin 21)	[BOM LED2]
+static const int PIN_LEDDB_HEADING_RGBLED_GRN = 46;				//VERIFIED	(Pin 22)	[BOM LED2]
+static const int PIN_LEDDB_HEADING_RGBLED_BLU = 47;				//VERIFIED	(Pin 23)	[BOM LED2]
 
 // Board 3 //TODO: Confirm board order (1/2/3/4)
 static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//VERIFIED	(Pin 0)		[BOM LED1]
