@@ -21,8 +21,8 @@ ModuleI::ModuleI(Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_INTAKE_Red				(PIN_LEDDB_INTAKE_RGBLED_RED, 			ledDriverBoards)
 	, ledPWM_INTAKE_Green			(PIN_LEDDB_INTAKE_RGBLED_GRN, 			ledDriverBoards)
 	, ledPWM_INTAKE_Blue			(PIN_LEDDB_INTAKE_RGBLED_BLU, 			ledDriverBoards)
-	, stepper_Fuel					(PIN_VID6606_2_FREQUENCY_FUEL,		PIN_VID6606_2_DIRECTION_FUEL,	true)
-	, stepper_Charge				(PIN_VID6606_2_FREQUENCY_CHARGE,	PIN_VID6606_2_DIRECTION_CHARGE,	true)
+	, stepper_Fuel					(PIN_VID6606_2_FREQUENCY_FUEL,		PIN_VID6606_2_DIRECTION_FUEL,	false)
+	, stepper_Charge				(PIN_VID6606_2_FREQUENCY_CHARGE,	PIN_VID6606_2_DIRECTION_CHARGE,	false)
 	, stepper_MonopropellantIntake	(PIN_VID6606_2_FREQUENCY_MNPINT,	PIN_VID6606_2_DIRECTION_MNPINT,	true)
 {
 	//Serial.println("ModuleI Constructor");
