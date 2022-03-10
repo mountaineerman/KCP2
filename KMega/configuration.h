@@ -82,7 +82,7 @@ static const int PIN_MUX_AUTONAVIGATION_SWITCH = 11;
 //LED Driver Boards
 static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
 static const int PWM_LED_MINIMUM = 0;
-static const int PWM_LED_MAXIMUM = 4095;
+static const int PWM_LED_MAXIMUM = 2000;//4095;
 
 static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//	(Pin 0)		[LED Board 1]
 static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//	(Pin 1)		[LED Board 1]
@@ -193,8 +193,8 @@ static const long STEPPER_CW_LIMIT = 3779;
 
 //===========================================================================================================================================================================
 //Heading Gauge NEMA17 Stepper Motor
-static const float NEMA17_MAX_SPEED = 100.0; //Maximum Permitted Speed (steps per second). The maximum speed achievable depends on your processor and clock speed.
-static const float NEMA17_MAX_ACCELERATION = 20.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared). Must be > 0.0.
+static const float NEMA17_MAX_SPEED = 1000.0; //Maximum Permitted Speed (steps per second). The maximum speed achievable depends on your processor and clock speed.
+static const float NEMA17_MAX_ACCELERATION = 200.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared). Must be > 0.0.
 static const long NEMA17_CCW_LIMIT = 0;
 static const long NEMA17_CW_LIMIT = 1599;
 
