@@ -11,26 +11,30 @@ When programming KMega, set:
 	4. Tools > Port = COM4
 */
 
+//int main(void) { //TODO replace setup() and loop() with main()
 void setup() {
 	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
 	Serial.begin(COMPUTER_BAUD_RATE);
 	delay(1000);
-}
-
-void loop() {
-	delay(1000);
 	
+	//Startup Mode////////////////////////////////////////////////////////////////////////////////
 	ControlPanel controlPanel;
-	controlPanel.runDiagnosticMode();
-	controlPanel.resetStepperToStartingPosition();
+	//TODO Run startup test (LEDs, Stepper Motors)
+	//TODO Establish KKIM  Serial Communication Channel. Indicate Start and Finish.
+	//TODO Establish KNano Serial Communication Channel. Indicate Start and Finish.
 	
-	Serial.println("Main Menu. Terminating meow...");
+	//Standard Operating Mode/////////////////////////////////////////////////////////////////////
+	//Loop:
+		//Read inputs
+		//Send toFlightComputer Packet
+		//Receive toKMega packet
+		//Refresh outputs
+			//Send toKNano packet
+		//Idle if necessary
 	
-	delay(500);
+	//Diagnostic Mode/////////////////////////////////////////////////////////////////////////////
+	//controlPanel.runDiagnosticMode();
+	//controlPanel.resetStepperToStartingPosition();
+	
 	exit(EXIT_SUCCESS);
-	
-	//27 rows per half-screen
-	//59 rows per full-screen
 }
-
-
