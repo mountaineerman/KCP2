@@ -7,8 +7,6 @@ LED_PWM::LED_PWM(uint16_t channel, Adafruit_TLC5947& ledDriverBoards)
 {
 	this->channel = channel;
 	this->pwm = 0;
-	//this->ledDriverBoards = ledDriverBoards;
-	//Serial.println("LED_PWM Constructor");
 }
 
 void LED_PWM::setPWM(uint16_t pwm) {

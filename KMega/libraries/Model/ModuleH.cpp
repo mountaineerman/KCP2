@@ -19,7 +19,7 @@ ModuleH::ModuleH(Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_GlassCockpit_CR	(PIN_LEDDB_GLASS_COCKPIT_CR, ledDriverBoards)
 	, ledPWM_GlassCockpit_BR	(PIN_LEDDB_GLASS_COCKPIT_BR, ledDriverBoards)
 {
-	//Serial.println("ModuleH Constructor");
+	
 }
 
 void ModuleH::refreshInputStatus() {

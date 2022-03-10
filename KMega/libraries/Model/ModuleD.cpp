@@ -41,7 +41,7 @@ ModuleD::ModuleD(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, switch_Map				(PIN_MUX_MAP_SWITCH, 					false,	MULTIPLEXER_IO_ROW_2, mux)
 	, switch_Mute				(PIN_MUX_MUTE_SWITCH, 					false,	MULTIPLEXER_IO_ROW_2, mux)
 {
-	//Serial.println("ModuleD Constructor");
+	
 }
 
 void ModuleD::refreshInputStatus() {

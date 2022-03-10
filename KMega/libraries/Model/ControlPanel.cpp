@@ -33,7 +33,6 @@ ControlPanel::ControlPanel()
 	this->disableLEDOverride();
 	
 	this->setAllLEDsOff();
-	//Serial.println("ControlPanelConstructor");
 }
 
 //ControlPanel::~ControlPanel() { //TODO: Reset stepper motor positions

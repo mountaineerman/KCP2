@@ -20,7 +20,7 @@ ModuleG::ModuleG(Adafruit_TLC5947& ledDriverBoards)
 	, stepper_Pitch	(PIN_VID6606_1_FREQUENCY_PITCH, PIN_VID6606_1_DIRECTION_PITCH, false)
 	, stepper_Heading (PIN_EASYDRIVER_STEP, PIN_EASYDRIVER_DIR, PIN_EASYDRIVER_SLP, PIN_EASYDRIVER_MS1, PIN_EASYDRIVER_MS2)
 {
-	//Serial.println("ModuleG Constructor");
+	
 }
 
 void ModuleG::refreshInputStatus() {
