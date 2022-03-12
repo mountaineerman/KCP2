@@ -17,7 +17,7 @@ ModuleC::ModuleC(Adafruit_TLC5947& ledDriverBoards)
 	, stepper_HeatLife		(PIN_VID6606_1_FREQUENCY_HEATLIFE,	PIN_VID6606_1_DIRECTION_HEATLIFE,	true)
 	, stepper_Gforce		(PIN_VID6606_1_FREQUENCY_GFORCE,	PIN_VID6606_1_DIRECTION_GFORCE, 	true)
 {
-	//Serial.println("ModuleC Constructor");
+	
 }
 
 void ModuleC::setAllLEDsOff() {

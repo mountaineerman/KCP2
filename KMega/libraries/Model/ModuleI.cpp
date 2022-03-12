@@ -25,7 +25,7 @@ ModuleI::ModuleI(Adafruit_TLC5947& ledDriverBoards)
 	, stepper_Charge				(PIN_VID6606_2_FREQUENCY_CHARGE,	PIN_VID6606_2_DIRECTION_CHARGE,	false)
 	, stepper_MonopropellantIntake	(PIN_VID6606_2_FREQUENCY_MNPINT,	PIN_VID6606_2_DIRECTION_MNPINT,	true)
 {
-	//Serial.println("ModuleI Constructor");
+	
 }
 
 void ModuleI::refreshInputStatus() {

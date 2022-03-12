@@ -12,7 +12,7 @@ ModuleA::ModuleA(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, switch_StagingButton	(PIN_MUX_STAGING_BUTTON,false, MULTIPLEXER_IO_ROW_2, mux)
 	, ledPWM_BrakeModuleA		(PIN_LEDDB_BRAKE_LED_MODULE_A, ledDriverBoards)
 {
-	//Serial.println("ModuleA Constructor");
+	
 }
 
 void ModuleA::refreshInputStatus() {

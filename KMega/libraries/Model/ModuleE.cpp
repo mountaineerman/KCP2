@@ -29,7 +29,7 @@ ModuleE::ModuleE(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, switch_AutoNavigation	(PIN_MUX_AUTONAVIGATION_SWITCH, false, MULTIPLEXER_IO_ROW_3, mux)
 
 {
-	//Serial.println("ModuleE Constructor");
+	
 }
 
 void ModuleE::refreshInputStatus() {

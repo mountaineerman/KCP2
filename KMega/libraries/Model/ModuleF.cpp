@@ -16,7 +16,7 @@ ModuleF::ModuleF(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_twistSwitch75	(PIN_LEDDB_TWIST_SWITCH_75, ledDriverBoards)
 	, ledPWM_twistSwitch100	(PIN_LEDDB_TWIST_SWITCH_100, ledDriverBoards)
 {
-	//Serial.println("ModuleF Constructor");
+	
 }
 
 void ModuleF::refreshInputStatus() {
