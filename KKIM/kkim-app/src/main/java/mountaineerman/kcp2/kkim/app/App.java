@@ -4,25 +4,25 @@
 package mountaineerman.kcp2.kkim.app;
 
 import mountaineerman.kcp2.kkim.app.model.*;
-/*
-import mountaineerman.kcp2.kkim.kmega.KMegaApi;
-import mountaineerman.kcp2.kkim.list.LinkedList;
 
-import static mountaineerman.kcp2.kkim.utilities.StringUtils.join;
-import static mountaineerman.kcp2.kkim.utilities.StringUtils.split;
+//import mountaineerman.kcp2.kkim.kmega.KMegaApi;
+//import mountaineerman.kcp2.kkim.list.LinkedList;
 
-import java.io.IOException;
+//import static mountaineerman.kcp2.kkim.utilities.StringUtils.join;
+//import static mountaineerman.kcp2.kkim.utilities.StringUtils.split;
+
+//import java.io.IOException;
 import java.util.Arrays;
 
-import krpc.client.Connection;
-import krpc.client.RPCException;
-import krpc.client.services.KRPC;
+//import krpc.client.Connection;
+//import krpc.client.RPCException;
+//import krpc.client.services.KRPC;
 
 //TODO Temporarily added Serial Communication library for testing connection between KKIM and KMega:
 import com.fazecast.jSerialComm.*;
 
-import static mountaineerman.kcp2.kkim.app.MessageUtils.getMessage;
-*/
+//import static mountaineerman.kcp2.kkim.app.MessageUtils.getMessage;
+
 public class App
 {
 	public static void main(String[] args)
@@ -31,14 +31,18 @@ public class App
 		System.out.println(" Kerbal Control Panel 2");
 		System.out.println("=======================================================================================");
 		/*
-		 * TODO SETTINGS PLACEHOLDER
+		 * TODO Move settings to an Interface
 		 * 
 		 * KNano
 		 * 		COM port ("COM6")
 		 * 		COM port BAUD rate
 		 * 		Refresh frequency
-		 * 
-		 * KKIM
+		 */
+		//KMega
+		/*static const*/ int KMEGA_BAUD_RATE = 38400; ////Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
+		/*static const*/ String KMEGA_COM_PORT_NUMBER = "COM4";
+		
+		/* KKIM
 		 * 		Refresh frequency
 		 * 		AnalogInput calibration limits
 		 * 		LED_PWM dimmer (overall; general override for specific LED)
@@ -49,7 +53,7 @@ public class App
 		
 		
 		
-		
+		/*
 		// =================================================================================================================
 		// PARTS - Inputs
 		// =================================================================================================================
@@ -314,7 +318,7 @@ public class App
 		
 		// ========================================== AltitudeGauge ========================================================
 		AltitudeGauge altitudeGauge = new AltitudeGauge("altitudeGauge", ModuleID.GT);
-		
+		*/
 		
 		
 		
@@ -367,27 +371,66 @@ public class App
 		*/
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*//https://fazecast.github.io/jSerialComm/
+		//https://fazecast.github.io/jSerialComm/
 		System.out.println("Starting KKIM-KMega connection test...");
 		
-		SerialPort comPort = SerialPort.getCommPort("COM4");
-		
+		SerialPort comPort = SerialPort.getCommPort(KMEGA_COM_PORT_NUMBER);
+		comPort.setBaudRate(KMEGA_BAUD_RATE);
 		comPort.openPort();
+		
+		//(0) Initial Serial Read test
 		comPort.addDataListener(new SerialPortDataListener()
 			{
-			   @Override
-			   public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
-			   @Override
-			   public void serialEvent(SerialPortEvent event)
-			   {
-			      if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
-			         return;
-			      byte[] newData = new byte[comPort.bytesAvailable()];
-			      int numRead = comPort.readBytes(newData, newData.length);
-			      System.out.println("Read " + numRead + " bytes: " + Arrays.toString(newData));
-			   }
+				@Override
+				public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
+				
+				@Override
+				public void serialEvent(SerialPortEvent event) {
+					if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
+						return;
+					byte[] newData = new byte[comPort.bytesAvailable()];
+					int numRead = comPort.readBytes(newData, newData.length);
+					System.out.println("Read " + numRead + " bytes: " + Arrays.toString(newData));
+				}
 			}
-		);*/
+		);
+		//END(0) Initial Serial Read test
+		
+		
+//		//(1) Byte- or Multibyte-Delimited Message Received
+//		private final class MessageListener implements SerialPortMessageListener
+//		{
+//		   @Override
+//		   public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_RECEIVED; }
+//
+//		   @Override
+//		   public byte[] getMessageDelimiter() { return new byte[] { (byte)0x0B, (byte)0x65 }; }
+//
+//		   @Override
+//		   public boolean delimiterIndicatesEndOfMessage() { return true; }
+//
+//		   @Override
+//		   public void serialEvent(SerialPortEvent event)
+//		   {
+//		      byte[] delimitedMessage = event.getReceivedData();
+//		      System.out.println("Received the following delimited message: " + delimitedMessage);
+//		   }
+//		}
+//
+//		static public void main(String[] args)
+//		{
+//		   SerialPort comPort = SerialPort.getCommPorts()[0];
+//		   comPort.openPort();
+//		   MessageListener listener = new MessageListener();
+//		   comPort.addDataListener(listener);
+//		   try { Thread.sleep(5000); } catch (Exception e) { e.printStackTrace(); }
+//		   comPort.removeDataListener();
+//		   comPort.closePort();
+//		}
+//		//END (1)
+		
+		comPort.closePort();
+		System.out.println("Ending KKIM-KMega connection test...");
 	}
 }
 
