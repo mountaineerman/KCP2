@@ -15,13 +15,23 @@ When programming KMega, set:
 	4. Tools > Port = COM4
 */
 
-//int main(void) { //TODO replace setup() and loop() with main()
-void setup() {
+void setup() { //TODO replace with main()
 	ControlPanel controlPanel;
-	//SerialCommunicator serialCommunicator;
+	SerialCommunicator serialCommunicator;
 	//PacketUnpacker packetUnpacker;
 	//PacketAssembler packetAssembler;
 	KMegaService kMegaService;
+	
+	//kMegaService.startupMode();
+	controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWM(PWM_LED_MAXIMUM);
+	serialCommunicator.establishSerialLink();
+	controlPanel.moduleH.ledPWM_GlassCockpit_BR.setPWM(PWM_LED_MAXIMUM);
+
+	while(true) {
+		//kMegaService.standardOperatingMode();
+		serialCommunicator.ingestData();
+		delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO
+	}
 	
 	exit(EXIT_SUCCESS);
 }

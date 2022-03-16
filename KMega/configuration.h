@@ -13,6 +13,12 @@ static const unsigned long COMPUTER_BAUD_RATE = 38400;//TODO raise rate://115200
 static const int REFRESH_PERIOD_IN_MILLISECONDS = 25;
 static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time kMega will wait before timing out during a serial read operation
 
+
+
+static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C = '<'
+static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecutive packet delimiter bytes that mark the beginning of a packet
+static const int INCOMING_PACKET_LENGTH_IN_BYTES = 2;//Length of Header + Payload. Does not include Delimiter.
+
 //===========================================================================================================================================================================
 //KNano Interface
 static const unsigned long KNANO_BAUD_RATE = COMPUTER_BAUD_RATE;
