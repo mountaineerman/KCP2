@@ -10,14 +10,12 @@
 //Computer Interface
 static const String COMMUNICATION_PORT = "COM4";
 static const unsigned long COMPUTER_BAUD_RATE = 38400;//TODO raise rate://115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
-static const int REFRESH_PERIOD_IN_MILLISECONDS = 25;
+static const int REFRESH_PERIOD_IN_MILLISECONDS = 1;
 static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time kMega will wait before timing out during a serial read operation
-
-
 
 static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C = '<'
 static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecutive packet delimiter bytes that mark the beginning of a packet
-static const int INCOMING_PACKET_LENGTH_IN_BYTES = 2;//Length of Header + Payload. Does not include Delimiter.
+static const int INCOMING_PACKET_LENGTH_IN_BYTES = 195;//Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 
 //===========================================================================================================================================================================
 //KNano Interface
@@ -88,7 +86,7 @@ static const int PIN_MUX_AUTONAVIGATION_SWITCH = 11;
 //LED Driver Boards
 static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
 static const int PWM_LED_MINIMUM = 0;
-static const int PWM_LED_MAXIMUM = 2000;//4095;
+static const int PWM_LED_MAXIMUM = 1000;//4095;
 
 static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//	(Pin 0)		[LED Board 1]
 static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//	(Pin 1)		[LED Board 1]
