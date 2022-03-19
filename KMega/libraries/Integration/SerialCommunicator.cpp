@@ -5,11 +5,16 @@
 //Note: the Arduino Serial buffer is 64 Bytes long by default. See:
 //https://www.hobbytronics.co.uk/arduino-serial-buffer-size#:~:text=The%20Arduino%20core%20code%20contains,only%2064%20bytes%20in%20size.
 
-SerialCommunicator::SerialCommunicator() {
-	delimiterByteCounter = 0;
-	receivedByte = 0x00;
-	packetBuffer[INCOMING_PACKET_LENGTH_IN_BYTES] = {};
-	packetBufferCursor = 0;
+SerialCommunicator::SerialCommunicator()
+{
+	this->outputRefreshPacket = NULL;
+	this->receivedByte = 0x00;
+	this->packetBuffer[INCOMING_PACKET_LENGTH_IN_BYTES] = {};
+	this->clearPacketBuffer();
+}
+
+void SerialCommunicator::setOutputRefreshPacket(byte * outputRefreshPacket) {
+	this->outputRefreshPacket = outputRefreshPacket;
 }
 
 void SerialCommunicator::establishSerialLink() {
@@ -17,42 +22,56 @@ void SerialCommunicator::establishSerialLink() {
 	Serial.begin(COMPUTER_BAUD_RATE);
 }
 
-void SerialCommunicator::ingestData() {
+void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 	
 	while (Serial.available()) { // There are bytes available in the Arduino Serial Buffer
 		
-		receivedByte = Serial.read();
+		this->receivedByte = Serial.read();
 		
-		//Serial.println(delimiterByteCounter);
-		if (0 <= delimiterByteCounter && delimiterByteCounter < NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet has not started yet
-			if (receivedByte == PACKET_DELIMITER_BYTE) {
-				delimiterByteCounter++;
+		//Serial.println(this->delimiterByteCounter);
+		if (0 <= this->delimiterByteCounter && this->delimiterByteCounter < NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet has not started yet
+			if (this->receivedByte == PACKET_DELIMITER_BYTE) {
+				this->delimiterByteCounter++;
 			} else {
-				delimiterByteCounter = 0;
+				this->delimiterByteCounter = 0;
 			}
 		
-		} else if (delimiterByteCounter == NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet read in progress
-			//Serial.println(receivedByte);
-			packetBuffer[packetBufferCursor] = receivedByte;
-			packetBufferCursor++;
+		} else if (this->delimiterByteCounter == NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet read in progress
+			//Serial.println(this->receivedByte);
+			this->packetBuffer[this->packetBufferCursor] = this->receivedByte;
+			this->packetBufferCursor++;
 			
 		} else {
 			//TODO throw exception
 		}
 		
 		
-		if (packetBufferCursor == INCOMING_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
+		if (this->packetBufferCursor == INCOMING_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
 			if (true /*TODO:packet is valid*/) {
-				this->displayPacketBufferInDecimal();
-				//TODO send packet to packetUnpacker
+				this->isValidPacketInPacketBuffer = true;
+				return;				
 			} else { //Packet is invalid
-				
+				this->clearPacketBuffer();
 			}
-			
-			delimiterByteCounter = 0;
-			packetBufferCursor = 0;
-			this->clearPacketBuffer();
 		}
+	}
+}
+
+bool SerialCommunicator::getOutputRefreshPacket() {
+	
+	if (!this->outputRefreshPacket) {
+		//TODO throw exception
+		Serial.println("Exception: SerialCommunicator's outputRefreshPacket is not initialized");
+	}
+	
+	if (this->isValidPacketInPacketBuffer) {
+		for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+			this->outputRefreshPacket[i] = this->packetBuffer[i];
+		}
+		this->clearPacketBuffer();
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -61,23 +80,28 @@ void SerialCommunicator::teardownSerialLink() {
 }
 
 void SerialCommunicator::clearPacketBuffer() {
+
+	this->delimiterByteCounter = 0;
+	this->packetBufferCursor = 0;	
+	this->isValidPacketInPacketBuffer = false;	
+
 	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
-		packetBuffer[i] = 0x00;
+		this->packetBuffer[i] = 0x00;
 	}
 }
 
-void SerialCommunicator::displayPacketBufferInDecimal() {
-	Serial.println("Decimal format:");
-	Serial.print("Position: ");
-	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
-		Serial.print(i+1);
-		Serial.print("\t");
-	}
-	Serial.println();
-	Serial.print("Value:    ");
-	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
-		Serial.print(packetBuffer[i]);
-		Serial.print(" \t");
-	}
-	Serial.println();
-}
+//void SerialCommunicator::displayPacketBufferInDecimal() { //TODO remove
+//	Serial.println("SerialCommunicator: packetBuffer: (decimal format)");
+//	Serial.print("Position: ");
+//	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+//		Serial.print(i+1);
+//		Serial.print("\t");
+//	}
+//	Serial.println();
+//	Serial.print("Value:    ");
+//	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+//		Serial.print(this->packetBuffer[i]);
+//		Serial.print("\t");
+//	}
+//	Serial.println();
+//}
