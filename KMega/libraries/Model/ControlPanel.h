@@ -63,6 +63,7 @@ public:
 	
 	void setAllLEDsOff();
 	void setAllLEDsOn();
+	void writeLEDStatusToLEDDriverBoards();
 	void testLEDsSequentially();
 	
 	void resetStepperToStartingPosition();

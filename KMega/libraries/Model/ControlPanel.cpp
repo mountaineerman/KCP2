@@ -35,9 +35,6 @@ ControlPanel::ControlPanel()
 	this->setAllLEDsOff();
 }
 
-//ControlPanel::~ControlPanel() { //TODO: Reset stepper motor positions
-//}
-
 void ControlPanel::refreshInputStatus() {
 	this->moduleA.refreshInputStatus();
 	this->moduleB.refreshInputStatus();
@@ -80,6 +77,7 @@ void ControlPanel::setAllLEDsOff() {
 	this->moduleH.setAllLEDsOff();
 	this->moduleI.setAllLEDsOff();
 	this->moduleGT.setAllLEDsOff();
+	this->writeLEDStatusToLEDDriverBoards();
 }
 
 void ControlPanel::setAllLEDsOn() {
@@ -92,6 +90,11 @@ void ControlPanel::setAllLEDsOn() {
 	this->moduleH.setAllLEDsOn();
 	this->moduleI.setAllLEDsOn();
 	this->moduleGT.setAllLEDsOn();
+	this->writeLEDStatusToLEDDriverBoards();
+}
+
+void ControlPanel::writeLEDStatusToLEDDriverBoards() {
+	this->ledDriverBoards.write();
 }
 
 void ControlPanel::testLEDsSequentially() {

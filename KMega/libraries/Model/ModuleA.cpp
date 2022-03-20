@@ -29,16 +29,16 @@ String ModuleA::getInputStatusAsString() {
 }
 
 void ModuleA::setAllLEDsOff() {
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 }
 
 void ModuleA::setAllLEDsOn() {
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 }
 
 void ModuleA::testLEDsSequentially() {
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }

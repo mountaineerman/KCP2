@@ -37,25 +37,25 @@ String ModuleF::getInputStatusAsString() {
 }
 
 void ModuleF::setAllLEDsOff() {
-	this->ledPWM_twistSwitch25.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_twistSwitch50.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_twistSwitch75.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_twistSwitch100.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_twistSwitch25.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_twistSwitch50.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_twistSwitch75.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_twistSwitch100.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 }
 
 void ModuleF::setAllLEDsOn() {
-	this->ledPWM_twistSwitch25.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_twistSwitch50.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_twistSwitch75.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_twistSwitch100.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_twistSwitch25.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_twistSwitch50.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_twistSwitch75.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_twistSwitch100.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 }
 
 void ModuleF::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_twistSwitch100);

@@ -15,9 +15,12 @@ KMegaService::KMegaService()
 	
 	this->startupMode(); //TODO move out of constructor
 	
-	while(true) { //TODO move out of constructor
-		this->standardOperatingMode(); //TODO move out of constructor
-	}
+	//Test Diagnostic Mode:
+	this->controlPanel.runDiagnosticMode();
+	
+	//while(true) { //TODO move out of constructor
+	//	this->standardOperatingMode(); //TODO move out of constructor
+	//}
 }
 
 void KMegaService::startupMode() {
@@ -27,9 +30,9 @@ void KMegaService::startupMode() {
 	//TODO Add startup test for Stepper Motors
 	
 	//Establish KKIM Serial Communication Channel:
-	this->controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWM(PWM_LED_MAXIMUM); //Indicate Start of Establishing KKIM Serial Communication Channel
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Start of Establishing KKIM Serial Communication Channel
 	this->serialCommunicator.establishSerialLink();
-	this->controlPanel.moduleH.ledPWM_GlassCockpit_BR.setPWM(PWM_LED_MAXIMUM); //Indicate End of Establishing KKIM Serial Communication Channel
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_BR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate End of Establishing KKIM Serial Communication Channel
 	
 	//TODO Establish KNano Serial Communication Channel. Indicate Start and Finish.
 }
@@ -38,13 +41,15 @@ void KMegaService::standardOperatingMode() {
 	//controlPanel.refreshInputStatus();
 	//Assemble toFlightComputer Packet
 	//Send toFlightComputer Packet
-	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
 	
+	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
 		this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
-		//Refresh outputs?
-		//Send toKNano packet?
+		this->controlPanel.writeLEDStatusToLEDDriverBoards();
+		//TODO Refresh stepper motors?
+		//TODO Send toKNano packet?
 	}
+	
 	//Idle if necessary
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
 }

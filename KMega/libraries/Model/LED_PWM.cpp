@@ -16,7 +16,15 @@ void LED_PWM::setPWM(int pwm) {
 		pwm = PWM_LED_MAXIMUM;
 	}
 	
+	if (pwm < PWM_LED_MINIMUM) {
+		pwm = PWM_LED_MINIMUM;
+	}
+	
 	this->pwm = pwm;
 	this->ledDriverBoards.setPWM(this->channel, this->pwm);
-	this->ledDriverBoards.write(); //TODO replace this with one call every refresh cycle
+}
+
+void LED_PWM::setPWMAndWriteImmediately(int pwm) {
+	this->setPWM(pwm);
+	this->ledDriverBoards.write();
 }

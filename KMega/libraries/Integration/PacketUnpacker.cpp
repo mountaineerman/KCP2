@@ -51,6 +51,8 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(10,11) );
 	//TODO Add remaining outputs
 	
+	controlPanel.writeLEDStatusToLEDDriverBoards();
+	
 	this->clearOutputRefreshPacket();
 }
 
