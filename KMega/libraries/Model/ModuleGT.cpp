@@ -78,6 +78,13 @@ void ModuleGT::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
+void ModuleGT::runStepperIfNecessary() {
+	this->stepper_Density.runStepperIfNecessary();
+	this->stepper_Speed.runStepperIfNecessary();
+	this->stepper_VertSpeed.runStepperIfNecessary();
+	this->stepper_RadarAlt.runStepperIfNecessary();
+}
+
 void ModuleGT::resetStepperToStartingPosition() {
 	this->stepper_Density.resetStepperToStartingPosition();
 	this->stepper_Speed.resetStepperToStartingPosition();

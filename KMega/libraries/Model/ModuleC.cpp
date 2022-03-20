@@ -64,6 +64,11 @@ void ModuleC::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
+void ModuleC::runStepperIfNecessary() {
+	this->stepper_HeatLife.runStepperIfNecessary();
+	this->stepper_Gforce.runStepperIfNecessary();
+}
+
 void ModuleC::resetStepperToStartingPosition() {
 	this->stepper_HeatLife.resetStepperToStartingPosition();
 	this->stepper_Gforce.resetStepperToStartingPosition();

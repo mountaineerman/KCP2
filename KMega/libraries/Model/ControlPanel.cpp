@@ -109,6 +109,13 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleGT.testLEDsSequentially();
 }
 
+void ControlPanel::runStepperIfNecessary() {
+	this->moduleC.runStepperIfNecessary();
+	this->moduleG.runStepperIfNecessary();
+	this->moduleI.runStepperIfNecessary();
+	this->moduleGT.runStepperIfNecessary();
+}
+
 void ControlPanel::resetStepperToStartingPosition() {
 	this->moduleC.resetStepperToStartingPosition();
 	this->moduleG.resetStepperToStartingPosition();

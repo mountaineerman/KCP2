@@ -42,7 +42,7 @@ void StepperMotorNEMA17::setDesiredRelativePosition(long desiredRelativePosition
 	this->stepper.move(desiredRelativePosition);
 }
 
-void StepperMotorNEMA17::run() {
+void StepperMotorNEMA17::runStepperIfNecessary() {
 	this->stepper.enableOutputs();
 	this->stepper.run();
 	this->stepper.disableOutputs();

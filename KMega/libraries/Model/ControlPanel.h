@@ -46,6 +46,22 @@ public:
 	ControlPanel();
 	//~ControlPanel();
 	
+	void refreshInputStatus();
+	String getInputStatusAsString();
+	//TODO: getInputStatusAsPacket
+	
+	void setAllLEDsOff();
+	void setAllLEDsOn();
+	void writeLEDStatusToLEDDriverBoards();
+	void testLEDsSequentially();
+	void activateLEDOverride();
+	void disableLEDOverride();
+	
+	void runStepperIfNecessary();
+	void resetStepperToStartingPosition();
+	
+	void runDiagnosticMode();
+	
 	ModuleA moduleA;
 	ModuleB moduleB;
 	ModuleC moduleC;
@@ -56,22 +72,6 @@ public:
 	ModuleH moduleH;
 	ModuleI moduleI;
 	ModuleGT moduleGT;
-	
-	void refreshInputStatus();
-	String getInputStatusAsString();
-	//TODO: getInputStatusAsPacket
-	
-	void setAllLEDsOff();
-	void setAllLEDsOn();
-	void writeLEDStatusToLEDDriverBoards();
-	void testLEDsSequentially();
-	
-	void resetStepperToStartingPosition();
-	
-	void runDiagnosticMode();
-	
-	void activateLEDOverride();
-	void disableLEDOverride();
 };
 
 #endif

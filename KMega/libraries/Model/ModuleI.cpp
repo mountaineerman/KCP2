@@ -99,6 +99,12 @@ void ModuleI::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
+void ModuleI::runStepperIfNecessary() {
+	this->stepper_Fuel.runStepperIfNecessary();
+	this->stepper_Charge.runStepperIfNecessary();
+	this->stepper_MonopropellantIntake.runStepperIfNecessary();
+}
+
 void ModuleI::resetStepperToStartingPosition() {
 	this->stepper_Fuel.resetStepperToStartingPosition();
 	this->stepper_Charge.resetStepperToStartingPosition();

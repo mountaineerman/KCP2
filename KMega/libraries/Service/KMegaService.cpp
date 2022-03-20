@@ -46,7 +46,7 @@ void KMegaService::standardOperatingMode() {
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
 		this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
 		this->controlPanel.writeLEDStatusToLEDDriverBoards();
-		//TODO Refresh stepper motors?
+		this->controlPanel.runStepperIfNecessary();
 		//TODO Send toKNano packet?
 	}
 	

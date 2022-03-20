@@ -23,14 +23,14 @@ class StepperMotor : public Interface_StepperMotorAggregator
 public:
 	StepperMotor(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted);
 	
-	//Set the desired position. Does not move the stepper, for that you must call run() or runToDesiredPosition()
+	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or runToDesiredPosition()
 	void setDesiredPosition(long desiredPosition);//TODO add error checking for out-of-bounds values.
 	
 	//Set the desired position, relative to the current position (negative == CCW, positive == CW).
 	void setDesiredRelativePosition(long desiredRelativePosition);
 	
 	//Check if the stepper needs to move. Move it one step if it does. See AccelStepper::run() for more info.
-	void run();
+	void runStepperIfNecessary();
 	
 	//Move the stepper. Block until it is in position. See AccelStepper::runToPosition() for more info.
 	void runToDesiredPosition();

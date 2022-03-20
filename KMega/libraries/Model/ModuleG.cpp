@@ -80,6 +80,12 @@ void ModuleG::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
+void ModuleG::runStepperIfNecessary() {
+	this->stepper_Mach.runStepperIfNecessary();
+	this->stepper_Pitch.runStepperIfNecessary();
+	this->stepper_Heading.runStepperIfNecessary();
+}
+
 void ModuleG::resetStepperToStartingPosition() {
 	this->stepper_Mach.resetStepperToStartingPosition();
 	this->stepper_Pitch.resetStepperToStartingPosition();

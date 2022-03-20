@@ -20,6 +20,7 @@ public:
 	void setAllLEDsOn();
 	void testLEDsSequentially();
 	
+	void runStepperIfNecessary();
 	void resetStepperToStartingPosition();
 	
 	//Parts:
