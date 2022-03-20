@@ -86,43 +86,43 @@ String ModuleD::getInputStatusAsString() {
 }
 
 void ModuleD::setAllLEDsOff() {
-	this->ledPWM_BrakeModuleD.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotHold.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotPrograde.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotRetrograde.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotNormal_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotNormal_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotAntiNormal_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotAntiNormal_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotRadialIn_Green.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotRadialIn_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotRadialOut_Green.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotRadialOut_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotTarget_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotTarget_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotAntiTarget_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotAntiTarget_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_AutopilotManeuver.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_BrakeModuleD.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotHold.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotPrograde.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotRetrograde.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotNormal_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotNormal_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotAntiNormal_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotAntiNormal_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotRadialIn_Green.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotRadialIn_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotRadialOut_Green.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotRadialOut_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotTarget_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotTarget_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotAntiTarget_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotAntiTarget_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_AutopilotManeuver.setPWM(PWM_LED_MINIMUM);
 }
 
 void ModuleD::setAllLEDsOn() {
-	this->ledPWM_BrakeModuleD.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotHold.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotPrograde.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotRetrograde.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotNormal_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotNormal_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotAntiNormal_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotAntiNormal_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotRadialIn_Green.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotRadialIn_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotRadialOut_Green.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotRadialOut_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotTarget_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotTarget_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotAntiTarget_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotAntiTarget_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_AutopilotManeuver.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_BrakeModuleD.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotHold.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotPrograde.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotRetrograde.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotNormal_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotNormal_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotAntiNormal_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotAntiNormal_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotRadialIn_Green.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotRadialIn_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotRadialOut_Green.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotRadialOut_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotTarget_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotTarget_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotAntiTarget_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotAntiTarget_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_AutopilotManeuver.setPWM(PWM_LED_MAXIMUM);
 }
 
 void ModuleD::testLEDsSequentially() {

@@ -29,11 +29,11 @@ String ModuleA::getInputStatusAsString() {
 }
 
 void ModuleA::setAllLEDsOff() {
-	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MINIMUM);
 }
 
 void ModuleA::setAllLEDsOn() {
-	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MAXIMUM);
 }
 
 void ModuleA::testLEDsSequentially() {

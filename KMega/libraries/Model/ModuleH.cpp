@@ -42,21 +42,21 @@ String ModuleH::getInputStatusAsString() {
 }
 
 void ModuleH::setAllLEDsOff() {
-	this->ledPWM_GlassCockpit_TL.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_BL.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_TR.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_BR.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_GlassCockpit_TL.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_GlassCockpit_CL.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_GlassCockpit_BL.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_GlassCockpit_TR.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_GlassCockpit_CR.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_GlassCockpit_BR.setPWM(PWM_LED_MINIMUM);
 }
 
 void ModuleH::setAllLEDsOn() {
-	this->ledPWM_GlassCockpit_TL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_BL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_TR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_BR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_GlassCockpit_TL.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_GlassCockpit_CL.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_GlassCockpit_BL.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_GlassCockpit_TR.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_GlassCockpit_CR.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_GlassCockpit_BR.setPWM(PWM_LED_MAXIMUM);
 }
 
 void ModuleH::testLEDsSequentially() {

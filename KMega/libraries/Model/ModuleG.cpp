@@ -33,30 +33,30 @@ String ModuleG::getInputStatusAsString() {
 }
 
 void ModuleG::setAllLEDsOff() {
-	this->ledPWM_MACH_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_MACH_Green.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_MACH_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_PITCH_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_PITCH_Green.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_PITCH_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_HEADING_Red.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_HEADING_Green.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_HEADING_Blue.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_MACH_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_MACH_Green.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_MACH_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_PITCH_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_PITCH_Green.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_PITCH_Blue.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_HEADING_Red.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_HEADING_Green.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_HEADING_Blue.setPWM(PWM_LED_MINIMUM);
 
 }
 
 void ModuleG::setAllLEDsOn() {
-	this->ledPWM_MACH_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_MACH_Green.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_MACH_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_PITCH_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_PITCH_Green.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_PITCH_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_HEADING_Red.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_HEADING_Green.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_HEADING_Blue.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_MACH_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_MACH_Green.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_MACH_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_PITCH_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_PITCH_Green.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_PITCH_Blue.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_Comms.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_HEADING_Red.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_HEADING_Green.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_HEADING_Blue.setPWM(PWM_LED_MAXIMUM);
 }
 
 void ModuleG::testLEDsSequentially() {

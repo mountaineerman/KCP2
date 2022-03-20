@@ -72,19 +72,19 @@ String ModuleE::getInputStatusAsString() {
 }
 
 void ModuleE::setAllLEDsOff() {
-	this->ledPWM_ORB.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_PLN.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_30deg.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_Fairing.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
-	this->ledPWM_Chute.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->ledPWM_ORB.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_PLN.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_30deg.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_Fairing.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_Chute.setPWM(PWM_LED_MINIMUM);
 }
 
 void ModuleE::setAllLEDsOn() {
-	this->ledPWM_ORB.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_PLN.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_30deg.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_Fairing.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
-	this->ledPWM_Chute.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+	this->ledPWM_ORB.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_PLN.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_30deg.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_Fairing.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_Chute.setPWM(PWM_LED_MAXIMUM);
 }
 
 void ModuleE::testLEDsSequentially() {
