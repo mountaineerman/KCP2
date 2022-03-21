@@ -18,15 +18,18 @@ private:
 	void standardOperatingMode();
 	//void diagnosticMode();
 	//void shutdownMode();
-	void clearOutputRefreshPacket();//TODO remove?
-	void displayOutputRefreshPacket(); //TODO remove
+	void clearOutputRefreshPacket();
+	void clearInputRefreshPacket();
+	//void displayOutputRefreshPacket(); //TODO remove
+	void displayInputRefreshPacket(); //TODO remove
 	
 	ControlPanel controlPanel;
 	SerialCommunicator serialCommunicator;
 	PacketUnpacker packetUnpacker;
-	//PacketAssembler packetAssembler;
+	PacketAssembler packetAssembler;
 	
-	byte outputRefreshPacket[INCOMING_PACKET_LENGTH_IN_BYTES]; //READ-ONLY after initialization
+	byte outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES]; //READ-ONLY after initialization
+	byte inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES];   //READ-ONLY after initialization
 };
 
 #endif

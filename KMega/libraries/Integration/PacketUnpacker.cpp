@@ -22,13 +22,13 @@ void PacketUnpacker::displayOutputRefreshPacketInDecimal() {
 	
 	Serial.println("PacketUnpacker: outputRefreshPacket: (Decimal Format)");
 	Serial.print("Position: ");
-	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		Serial.print(i+1);
 		Serial.print("\t");
 	}
 	Serial.println();
 	Serial.print("Value:    ");
-	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		Serial.print(this->outputRefreshPacket[i]);
 		Serial.print("\t");
 	}
@@ -49,6 +49,7 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	//Serial.println(temp);                                              //TODO remove
 	//controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM(temp);             //TODO remove
 	controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(10,11) );
+	controlPanel.moduleD.ledPWM_BrakeModuleD.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(12,13) );
 	//TODO Add remaining outputs
 	
 	controlPanel.writeLEDStatusToLEDDriverBoards();
@@ -57,7 +58,7 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 }
 
 void PacketUnpacker::clearOutputRefreshPacket() {
-	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		this->outputRefreshPacket[i] = 0x00;
 	}
 }
@@ -65,12 +66,12 @@ void PacketUnpacker::clearOutputRefreshPacket() {
 // byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote)
 int PacketUnpacker::convertTwoBytesInOutputRefreshPacketIntoInteger(int byteNum1, int byteNum2) {
 	
-	if (byteNum1 > INCOMING_PACKET_LENGTH_IN_BYTES) {
+	if (byteNum1 > OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
 		//TODO throw exception
 		Serial.println("Exception: PacketUnpacker:convertTwoByteArrayIntoInteger:byteNum1 greater than length of OutputRefreshPacket");
 	}
 	
-	if (byteNum2 > INCOMING_PACKET_LENGTH_IN_BYTES) {
+	if (byteNum2 > OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
 		//TODO throw exception
 		Serial.println("Exception: PacketUnpacker:convertTwoByteArrayIntoInteger:byteNum2 greater than length of OutputRefreshPacket");
 	}

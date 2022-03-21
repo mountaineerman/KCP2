@@ -11,6 +11,7 @@ class SerialCommunicator
 public:
 	SerialCommunicator();
 	void setOutputRefreshPacket(byte * outputRefreshPacket);
+	void setInputRefreshPacket(byte * inputRefreshPacket);
 	
 	void establishSerialLink();
 	
@@ -27,14 +28,15 @@ public:
 private:
 	//Clear the packetBuffer and associated variables
 	void clearPacketBuffer();
-	void displayPacketBufferInDecimal();
+	void displayPacketBufferInDecimal(); //TODO remove
 	
 	int delimiterByteCounter; // The number of consecutive delimiter bytes that have been read
 	int packetBufferCursor; //The position of the next element to write to in the Packet Buffer
 	bool isValidPacketInPacketBuffer;
 	byte receivedByte;
-	byte packetBuffer[INCOMING_PACKET_LENGTH_IN_BYTES];
+	byte packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];
 	byte * outputRefreshPacket; //See KMegaService
+	byte * inputRefreshPacket;  //See KMegaService
 	//TODO numberOfRejectedBytesPerSecond
 	//TODO numberOfRejectedPacketsPerSecond
 	//TODO numberOfAcceptedPacketsPerSecond

@@ -8,13 +8,18 @@
 SerialCommunicator::SerialCommunicator()
 {
 	this->outputRefreshPacket = NULL;
+	this->inputRefreshPacket = NULL;
 	this->receivedByte = 0x00;
-	this->packetBuffer[INCOMING_PACKET_LENGTH_IN_BYTES] = {};
+	this->packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES] = {};
 	this->clearPacketBuffer();
 }
 
 void SerialCommunicator::setOutputRefreshPacket(byte * outputRefreshPacket) {
 	this->outputRefreshPacket = outputRefreshPacket;
+}
+
+void SerialCommunicator::setInputRefreshPacket(byte * inputRefreshPacket) {
+	this->inputRefreshPacket = inputRefreshPacket;
 }
 
 void SerialCommunicator::establishSerialLink() {
@@ -46,7 +51,7 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 		}
 		
 		
-		if (this->packetBufferCursor == INCOMING_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
+		if (this->packetBufferCursor == OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
 			if (true /*TODO:packet is valid*/) {
 				this->isValidPacketInPacketBuffer = true;
 				return;				
@@ -65,7 +70,7 @@ bool SerialCommunicator::getOutputRefreshPacket() {
 	}
 	
 	if (this->isValidPacketInPacketBuffer) {
-		for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+		for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 			this->outputRefreshPacket[i] = this->packetBuffer[i];
 		}
 		this->clearPacketBuffer();
@@ -85,7 +90,7 @@ void SerialCommunicator::clearPacketBuffer() {
 	this->packetBufferCursor = 0;	
 	this->isValidPacketInPacketBuffer = false;	
 
-	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		this->packetBuffer[i] = 0x00;
 	}
 }
@@ -93,13 +98,13 @@ void SerialCommunicator::clearPacketBuffer() {
 //void SerialCommunicator::displayPacketBufferInDecimal() { //TODO remove
 //	Serial.println("SerialCommunicator: packetBuffer: (decimal format)");
 //	Serial.print("Position: ");
-//	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+//	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 //		Serial.print(i+1);
 //		Serial.print("\t");
 //	}
 //	Serial.println();
 //	Serial.print("Value:    ");
-//	for (int i = 0; i < INCOMING_PACKET_LENGTH_IN_BYTES; i++) {
+//	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 //		Serial.print(this->packetBuffer[i]);
 //		Serial.print("\t");
 //	}
