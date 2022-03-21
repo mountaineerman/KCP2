@@ -48,16 +48,18 @@ void KMegaService::standardOperatingMode() {
 
 	this->controlPanel.refreshInputStatus();
 	this->packetAssembler.assembleInputRefreshPacket();
-	this->displayInputRefreshPacket();
-	//TODO Send inputRefreshPacket
+	//this->displayInputRefreshPacket();
+	this->serialCommunicator.sendInputRefreshPacket();
 	
 	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
+		//this->displayOutputRefreshPacket();
 		this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
 		this->controlPanel.writeLEDStatusToLEDDriverBoards();
 		//TODO Send toKNano packet?
 	}
 	
+	this->serialCommunicator.tallyDiagnosticData();
 	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
 	
 	//Idle if necessary
@@ -65,7 +67,7 @@ void KMegaService::standardOperatingMode() {
 	delay(1000); //TODO remove
 }
 
-void KMegaService::clearOutputRefreshPacket() {
+void KMegaService::clearOutputRefreshPacket() {//TODO combine with clearInputRefreshPacket into generic method
 	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		this->outputRefreshPacket[i] = 0x00;
 	}

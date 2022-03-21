@@ -20,15 +20,20 @@ public:
 	// b) There is no data left in the Serial Buffer
 	void ingestDataFromSerialBufferToPacketBuffer();
 	
-	//Attempts to populate (shared) outputRefreshPacket[] with a valid OutputRefreshPacket. Returns true if successful and false if not.
+	//Attempts to populate (shared) outputRefreshPacket. Returns true if successful and false if not.
 	bool getOutputRefreshPacket();
+	
+	//Attempts to send an inputRefreshPacket to KKIM.
+	void sendInputRefreshPacket();
+	
+	void tallyDiagnosticData();
 	
 	void teardownSerialLink();
 
 private:
 	//Clear the packetBuffer and associated variables
 	void clearPacketBuffer();
-	void displayPacketBufferInDecimal(); //TODO remove
+	//void displayPacketBufferInDecimal(); //TODO remove
 	
 	int delimiterByteCounter; // The number of consecutive delimiter bytes that have been read
 	int packetBufferCursor; //The position of the next element to write to in the Packet Buffer
@@ -36,10 +41,21 @@ private:
 	byte receivedByte;
 	byte packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];
 	byte * outputRefreshPacket; //See KMegaService
+	
+	int numberOfBytesWritten;
 	byte * inputRefreshPacket;  //See KMegaService
-	//TODO numberOfRejectedBytesPerSecond
-	//TODO numberOfRejectedPacketsPerSecond
-	//TODO numberOfAcceptedPacketsPerSecond
+	
+	unsigned int secondTimer;
+	unsigned int running_numberOfRejectedIncomingBytes;
+	unsigned int running_numberOfRejectedOutputRefreshPackets;
+	unsigned int running_numberOfAcceptedOutputRefreshPackets;
+	unsigned int running_numberOfSentInputRefreshPackets;
+	unsigned int running_numberOfInputRefreshPacketsNotSent;
+	unsigned int numberOfRejectedIncomingBytes;
+	unsigned int numberOfRejectedOutputRefreshPackets;
+	unsigned int numberOfAcceptedOutputRefreshPackets;
+	unsigned int numberOfSentInputRefreshPackets;
+	unsigned int numberOfInputRefreshPacketsNotSent;
 };
 
 #endif

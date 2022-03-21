@@ -18,6 +18,8 @@ static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecuti
 static const int OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 195;//Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 29;  //Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 
+static const int MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS = 1000;
+
 //===========================================================================================================================================================================
 //KNano Interface
 static const unsigned long KNANO_BAUD_RATE = COMPUTER_BAUD_RATE;
