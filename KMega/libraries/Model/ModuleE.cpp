@@ -29,7 +29,7 @@ ModuleE::ModuleE(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, switch_AutoNavigation	(PIN_MUX_AUTONAVIGATION_SWITCH, false, MULTIPLEXER_IO_ROW_3, mux)
 
 {
-	//Serial.println("ModuleE Constructor");
+	
 }
 
 void ModuleE::refreshInputStatus() {
@@ -90,9 +90,9 @@ void ModuleE::setAllLEDsOn() {
 void ModuleE::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_Fairing);

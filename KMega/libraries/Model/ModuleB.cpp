@@ -18,7 +18,7 @@ ModuleB::ModuleB(MuxShield& mux)
 	, switch_YawTrim		(PIN_MUX_YAW_TRIM_SWITCH, 	false,	MULTIPLEXER_IO_ROW_2, mux)
 	, switch_RollTrim		(PIN_MUX_ROLL_TRIM_SWITCH, 	false,	MULTIPLEXER_IO_ROW_2, mux)
 {
-	//Serial.println("ModuleB Constructor");
+	
 }
 
 void ModuleB::refreshInputStatus() {

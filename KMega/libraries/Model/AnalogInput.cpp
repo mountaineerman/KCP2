@@ -4,7 +4,6 @@
 AnalogInput::AnalogInput(uint8_t pinNumber) {
 	this->pinNumber = pinNumber;
 	//Note: no pinMode initialization is required for analog inputs
-	//Serial.println("AnalogInput Constructor");
 }
 
 void AnalogInput::refreshInputStatus() {

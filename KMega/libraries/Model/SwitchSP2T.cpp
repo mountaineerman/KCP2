@@ -13,7 +13,6 @@ SwitchSP2T::SwitchSP2T(uint8_t pinNumber, bool isPullupInput) {
 	} else {
 		pinMode(pinNumber, INPUT);
 	}
-	//Serial.println("SwitchSP2T Constructor");
 }
 
 //Multiplexer-monitored switch
@@ -27,7 +26,6 @@ SwitchSP2T::SwitchSP2T(uint8_t muxColumnNumber, bool isPullupInput, uint8_t muxR
 	//this->mux = mux;
 
 	//Note: Pullup mode is set for the multiplexer by row (separately), not by pin. See MuxShield::setMode(...)
-	//Serial.println("SwitchSP2T Constructor");
 }
 
 void SwitchSP2T::refreshInputStatus() {
