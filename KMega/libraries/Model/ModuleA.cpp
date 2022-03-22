@@ -12,7 +12,7 @@ ModuleA::ModuleA(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, switch_StagingButton	(PIN_MUX_STAGING_BUTTON,false, MULTIPLEXER_IO_ROW_2, mux)
 	, ledPWM_BrakeModuleA		(PIN_LEDDB_BRAKE_LED_MODULE_A, ledDriverBoards)
 {
-	//Serial.println("ModuleA Constructor");
+	
 }
 
 void ModuleA::refreshInputStatus() {
@@ -37,8 +37,8 @@ void ModuleA::setAllLEDsOn() {
 }
 
 void ModuleA::testLEDsSequentially() {
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MAXIMUM);
+	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MINIMUM);
+	this->ledPWM_BrakeModuleA.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }

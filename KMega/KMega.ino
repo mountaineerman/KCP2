@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #include "configuration.h"
-#include <ControlPanel.h>
+#include <KMegaService.h>
 
 /* REMINDER: 
 When programming KMega, set:
@@ -11,26 +11,7 @@ When programming KMega, set:
 	4. Tools > Port = COM4
 */
 
-void setup() {
-	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
-	Serial.begin(COMPUTER_BAUD_RATE);
-	delay(1000);
-}
-
-void loop() {
-	delay(1000);
-	
-	ControlPanel controlPanel;
-	controlPanel.runDiagnosticMode();
-	controlPanel.resetStepperToStartingPosition();
-	
-	Serial.println("Main Menu. Terminating meow...");
-	
-	delay(500);
+void setup() { //TODO replace with main()
+	KMegaService kMegaService;
 	exit(EXIT_SUCCESS);
-	
-	//27 rows per half-screen
-	//59 rows per full-screen
 }
-
-

@@ -25,7 +25,7 @@ void StepperMotor::setDesiredRelativePosition(long desiredRelativePosition) {
 	this->stepper.move(desiredRelativePosition);
 }
 
-void StepperMotor::run() {
+void StepperMotor::runStepperIfNecessary() {
 	this->stepper.run();
 }
 

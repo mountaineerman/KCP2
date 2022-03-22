@@ -25,7 +25,7 @@ ModuleI::ModuleI(Adafruit_TLC5947& ledDriverBoards)
 	, stepper_Charge				(PIN_VID6606_2_FREQUENCY_CHARGE,	PIN_VID6606_2_DIRECTION_CHARGE,	false)
 	, stepper_MonopropellantIntake	(PIN_VID6606_2_FREQUENCY_MNPINT,	PIN_VID6606_2_DIRECTION_MNPINT,	true)
 {
-	//Serial.println("ModuleI Constructor");
+	
 }
 
 void ModuleI::refreshInputStatus() {
@@ -76,9 +76,9 @@ void ModuleI::setAllLEDsOn() {
 void ModuleI::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_FUEL_Red);
@@ -97,6 +97,12 @@ void ModuleI::testLEDsSequentially() {
 	blinkLED(this->ledPWM_INTAKE_Green);
 	blinkLED(this->ledPWM_INTAKE_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
+}
+
+void ModuleI::runStepperIfNecessary() {
+	this->stepper_Fuel.runStepperIfNecessary();
+	this->stepper_Charge.runStepperIfNecessary();
+	this->stepper_MonopropellantIntake.runStepperIfNecessary();
 }
 
 void ModuleI::resetStepperToStartingPosition() {

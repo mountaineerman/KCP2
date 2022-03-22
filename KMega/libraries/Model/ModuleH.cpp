@@ -19,7 +19,7 @@ ModuleH::ModuleH(Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_GlassCockpit_CR	(PIN_LEDDB_GLASS_COCKPIT_CR, ledDriverBoards)
 	, ledPWM_GlassCockpit_BR	(PIN_LEDDB_GLASS_COCKPIT_BR, ledDriverBoards)
 {
-	//Serial.println("ModuleH Constructor");
+	
 }
 
 void ModuleH::refreshInputStatus() {
@@ -62,9 +62,9 @@ void ModuleH::setAllLEDsOn() {
 void ModuleH::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_GlassCockpit_TL);

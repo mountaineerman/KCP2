@@ -17,7 +17,7 @@ ModuleC::ModuleC(Adafruit_TLC5947& ledDriverBoards)
 	, stepper_HeatLife		(PIN_VID6606_1_FREQUENCY_HEATLIFE,	PIN_VID6606_1_DIRECTION_HEATLIFE,	true)
 	, stepper_Gforce		(PIN_VID6606_1_FREQUENCY_GFORCE,	PIN_VID6606_1_DIRECTION_GFORCE, 	true)
 {
-	//Serial.println("ModuleC Constructor");
+	
 }
 
 void ModuleC::setAllLEDsOff() {
@@ -47,9 +47,9 @@ void ModuleC::setAllLEDsOn() {
 void ModuleC::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_HEAT_Red);
@@ -62,6 +62,11 @@ void ModuleC::testLEDsSequentially() {
 	blinkLED(this->ledPWM_GFORCE_Green);
 	blinkLED(this->ledPWM_GFORCE_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
+}
+
+void ModuleC::runStepperIfNecessary() {
+	this->stepper_HeatLife.runStepperIfNecessary();
+	this->stepper_Gforce.runStepperIfNecessary();
 }
 
 void ModuleC::resetStepperToStartingPosition() {

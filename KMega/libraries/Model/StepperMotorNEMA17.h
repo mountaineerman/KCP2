@@ -23,14 +23,14 @@ public:
 	//Define a stepper motor and set its maximum speed/acceleration
 	StepperMotorNEMA17(uint8_t pinStep, uint8_t pinDirection, uint8_t pinSleep, uint8_t pinMS1, uint8_t pinMS2);
 	
-	//Set the desired position. Does not move the stepper, for that you must call run() or runToDesiredPosition()
+	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or runToDesiredPosition()
 	void setDesiredPosition(long desiredPosition);//TODO add error checking for out-of-bounds values.
 	
 	//Set the desired position, relative to the current position (negative == CCW, positive == CW).
 	void setDesiredRelativePosition(long desiredRelativePosition);
 	
 	//Check if the stepper needs to move. Move it one step if it does. See AccelStepper::run() for more info.
-	void run();
+	void runStepperIfNecessary();
 	
 	//Move the stepper. Block until it is in position. See AccelStepper::runToPosition() for more info.
 	void runToDesiredPosition();

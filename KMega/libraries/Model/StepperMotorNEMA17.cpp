@@ -29,7 +29,8 @@ StepperMotorNEMA17::StepperMotorNEMA17(uint8_t pinStep, uint8_t pinDirection, ui
 	this->stepper.setAcceleration(NEMA17_MAX_ACCELERATION);
 	//?this->stepper.setPinsInverted(this->arePinsInverted);
 	this->stepper.setEnablePin(this->pinSleep);
-	this->stepper.enableOutputs(); //TODO what is this?
+	//this->stepper.enableOutputs(); //TODO what is this?
+	this->stepper.disableOutputs();
 }
 
 void StepperMotorNEMA17::setDesiredPosition(long desiredPosition) {
@@ -41,18 +42,24 @@ void StepperMotorNEMA17::setDesiredRelativePosition(long desiredRelativePosition
 	this->stepper.move(desiredRelativePosition);
 }
 
-void StepperMotorNEMA17::run() {
+void StepperMotorNEMA17::runStepperIfNecessary() {
+	this->stepper.enableOutputs();
 	this->stepper.run();
+	this->stepper.disableOutputs();
 	//TODO Try adding hibernation later (AccelStepper:  disableOutputs(); enableOutputs();)
 }
 
 void StepperMotorNEMA17::runToDesiredPosition() {
+	this->stepper.enableOutputs();
 	this->stepper.runToPosition();
+	this->stepper.disableOutputs();
 }
 
 void StepperMotorNEMA17::resetStepperToStartingPosition() {
 	this->setDesiredPosition(NEMA17_CCW_LIMIT);//TODO replace with non-blocking mechanism
+	this->stepper.enableOutputs();
 	this->runToDesiredPosition();
+	this->stepper.disableOutputs();
 }
 
 long StepperMotorNEMA17::getCurrentPosition() {

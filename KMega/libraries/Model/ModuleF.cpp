@@ -16,7 +16,7 @@ ModuleF::ModuleF(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_twistSwitch75	(PIN_LEDDB_TWIST_SWITCH_75, ledDriverBoards)
 	, ledPWM_twistSwitch100	(PIN_LEDDB_TWIST_SWITCH_100, ledDriverBoards)
 {
-	//Serial.println("ModuleF Constructor");
+	
 }
 
 void ModuleF::refreshInputStatus() {
@@ -53,9 +53,9 @@ void ModuleF::setAllLEDsOn() {
 void ModuleF::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_twistSwitch100);

@@ -33,11 +33,7 @@ ControlPanel::ControlPanel()
 	this->disableLEDOverride();
 	
 	this->setAllLEDsOff();
-	//Serial.println("ControlPanelConstructor");
 }
-
-//ControlPanel::~ControlPanel() { //TODO: Reset stepper motor positions
-//}
 
 void ControlPanel::refreshInputStatus() {
 	this->moduleA.refreshInputStatus();
@@ -81,6 +77,7 @@ void ControlPanel::setAllLEDsOff() {
 	this->moduleH.setAllLEDsOff();
 	this->moduleI.setAllLEDsOff();
 	this->moduleGT.setAllLEDsOff();
+	this->writeLEDStatusToLEDDriverBoards();
 }
 
 void ControlPanel::setAllLEDsOn() {
@@ -93,6 +90,11 @@ void ControlPanel::setAllLEDsOn() {
 	this->moduleH.setAllLEDsOn();
 	this->moduleI.setAllLEDsOn();
 	this->moduleGT.setAllLEDsOn();
+	this->writeLEDStatusToLEDDriverBoards();
+}
+
+void ControlPanel::writeLEDStatusToLEDDriverBoards() {
+	this->ledDriverBoards.write();
 }
 
 void ControlPanel::testLEDsSequentially() {
@@ -105,6 +107,13 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleH.testLEDsSequentially();
 	this->moduleI.testLEDsSequentially();
 	this->moduleGT.testLEDsSequentially();
+}
+
+void ControlPanel::runStepperIfNecessary() {
+	this->moduleC.runStepperIfNecessary();
+	this->moduleG.runStepperIfNecessary();
+	this->moduleI.runStepperIfNecessary();
+	this->moduleGT.runStepperIfNecessary();
 }
 
 void ControlPanel::resetStepperToStartingPosition() {

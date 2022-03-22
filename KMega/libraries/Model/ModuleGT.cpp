@@ -22,7 +22,7 @@ ModuleGT::ModuleGT(Adafruit_TLC5947& ledDriverBoards)
 , stepper_VertSpeed	(PIN_VID6606_3_FREQUENCY_VERTICALSPEED,	PIN_VID6606_3_DIRECTION_VERTICALSPEED,	true)
 , stepper_RadarAlt	(PIN_VID6606_3_FREQUENCY_RADARALTITUDE,	PIN_VID6606_3_DIRECTION_RADARALTITUDE,	true)
 {
-	//Serial.println("ModuleGT Constructor");
+	
 }
 
 void ModuleGT::setAllLEDsOff() {	
@@ -58,9 +58,9 @@ void ModuleGT::setAllLEDsOn() {
 void ModuleGT::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_DENSITY_Red);
@@ -76,6 +76,13 @@ void ModuleGT::testLEDsSequentially() {
 	blinkLED(this->ledPWM_RADARALT_Green);
 	blinkLED(this->ledPWM_RADARALT_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
+}
+
+void ModuleGT::runStepperIfNecessary() {
+	this->stepper_Density.runStepperIfNecessary();
+	this->stepper_Speed.runStepperIfNecessary();
+	this->stepper_VertSpeed.runStepperIfNecessary();
+	this->stepper_RadarAlt.runStepperIfNecessary();
 }
 
 void ModuleGT::resetStepperToStartingPosition() {

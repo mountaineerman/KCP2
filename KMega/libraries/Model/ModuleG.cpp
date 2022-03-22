@@ -20,7 +20,7 @@ ModuleG::ModuleG(Adafruit_TLC5947& ledDriverBoards)
 	, stepper_Pitch	(PIN_VID6606_1_FREQUENCY_PITCH, PIN_VID6606_1_DIRECTION_PITCH, false)
 	, stepper_Heading (PIN_EASYDRIVER_STEP, PIN_EASYDRIVER_DIR, PIN_EASYDRIVER_SLP, PIN_EASYDRIVER_MS1, PIN_EASYDRIVER_MS2)
 {
-	//Serial.println("ModuleG Constructor");
+	
 }
 
 void ModuleG::refreshInputStatus() {
@@ -62,9 +62,9 @@ void ModuleG::setAllLEDsOn() {
 void ModuleG::testLEDsSequentially() {
 	
 	auto blinkLED = [](const LED_PWM& led) { 
-		led.setPWM(PWM_LED_MAXIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
-		led.setPWM(PWM_LED_MINIMUM);
+		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 	};
 	
 	blinkLED(this->ledPWM_MACH_Red);
@@ -78,6 +78,12 @@ void ModuleG::testLEDsSequentially() {
 	blinkLED(this->ledPWM_HEADING_Green);
 	blinkLED(this->ledPWM_HEADING_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
+}
+
+void ModuleG::runStepperIfNecessary() {
+	this->stepper_Mach.runStepperIfNecessary();
+	this->stepper_Pitch.runStepperIfNecessary();
+	this->stepper_Heading.runStepperIfNecessary();
 }
 
 void ModuleG::resetStepperToStartingPosition() {
