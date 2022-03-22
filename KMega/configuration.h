@@ -16,7 +16,7 @@ static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amou
 static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C = '<'
 static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecutive packet delimiter bytes that mark the beginning of a packet
 static const int OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 195;//Length of Header + Payload. Does not include Packet Start Delimiter bytes.
-static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 29;  //Length of Header + Payload. Does not include Packet Start Delimiter bytes.
+static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 28;  //Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 
 static const int MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS = 1000;
 

@@ -63,8 +63,7 @@ void KMegaService::standardOperatingMode() {
 	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
 	
 	//Idle if necessary
-	//delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
-	delay(1000); //TODO remove
+	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
 }
 
 void KMegaService::clearOutputRefreshPacket() {//TODO combine with clearInputRefreshPacket into generic method

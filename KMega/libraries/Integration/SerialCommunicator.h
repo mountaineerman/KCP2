@@ -26,7 +26,7 @@ public:
 	//Attempts to send an inputRefreshPacket to KKIM.
 	void sendInputRefreshPacket();
 	
-	void tallyDiagnosticData();
+	void tallyDiagnosticData();//TODO Inject Communications Diagnostic Data into inputRefreshPacket
 	
 	void teardownSerialLink();
 
@@ -45,7 +45,7 @@ private:
 	int numberOfBytesWritten;
 	byte * inputRefreshPacket;  //See KMegaService
 	
-	unsigned int secondTimer;
+	unsigned int timer;
 	unsigned int running_numberOfRejectedIncomingBytes;
 	unsigned int running_numberOfRejectedOutputRefreshPackets;
 	unsigned int running_numberOfAcceptedOutputRefreshPackets;

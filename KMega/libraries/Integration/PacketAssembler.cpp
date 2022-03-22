@@ -42,6 +42,23 @@ void PacketAssembler::assembleInputRefreshPacket() {
 		Serial.println("Exception: PacketAssembler's inputRefreshPacket is not initialized");
 	}
 	
+	// (1) Populate Delimiter:
+	for (int i = 0; i < NUMBER_OF_PACKET_DELIMITER_BYTES; i++) {
+		this->inputRefreshPacket[i] = PACKET_DELIMITER_BYTE;
+	}
+	
+	// (2) Populate Header:
+	/* Originator */	this->saveByteToInputRefreshPacket(1, 0x01);
+	/* Packet Type */	this->saveByteToInputRefreshPacket(2, 0x01);
+	/* Packet Length */	this->saveByteToInputRefreshPacket(3, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES);
+	/* Current Mode */	this->saveByteToInputRefreshPacket(4, 0x00);//TODO
+	/* Command */		this->saveByteToInputRefreshPacket(5, 0x00);//TODO
+	/* Parity Byte */	this->saveByteToInputRefreshPacket(6, 0x00);//TODO
+	/* Empty */			this->saveByteToInputRefreshPacket(7, 0x00);
+	/* Empty */			this->saveByteToInputRefreshPacket(8, 0x00);
+	/* Empty */			this->saveByteToInputRefreshPacket(9, 0x00);
+	
+	// (3) Populate Payload:
 	byte tempByte = 0;
 	
 	tempByte = this->compressBoolsIntoByte(controlPanel.moduleA.switch_StagingButton.getInputStatus(),
