@@ -11,9 +11,6 @@ ext {
 }
 
 dependencies {
-    implementation project(':utilities')
-    implementation project(':kkim-kmega-api')
-	
 	//kRPC Client Dependencies:
 	implementation fileTree(dir: "libs", includes: ['krpc-java-0.4.8.jar'])
     implementation 'com.google.protobuf:protobuf-java:3.11.0'	        // kRPC Client library depends on protobuf version 3

@@ -5,6 +5,11 @@ package mountaineerman.kcp2.kkim.app.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import mountaineerman.kcp2.kkim.model.ModuleID;
+import mountaineerman.kcp2.kkim.model.SwitchSP2T;
+import mountaineerman.kcp2.kkim.model.SwitchSP4T;
+import mountaineerman.kcp2.kkim.model.SwitchSP4TPosition;
+
 class SwitchSP4TTest {
 
 	@Test
