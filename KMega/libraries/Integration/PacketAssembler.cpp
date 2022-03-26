@@ -21,8 +21,8 @@ void PacketAssembler::displayInputRefreshPacketInDecimal() {
 	}
 	
 	Serial.println("PacketAssembler: inputRefreshPacket: (Decimal Format)");
-	Serial.print("Position: ");
-	for (int i = 0; i < INPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
+	Serial.print("Position: N/A\tN/A\tN/A\t");
+	for (int i = 0; i < (INPUT_REFRESH_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES); i++) {
 		Serial.print(i+1);
 		Serial.print("\t");
 	}
@@ -48,15 +48,15 @@ void PacketAssembler::assembleInputRefreshPacket() {
 	}
 	
 	// (2) Populate Header:
-	/* Originator */	this->saveByteToInputRefreshPacket(1, 0x01);
-	/* Packet Type */	this->saveByteToInputRefreshPacket(2, 0x01);
-	/* Packet Length */	this->saveByteToInputRefreshPacket(3, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES);
-	/* Current Mode */	this->saveByteToInputRefreshPacket(4, 0x00);//TODO
-	/* Command */		this->saveByteToInputRefreshPacket(5, 0x00);//TODO
-	/* Parity Byte */	this->saveByteToInputRefreshPacket(6, 0x00);//TODO
-	/* Empty */			this->saveByteToInputRefreshPacket(7, 0x00);
-	/* Empty */			this->saveByteToInputRefreshPacket(8, 0x00);
-	/* Empty */			this->saveByteToInputRefreshPacket(9, 0x00);
+	/* Originator */	this->saveByteToInputRefreshPacket(0x01, 1);
+	/* Packet Type */	this->saveByteToInputRefreshPacket(0x01, 2);
+	/* Packet Length */	this->saveByteToInputRefreshPacket((INPUT_REFRESH_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES), 3);
+	/* Current Mode */	this->saveByteToInputRefreshPacket(0x00, 4);//TODO
+	/* Command */		this->saveByteToInputRefreshPacket(0x00, 5);//TODO
+	/* Parity Byte */	this->saveByteToInputRefreshPacket(0x00, 6);//TODO
+	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 7);
+	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 8);
+	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 9);
 	
 	// (3) Populate Payload:
 	byte tempByte = 0;
@@ -79,7 +79,7 @@ void PacketAssembler::assembleInputRefreshPacket() {
 										   controlPanel.moduleD.switch_Brake.getInputStatus(),
 										   false,//TODO
 										   false);//TODO
-	this->saveByteToInputRefreshPacket(tempByte, 12);	
+	this->saveByteToInputRefreshPacket(tempByte, 12);
 	//TODO Add remaining outputs
 	
 	//this->displayInputRefreshPacketInDecimal();
@@ -101,7 +101,7 @@ byte PacketAssembler::compressBoolsIntoByte(bool bool1, bool bool2, bool bool3, 
 }
 
 void PacketAssembler::saveByteToInputRefreshPacket(byte theByte, int byteNumber) {
-	this->inputRefreshPacket[byteNumber-1] = theByte;
+	this->inputRefreshPacket[byteNumber - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES] = theByte;
 }
 
 

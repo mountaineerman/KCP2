@@ -49,7 +49,7 @@ void KMegaService::standardOperatingMode() {
 	this->controlPanel.refreshInputStatus();
 	this->packetAssembler.assembleInputRefreshPacket();
 	//this->displayInputRefreshPacket();
-	this->serialCommunicator.sendInputRefreshPacket();
+	//this->serialCommunicator.sendInputRefreshPacket();
 	
 	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
@@ -108,8 +108,8 @@ void KMegaService::clearInputRefreshPacket() {
 
 void KMegaService::displayInputRefreshPacket() { //TODO remove
 	Serial.println("KMegaService: inputRefreshPacket: (decimal format)");
-	Serial.print("Position: ");
-	for (int i = 0; i < INPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
+	Serial.print("Position: N/A\tN/A\tN/A\t");
+	for (int i = 0; i < (INPUT_REFRESH_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES); i++) {
 		Serial.print(i+1);
 		Serial.print("\t");
 	}
