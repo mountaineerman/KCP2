@@ -49,7 +49,7 @@ void KMegaService::standardOperatingMode() {
 	this->controlPanel.refreshInputStatus();
 	this->packetAssembler.assembleInputRefreshPacket();
 	//this->displayInputRefreshPacket();
-	//this->serialCommunicator.sendInputRefreshPacket();
+	this->serialCommunicator.sendInputRefreshPacket();
 	
 	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
