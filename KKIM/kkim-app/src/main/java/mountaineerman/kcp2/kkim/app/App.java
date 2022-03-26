@@ -11,17 +11,24 @@ import mountaineerman.kcp2.kkim.service.KKIMService;
 //import krpc.client.RPCException;
 //import krpc.client.services.KRPC;
 
-import com.fazecast.jSerialComm.*; // Serial Communication library
+
 
 public class App
 {
 	public static void main(String[] args)
 	{
+		System.out.println("=============================================================================================");
+		System.out.println("Kerbal Control Panel 2 - Kerbal Kontroller Interface Module (KKIM)");
+		System.out.println("=============================================================================================");
+		
 		KKIMProperties.initializeProperties();
 		//System.out.println(KKIMProperties.getkMegaPortBaudrate());
 		
-		KKIMService kkimService;
-		System.exit(0);
+		KKIMService kkimService = new KKIMService();
+		while(true) {
+			kkimService.run();
+		}
+		//System.exit(0);
 		
 		/*
 		// =================================================================================================================
@@ -336,28 +343,28 @@ public class App
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//https://fazecast.github.io/jSerialComm/
-		System.out.println("Starting KKIM-KMega connection test...");
-		
-		SerialPort comPort = SerialPort.getCommPort(KKIMProperties.getkMegaPortNumber());
-		comPort.setBaudRate(KKIMProperties.getkMegaPortBaudrate());
-		comPort.openPort();
-		
-		//(0) Initial Serial Read test
-		comPort.addDataListener(new SerialPortDataListener()
-			{
-				@Override
-				public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
-				
-				@Override
-				public void serialEvent(SerialPortEvent event) {
-					if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
-						return;
-					byte[] newData = new byte[comPort.bytesAvailable()];
-					int numRead = comPort.readBytes(newData, newData.length);
-					System.out.println("Read " + numRead + " bytes: " + Arrays.toString(newData));
-				}
-			}
-		);
+//		System.out.println("Starting KKIM-KMega connection test...");
+//		
+//		SerialPort comPort = SerialPort.getCommPort(KKIMProperties.getkMegaPortNumber());
+//		comPort.setBaudRate(KKIMProperties.getkMegaPortBaudrate());
+//		comPort.openPort();
+//		
+//		//(0) Initial Serial Read test
+//		comPort.addDataListener(new SerialPortDataListener()
+//			{
+//				@Override
+//				public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
+//				
+//				@Override
+//				public void serialEvent(SerialPortEvent event) {
+//					if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
+//						return;
+//					byte[] newData = new byte[comPort.bytesAvailable()];
+//					int numRead = comPort.readBytes(newData, newData.length);
+//					System.out.println("Read " + numRead + " bytes: " + Arrays.toString(newData));
+//				}
+//			}
+//		);
 		//END(0) Initial Serial Read test
 		
 		
@@ -393,8 +400,8 @@ public class App
 //		}
 //		//END (1)
 		
-		comPort.closePort();
-		System.out.println("Ending KKIM-KMega connection test...");
+//		comPort.closePort();
+//		System.out.println("Ending KKIM-KMega connection test...");
 		
 	}
 	
