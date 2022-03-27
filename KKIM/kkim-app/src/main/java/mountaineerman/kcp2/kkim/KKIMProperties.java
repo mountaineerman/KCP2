@@ -13,7 +13,9 @@ public class KKIMProperties {
 	private static byte allPacketsNullByte = 0x00;
 	private static int allPacketsNumberOfDelimiterBytes = 0;
 	private static int kMegaOutputRefreshPacketLengthInBytes = 0;
+	private static int kMegaOutputRefreshPacketSendRateInMilliseconds = 0;
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
+	private static int kMegaInputRefreshPacketReadRateInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
 	
 	public static void initializeProperties () {
@@ -28,7 +30,9 @@ public class KKIMProperties {
 		allPacketsNullByte = Byte.valueOf(properties.getProperty("allPackets.null.byte"));
 		allPacketsNumberOfDelimiterBytes = Integer.valueOf(properties.getProperty("allPackets.numberOfDelimiterBytes"));
 		kMegaOutputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.lengthInBytes"));
+		kMegaOutputRefreshPacketSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.sendRateInMilliseconds"));
 		kMegaInputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.lengthInBytes"));
+		kMegaInputRefreshPacketReadRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.readRateInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
 		
 		System.out.println("DONE");
@@ -73,8 +77,16 @@ public class KKIMProperties {
 		return kMegaOutputRefreshPacketLengthInBytes;
 	}
 	
+	public static int getkMegaOutputRefreshPacketSendRateInMilliseconds() {
+		return kMegaOutputRefreshPacketSendRateInMilliseconds;
+	}
+	
 	public static int getkMegaInputRefreshPacketLengthInBytes() {
 		return kMegaInputRefreshPacketLengthInBytes;
+	}
+	
+	public static int getkMegaInputRefreshPacketReadRateInMilliseconds() {
+		return kMegaInputRefreshPacketReadRateInMilliseconds;
 	}
 	
 	public static int getkkimRefreshFrequencyInMilliseconds() {

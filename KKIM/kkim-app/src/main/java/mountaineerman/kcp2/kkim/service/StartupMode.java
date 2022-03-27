@@ -24,6 +24,8 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 		//TODO
 		//System.out.println("DONE");
         
+		//TODO Establish connection to phone
+		
         kkimService.idleIfNecessary();
         kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
     }

@@ -1,12 +1,12 @@
 package mountaineerman.kcp2.kkim.model;
 
 /** Momentarily-ON SP2T Switch (Adds debouncing logic to SP2T Switch) */
-public class SwitchMom {
+public class SwitchMom implements InputAggregator {
 
-	static private int IGNORE_TIME_IN_MILLISECONDS = 500;
+	static private int IGNORE_TIME_IN_MILLISECONDS = 500; //TODO move to config
 	
 	private SwitchSP2T sp2t;
-	private Boolean previousSP2TStatus;
+	private Boolean previousSP2TStatus; //TODO Boolean > boolean?
 	private Boolean debouncedStatus;
 	private boolean ignoreTimerIsActive;
 	private int ignoreTimer;
@@ -43,7 +43,19 @@ public class SwitchMom {
 		}
 	}
 	
+	public void displayInputStatus() {
+		System.out.println(this.getModuleID() + ": " + this.getName() + ": RAW:[" + this.sp2t.getStatus() + "] DEBOUNCED: [" + this.getDebouncedStatus() + "]");
+	}
+	
+	public String getName() {
+		return this.sp2t.getName();
+	}
+	
+	public ModuleID getModuleID() {
+		return this.sp2t.getModuleID();
+	}
+	
 	private void activateIgnoreTimer() {
 		//TODO reset timer and begin countdown
-	}
+	}	
 }

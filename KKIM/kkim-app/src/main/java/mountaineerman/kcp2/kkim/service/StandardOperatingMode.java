@@ -1,11 +1,14 @@
 package mountaineerman.kcp2.kkim.service;
 
-import java.util.Arrays;
+import mountaineerman.kcp2.kkim.CommonUtilities;
+import mountaineerman.kcp2.kkim.KKIMProperties;
 
 public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 
 	private static StandardOperatingMode INSTANCE;
-    
+	private long serialPortLastReadTimeInMilliseconds = 0;
+	private long outPutRefreshPacketLastSentTimeInMilliseconds = 0;
+	
 	private StandardOperatingMode() {}
 	
 	public static StandardOperatingMode getInstance() {
@@ -18,26 +21,37 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) 
     {
-        //System.out.println("Standard Operating Mode");
 		
-		kkimService.serialCommunicator.ingestDataFromSerialPortToInputRefreshPacketBuffer();
-		if (kkimService.serialCommunicator.getisValidPacketInInputRefreshPacketBuffer()) {
-			Arrays.toString(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
-			//this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
-		}
-		kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
-	//		//Refresh model based on kRPC
-	//		
-	//		//If it's time to send an OutputRefreshPacket
-	//			//Assemble OutputRefreshPacket
-	//			//Send OutputRefreshPacket
-	//		
-	//		//Read data from serial buffer
-	//		//If an InputRefreshPacket has arrived
-	//			//Unpack InputRefreshPacket into model
-	//			//Refresh model state?
-	//			//Communicate to kRPC?		
+		//TODO Confirm connection to kRPC, KMega, and KPhone
+		
+		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProperties.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
+			CommonUtilities.clearScreen();
+			kkimService.serialCommunicator.ingestDataFromSerialPortToInputRefreshPacketBuffer();
+			if (kkimService.serialCommunicator.getisValidPacketInInputRefreshPacketBuffer()) {
+				//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
+				kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
+				kkimService.serialCommunicator.clearInputRefreshPacketBuffer();
+			}
+			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
+			System.out.println();
+			kkimService.controlPanel.displayInputStatus();
+			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
 
+			//Refresh model based on kRPC
+			
+			//kkimService.controlPanel.displayInputStatus();
+			//kkimService.controlPanel.refresh();
+		}
+		
+		if ( (System.currentTimeMillis() - this.outPutRefreshPacketLastSentTimeInMilliseconds) > KKIMProperties.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
+			//Assemble OutputRefreshPacket
+			//Send OutputRefreshPacket
+			this.outPutRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
+		}
+		
+		//Send info to kRPC?
+		
+		//TODO Send packet to phone
 		
         kkimService.idleIfNecessary();
         kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance()); //TODO add logic for entering Diagnostic and Shutdown modes

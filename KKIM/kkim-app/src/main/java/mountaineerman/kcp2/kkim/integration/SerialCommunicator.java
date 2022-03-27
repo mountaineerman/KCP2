@@ -30,8 +30,6 @@ public class SerialCommunicator {
 	//OutputRefreshPacket:
 	
 	//Communications Diagnostic Information:
-	//Date date = new Date();
-	//private long timer = 0;
 	private long running_numberOfRejectedIncomingBytes = 0;
 	private long running_numberOfRejectedInputRefreshPackets = 0;
 	private long running_numberOfAcceptedInputRefreshPackets = 0;
@@ -49,7 +47,6 @@ public class SerialCommunicator {
 		
 		Arrays.fill(this.tempBuffer, KKIMProperties.getallPacketsNullByte());
 		Arrays.fill(this.inputRefreshPacketBuffer, KKIMProperties.getallPacketsNullByte());
-		//timer = date.getTime();
 		
 //		this->outputRefreshPacket = NULL;
 //		this->packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES] = {};
@@ -67,8 +64,6 @@ public class SerialCommunicator {
  		this.serialPort.setBaudRate(KKIMProperties.getkMegaPortBaudrate());
  		this.serialPort.openPort();
  		this.serialPort.flushIOBuffers();
-		//this.serialPort.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING, newReadTimeout, newWriteTimeout);
-		//this.serialPort.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING,
  		
  		//System.out.println("Computer Serial Read Buffer Size: " + serialPort.getDeviceReadBufferSize());
  		//System.out.println("Computer Serial Write Buffer Size: " + serialPort.getDeviceWriteBufferSize());
@@ -85,7 +80,7 @@ public class SerialCommunicator {
 			
 			this.serialPort.readBytes(this.tempBuffer, 1);
 			this.receivedByte = this.tempBuffer[0];
-			System.out.println("Received byte: " + this.tempBuffer[0]);
+			//System.out.println("Received byte: " + this.tempBuffer[0]);
 			
 			//System.out.println(this.delimiterByteCounter);
 			if (0 <= this.delimiterByteCounter && this.delimiterByteCounter < KKIMProperties.getallPacketsNumberOfDelimiterBytes()) { //Packet has not started yet
@@ -108,7 +103,7 @@ public class SerialCommunicator {
 					this.running_numberOfAcceptedInputRefreshPackets++;
 					return;
 				} else { //Packet is invalid
-					Arrays.fill(this.inputRefreshPacketBuffer, KKIMProperties.getallPacketsNullByte());
+					this.clearInputRefreshPacketBuffer();
 					this.running_numberOfRejectedInputRefreshPackets++;
 				}
 			}
@@ -129,10 +124,10 @@ public class SerialCommunicator {
 		System.out.println("running_numberOfAcceptedInputRefreshPackets: " + running_numberOfAcceptedInputRefreshPackets);
 		System.out.println("running_numberOfSentOutputRefreshPackets: " + running_numberOfSentOutputRefreshPackets);
 		System.out.println("running_numberOfOutputRefreshPacketsNotSent: " + running_numberOfOutputRefreshPacketsNotSent);
+		System.out.println("Bytes available in Serial Read Buffer: " + this.serialPort.bytesAvailable());
 	}
-//		//Attempts to populate (shared) outputRefreshPacket. Returns true if successful and false if not.
-//		bool getOutputRefreshPacket();
-//		
+
+
 //		//Attempts to send an inputRefreshPacket to KKIM.
 //		void sendInputRefreshPacket();
 // 			this.serialPort.bytesAwaitingWrite();
@@ -142,15 +137,14 @@ public class SerialCommunicator {
 //
 //	private:
 //		//Clear the packetBuffer and associated variables
-//		void clearPacketBuffer();
-//		//void displayPacketBufferInDecimal(); //TODO remove
-//		
-//		int delimiterByteCounter; // The number of consecutive delimiter bytes that have been read
-//		int packetBufferCursor; //The position of the next element to write to in the Packet Buffer
-//		bool isValidPacketInPacketBuffer;
-//		byte receivedByte;
-//		byte packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];
-//		byte * outputRefreshPacket; //See KMegaService
+		public void clearInputRefreshPacketBuffer() {
+			this.delimiterByteCounter = 0;
+			this.inputRefreshPacketBufferCursor = 0;	
+			this.isValidPacketInInputRefreshPacketBuffer = false;	
+			Arrays.fill(this.inputRefreshPacketBuffer, KKIMProperties.getallPacketsNullByte());
+		}
+		
+
 //		
 //		int numberOfBytesWritten;
 //		byte * inputRefreshPacket;  //See KMegaService

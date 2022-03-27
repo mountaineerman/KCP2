@@ -12,7 +12,10 @@ public abstract class Part {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
+	public ModuleID getModuleID() {
+		return this.moduleID;
+	}
 }
