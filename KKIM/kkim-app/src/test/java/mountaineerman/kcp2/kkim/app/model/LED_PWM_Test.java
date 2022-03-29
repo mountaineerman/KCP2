@@ -5,6 +5,9 @@ package mountaineerman.kcp2.kkim.app.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import mountaineerman.kcp2.kkim.model.LED_PWM;
+import mountaineerman.kcp2.kkim.model.ModuleID;
+
 class LED_PWM_Test {
 
 	@Test

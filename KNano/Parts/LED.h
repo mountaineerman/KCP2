@@ -1,29 +1,30 @@
 #ifndef LED_h
 #define LED_h
 
-//#include "Arduino.h"
-//
-//#define DIGITAL_IN   0
-//#define DIGITAL_OUT  1
-//#define ANALOG_IN    2
-//#define DIGITAL_IN_PULLUP    3
-//
-//
-//class MuxShield
-//{
-//public:
-//    MuxShield();
-//    MuxShield(int S0, int S1, int S2, int S3, int OUTMD,int IOS1, int IOS2, int IOS3, int IO1, int IO2, int IO3);
-//    void setMode(int mux, int mode);
-//    void digitalWriteMS(int mux, int chan, int val);
-//    int digitalReadMS(int mux, int chan);
-//    int analogReadMS(int mux, int chan);
-//
-//private:
-//    int _S0,_S1,_S2,_S3,_OUTMD,_IOS1,_IOS2,_IOS3,_IO1,_IO2,_IO3;
-//    int _LE1,_LE2,_LE3,_M1,_M2,_M3;
-//
-//
-//};
+#include "Arduino.h"
+
+/* Light Emitting Diode controlled directly via Arduino
+ *
+ * No input validation is performed. */
+class LED
+{
+public:
+	LED(uint8_t pin);
+	void setState(bool state);
+protected:
+	//Used for debugging only:
+	bool getState();
+private:
+	 /* RANGE: 	Nano: Theoretical: 0-12, A0-A7
+	 * 			Nano: By design:   A1-A4
+	 * 			Mega: Theoretical: 0-53, A0-A15
+	 * 			Mega: By design:   None
+	 * 			 Mux: By design:   None */
+	uint8_t pin;
+
+	/* LED Output State:  true == HIGH == ON
+	 *                   false == LOW  == OFF  */
+	bool state;
+};
 
 #endif

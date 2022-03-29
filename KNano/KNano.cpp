@@ -1,6 +1,6 @@
-#include <Arduino.h>
-#include <SevenSeg.h>
+#include "Arduino.h"
 
+//#include <SevenSeg.h>
 //#include "LocalArduinoLibraries/..."
 
 #include "configuration.h"
