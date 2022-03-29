@@ -1,7 +1,7 @@
 package mountaineerman.kcp2.kkim.service;
 
 import mountaineerman.kcp2.kkim.CommonUtilities;
-import mountaineerman.kcp2.kkim.KKIMProperties;
+import mountaineerman.kcp2.kkim.KKIMProp;
 
 public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 
@@ -21,31 +21,32 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) 
     {
-		
+		//CommonUtilities.clearScreen();
 		//TODO Confirm connection to kRPC, KMega, and KPhone
 		
-		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProperties.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
-			CommonUtilities.clearScreen();
+		//Pull Information
+		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
+			//CommonUtilities.clearScreen();
 			kkimService.serialCommunicator.ingestDataFromSerialPortToInputRefreshPacketBuffer();
 			if (kkimService.serialCommunicator.getisValidPacketInInputRefreshPacketBuffer()) {
 				//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
 				kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
 				kkimService.serialCommunicator.clearInputRefreshPacketBuffer();
 			}
-			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
-			System.out.println();
-			kkimService.controlPanel.displayInputStatus();
+			//kkimService.serialCommunicator.printCommunicationsDiagnosticInformation(); System.out.println();
 			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
-
-			//Refresh model based on kRPC
 			
-			//kkimService.controlPanel.displayInputStatus();
-			//kkimService.controlPanel.refresh();
+			//Pull info from kRPC into model
+			
+			kkimService.controlPanel.refresh();
+			//System.out.println(kkimService.controlPanel);
 		}
 		
-		if ( (System.currentTimeMillis() - this.outPutRefreshPacketLastSentTimeInMilliseconds) > KKIMProperties.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
-			//Assemble OutputRefreshPacket
-			//Send OutputRefreshPacket
+		//Send outPutRefreshPacket
+		if ( (System.currentTimeMillis() - this.outPutRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
+			CommonUtilities.clearScreen();
+			kkimService.serialCommunicator.sendOutputRefreshPacket(kkimService.packetAssembler.assembleOutputRefreshPacket());
+			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
 			this.outPutRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 		}
 		

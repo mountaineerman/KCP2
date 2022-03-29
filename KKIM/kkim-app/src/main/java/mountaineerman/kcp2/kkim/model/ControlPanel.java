@@ -1,25 +1,28 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 /* MkII Control Panel
  */
-public class ControlPanel implements InputAggregator, LEDAggregator/*TODO, StepperMotorAggregator*/ {
+public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggregator/*TODO, StepperMotorAggregator*/ {
 
-	//Module A	
+	//Module A
 	public SwitchMom stagingButton;
-	public SwitchMom brakeButton;
-	public LED_PWM moduleABrakePWMLED;
+	public SwitchSP2T brakeButton = null;
+	public LED_PWM moduleABrakePWMLED = null;
 	//Module D
-	public SwitchSP2T brakeSwitch;
-	public LED_PWM moduleDBrakePWMLED;
+	public SwitchSP2T brakeSwitch = null;
+	public LED_PWM moduleDBrakePWMLED = null;
 	
 	public ControlPanel() {
 		
 		stagingButton = new SwitchMom("Staging Button", ModuleID.A);
-		brakeButton = new SwitchMom("Brake Button", ModuleID.A); 
+		brakeButton = new SwitchSP2T("Brake Button", ModuleID.A);
 		moduleABrakePWMLED = new LED_PWM("Module A Brake PWM LED", ModuleID.A);
-		
+
 		brakeSwitch = new SwitchSP2T("Brake Switch", ModuleID.D);
 		moduleDBrakePWMLED = new LED_PWM("Module D Brake PWM LED", ModuleID.D);
+		
 		/*
 		// =================================================================================================================
 		// PARTS - Inputs
@@ -292,15 +295,27 @@ public class ControlPanel implements InputAggregator, LEDAggregator/*TODO, Stepp
 	}
 	
 	//Re-calculate state of higher-level members based on state of lower-level members
-	public void refresh() {//TODO
+	public void refresh() {
+		
+		if (this.brakeButton.getStatus() ^ this.brakeSwitch.getStatus()) {//XOR
+			this.moduleABrakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleDBrakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM());
+		} else {
+			this.moduleABrakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleDBrakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
+		}
+		
+		//TODO add remaining parts
 		
 	}
 	
-	public void displayInputStatus() {
+	public String toString() {
 		
-		this.stagingButton.displayInputStatus();
-		this.brakeButton.displayInputStatus();
-		this.brakeSwitch.displayInputStatus();
+		return  this.stagingButton.toString() +
+				this.brakeButton.toString() +
+				this.moduleABrakePWMLED.toString() +
+				this.brakeSwitch.toString() +
+				this.moduleDBrakePWMLED.toString();
 		
 	}
 	

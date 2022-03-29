@@ -4,7 +4,7 @@ package mountaineerman.kcp2.kkim.app;
 import java.util.Arrays;
 
 import mountaineerman.kcp2.kkim.CommonUtilities;
-import mountaineerman.kcp2.kkim.KKIMProperties;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.model.*;
 import mountaineerman.kcp2.kkim.service.KKIMService;
 
@@ -22,8 +22,8 @@ public class App
 		System.out.println("Kerbal Control Panel 2 - Kerbal Kontroller Interface Module (KKIM)");
 		System.out.println("=============================================================================================");
 		
-		KKIMProperties.initializeProperties();
-		//System.out.println(KKIMProperties.getkMegaPortBaudrate());
+		KKIMProp.initializeProperties();
+		//System.out.println(KKIMProp.getkMegaPortBaudrate());
 		
 		KKIMService kkimService = new KKIMService();
 		while(true) {

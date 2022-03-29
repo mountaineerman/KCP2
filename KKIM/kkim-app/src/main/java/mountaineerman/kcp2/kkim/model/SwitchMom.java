@@ -43,8 +43,8 @@ public class SwitchMom implements InputAggregator {
 		}
 	}
 	
-	public void displayInputStatus() {
-		System.out.println(this.getModuleID() + ": " + this.getName() + ": RAW:[" + this.sp2t.getStatus() + "] DEBOUNCED: [" + this.getDebouncedStatus() + "]");
+	public String toString() {
+		return this.getModuleID() + ": " + this.getName() + ": RAW:[" + this.sp2t.getStatus() + "] DEBOUNCED: [" + this.getDebouncedStatus() + "], ...\n";
 	}
 	
 	public String getName() {

@@ -2,6 +2,6 @@ package mountaineerman.kcp2.kkim.model;
 
 public interface InputAggregator {
 
-	public void displayInputStatus();
+	public String toString();//TODO not working because toString is already defined... Remove this interface?
 	
 }

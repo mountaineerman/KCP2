@@ -1,5 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 public class LED_PWM_RGB extends Part {
 
 	private LED_PWM redLED;
@@ -36,7 +38,7 @@ public class LED_PWM_RGB extends Part {
 		
 		switch(this.mode) {
 			case WHITE:
-				this.redLED.setDutyCycle(100);
+				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				this.grnLED.setDutyCycle(100);
 				this.bluLED.setDutyCycle(100);
 				break;

@@ -25,11 +25,11 @@ public class PacketUnpacker {
 		//Module A
 		byte tempByte = this.fetchByteFromPacket(inputRefreshPacket, 10);
 		controlPanel.stagingButton.setSP2TStatus( this.fetchBitInByte(tempByte, 1) );
-		controlPanel.brakeButton.setSP2TStatus( this.fetchBitInByte(tempByte, 2) );
+		controlPanel.brakeButton.setStatus( this.fetchBitInByte(tempByte, 2) );
 		//Module D
 		tempByte = this.fetchByteFromPacket(inputRefreshPacket, 11);
 		controlPanel.brakeSwitch.setStatus( this.fetchBitInByte(tempByte, 6) );
-		//TODO Add remaining outputs
+		//TODO Add remaining inputs
 
 	}
 	

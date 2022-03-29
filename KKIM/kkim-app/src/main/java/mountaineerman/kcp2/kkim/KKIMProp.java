@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-public class KKIMProperties {
+public class KKIMProp {
 
 	private static int kMegaPortBaudrate = 0;
 	private static String kMegaPortNumber = "";
@@ -16,7 +16,11 @@ public class KKIMProperties {
 	private static int kMegaOutputRefreshPacketSendRateInMilliseconds = 0;
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
 	private static int kMegaInputRefreshPacketReadRateInMilliseconds = 0;
+	private static int kmegaMinPWM = 0;
+	private static int kmegaMaxPWM = 0;
+	
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
+	
 	
 	public static void initializeProperties () {
 		
@@ -33,6 +37,9 @@ public class KKIMProperties {
 		kMegaOutputRefreshPacketSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.sendRateInMilliseconds"));
 		kMegaInputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.lengthInBytes"));
 		kMegaInputRefreshPacketReadRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.readRateInMilliseconds"));
+		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.minPWM"));
+		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.maxPWM"));
+		
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
 		
 		System.out.println("DONE");
@@ -88,6 +95,16 @@ public class KKIMProperties {
 	public static int getkMegaInputRefreshPacketReadRateInMilliseconds() {
 		return kMegaInputRefreshPacketReadRateInMilliseconds;
 	}
+	
+	public static int getkmegaMinPWM() {
+		return kmegaMinPWM;
+	}
+	
+	public static int getkmegaMaxPWM() {
+		return kmegaMaxPWM;
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public static int getkkimRefreshFrequencyInMilliseconds() {
 		return kkimRefreshFrequencyInMilliseconds;
