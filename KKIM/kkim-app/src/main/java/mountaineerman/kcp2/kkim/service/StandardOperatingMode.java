@@ -21,6 +21,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) 
     {
+		//System.out.println("Standard Operating Mode");
 		//CommonUtilities.clearScreen();
 		//TODO Confirm connection to kRPC, KMega, and KPhone
 		

@@ -42,14 +42,13 @@ public class SerialCommunicator {
 		Arrays.fill(this.tempBuffer, KKIMProp.getallPacketsNullByte());
 		Arrays.fill(this.inputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
 		
-//		this->numberOfBytesWritten = 0;
 	}
 	
  	public void establishSerialLink() {
  		
  		System.out.print("Establishing serial connection to KMega... ");
  		
- 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());//SerialPort comPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
+ 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
  		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
  		this.serialPort.openPort();
  		this.serialPort.flushIOBuffers();

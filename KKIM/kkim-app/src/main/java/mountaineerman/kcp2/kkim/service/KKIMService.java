@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.service;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.integration.KRPCCommunicator;
 import mountaineerman.kcp2.kkim.integration.PacketAssembler;
 import mountaineerman.kcp2.kkim.integration.PacketUnpacker;
 import mountaineerman.kcp2.kkim.integration.SerialCommunicator;
@@ -14,6 +15,7 @@ public class KKIMService {
 	protected SerialCommunicator serialCommunicator = null;
 	protected PacketUnpacker packetUnpacker = null;
 	protected PacketAssembler packetAssembler = null;
+	protected KRPCCommunicator kRPCCommunicator = null;
 	
 	
 	public KKIMService() {
@@ -23,6 +25,7 @@ public class KKIMService {
 		this.serialCommunicator = new SerialCommunicator();
 		this.packetUnpacker = new PacketUnpacker(this.controlPanel);
 		this.packetAssembler = new PacketAssembler(this.controlPanel);
+		this.kRPCCommunicator = new KRPCCommunicator();
 	}
 	
 	public void run() {

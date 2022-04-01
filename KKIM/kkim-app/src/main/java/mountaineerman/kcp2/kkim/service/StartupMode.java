@@ -21,15 +21,11 @@ public final class StartupMode implements OperatingMode { //SINGLETON
         //System.out.println("Startup Mode");
         
 		kkimService.serialCommunicator.establishSerialLink();
-		
-		//System.out.print("Establishing connection to kRPC... ");
-		//TODO
-		//System.out.println("DONE");
-        
+		kkimService.kRPCCommunicator.establishKRPCLink();        
 		//TODO Establish connection to phone
 		
+		try {Thread.sleep(KKIMProp.getkkimInitialStartupDelayInMilliseconds());} catch (InterruptedException e) {e.printStackTrace();}
 		
-		try {Thread.sleep(KKIMProp.getkkimInitialStartupDelayInMilliseconds());} catch (InterruptedException e) {e.printStackTrace();} 
         kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
     }
 }
