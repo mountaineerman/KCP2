@@ -11,7 +11,7 @@ class PacketUnpacker
 {
 public:
 	PacketUnpacker(ControlPanel& controlPanel);
-	void setOutputRefreshPacket(byte * outputRefreshPacket);
+	void setOutputRefreshPacket(const byte * outputRefreshPacket);
 	void displayOutputRefreshPacketInDecimal();
 	//void displayOutputRefreshPacketInHexadecimal(); //TODO
 	//void displayOutputRefreshPacketInBinary(); //TODO

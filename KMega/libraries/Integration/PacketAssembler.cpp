@@ -9,15 +9,15 @@ PacketAssembler::PacketAssembler(ControlPanel& controlPanel)
 	this->inputRefreshPacket = NULL;
 }
 
-void PacketAssembler::setInputRefreshPacket(byte * inputRefreshPacket) {
+void PacketAssembler::setInputRefreshPacket(const byte * inputRefreshPacket) {
 	this->inputRefreshPacket = inputRefreshPacket;
 }
 
 void PacketAssembler::displayInputRefreshPacketInDecimal() {
 	
-	if (!this->inputRefreshPacket) {
+	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler's inputRefreshPacket is not initialized");
+		Serial.println("Exception: PacketAssembler.displayInputRefreshPacketInDecimal(): inputRefreshPacket is not initialized");
 	}
 	
 	Serial.println("PacketAssembler: inputRefreshPacket: (Decimal Format)");
@@ -37,9 +37,11 @@ void PacketAssembler::displayInputRefreshPacketInDecimal() {
 
 void PacketAssembler::assembleInputRefreshPacket() {
 	
-	if (!this->inputRefreshPacket) {
+	//this->displayInputRefreshPacketInDecimal();
+	
+	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler's inputRefreshPacket is not initialized");
+		Serial.println("Exception: PacketAssembler.assembleInputRefreshPacket(): inputRefreshPacket is not initialized");
 	}
 	
 	// (1) Populate Delimiter:

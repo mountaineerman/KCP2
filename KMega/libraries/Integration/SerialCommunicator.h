@@ -10,8 +10,8 @@ class SerialCommunicator
 {
 public:
 	SerialCommunicator();
-	void setOutputRefreshPacket(byte * outputRefreshPacket);
-	void setInputRefreshPacket(byte * inputRefreshPacket);
+	void setOutputRefreshPacket(const byte * outputRefreshPacket);
+	void setInputRefreshPacket(const byte * inputRefreshPacket);
 	
 	void establishSerialLink();
 	
@@ -26,7 +26,8 @@ public:
 	//Attempts to send an inputRefreshPacket to KKIM.
 	void sendInputRefreshPacket();
 	
-	void tallyDiagnosticData();//TODO Inject Communications Diagnostic Data into inputRefreshPacket
+	void tallyCommunicationsDiagnosticData();//TODO Inject Communications Diagnostic Data into inputRefreshPacket
+	void displayCommunicationsDiagnosticData();
 	
 	void teardownSerialLink();
 

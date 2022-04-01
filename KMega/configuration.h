@@ -89,7 +89,7 @@ static const int PIN_MUX_AUTONAVIGATION_SWITCH = 11;
 //LED Driver Boards
 static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
 static const int PWM_LED_MINIMUM = 0;
-static const int PWM_LED_MAXIMUM = 1500;//4095;
+static const int PWM_LED_MAXIMUM = 4095;
 
 static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//	(Pin 0)		[LED Board 1]
 static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//	(Pin 1)		[LED Board 1]

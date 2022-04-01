@@ -6,7 +6,7 @@ KMegaService::KMegaService()
 	, serialCommunicator()
 	, packetUnpacker(controlPanel)
 	, packetAssembler(controlPanel)
-{
+{	
 	this->outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES] = {};
 	this->clearOutputRefreshPacket();
 	this->serialCommunicator.setOutputRefreshPacket(outputRefreshPacket);
@@ -31,9 +31,9 @@ KMegaService::KMegaService()
 void KMegaService::startupMode() {
 	//Control Panel Startup Test:
 	controlPanel.setAllLEDsOn();
-	delay(2000);
+	delay(1000);
 	controlPanel.setAllLEDsOff();
-	delay(500);
+	delay(100);
 	//TODO Add startup test for Stepper Motors
 	
 	//Establish KKIM Serial Communication Channel:
@@ -59,11 +59,13 @@ void KMegaService::standardOperatingMode() {
 		//TODO Send toKNano packet?
 	}
 	
-	this->serialCommunicator.tallyDiagnosticData();
-	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
+	this->serialCommunicator.tallyCommunicationsDiagnosticData();
+	//this->serialCommunicator.displayCommunicationsDiagnosticData();
 	
-	//Idle if necessary
-	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
+//	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
+	
+	//TODO Idle if necessary
+	//delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
 }
 
 void KMegaService::clearOutputRefreshPacket() {//TODO combine with clearInputRefreshPacket into generic method
@@ -89,25 +91,25 @@ void KMegaService::clearInputRefreshPacket() {
 //	serialCommunicator.teardownSerialLink();
 //}
 
-//void KMegaService::displayOutputRefreshPacket() { //TODO remove
-//	Serial.println("KMegaService: outputRefreshPacket: (decimal format)");
-//	Serial.print("Position: ");
-//	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
-//		Serial.print(i+1);
-//		Serial.print("\t");
-//	}
-//	Serial.println();
-//	
-//	Serial.print("Value:    ");
-//	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
-//		Serial.print(this->outputRefreshPacket[i]);
-//		Serial.print("\t");
-//	}
-//	Serial.println();
-//}
+void KMegaService::displayOutputRefreshPacket() { //TODO remove
+	Serial.println("KMegaService.displayOutputRefreshPacket(): (decimal format)");
+	Serial.print("Position: ");
+	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
+		Serial.print(i+1);
+		Serial.print("\t");
+	}
+	Serial.println();
+	
+	Serial.print("Value:    ");
+	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
+		Serial.print(this->outputRefreshPacket[i]);
+		Serial.print("\t");
+	}
+	Serial.println();
+}
 
 void KMegaService::displayInputRefreshPacket() { //TODO remove
-	Serial.println("KMegaService: inputRefreshPacket: (decimal format)");
+	Serial.println("KMegaService.displayInputRefreshPacket(): (decimal format)");
 	Serial.print("Position: N/A\tN/A\tN/A\t");
 	for (int i = 0; i < (INPUT_REFRESH_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES); i++) {
 		Serial.print(i+1);

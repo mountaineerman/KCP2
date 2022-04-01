@@ -20,7 +20,7 @@ private:
 	//void shutdownMode();
 	void clearOutputRefreshPacket();
 	void clearInputRefreshPacket();
-	//void displayOutputRefreshPacket(); //TODO remove
+	void displayOutputRefreshPacket(); //TODO remove
 	void displayInputRefreshPacket(); //TODO remove
 	
 	ControlPanel controlPanel;

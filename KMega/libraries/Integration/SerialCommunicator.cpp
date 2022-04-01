@@ -28,11 +28,11 @@ SerialCommunicator::SerialCommunicator()
 	this->numberOfInputRefreshPacketsNotSent = 0;
 }
 
-void SerialCommunicator::setOutputRefreshPacket(byte * outputRefreshPacket) {
+void SerialCommunicator::setOutputRefreshPacket(const byte * outputRefreshPacket) {
 	this->outputRefreshPacket = outputRefreshPacket;
 }
 
-void SerialCommunicator::setInputRefreshPacket(byte * inputRefreshPacket) {
+void SerialCommunicator::setInputRefreshPacket(const byte * inputRefreshPacket) {
 	this->inputRefreshPacket = inputRefreshPacket;
 }
 
@@ -43,11 +43,16 @@ void SerialCommunicator::establishSerialLink() {
 
 void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 	
+	
+//	if (Serial.available() > 0) {//TODO remove
+//		Serial.print("Bytes in Serial Buffer: "); Serial.println(Serial.available());//TODO remove
+//	}
+	
 	while (Serial.available()) { // There are bytes available in the Arduino Serial Buffer
 		
 		this->receivedByte = Serial.read();
 		
-		//Serial.println(this->delimiterByteCounter);
+		//Serial.print("delimiterByteCounter: "); Serial.println(this->delimiterByteCounter);
 		if (0 <= this->delimiterByteCounter && this->delimiterByteCounter < NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet has not started yet
 			if (this->receivedByte == PACKET_DELIMITER_BYTE) {
 				this->delimiterByteCounter++;
@@ -57,17 +62,18 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 			}
 		
 		} else if (this->delimiterByteCounter == NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet read in progress
-			//Serial.println(this->receivedByte);
+			//Serial.print("Received byte: "); Serial.println(this->receivedByte);
 			this->packetBuffer[this->packetBufferCursor] = this->receivedByte;
 			this->packetBufferCursor++;
 			
 		} else {
 			//TODO throw exception
-			Serial.println("Exception: SerialCommunicator's delimiterByteCounter is out of range");
+			Serial.println("Exception: SerialCommunicator.ingestDataFromSerialBufferToPacketBuffer(): delimiterByteCounter is out of range");
 		}
 		
 		
 		if (this->packetBufferCursor == OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
+			//Serial.println("A full packet is in the Packet Buffer");
 			if (true /*TODO:packet is valid*/) {
 				this->isValidPacketInPacketBuffer = true;
 				this->running_numberOfAcceptedOutputRefreshPackets++;
@@ -82,9 +88,9 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 
 bool SerialCommunicator::getOutputRefreshPacket() {
 	
-	if (!this->outputRefreshPacket) {
+	if (this->outputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: SerialCommunicator's outputRefreshPacket is not initialized");
+		Serial.println("Exception: SerialCommunicator.getOutputRefreshPacket(): outputRefreshPacket is not initialized");
 	}
 	
 	if (this->isValidPacketInPacketBuffer) {
@@ -113,7 +119,7 @@ void SerialCommunicator::sendInputRefreshPacket() {
 	}
 }
 
-void SerialCommunicator::tallyDiagnosticData() {
+void SerialCommunicator::tallyCommunicationsDiagnosticData() {
 	if ( (millis() - this->timer) > MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS ) {
 		this->numberOfRejectedIncomingBytes 		= this->running_numberOfRejectedIncomingBytes;
 		this->numberOfRejectedOutputRefreshPackets 	= this->running_numberOfRejectedOutputRefreshPackets;
@@ -129,6 +135,15 @@ void SerialCommunicator::tallyDiagnosticData() {
 		
 		this->timer = millis();
 	}
+}
+
+void SerialCommunicator::displayCommunicationsDiagnosticData() {
+	Serial.print("numberOfRejectedIncomingBytes: "); Serial.println(this->numberOfRejectedIncomingBytes);
+	Serial.print("numberOfRejectedOutputRefreshPackets: "); Serial.println(this->numberOfRejectedOutputRefreshPackets);
+	Serial.print("numberOfAcceptedOutputRefreshPackets: "); Serial.println(this->numberOfAcceptedOutputRefreshPackets);
+	Serial.print("numberOfSentInputRefreshPackets: "); Serial.println(this->numberOfSentInputRefreshPackets);
+	Serial.print("numberOfInputRefreshPacketsNotSent: "); Serial.println(this->numberOfInputRefreshPacketsNotSent);
+	Serial.println();
 }
 
 void SerialCommunicator::teardownSerialLink() {

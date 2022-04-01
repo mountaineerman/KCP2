@@ -11,7 +11,7 @@ class PacketAssembler
 {
 public:
 	PacketAssembler(ControlPanel& controlPanel);
-	void setInputRefreshPacket(byte * inputRefreshPacket);
+	void setInputRefreshPacket(const byte * inputRefreshPacket);
 	void displayInputRefreshPacketInDecimal();
 	//void displayInputRefreshPacketInHexadecimal(); //TODO
 	//void displayInputRefreshPacketInBinary(); //TODO
