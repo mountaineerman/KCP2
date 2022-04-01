@@ -55,7 +55,6 @@ void KMegaService::standardOperatingMode() {
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
 		//this->displayOutputRefreshPacket();
 		this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
-		this->controlPanel.writeLEDStatusToLEDDriverBoards();
 		//TODO Send toKNano packet?
 	}
 	

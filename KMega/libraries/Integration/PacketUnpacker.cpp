@@ -37,18 +37,12 @@ void PacketUnpacker::displayOutputRefreshPacketInDecimal() {
 
 void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	
-	//Serial.println("KMega: PacketUnpacker: received OutputRefreshPacket:");
 	//this->displayOutputRefreshPacketInDecimal();
 	
 	if (this->outputRefreshPacket == NULL) {
 		//TODO throw exception
 		Serial.println("Exception: PacketUnpacker.unpackOutputRefreshPacketIntoModel(): OutputRefreshPacket is not initialized");
 	}
-	
-	//Serial.println("The Module A Brake number is: ");                  //TODO remove
-	//int temp = convertTwoBytesInOutputRefreshPacketIntoInteger(11,10); //TODO remove
-	//Serial.println(temp);                                              //TODO remove
-	//controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM(temp);             //TODO remove
 	
 	controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(10,11) );
 	controlPanel.moduleD.ledPWM_BrakeModuleD.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(12,13) );
