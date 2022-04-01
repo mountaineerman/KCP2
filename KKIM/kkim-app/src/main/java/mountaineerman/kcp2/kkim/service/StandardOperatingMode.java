@@ -6,8 +6,8 @@ import mountaineerman.kcp2.kkim.KKIMProp;
 public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 
 	private static StandardOperatingMode INSTANCE;
-	private long serialPortLastReadTimeInMilliseconds = 0;
-	private long outPutRefreshPacketLastSentTimeInMilliseconds = 0;
+	private long serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
+	private long outPutRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 	
 	private StandardOperatingMode() {}
 	
@@ -42,10 +42,17 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 			//System.out.println(kkimService.controlPanel);
 		}
 		
+//		//TEMP: Write data from Serial Buffer (KMega) to the terminal console
+//		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
+//			kkimService.serialCommunicator.ingestDataFromSerialPortAndDisplay();
+//			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
+//		}
+		
 		//Send outPutRefreshPacket
 		if ( (System.currentTimeMillis() - this.outPutRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
+			byte[] outputRefreshPacket = kkimService.packetAssembler.assembleOutputRefreshPacket();
+			kkimService.serialCommunicator.sendOutputRefreshPacket(outputRefreshPacket);
 			CommonUtilities.clearScreen();
-			kkimService.serialCommunicator.sendOutputRefreshPacket(kkimService.packetAssembler.assembleOutputRefreshPacket());
 			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
 			this.outPutRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 		}
@@ -54,7 +61,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		
 		//TODO Send packet to phone
 		
-        kkimService.idleIfNecessary();
+        kkimService.idleIfNecessary();//TODO replace?
         kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance()); //TODO add logic for entering Diagnostic and Shutdown modes
     }
 }
