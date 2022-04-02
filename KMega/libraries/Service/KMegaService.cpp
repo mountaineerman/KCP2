@@ -17,6 +17,7 @@ KMegaService::KMegaService()
 	this->serialCommunicator.setInputRefreshPacket(inputRefreshPacket);
 	this->packetAssembler.setInputRefreshPacket(inputRefreshPacket);
 	
+	this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
 	
 	this->startupMode(); //TODO move out of constructor
 	
@@ -46,10 +47,13 @@ void KMegaService::startupMode() {
 
 void KMegaService::standardOperatingMode() {
 
-	this->controlPanel.refreshInputStatus();
-	this->packetAssembler.assembleInputRefreshPacket();
-	//this->displayInputRefreshPacket();
-	this->serialCommunicator.sendInputRefreshPacket();
+	if ( (millis() - this->inputRefreshPacketLastSendTimeInMilliseconds) > INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS ) {
+		this->controlPanel.refreshInputStatus();
+		this->packetAssembler.assembleInputRefreshPacket();
+		//this->displayInputRefreshPacket();
+		this->serialCommunicator.sendInputRefreshPacket();
+		this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
+	}
 	
 	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
@@ -64,7 +68,7 @@ void KMegaService::standardOperatingMode() {
 //	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
 	
 	//TODO Idle if necessary
-	//delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
+	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
 }
 
 void KMegaService::clearOutputRefreshPacket() {//TODO combine with clearInputRefreshPacket into generic method

@@ -30,6 +30,8 @@ private:
 	
 	byte outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES]; //READ-ONLY after initialization
 	byte inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES];   //READ-ONLY after initialization
+	
+	long inputRefreshPacketLastSendTimeInMilliseconds;
 };
 
 #endif

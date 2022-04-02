@@ -47,6 +47,8 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(10,11) );
 	controlPanel.moduleD.ledPWM_BrakeModuleD.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(12,13) );
 	//TODO Add remaining outputs
+	controlPanel.moduleI.ledPWM_FUEL_Green.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(116,117) );
+	//TODO Add remaining outputs
 	
 	controlPanel.writeLEDStatusToLEDDriverBoards();
 	
