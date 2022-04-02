@@ -4,30 +4,74 @@ import java.io.IOException;
 
 import krpc.client.Connection;
 import krpc.client.RPCException;
-import krpc.client.services.KRPC;
+import krpc.client.services.SpaceCenter;
+import krpc.client.services.SpaceCenter.Control;
+import krpc.client.services.SpaceCenter.Resources;
+import krpc.client.services.SpaceCenter.Vessel;
+import mountaineerman.kcp2.kkim.model.ControlPanel;
 
 
 public class KRPCCommunicator {
 	
-	private KRPC kRPC = null;
+	private ControlPanel controlPanel;
+	private Connection connection = null;
+	//private KRPC kRPC = null;
+	private SpaceCenter spaceCenter = null;
+	private Vessel vessel = null;
+	private Control control = null;
+	private Resources resources = null;
 	
-	public KRPCCommunicator() {
-		// TODO Auto-generated constructor stub
+	
+	public KRPCCommunicator(ControlPanel controlPanel) {
+		this.controlPanel = controlPanel;
 	}
 
 	public void establishKRPCLink() {
 		 
- 		System.out.print("Establishing connection to kRPC... ");
- 		
-		try (Connection connection = Connection.newInstance()) {
-			this.kRPC = KRPC.newInstance(connection);
+		try {
+			System.out.print("Establishing connection to kRPC... ");
+			this.connection = Connection.newInstance();
+			//this.kRPC = KRPC.newInstance(connection);
+			System.out.println("DONE");
 			//System.out.println("Connected to kRPC version " + kRPC.getStatus().getVersion());
-		//} catch (RPCException e) {
-		//	e.printStackTrace();
+			this.spaceCenter = SpaceCenter.newInstance(connection);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
- 		
- 		System.out.println("DONE");
+		
+		try {
+			this.vessel = this.spaceCenter.getActiveVessel();
+			this.control = this.vessel.getControl();
+		} catch (RPCException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void pullInfoFromKSPIntoModel() {
+
+		try {
+			this.resources = this.vessel.resourcesInDecoupleStage(this.control.getCurrentStage()-1, false);
+			this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?
+		} catch (RPCException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendInfoToKSPFromModel() {
+		if (this.controlPanel.stagingButton.getDebouncedStatus()) {
+			try {
+				this.control.activateNextStage();
+			} catch (RPCException e) {
+				e.printStackTrace();
+			}	
+		}
 	}
 }
+
+
+
+
+
+
+
+

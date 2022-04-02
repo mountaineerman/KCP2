@@ -44,6 +44,8 @@ public class PacketAssembler {
 		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(10, 11, controlPanel.moduleABrakePWMLED.getPWM());
 		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(12, 13, controlPanel.moduleDBrakePWMLED.getPWM());
 		//TODO Add remaining outputs
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(116, 117, controlPanel.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
+		//TODO Add remaining outputs
 		//TODO Use OutputRefreshPacketStructure enum instead of hardcoding?
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();

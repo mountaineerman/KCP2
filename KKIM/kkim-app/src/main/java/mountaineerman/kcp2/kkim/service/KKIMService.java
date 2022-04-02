@@ -25,7 +25,7 @@ public class KKIMService {
 		this.serialCommunicator = new SerialCommunicator();
 		this.packetUnpacker = new PacketUnpacker(this.controlPanel);
 		this.packetAssembler = new PacketAssembler(this.controlPanel);
-		this.kRPCCommunicator = new KRPCCommunicator();
+		this.kRPCCommunicator = new KRPCCommunicator(this.controlPanel);
 	}
 	
 	public void run() {

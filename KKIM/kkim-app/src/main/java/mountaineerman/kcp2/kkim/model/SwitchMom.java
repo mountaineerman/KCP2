@@ -6,10 +6,10 @@ public class SwitchMom implements InputAggregator {
 	static private int IGNORE_TIME_IN_MILLISECONDS = 500; //TODO move to config
 	
 	private SwitchSP2T sp2t;
-	private Boolean previousSP2TStatus; //TODO Boolean > boolean?
-	private Boolean debouncedStatus;
-	private boolean ignoreTimerIsActive;
-	private int ignoreTimer;
+	private boolean previousSP2TStatus = false;
+	private boolean debouncedStatus = false;
+	private boolean ignoreTimerIsActive = false;
+	private int ignoreTimer = 0;
 	
 	public SwitchMom(String name, ModuleID moduleID) {
 		super();
@@ -17,11 +17,11 @@ public class SwitchMom implements InputAggregator {
 		this.ignoreTimerIsActive = false;
 	}
 
-	public Boolean getDebouncedStatus() {
+	public boolean getDebouncedStatus() {
 		return this.debouncedStatus;
 	}
 	
-	public void setSP2TStatus(Boolean status) {
+	public void setSP2TStatus(boolean status) {
 		
 		this.previousSP2TStatus = this.sp2t.getStatus();
 		this.sp2t.setStatus(status);
