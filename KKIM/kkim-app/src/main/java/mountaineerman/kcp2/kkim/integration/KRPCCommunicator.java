@@ -57,7 +57,7 @@ public class KRPCCommunicator {
 		}
 	}
 
-	public void sendInfoToKSPFromModel() {
+	public void sendInfoFromModelToKSP() {
 		if (this.controlPanel.stagingButton.getDebouncedStatus()) {
 			try {
 				this.control.activateNextStage();
