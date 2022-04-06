@@ -1,17 +1,8 @@
 
 package mountaineerman.kcp2.kkim.app;
 
-import java.util.Arrays;
-
-import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.KKIMProp;
-import mountaineerman.kcp2.kkim.model.*;
 import mountaineerman.kcp2.kkim.service.KKIMService;
-
-//import krpc.client.Connection;
-//import krpc.client.RPCException;
-//import krpc.client.services.KRPC;
-
 
 
 public class App
@@ -23,24 +14,27 @@ public class App
 		System.out.println("=============================================================================================");
 		
 		KKIMProp.initializeProperties();
-		//System.out.println(KKIMProp.getkMegaPortBaudrate());
+
+		
+		
+//		System.out.println("Starting KKIM-kRPC connection test...");
+//		try (Connection connection = Connection.newInstance()) {
+//			KRPC krpc = KRPC.newInstance(connection);
+//			System.out.println("Connected to kRPC version " + krpc.getStatus().getVersion());
+//		} catch (RPCException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
+		
+		
 		
 		KKIMService kkimService = new KKIMService();
 		while(true) {
 			kkimService.run();
 		}
 		//System.exit(0);
-		
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*System.out.println("Starting KKIM-kRPC connection test...");
-		try (Connection connection = Connection.newInstance())
-		{
-			KRPC krpc = KRPC.newInstance(connection);
-			System.out.println("Connected to kRPC version " + krpc.getStatus().getVersion());
-		}
-		catch (RPCException e) {System.out.println("Caught RPCException: " + e.getMessage());}
-		catch (IOException e)  {System.out.println("Caught IOException: " + e.getMessage());}
-		*/	
 	}	
 }
 

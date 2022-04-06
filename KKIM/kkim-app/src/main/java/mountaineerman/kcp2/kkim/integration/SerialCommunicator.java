@@ -30,17 +30,11 @@ public class SerialCommunicator {
 	//OutputRefreshPacket:
 	
 	//Communications Diagnostic Information:
-	private long running_numberOfRejectedIncomingBytes = 0;
-	private long running_numberOfRejectedInputRefreshPackets = 0;
-	private long running_numberOfAcceptedInputRefreshPackets = 0;
-	private long running_numberOfSentOutputRefreshPackets = 0;
-	private long running_numberOfOutputRefreshPacketsNotSent = 0;//TODO scrap?
-	
-//	private long numberOfRejectedIncomingBytes;
-//	private long numberOfRejectedInputRefreshPackets;
-//	private long numberOfAcceptedInputRefreshPackets;
-//	private long numberOfSentOutputRefreshPackets;
-//	private long numberOfOutputRefreshPacketsNotSent;
+	private long numberOfRejectedIncomingBytes = 0;
+	private long numberOfRejectedInputRefreshPackets = 0;
+	private long numberOfAcceptedInputRefreshPackets = 0;
+	private long numberOfSentOutputRefreshPackets = 0;
+	private long numberOfOutputRefreshPacketsNotSent = 0;
 	
 	
 	public SerialCommunicator() {
@@ -48,14 +42,13 @@ public class SerialCommunicator {
 		Arrays.fill(this.tempBuffer, KKIMProp.getallPacketsNullByte());
 		Arrays.fill(this.inputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
 		
-//		this->numberOfBytesWritten = 0;
 	}
 	
  	public void establishSerialLink() {
  		
  		System.out.print("Establishing serial connection to KMega... ");
  		
- 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());//SerialPort comPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
+ 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
  		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
  		this.serialPort.openPort();
  		this.serialPort.flushIOBuffers();
@@ -71,19 +64,21 @@ public class SerialCommunicator {
 	// b) There is no data left in the Serial Buffer
 	public void ingestDataFromSerialPortToInputRefreshPacketBuffer() throws RuntimeException {
 		
+		//		if (this.serialPort.bytesAvailable() > 0) {
+		//			System.out.println("Bytes available in Serial Buffer: " + this.serialPort.bytesAvailable());
+		//		}
+		
 		while (this.serialPort.bytesAvailable() > 0) {
 			
 			this.serialPort.readBytes(this.tempBuffer, 1);
 			this.receivedByte = this.tempBuffer[0];
-			//System.out.println("Received byte: " + this.tempBuffer[0]);
 			
-			//System.out.println(this.delimiterByteCounter);
 			if (0 <= this.delimiterByteCounter && this.delimiterByteCounter < KKIMProp.getallPacketsNumberOfDelimiterBytes()) { //Packet has not started yet
 				if (this.receivedByte == KKIMProp.getallPacketsDelimiterByte()) {
 					this.delimiterByteCounter++;
 				} else {
 					this.delimiterByteCounter = 0;
-					this.running_numberOfRejectedIncomingBytes++;
+					this.numberOfRejectedIncomingBytes++;
 				}
 			} else if (this.delimiterByteCounter == KKIMProp.getallPacketsNumberOfDelimiterBytes()) { //Packet read in progress
 				this.inputRefreshPacketBuffer[this.inputRefreshPacketBufferCursor] = this.receivedByte;
@@ -95,11 +90,11 @@ public class SerialCommunicator {
 			if (this.inputRefreshPacketBufferCursor == KKIMProp.getkMegaInputRefreshPacketLengthInBytes()) { //A full packet is in the inputRefreshPacketBuffer
 				if (true /*TODO:packet is valid*/) {
 					this.isValidPacketInInputRefreshPacketBuffer = true;
-					this.running_numberOfAcceptedInputRefreshPackets++;
+					this.numberOfAcceptedInputRefreshPackets++;
 					return;
 				} else { //Packet is invalid
 					this.clearInputRefreshPacketBuffer();
-					this.running_numberOfRejectedInputRefreshPackets++;
+					this.numberOfRejectedInputRefreshPackets++;
 				}
 			}
 		}
@@ -114,12 +109,13 @@ public class SerialCommunicator {
 	}
 	
 	public void printCommunicationsDiagnosticInformation() {
-		System.out.println("running_numberOfRejectedIncomingBytes: " + running_numberOfRejectedIncomingBytes);
-		System.out.println("running_numberOfRejectedInputRefreshPackets: " + running_numberOfRejectedInputRefreshPackets);
-		System.out.println("running_numberOfAcceptedInputRefreshPackets: " + running_numberOfAcceptedInputRefreshPackets);
-		System.out.println("running_numberOfSentOutputRefreshPackets: " + running_numberOfSentOutputRefreshPackets);
-		System.out.println("running_numberOfOutputRefreshPacketsNotSent: " + running_numberOfOutputRefreshPacketsNotSent);
+		System.out.println("numberOfRejectedIncomingBytes: " + numberOfRejectedIncomingBytes);
+		System.out.println("numberOfRejectedInputRefreshPackets: " + numberOfRejectedInputRefreshPackets);
+		System.out.println("numberOfAcceptedInputRefreshPackets: " + numberOfAcceptedInputRefreshPackets);
+		System.out.println("numberOfSentOutputRefreshPackets: " + numberOfSentOutputRefreshPackets);
+		System.out.println("numberOfOutputRefreshPacketsNotSent: " + numberOfOutputRefreshPacketsNotSent);
 		System.out.println("Bytes available in Serial Read Buffer: " + this.serialPort.bytesAvailable());
+		System.out.println();
 	}
 
 	//Clear the inputRefreshPacketBuffer and reset associated variables
@@ -133,26 +129,27 @@ public class SerialCommunicator {
 	//Sends an outputRefreshPacket to KMega
 	public void sendOutputRefreshPacket(byte[] packet) {
 		
-		System.out.println(this.serialPort.writeBytes(packet, KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()));
-		this.running_numberOfSentOutputRefreshPackets++;
+		int numberOfBytesWritten = this.serialPort.writeBytes(packet, KKIMProp.getkMegaOutputRefreshPacketLengthInBytes());
 		
-//		if ( Serial.availableForWrite() >= INPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
-//			numberOfBytesWritten = Serial.write(inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES);
-//			
-//			if (numberOfBytesWritten == INPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
-//				this->running_numberOfSentInputRefreshPackets++;
-//			} else {
-//				this->running_numberOfInputRefreshPacketsNotSent++;
-//			}
-//		} else {
-//			this->running_numberOfInputRefreshPacketsNotSent++;
-//		}
-		
-//		this.serialPort.bytesAwaitingWrite();
-//		this.serialPort.writeBytes(buffer, bytesToWrite);
+		if (numberOfBytesWritten == KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()) {
+			this.numberOfSentOutputRefreshPackets++;
+		} else {
+			this.numberOfOutputRefreshPacketsNotSent++;
+		}
 	}
 		
 	public void teardownSerialLink() {//TODO
 		
+	}
+	
+	public void ingestDataFromSerialPortAndDisplay() {
+	
+		if (this.serialPort.bytesAvailable() > 0) {
+			int numberOfBytesAvailableInSerialBuffer = this.serialPort.bytesAvailable();
+			byte[] displayBuffer = new byte[numberOfBytesAvailableInSerialBuffer];
+			this.serialPort.readBytes(displayBuffer, numberOfBytesAvailableInSerialBuffer);
+			String result = new String(displayBuffer);
+			System.out.print(result);
+		}
 	}
 }

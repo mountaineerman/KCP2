@@ -39,52 +39,52 @@ public class LED_PWM_RGB extends Part {
 		switch(this.mode) {
 			case WHITE:
 				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.grnLED.setDutyCycle(100);
-				this.bluLED.setDutyCycle(100);
+				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				break;
 			case VIOLET:
-				this.redLED.setDutyCycle(50);
-				this.grnLED.setDutyCycle(0);
-				this.bluLED.setDutyCycle(100);
+				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM()/2);
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
 			case MAGENTA:
-				this.redLED.setDutyCycle(100);
-				this.grnLED.setDutyCycle(0);
-				this.bluLED.setDutyCycle(100);
+				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				break;
 			case BLUE:
-				this.redLED.setDutyCycle(0);
-				this.grnLED.setDutyCycle(0);
-				this.bluLED.setDutyCycle(100);
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				break;
 			case CYAN:
-				this.redLED.setDutyCycle(0);
-				this.grnLED.setDutyCycle(100);
-				this.bluLED.setDutyCycle(100);
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				break;	
 			case GREEN:
-				this.redLED.setDutyCycle(0);
-				this.grnLED.setDutyCycle(100);
-				this.bluLED.setDutyCycle(0);
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
 			case YELLOW:
-				this.redLED.setDutyCycle(100);
-				this.grnLED.setDutyCycle(100);
-				this.bluLED.setDutyCycle(0);
+				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
 			case ORANGE:
-				this.redLED.setDutyCycle(100);
-				this.grnLED.setDutyCycle(67);
-				this.bluLED.setDutyCycle(0);
+				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM()*2/3);
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
 			case RED:
-				this.redLED.setDutyCycle(100);
-				this.grnLED.setDutyCycle(0);
-				this.bluLED.setDutyCycle(0);
+				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
 			case OFF:
-				this.redLED.setDutyCycle(0);
-				this.grnLED.setDutyCycle(0);
-				this.bluLED.setDutyCycle(0);
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
 		}
 	}

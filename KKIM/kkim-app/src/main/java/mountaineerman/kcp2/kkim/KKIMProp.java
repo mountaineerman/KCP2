@@ -19,6 +19,7 @@ public class KKIMProp {
 	private static int kmegaMinPWM = 0;
 	private static int kmegaMaxPWM = 0;
 	
+	private static int kkimInitialStartupDelayInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
 	
 	
@@ -40,6 +41,7 @@ public class KKIMProp {
 		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.minPWM"));
 		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.maxPWM"));
 		
+		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
 		
 		System.out.println("DONE");
@@ -105,6 +107,10 @@ public class KKIMProp {
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public static int getkkimInitialStartupDelayInMilliseconds() {
+		return kkimInitialStartupDelayInMilliseconds;
+	}
 	
 	public static int getkkimRefreshFrequencyInMilliseconds() {
 		return kkimRefreshFrequencyInMilliseconds;

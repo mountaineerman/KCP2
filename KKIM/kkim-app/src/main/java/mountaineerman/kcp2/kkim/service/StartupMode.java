@@ -1,5 +1,7 @@
 package mountaineerman.kcp2.kkim.service;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 public final class StartupMode implements OperatingMode { //SINGLETON
 
 	private static StartupMode INSTANCE;
@@ -19,14 +21,11 @@ public final class StartupMode implements OperatingMode { //SINGLETON
         //System.out.println("Startup Mode");
         
 		kkimService.serialCommunicator.establishSerialLink();
-		
-		//System.out.print("Establishing connection to kRPC... ");
-		//TODO
-		//System.out.println("DONE");
-        
+		kkimService.kRPCCommunicator.establishKRPCLink();        
 		//TODO Establish connection to phone
 		
-        kkimService.idleIfNecessary();
+		try {Thread.sleep(KKIMProp.getkkimInitialStartupDelayInMilliseconds());} catch (InterruptedException e) {e.printStackTrace();}
+		
         kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
     }
 }

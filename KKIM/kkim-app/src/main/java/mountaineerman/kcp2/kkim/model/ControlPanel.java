@@ -13,6 +13,10 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 	//Module D
 	public SwitchSP2T brakeSwitch = null;
 	public LED_PWM moduleDBrakePWMLED = null;
+	//Module I
+	public LED_PWM stepperLED_Fuel_Green = null;
+	
+	public float fuel = 0;//TODO replace
 	
 	public ControlPanel() {
 		
@@ -22,6 +26,9 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 
 		brakeSwitch = new SwitchSP2T("Brake Switch", ModuleID.D);
 		moduleDBrakePWMLED = new LED_PWM("Module D Brake PWM LED", ModuleID.D);
+		
+		stepperLED_Fuel_Green = new LED_PWM("Stepper PWM LED: Fuel: Green", ModuleID.I);
+		
 		
 		/*
 		// =================================================================================================================
@@ -303,6 +310,12 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 		} else {
 			this.moduleABrakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
 			this.moduleDBrakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
+		}
+		
+		if (this.fuel > 0) { //TODO replace
+			this.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
+		} else {
+			this.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
 		//TODO add remaining parts
