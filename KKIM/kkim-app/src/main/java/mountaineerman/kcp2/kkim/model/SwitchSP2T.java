@@ -1,6 +1,6 @@
 package mountaineerman.kcp2.kkim.model;
 
-public class SwitchSP2T extends Part implements InputAggregator {
+public class SwitchSP2T extends Part {
 
 	/** true = HIGH/ON, false = LOW/OFF */
 	private boolean status;
