@@ -47,44 +47,44 @@ void KMegaService::startupMode() {
 
 void KMegaService::standardOperatingMode() {
 
-//	long time1 = 0;
-//	long time2 = 0;
-//	long time3 = 0;
-//	long time4 = 0;
-//	long time5 = 0;
-//	long time6 = 0;
-//	long time7 = 0;
-//	long time8 = 0;
-//	long time9 = 0;
-//	long time10 = 0;
-//	bool sentInputRefreshPacket = false;
-//	bool gotOutputRefreshPacket = false;
+	long time1 = 0;
+	long time2 = 0;
+	long time3 = 0;
+	long time4 = 0;
+	long time5 = 0;
+	long time6 = 0;
+	long time7 = 0;
+	long time8 = 0;
+	long time9 = 0;
+	long time10 = 0;
+	bool sentInputRefreshPacket = false;
+	bool gotOutputRefreshPacket = false;
 
 
 	if ( (millis() - this->inputRefreshPacketLastSendTimeInMilliseconds) > INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS ) {
-//		sentInputRefreshPacket = true;
-//		time1 = millis();
+		sentInputRefreshPacket = true;
+		time1 = millis();
 		this->controlPanel.refreshInputStatus();
-//		time2 = millis();
+		time2 = millis();
 		this->packetAssembler.assembleInputRefreshPacket();
-//		time3 = millis();
+		time3 = millis();
 		//this->displayInputRefreshPacket();
 		//this->serialCommunicator.sendInputRefreshPacket();
-//		time4 = millis();
+		time4 = millis();
 		this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
 	}
 	
-//	time5 = millis();
+	time5 = millis();
 	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
-//	time6 = millis();
+	time6 = millis();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
-//		gotOutputRefreshPacket = true;
+		gotOutputRefreshPacket = true;
 		//this->displayOutputRefreshPacket();
-//		time7 = millis();
+		time7 = millis();
 		this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
-//		time8 = millis();
+		time8 = millis();
 		this->controlPanel.writeLEDStatusToLEDDriverBoards();
-//		time9 = millis();
+		time9 = millis();
 		//TODO Send toKNano packet?
 	}
 	
@@ -92,21 +92,21 @@ void KMegaService::standardOperatingMode() {
 	
 	this->serialCommunicator.tallyCommunicationsDiagnosticData();
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
-//	time10 = millis();
+	time10 = millis();
 	
 //	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
 	
-//	if (sentInputRefreshPacket && gotOutputRefreshPacket) {
-//		Serial.println();
-//		Serial.print("controlPanel.refreshInputStatus: "); Serial.println(time2 - time1);
-//		Serial.print("packetAssembler.assembleInputRefreshPacket: "); Serial.println(time3 - time2);
-//		Serial.print("serialCommunicator.sendInputRefreshPacket: "); Serial.println("? (omitted)");
-//		Serial.print("serialCommunicator.ingestDataFromSerialBufferToPacketBuffer: "); Serial.println(time6 - time5);
-//		Serial.print("serialCommunicator.getOutputRefreshPacket: "); Serial.println(time7 - time6);
-//		Serial.print("packetUnpacker.unpackOutputRefreshPacketIntoModel: "); Serial.println(time8 - time7);
-//		Serial.print("controlPanel.writeLEDStatusToLEDDriverBoards: "); Serial.println(time9 - time8);
-//		Serial.print("Total: "); Serial.println(time10 - time1);
-//	}
+	if (sentInputRefreshPacket && gotOutputRefreshPacket) {
+		Serial.println();
+		Serial.print("controlPanel.refreshInputStatus: "); Serial.println(time2 - time1);
+		Serial.print("packetAssembler.assembleInputRefreshPacket: "); Serial.println(time3 - time2);
+		Serial.print("serialCommunicator.sendInputRefreshPacket: "); Serial.println("? (omitted)");
+		Serial.print("serialCommunicator.ingestDataFromSerialBufferToPacketBuffer: "); Serial.println(time6 - time5);
+		Serial.print("serialCommunicator.getOutputRefreshPacket: "); Serial.println(time7 - time6);
+		Serial.print("packetUnpacker.unpackOutputRefreshPacketIntoModel: "); Serial.println(time8 - time7);
+		Serial.print("controlPanel.writeLEDStatusToLEDDriverBoards: "); Serial.println(time9 - time8);
+		Serial.print("Total: "); Serial.println(time10 - time1);
+	}
 	
 	//TODO Idle if necessary
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove

@@ -65,24 +65,75 @@ void PacketAssembler::assembleInputRefreshPacket() {
 	
 	tempByte = this->compressBoolsIntoByte(controlPanel.moduleA.switch_StagingButton.getInputStatus(),
 										   controlPanel.moduleA.switch_BrakeButton.getInputStatus(),
-										   false,//TODO
-										   false,//TODO
-										   false,//TODO
-										   false,//TODO
-										   false,//TODO
-										   false);//TODO
+										   controlPanel.moduleB.switch_AbortButton.getInputStatus(),
+										   controlPanel.moduleB.switch_PitchTrim.getInputStatus(),
+										   controlPanel.moduleB.switch_YawTrim.getInputStatus(),
+										   controlPanel.moduleB.switch_RollTrim.getInputStatus(),
+										   controlPanel.moduleB.switch_TimeWarpUp.getInputStatus(),
+										   controlPanel.moduleB.switch_TimeWarpDown.getInputStatus());
+	this->saveByteToInputRefreshPacket(tempByte, 10);
+	
+	tempByte = this->compressBoolsIntoByte(controlPanel.moduleB.switch_Joystick.getInputStatus(),
+										   controlPanel.moduleD.switch_SAS.getInputStatus(),
+										   controlPanel.moduleD.switch_RCS.getInputStatus(),
+										   controlPanel.moduleD.switch_Lights.getInputStatus(),
+										   controlPanel.moduleD.switch_Gear.getInputStatus(),
+										   controlPanel.moduleD.switch_Brake.getInputStatus(),
+										   controlPanel.moduleD.switch_Map.getInputStatus(),
+										   controlPanel.moduleD.switch_Mute.getInputStatus());
 	this->saveByteToInputRefreshPacket(tempByte, 11);
 	
-	tempByte = this->compressBoolsIntoByte(false,//TODO
-										   false,//TODO
-										   false,//TODO
-										   false,//TODO
-										   false,//TODO
-										   controlPanel.moduleD.switch_Brake.getInputStatus(),
-										   false,//TODO
-										   false);//TODO
+	tempByte = this->compressBoolsIntoByte(controlPanel.moduleD.switch_AutopilotHold.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotPrograde.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotRetrograde.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotNormal.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotAntiNormal.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotRadialIn.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotRadialOut.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotTarget.getInputStatus());
 	this->saveByteToInputRefreshPacket(tempByte, 12);
-	//TODO Add remaining outputs
+	
+	tempByte = this->compressBoolsIntoByte(controlPanel.moduleD.switch_AutopilotAntiTarget.getInputStatus(),
+										   controlPanel.moduleD.switch_AutopilotManeuver.getInputStatus(),
+										   controlPanel.moduleE.switch_ActionGroup1.getInputStatus(),
+										   controlPanel.moduleE.switch_ActionGroup2.getInputStatus(),
+										   controlPanel.moduleE.switch_ActionGroup3.getInputStatus(),
+										   controlPanel.moduleE.switch_Science.getInputStatus(),
+										   controlPanel.moduleE.switch_Reset.getInputStatus(),
+										   controlPanel.moduleE.switch_Solar.getInputStatus());
+	this->saveByteToInputRefreshPacket(tempByte, 13);
+	
+	tempByte = this->compressBoolsIntoByte(controlPanel.moduleE.switch_Ladder.getInputStatus(),
+										   controlPanel.moduleE.switch_AutoNavigation.getInputStatus(),
+										   controlPanel.moduleE.switch_FairingButton.getInputStatus(),
+										   controlPanel.moduleE.switch_ChuteButton.getInputStatus(),
+										   controlPanel.moduleE.switch_SFC.getInputStatus(),
+										   controlPanel.moduleE.switch_TGT.getInputStatus(),
+										   controlPanel.moduleE.switch_RKT.getInputStatus(),
+										   controlPanel.moduleE.switch_RVR.getInputStatus());
+	this->saveByteToInputRefreshPacket(tempByte, 14);
+	
+	tempByte = this->compressBoolsIntoByte(controlPanel.moduleE.switch_90deg.getInputStatus(),
+										   controlPanel.moduleE.switch_9deg.getInputStatus(),
+										   controlPanel.moduleF.switch_trim.getInputStatus(),
+										   controlPanel.moduleF.switch_4pos_AB.getInputStatus(),
+										   controlPanel.moduleF.switch_4pos_CD.getInputStatus(),
+										   controlPanel.moduleG.switch_HeatLife.getInputStatus(),
+										   controlPanel.moduleH.switch_GlassCockpit_TL.getInputStatus(),
+										   controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus());
+	this->saveByteToInputRefreshPacket(tempByte, 15);
+	
+	tempByte = this->compressBoolsIntoByte(controlPanel.moduleH.switch_GlassCockpit_BL.getInputStatus(),
+										   controlPanel.moduleH.switch_GlassCockpit_TR.getInputStatus(),
+										   controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus(),
+										   controlPanel.moduleH.switch_GlassCockpit_BR.getInputStatus(),
+										   controlPanel.moduleI.switch_MonopropellantIntake.getInputStatus(),
+										   false, //Unused
+										   false, //Unused
+										   false);//Unused
+	this->saveByteToInputRefreshPacket(tempByte, 16);
+	
+	//TODO Add analog outputs
 	
 	//this->displayInputRefreshPacketInDecimal();
 }
