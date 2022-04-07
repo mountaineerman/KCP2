@@ -69,7 +69,7 @@ void KMegaService::standardOperatingMode() {
 		this->packetAssembler.assembleInputRefreshPacket();
 		time3 = millis();
 		//this->displayInputRefreshPacket();
-		//this->serialCommunicator.sendInputRefreshPacket();
+		this->serialCommunicator.sendInputRefreshPacket();
 		time4 = millis();
 		this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
 	}
