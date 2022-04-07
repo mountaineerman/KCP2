@@ -58,7 +58,7 @@ public class KRPCCommunicator {
 	}
 
 	public void sendInfoFromModelToKSP() {
-		if (this.controlPanel.stagingButton.getDebouncedStatus()) {
+		if (this.controlPanel.moduleA.stagingButton.getDebouncedStatus()) {
 			try {
 				this.control.activateNextStage();
 			} catch (RPCException e) {

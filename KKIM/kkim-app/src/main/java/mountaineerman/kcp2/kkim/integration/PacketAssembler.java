@@ -41,10 +41,10 @@ public class PacketAssembler {
 		/* Empty */				this.saveByteToOutputRefreshPacketBuffer(0, 9);
 		
 		// (3) Populate Payload:
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(10, 11, controlPanel.moduleABrakePWMLED.getPWM());
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(12, 13, controlPanel.moduleDBrakePWMLED.getPWM());
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(10, 11, controlPanel.moduleA.brakeLED.getPWM());
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(12, 13, controlPanel.moduleD.brakeLED.getPWM());
 		//TODO Add remaining outputs
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(116, 117, controlPanel.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(116, 117, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
 		//TODO Add remaining outputs
 		//TODO Use OutputRefreshPacketStructure enum instead of hardcoding?
 		

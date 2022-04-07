@@ -4,31 +4,33 @@ import mountaineerman.kcp2.kkim.KKIMProp;
 
 /* MkII Control Panel
  */
-public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggregator/*TODO, StepperMotorAggregator*/ {
+public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 
-	//Module A
-	public SwitchMom stagingButton;
-	public SwitchSP2T brakeButton = null;
-	public LED_PWM moduleABrakePWMLED = null;
-	//Module D
-	public SwitchSP2T brakeSwitch = null;
-	public LED_PWM moduleDBrakePWMLED = null;
-	//Module I
-	public LED_PWM stepperLED_Fuel_Green = null;
+	public ModuleA moduleA = null;
+	public ModuleB moduleB = null;
+	public ModuleC moduleC = null;
+	public ModuleD moduleD = null;
+	public ModuleE moduleE = null;
+	public ModuleF moduleF = null;
+	public ModuleG moduleG = null;
+	public ModuleH moduleH = null;
+	public ModuleI moduleI = null;
+	public ModuleGT moduleGT = null;
 	
 	public float fuel = 0;//TODO replace
 	
 	public ControlPanel() {
 		
-		stagingButton = new SwitchMom("Staging Button", ModuleID.A);
-		brakeButton = new SwitchSP2T("Brake Button", ModuleID.A);
-		moduleABrakePWMLED = new LED_PWM("Module A Brake PWM LED", ModuleID.A);
-
-		brakeSwitch = new SwitchSP2T("Brake Switch", ModuleID.D);
-		moduleDBrakePWMLED = new LED_PWM("Module D Brake PWM LED", ModuleID.D);
-		
-		stepperLED_Fuel_Green = new LED_PWM("Stepper PWM LED: Fuel: Green", ModuleID.I);
-		
+		this.moduleA = new ModuleA();
+		this.moduleB = new ModuleB();
+		this.moduleC = new ModuleC();
+		this.moduleD = new ModuleD();
+		this.moduleE = new ModuleE();
+		this.moduleF = new ModuleF();
+		this.moduleG = new ModuleG();
+		this.moduleH = new ModuleH();
+		this.moduleI = new ModuleI();
+		this.moduleGT = new ModuleGT();
 		
 		/*
 		// =================================================================================================================
@@ -36,9 +38,6 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 		// =================================================================================================================
 		
 		// ========================================== SwitchSP2T / SwitchMom ===============================================
-		SwitchMom stagingButton = new SwitchMom("stagingButton", ModuleID.A);
-		SwitchMom brakeButton = new SwitchMom("brakeButton", ModuleID.A);
-		
 		SwitchMom abortButton = new SwitchMom("abortButton", ModuleID.B);
 		SwitchSP2T trimPitchSwitch = new SwitchSP2T("trimPitchSwitch", ModuleID.B);
 		SwitchSP2T trimYawSwitch = new SwitchSP2T("trimYawSwitch", ModuleID.B);
@@ -128,7 +127,6 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 		// =================================================================================================================
 		
 		// ========================================== LED_PWM ==============================================================
-		LED_PWM moduleABrakeLED = new LED_PWM("moduleABrakeLED", ModuleID.A);
 		
 		LED_PWM moduleDBrakeLED = new LED_PWM("moduleDBrakeLED", ModuleID.D);
 		LED_PWM autoHoldLED = new LED_PWM("autoHoldLED", ModuleID.D);
@@ -304,32 +302,37 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 	//Re-calculate state of higher-level members based on state of lower-level members
 	public void refresh() {
 		
-		if (this.brakeButton.getStatus() ^ this.brakeSwitch.getStatus()) {//XOR
-			this.moduleABrakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleDBrakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM());
+		if (this.moduleA.brakeButton.getStatus() ^ this.moduleD.brakeSwitch.getStatus()) {//XOR
+			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
 		} else {
-			this.moduleABrakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleDBrakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
 		if (this.fuel > 0) { //TODO replace
-			this.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
 		} else {
-			this.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
 		//TODO add remaining parts
 		
 	}
 	
+	@Override
 	public String toString() {
 		
-		return  this.stagingButton.toString() +
-				this.brakeButton.toString() +
-				this.moduleABrakePWMLED.toString() +
-				this.brakeSwitch.toString() +
-				this.moduleDBrakePWMLED.toString();
-		
+		return  this.moduleA.toString() +
+				this.moduleB.toString() +
+				this.moduleC.toString() +
+				this.moduleD.toString() +
+				this.moduleE.toString() +
+				this.moduleF.toString() +
+				this.moduleG.toString() +
+				this.moduleH.toString() +
+				this.moduleI.toString() +
+				this.moduleGT.toString();
 	}
 	
 	public void setAllLEDsOff() {//TODO
@@ -337,10 +340,6 @@ public class ControlPanel implements /*TODO remove? InputAggregator,*/ LEDAggreg
 	}
 	
 	public void setAllLEDsOn() {//TODO
-		
-	}
-	
-	public void testLEDsSequentially() {//TODO
 		
 	}
 	

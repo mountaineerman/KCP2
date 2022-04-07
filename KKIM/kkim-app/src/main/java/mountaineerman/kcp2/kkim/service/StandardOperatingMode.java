@@ -39,38 +39,38 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 //		boolean pulledData = false;
 //		boolean sentOutputRefreshPacket = false;
 		
-		//Pull Information
-		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
-			//CommonUtilities.clearScreen();
-//			time1 = System.currentTimeMillis();
-			kkimService.serialCommunicator.ingestDataFromSerialPortToInputRefreshPacketBuffer();
-//			time2 = System.currentTimeMillis();
-			if (kkimService.serialCommunicator.getisValidPacketInInputRefreshPacketBuffer()) {
-//				pulledData = true;
-				//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
-//				time3 = System.currentTimeMillis();
-				kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
-//				time4 = System.currentTimeMillis();
-				kkimService.serialCommunicator.clearInputRefreshPacketBuffer();
-//				time5 = System.currentTimeMillis();
-				
-//				time6 = System.currentTimeMillis();
-				kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
-//				time7 = System.currentTimeMillis();
-			}
-			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
-			
-//			time8 = System.currentTimeMillis();
-			kkimService.controlPanel.refresh();
-//			time9 = System.currentTimeMillis();
-			//System.out.println(kkimService.controlPanel);
-		}
-		
-//		//TEMP: Write data from Serial Buffer (KMega) to the terminal console
+//		//Pull Information
 //		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
-//			kkimService.serialCommunicator.ingestDataFromSerialPortAndDisplay();
+//			//CommonUtilities.clearScreen();
+////			time1 = System.currentTimeMillis();
+//			kkimService.serialCommunicator.ingestDataFromSerialPortToInputRefreshPacketBuffer();
+////			time2 = System.currentTimeMillis();
+//			if (kkimService.serialCommunicator.getisValidPacketInInputRefreshPacketBuffer()) {
+////				pulledData = true;
+//				//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
+////				time3 = System.currentTimeMillis();
+//				kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
+////				time4 = System.currentTimeMillis();
+//				kkimService.serialCommunicator.clearInputRefreshPacketBuffer();
+////				time5 = System.currentTimeMillis();
+//				
+////				time6 = System.currentTimeMillis();
+//				kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
+////				time7 = System.currentTimeMillis();
+//			}
 //			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
+//			
+////			time8 = System.currentTimeMillis();
+//			kkimService.controlPanel.refresh();
+////			time9 = System.currentTimeMillis();
+//			//System.out.println(kkimService.controlPanel);
 //		}
+		
+		//TEMP: Write data from Serial Buffer (KMega) to the terminal console
+		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
+			kkimService.serialCommunicator.ingestDataFromSerialPortAndDisplay();
+			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
+		}
 		
 		//Send outputRefreshPacket
 		if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
@@ -80,8 +80,8 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 //			time11 = System.currentTimeMillis();
 			kkimService.serialCommunicator.sendOutputRefreshPacket(outputRefreshPacket);
 //			time12 = System.currentTimeMillis();
-			CommonUtilities.clearScreen();
-			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
+			//CommonUtilities.clearScreen();
+			//kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
 			this.outputRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 		}
 		

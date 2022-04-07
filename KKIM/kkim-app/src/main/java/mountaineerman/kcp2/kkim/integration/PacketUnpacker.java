@@ -24,11 +24,11 @@ public class PacketUnpacker {
 	public void unpackInputRefreshPacketIntoModel(byte[] inputRefreshPacket) {
 		//Module A
 		byte tempByte = this.fetchByteFromPacket(inputRefreshPacket, 10);
-		controlPanel.stagingButton.setSP2TStatus( this.fetchBitInByte(tempByte, 1) );
-		controlPanel.brakeButton.setStatus( this.fetchBitInByte(tempByte, 2) );
+		controlPanel.moduleA.stagingButton.setSP2TStatus( this.fetchBitInByte(tempByte, 1) );
+		controlPanel.moduleA.brakeButton.setStatus( this.fetchBitInByte(tempByte, 2) );
 		//Module D
 		tempByte = this.fetchByteFromPacket(inputRefreshPacket, 11);
-		controlPanel.brakeSwitch.setStatus( this.fetchBitInByte(tempByte, 6) );
+		controlPanel.moduleD.brakeSwitch.setStatus( this.fetchBitInByte(tempByte, 6) );
 		//TODO Add remaining inputs
 
 	}
