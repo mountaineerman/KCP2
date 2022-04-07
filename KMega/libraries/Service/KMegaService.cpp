@@ -100,7 +100,7 @@ void KMegaService::standardOperatingMode() {
 		Serial.println();
 		Serial.print("controlPanel.refreshInputStatus: "); Serial.println(time2 - time1);
 		Serial.print("packetAssembler.assembleInputRefreshPacket: "); Serial.println(time3 - time2);
-		Serial.print("serialCommunicator.sendInputRefreshPacket: "); Serial.println("? (omitted)");
+		Serial.print("serialCommunicator.sendInputRefreshPacket: "); Serial.println(time4 - time3);
 		Serial.print("serialCommunicator.ingestDataFromSerialBufferToPacketBuffer: "); Serial.println(time6 - time5);
 		Serial.print("serialCommunicator.getOutputRefreshPacket: "); Serial.println(time7 - time6);
 		Serial.print("packetUnpacker.unpackOutputRefreshPacketIntoModel: "); Serial.println(time8 - time7);
