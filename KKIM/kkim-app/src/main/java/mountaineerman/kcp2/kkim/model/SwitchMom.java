@@ -1,5 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.IP;
+
 /** Momentarily-ON SP2T Switch (Adds debouncing logic to SP2T Switch) */
 public class SwitchMom {
 
@@ -11,9 +13,8 @@ public class SwitchMom {
 	private boolean ignoreTimerIsActive = false;
 	private int ignoreTimer = 0;
 	
-	public SwitchMom(String name, ModuleID moduleID) {
-		super();
-		this.sp2t = new SwitchSP2T(name, moduleID);
+	public SwitchMom(IP ip) {
+		this.sp2t = new SwitchSP2T(ip);
 		this.ignoreTimerIsActive = false;
 	}
 

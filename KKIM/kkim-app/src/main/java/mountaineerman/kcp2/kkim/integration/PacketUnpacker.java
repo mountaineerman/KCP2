@@ -2,6 +2,7 @@ package mountaineerman.kcp2.kkim.integration;
 
 import java.util.Arrays;
 
+import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 
 /* Packet Unpacker
@@ -22,15 +23,12 @@ public class PacketUnpacker {
 	}
 	
 	public void unpackInputRefreshPacketIntoModel(byte[] inputRefreshPacket) {
-		//Module A
-		byte tempByte = this.fetchByteFromPacket(inputRefreshPacket, 10);
-		controlPanel.moduleA.stagingButton.setSP2TStatus( this.fetchBitInByte(tempByte, 1) );
-		controlPanel.moduleA.brakeButton.setStatus( this.fetchBitInByte(tempByte, 2) );
-		//Module D
-		tempByte = this.fetchByteFromPacket(inputRefreshPacket, 11);
-		controlPanel.moduleD.brakeSwitch.setStatus( this.fetchBitInByte(tempByte, 6) );
-		//TODO Add remaining inputs
 
+		controlPanel.moduleA.stagingButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.StagingButton.firstByte, IP.StagingButton.bitNumber));
+		controlPanel.moduleA.brakeButton.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.BrakeButton.firstByte, IP.BrakeButton.bitNumber));
+		
+		controlPanel.moduleD.brakeSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.BrakeSwitch.firstByte, IP.BrakeSwitch.bitNumber));
+		//TODO Add remaining inputs
 	}
 	
 	//Returns the integer stored in packet located at the specified byte numbers (see ICD).
@@ -55,16 +53,12 @@ public class PacketUnpacker {
 //		return (*((int *)tempTwoByteArray));
 		return 0;
 	}
-	
-	//Returns the byte in packet located at the specified byte number. See "ICD" in OneNote.
-	private byte fetchByteFromPacket(byte[] packet, int byteNumber) {
-		return packet[byteNumber];
-	}
-	
-	//Returns the bit located at bitNumber in theByte. See "ICD:KMega>KKIM" in Onenote.
-	private boolean fetchBitInByte(byte theByte, int bitNumber) {
+
+	//Extracts the byte at byteNumber (See Onenote: "ICD:KMega>KKIM"). Returns the bit located at bitNumber in the byte.
+	private boolean fetchBitInByteInPacket(byte[] packet, int byteNumber, int bitNumber) {
+		byte tempByte = packet[byteNumber-1];
 		int temp = 8 - bitNumber;
-		int bit = (theByte >> temp) & 1;
+		int bit = (tempByte >> temp) & 1;
 		return (bit == 1);
 	}
 }
