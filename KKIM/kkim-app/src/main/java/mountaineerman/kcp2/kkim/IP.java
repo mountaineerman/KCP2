@@ -12,8 +12,8 @@ public enum IP {
 	TrimPitchSwitch			(10,		-1,			4,			ModuleID.B,		"Trim: Pitch Switch"),
 	TrimYawSwitch			(10,		-1,			5,			ModuleID.B,		"Trim: Yaw Switch"),
 	TrimRollSwitch			(10,		-1,			6,			ModuleID.B,		"Trim: Roll Switch"),
-	TimeWarpUpButton		(10,		-1,			7,			ModuleID.B,		"Time Warp + Button (L)"),
-	TimeWarpDownButton		(10,		-1,			8,			ModuleID.B,		"Time Warp - Button (R)"),
+	TimeWarpUpButton		(10,		-1,			7,			ModuleID.B,		"Time Warp + Button (R)"),
+	TimeWarpDownButton		(10,		-1,			8,			ModuleID.B,		"Time Warp - Button (L)"),
 // 							firstByte	lastByte	bitNumber	moduleID		partName
 	JoystickButton			(11,		-1,			1,			ModuleID.B,		"Joystick Top Button"),
 	SAS_Switch				(11,		-1,			2,			ModuleID.D,		"SAS Switch"),

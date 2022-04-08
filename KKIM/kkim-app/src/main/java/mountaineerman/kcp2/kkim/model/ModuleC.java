@@ -20,6 +20,6 @@ public class ModuleC implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
-		return "Module C: TBD";
+		return "Module C: TBD\n";
 	}
 }

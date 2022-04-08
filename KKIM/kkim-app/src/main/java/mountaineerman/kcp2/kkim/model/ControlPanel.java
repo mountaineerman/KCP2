@@ -250,7 +250,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	@Override
 	public String toString() {
 		
-		return  this.moduleA.toString() +
+		return  this.moduleA.toString() + //TODO compress to fit on 1 screen...
 				this.moduleB.toString() +
 				this.moduleC.toString() +
 				this.moduleD.toString() +

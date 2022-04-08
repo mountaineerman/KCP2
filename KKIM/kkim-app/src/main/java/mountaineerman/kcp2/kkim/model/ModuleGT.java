@@ -20,6 +20,6 @@ public class ModuleGT implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
-		return "Module GT: TBD";
+		return "Module GT: TBD\n";
 	}
 }
