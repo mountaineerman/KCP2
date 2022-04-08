@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleD implements LEDAggregator {
 
@@ -8,8 +9,10 @@ public class ModuleD implements LEDAggregator {
 	public LED_PWM brakeLED = null;
 	
 	public ModuleD() {
+		
 		brakeSwitch = new SwitchSP2T(IP.BrakeSwitch);
-		brakeLED = new LED_PWM("Module D Brake PWM LED", ModuleID.D);
+		
+		brakeLED = new LED_PWM(OP.ModuleDBrakeLED);
 	}
 
 	@Override

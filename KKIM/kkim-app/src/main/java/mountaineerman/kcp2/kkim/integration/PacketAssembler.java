@@ -3,6 +3,7 @@ package mountaineerman.kcp2.kkim.integration;
 import java.util.Arrays;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.OP;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 
 /* Packet Assembler
@@ -41,12 +42,12 @@ public class PacketAssembler {
 		/* Empty */				this.saveByteToOutputRefreshPacketBuffer(0, 9);
 		
 		// (3) Populate Payload:
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(10, 11, controlPanel.moduleA.brakeLED.getPWM());
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(12, 13, controlPanel.moduleD.brakeLED.getPWM());
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
+		
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
+		
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
 		//TODO Add remaining outputs
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(116, 117, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
-		//TODO Add remaining outputs
-		//TODO Use OutputRefreshPacketStructure enum instead of hardcoding?
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
