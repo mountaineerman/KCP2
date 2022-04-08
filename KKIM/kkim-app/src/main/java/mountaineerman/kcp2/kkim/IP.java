@@ -5,12 +5,71 @@ import mountaineerman.kcp2.kkim.model.ModuleID;
 //Fixed values associated with the User Input parts and the InputRefreshPacket
 public enum IP {
 	
-	//				 firstByte	lastByte	bitNumber	moduleID		partName
-	StagingButton	(10,		-1,			1,			ModuleID.A,		"Staging Button"),
-	BrakeButton		(10,		-1,			2,			ModuleID.A,		"Brake Button"),
-	
-	BrakeSwitch		(11,		-1,			6,			ModuleID.D,		"Brake Switch");
-//	TODO Add remaining inputs
+//					 		firstByte	lastByte	bitNumber	moduleID		partName
+	StagingButton			(10,		-1,			1,			ModuleID.A,		"Staging Button"),
+	BrakeButton				(10,		-1,			2,			ModuleID.A,		"Brake Button"),
+	AbortButton				(10,		-1,			3,			ModuleID.B,		"Abort Button"),
+	TrimPitchSwitch			(10,		-1,			4,			ModuleID.B,		"Trim: Pitch Switch"),
+	TrimYawSwitch			(10,		-1,			5,			ModuleID.B,		"Trim: Yaw Switch"),
+	TrimRollSwitch			(10,		-1,			6,			ModuleID.B,		"Trim: Roll Switch"),
+	TimeWarpUpButton		(10,		-1,			7,			ModuleID.B,		"Time Warp + Button (L)"),
+	TimeWarpDownButton		(10,		-1,			8,			ModuleID.B,		"Time Warp - Button (R)"),
+// 							firstByte	lastByte	bitNumber	moduleID		partName
+	JoystickButton			(11,		-1,			1,			ModuleID.B,		"Joystick Top Button"),
+	SAS_Switch				(11,		-1,			2,			ModuleID.D,		"SAS Switch"),
+	RCS_Switch				(11,		-1,			3,			ModuleID.D,		"RCS Switch"),
+	LightsSwitch			(11,		-1,			4,			ModuleID.D,		"Lights Switch"),
+	GearSwitch				(11,		-1,			5,			ModuleID.D,		"Gear Switch"),
+	BrakeSwitch				(11,		-1,			6,			ModuleID.D,		"Brake Switch"),
+	MapSwitch				(11,		-1,			7,			ModuleID.D,		"Map Switch"),
+	MuteSwitch				(11,		-1,			8,			ModuleID.D,		"Mute Switch"),
+//							firstByte	lastByte	bitNumber	moduleID		partName
+	AutoHoldButton			(12,		-1,			1,			ModuleID.D,		"Autopilot Hold Button"),
+	AutoProgradeButton		(12,		-1,			2,			ModuleID.D,		"Autopilot Prograde Button"),
+	AutoRetrogradeButton	(12,		-1,			3,			ModuleID.D,		"Autopilot Retrograde Button"),
+	AutoNormalButton		(12,		-1,			4,			ModuleID.D,		"Autopilot Normal Button"),
+	AutoAntiNormalButton	(12,		-1,			5,			ModuleID.D,		"Autopilot Anti-normal Button"),
+	AutoRadialInButton		(12,		-1,			6,			ModuleID.D,		"Autopilot Radial In Button"),
+	AutoRadialOutButton		(12,		-1,			7,			ModuleID.D,		"Autopilot Radial Out Button"),
+	AutoTargetButton		(12,		-1,			8,			ModuleID.D,		"Autopilot Target Button"),
+//							firstByte	lastByte	bitNumber	moduleID		partName
+	AutoAntiTargetButton	(13,		-1,			1,			ModuleID.D,		"Autopilot Anti-Target Button"),
+	AutoManeuverButton		(13,		-1,			2,			ModuleID.D,		"Autopilot Maneuver Button"),
+	Ag1Switch				(13,		-1,			3,			ModuleID.E,		"MOM Toggle Switch: Action Group 1"),
+	Ag2Switch				(13,		-1,			4,			ModuleID.E,		"MOM Toggle Switch: Action Group 2"),
+	Ag3Switch				(13,		-1,			5,			ModuleID.E,		"MOM Toggle Switch: Action Group 3"),
+	ScienceSwitch			(13,		-1,			6,			ModuleID.E,		"MOM Toggle Switch: Science"),
+	ResetSwitch				(13,		-1,			7,			ModuleID.E,		"MOM Toggle Switch: Reset"),
+	SolarSwitch				(13,		-1,			8,			ModuleID.E,		"MOM Toggle Switch: Solar Panels"),
+//							firstByte	lastByte	bitNumber	moduleID		partName
+	LadderSwitch			(14,		-1,			1,			ModuleID.E,		"MOM Toggle Switch: Ladder"),
+	ATNV_Switch				(14,		-1,			2,			ModuleID.E,		"MOM Toggle Switch: AutoNavigation"),
+	FairingButton			(14,		-1,			3,			ModuleID.E,		"Fairing Button"),
+	ChuteButton				(14,		-1,			4,			ModuleID.E,		"Parachute Button"),
+	SP3T_SFC_Switch			(14,		-1,			5,			ModuleID.E,		"SP3T Switch: Speed: SFC"),
+	SP3T_TGT_Switch			(14,		-1,			6,			ModuleID.E,		"SP3T Switch: Speed: TGT"),
+	SP3T_RKT_Switch			(14,		-1,			7,			ModuleID.E,		"SP3T Switch: Control Mode: RKT"),
+	SP3T_RVR_Switch			(14,		-1,			8,			ModuleID.E,		"SP3T Switch: Control Mode: RVR"),
+//							firstByte	lastByte	bitNumber	moduleID		partName
+	SP3T_90degSwitch		(15,		-1,			1,			ModuleID.E,		"SP3T Switch: Pitch: 90 degrees"),
+	SP3T_9degSwitch			(15,		-1,			2,			ModuleID.E,		"SP3T Switch: Pitch: 9 degrees"),
+	TrimPrimarySwitch		(15,		-1,			3,			ModuleID.F,		"Trim Primary Switch"),
+	SP4T_AB					(15,		-1,			4,			ModuleID.F,		"SP4T Switch: Control Sensitivity: AB"),
+	SP4T_CD					(15,		-1,			5,			ModuleID.F,		"SP4T Switch: Control Sensitivity: CD"),
+	HeatLifeSwitch			(15,		-1,			6,			ModuleID.G,		"Heat/Life Switch"),
+	GlassTL_Button			(15,		-1,			7,			ModuleID.H,		"Glass Cockpit Button - Top Left"),
+	GlassCL_Button			(15,		-1,			8,			ModuleID.H,		"Glass Cockpit Button - Center Left"),
+//							firstByte	lastByte	bitNumber	moduleID		partName
+	GlassBL_Button			(16,		-1,			1,			ModuleID.H,		"Glass Cockpit Pushbutton - Bottom Left"),
+	GlassTR_Button			(16,		-1,			2,			ModuleID.H,		"Glass Cockpit Pushbutton - Top Right"),
+	GlassCR_Button			(16,		-1,			3,			ModuleID.H,		"Glass Cockpit Pushbutton - Center Right"),
+	GlassBR_Button			(16,		-1,			4,			ModuleID.H,		"Glass Cockpit Pushbutton - Bottom Right"),
+	MonopropIntakeSwitch	(16,		-1,			5,			ModuleID.I,		"Monopropellant/Intake Air Toggle Switch");
+	//Byte 16 Bit 6 unused
+	//Byte 16 Bit 7 unused
+	//Byte 16 Bit 8 unused
+//							firstByte	lastByte	bitNumber	moduleID		partName
+//	TODO Add remaining AnalogInputs
 	
 	public final int firstByte;//See Onenote:ICD 
 	public final int lastByte; //See Onenote:ICD. Not applicable for Switches.

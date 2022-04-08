@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
+import mountaineerman.kcp2.kkim.model.SwitchMom;
+import mountaineerman.kcp2.kkim.model.SwitchSP2T;
 
 /* Packet Unpacker
  * Responsible for extracting the InputRefreshPacket contents and updating
@@ -24,10 +26,67 @@ public class PacketUnpacker {
 	
 	public void unpackInputRefreshPacketIntoModel(byte[] inputRefreshPacket) {
 
-		controlPanel.moduleA.stagingButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.StagingButton.firstByte, IP.StagingButton.bitNumber));
-		controlPanel.moduleA.brakeButton.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.BrakeButton.firstByte, IP.BrakeButton.bitNumber));
+		controlPanel.moduleA.stagingButton.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.StagingButton.firstByte, IP.StagingButton.bitNumber));
+		controlPanel.moduleA.brakeButton.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.BrakeButton.firstByte, IP.BrakeButton.bitNumber));
 		
-		controlPanel.moduleD.brakeSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.BrakeSwitch.firstByte, IP.BrakeSwitch.bitNumber));
+		controlPanel.moduleB.abortButton.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.AbortButton.firstByte, IP.AbortButton.bitNumber));
+		controlPanel.moduleB.timeWarpUpButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.TimeWarpUpButton.firstByte, IP.TimeWarpUpButton.bitNumber));
+		controlPanel.moduleB.timeWarpDownButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.TimeWarpDownButton.firstByte, IP.TimeWarpDownButton.bitNumber));
+		controlPanel.moduleB.joystickButton.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.JoystickButton.firstByte, IP.JoystickButton.bitNumber));
+		controlPanel.moduleB.trimPitchSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.TrimPitchSwitch.firstByte, IP.TrimPitchSwitch.bitNumber));
+		controlPanel.moduleB.trimYawSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.TrimYawSwitch.firstByte, IP.TrimYawSwitch.bitNumber));
+		controlPanel.moduleB.trimRollSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.TrimRollSwitch.firstByte, IP.TrimRollSwitch.bitNumber));
+		
+		controlPanel.moduleD.sasSwitch.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.SAS_Switch.firstByte, IP.SAS_Switch.bitNumber));
+		controlPanel.moduleD.rcsSwitch.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.RCS_Switch.firstByte, IP.RCS_Switch.bitNumber));
+		controlPanel.moduleD.lightsSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.LightsSwitch.firstByte, IP.LightsSwitch.bitNumber));
+		controlPanel.moduleD.gearSwitch.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.GearSwitch.firstByte, IP.GearSwitch.bitNumber));
+		controlPanel.moduleD.brakeSwitch.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.BrakeSwitch.firstByte, IP.BrakeSwitch.bitNumber));
+		controlPanel.moduleD.mapSwitch.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.MapSwitch.firstByte, IP.MapSwitch.bitNumber));
+		controlPanel.moduleD.muteSwitch.setStatus(				fetchBitInByteInPacket(inputRefreshPacket, IP.MuteSwitch.firstByte, IP.MuteSwitch.bitNumber));
+		controlPanel.moduleD.autoHoldButton.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.AutoHoldButton.firstByte, IP.AutoHoldButton.bitNumber));
+		controlPanel.moduleD.autoProgradeButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.AutoProgradeButton.firstByte, IP.AutoProgradeButton.bitNumber));
+		controlPanel.moduleD.autoRetrogradeButton.setSP2TStatus(fetchBitInByteInPacket(inputRefreshPacket, IP.AutoRetrogradeButton.firstByte, IP.AutoRetrogradeButton.bitNumber));
+		controlPanel.moduleD.autoNormalButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.AutoNormalButton.firstByte, IP.AutoNormalButton.bitNumber));
+		controlPanel.moduleD.autoAntiNormalButton.setSP2TStatus(fetchBitInByteInPacket(inputRefreshPacket, IP.AutoAntiNormalButton.firstByte, IP.AutoAntiNormalButton.bitNumber));
+		controlPanel.moduleD.autoRadialInButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.AutoRadialInButton.firstByte, IP.AutoRadialInButton.bitNumber));
+		controlPanel.moduleD.autoRadialOutButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.AutoRadialOutButton.firstByte, IP.AutoRadialOutButton.bitNumber));
+		controlPanel.moduleD.autoTargetButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.AutoTargetButton.firstByte, IP.AutoTargetButton.bitNumber));
+		controlPanel.moduleD.autoAntiTargetButton.setSP2TStatus(fetchBitInByteInPacket(inputRefreshPacket, IP.AutoAntiTargetButton.firstByte, IP.AutoAntiTargetButton.bitNumber));
+		controlPanel.moduleD.autoManeuverButton.setSP2TStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.AutoManeuverButton.firstByte, IP.AutoManeuverButton.bitNumber));
+		
+		controlPanel.moduleE.sp3t_SFC_Switch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_SFC_Switch.firstByte, IP.SP3T_SFC_Switch.bitNumber));
+		controlPanel.moduleE.sp3t_TGT_Switch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_TGT_Switch.firstByte, IP.SP3T_TGT_Switch.bitNumber));
+		controlPanel.moduleE.sp3t_RKT_Switch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_RKT_Switch.firstByte, IP.SP3T_RKT_Switch.bitNumber));
+		controlPanel.moduleE.sp3t_RVR_Switch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_RVR_Switch.firstByte, IP.SP3T_RVR_Switch.bitNumber));
+		controlPanel.moduleE.sp3t_90degSwitch.setStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_90degSwitch.firstByte, IP.SP3T_90degSwitch.bitNumber));
+		controlPanel.moduleE.sp3t_9degSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_9degSwitch.firstByte, IP.SP3T_9degSwitch.bitNumber));
+		controlPanel.moduleE.ag1Switch.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.Ag1Switch.firstByte, IP.Ag1Switch.bitNumber));
+		controlPanel.moduleE.ag2Switch.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.Ag2Switch.firstByte, IP.Ag2Switch.bitNumber));
+		controlPanel.moduleE.ag3Switch.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.Ag3Switch.firstByte, IP.Ag3Switch.bitNumber));
+		controlPanel.moduleE.scienceSwitch.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.ScienceSwitch.firstByte, IP.ScienceSwitch.bitNumber));
+		controlPanel.moduleE.resetSwitch.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.ResetSwitch.firstByte, IP.ResetSwitch.bitNumber));
+		controlPanel.moduleE.solarSwitch.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.SolarSwitch.firstByte, IP.SolarSwitch.bitNumber));
+		controlPanel.moduleE.ladderSwitch.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.LadderSwitch.firstByte, IP.LadderSwitch.bitNumber));
+		controlPanel.moduleE.atnvSwitch.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.ATNV_Switch.firstByte, IP.ATNV_Switch.bitNumber));
+		controlPanel.moduleE.fairingButton.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.FairingButton.firstByte, IP.FairingButton.bitNumber));
+		controlPanel.moduleE.chuteButton.setSP2TStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.ChuteButton.firstByte, IP.ChuteButton.bitNumber));
+		
+		controlPanel.moduleF.trimPrimarySwitch.setStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.TrimPrimarySwitch.firstByte, IP.TrimPrimarySwitch.bitNumber));
+		controlPanel.moduleF.sp4t_AB.setStatus(					fetchBitInByteInPacket(inputRefreshPacket, IP.SP4T_AB.firstByte, IP.SP4T_AB.bitNumber));
+		controlPanel.moduleF.sp4t_CD.setStatus(					fetchBitInByteInPacket(inputRefreshPacket, IP.SP4T_CD.firstByte, IP.SP4T_CD.bitNumber));
+
+		controlPanel.moduleG.heatLifeSwitch.setStatus(			fetchBitInByteInPacket(inputRefreshPacket, IP.HeatLifeSwitch.firstByte, IP.HeatLifeSwitch.bitNumber));
+		
+		controlPanel.moduleH.glassTL_Button.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.GlassTL_Button.firstByte, IP.GlassTL_Button.bitNumber));
+		controlPanel.moduleH.glassCL_Button.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.GlassCL_Button.firstByte, IP.GlassCL_Button.bitNumber));
+		controlPanel.moduleH.glassBL_Button.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.GlassBL_Button.firstByte, IP.GlassBL_Button.bitNumber));
+		controlPanel.moduleH.glassTR_Button.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.GlassTR_Button.firstByte, IP.GlassTR_Button.bitNumber));
+		controlPanel.moduleH.glassCR_Button.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.GlassCR_Button.firstByte, IP.GlassCR_Button.bitNumber));
+		controlPanel.moduleH.glassBR_Button.setSP2TStatus(		fetchBitInByteInPacket(inputRefreshPacket, IP.GlassBR_Button.firstByte, IP.GlassBR_Button.bitNumber));
+		
+		controlPanel.moduleI.monopropIntakeSwitch.setStatus(	fetchBitInByteInPacket(inputRefreshPacket, IP.MonopropIntakeSwitch.firstByte, IP.MonopropIntakeSwitch.bitNumber));
+		
 		//TODO Add remaining inputs
 	}
 	

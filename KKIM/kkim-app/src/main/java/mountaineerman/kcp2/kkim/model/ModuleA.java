@@ -5,16 +5,14 @@ import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleA implements LEDAggregator {
 
-//	public AnalogInput analogInput_Throttle;
 	public SwitchMom stagingButton = null;
 	public SwitchSP2T brakeButton = null;
 	public LED_PWM brakeLED = null;
+//	public AnalogInput analogInput_Throttle;
 	
 	public ModuleA() {
-		
 		this.stagingButton = new SwitchMom(IP.StagingButton);
 		this.brakeButton = new SwitchSP2T(IP.BrakeButton);
-				
 		this.brakeLED = new LED_PWM(OP.ModuleABrakeLED);
 	}
 
@@ -32,6 +30,8 @@ public class ModuleA implements LEDAggregator {
 	
 	@Override
 	public String toString() {
-		return "Module A: TBD";
+		return  this.stagingButton.toString() +
+				this.brakeButton.toString() +
+				this.brakeLED.toString();
 	}
 }
