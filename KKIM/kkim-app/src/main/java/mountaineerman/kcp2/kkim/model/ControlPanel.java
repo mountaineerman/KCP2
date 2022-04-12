@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.OP;
 
 /* MkII Control Panel
  */
@@ -18,6 +19,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public ModuleGT moduleGT = null;
 	
 	public float fuel = 0;//TODO replace
+	public float gforce = 0;//TODO replace
+	private int milliGforce = 0;//TODO replace
 	
 	public ControlPanel() {
 		
@@ -204,7 +207,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		// ========================================== StepperMotor =========================================================
 		StepperMotor heatLifeStepper = new StepperMotor("heatLifeStepper", ModuleID.C);
-		StepperMotor gforceStepper = new StepperMotor("gforceStepper", ModuleID.C);
 		StepperMotor machStepper = new StepperMotor("machStepper", ModuleID.G);
 		StepperMotor pitchStepper = new StepperMotor("pitchStepper", ModuleID.G);
 		StepperMotor fuelStepper = new StepperMotor("fuelStepper", ModuleID.I);
@@ -227,7 +229,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	}
 	
 	//Re-calculate state of higher-level members based on state of lower-level members
-	public void refresh() {
+	public void refresh() {//TODO re-write...
 		
 		if (this.moduleA.brakeButton.getStatus() ^ this.moduleD.brakeSwitch.getStatus()) {//XOR
 			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
@@ -242,6 +244,20 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
 		}
+		
+		this.milliGforce = Math.round(this.gforce * 1000);
+		if (this.milliGforce < 0) {
+			this.milliGforce = 0;
+		} else if (this.milliGforce > 15000) {
+			this.milliGforce = 15000;
+		}
+		int temp = this.scaleIntegerToNewRange(this.milliGforce, 0, 15000, OP.Stepper_Gforce.calibrationCCWLimit, OP.Stepper_Gforce.calibrationCWLimit);
+//		System.out.println();
+//		System.out.println("G-Force (float): " + this.gforce);
+//		System.out.println("Milli G-Force (int): " + this.milliGforce);
+//		System.out.println("desiredPosition (scaled): " + temp);
+		this.moduleC.stepper_Gforce.setDesiredPosition(temp);
+		
 		
 		//TODO add remaining parts
 		
@@ -277,4 +293,41 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public void disableLEDOverride() {//TODO
 		
 	}
+	
+	private int scaleIntegerToNewRange(int number, int oldRangeMin, int oldRangeMax, int newRangeMin, int newRangeMax) {//TODO VERIFY
+		return number * (newRangeMax - newRangeMin) / (oldRangeMax - oldRangeMin) + newRangeMin;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

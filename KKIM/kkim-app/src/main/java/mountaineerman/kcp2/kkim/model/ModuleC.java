@@ -1,9 +1,13 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.OP;
+
 public class ModuleC implements LEDAggregator, StepperMotorAggregator {
 
+	public StepperMotor stepper_Gforce = null;
+	
 	public ModuleC() {
-		// TODO Auto-generated constructor stub
+		this.stepper_Gforce = new StepperMotor(OP.Stepper_Gforce);
 	}
 
 	@Override
@@ -20,6 +24,6 @@ public class ModuleC implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
-		return "Module C: TBD\n";
+		return  this.stepper_Gforce.toString();
 	}
 }

@@ -1,5 +1,8 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.OP;
+
 /** x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.
  * Maximum Rotation Angle = 315 degrees.
  * Steps per degree = 12.
@@ -17,6 +20,11 @@ public class StepperMotor extends Part {
 	 * e.g., desiredPosition of 0 is the farthest CCW position possible.
 	 * e.g., desiredPosition of 3779 is the farthest CW position possible. */
 	private int desiredPosition;
+	
+	public StepperMotor(OP op) {
+		super(op.partName, op.moduleID);
+		this.desiredPosition = 0;
+	}
 	
 	public StepperMotor(String name, ModuleID moduleID) {
 		super(name, moduleID);

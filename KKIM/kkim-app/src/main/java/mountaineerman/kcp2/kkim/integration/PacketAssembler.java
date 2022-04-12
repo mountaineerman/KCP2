@@ -42,12 +42,15 @@ public class PacketAssembler {
 		/* Empty */				this.saveByteToOutputRefreshPacketBuffer(0, 9);
 		
 		// (3) Populate Payload:
+		//LEDs
 		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
 		
 		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
 		
 		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
-		//TODO Add remaining outputs
+		//TODO Add remaining LEDs
+		//Stepper Motors
+		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
