@@ -56,13 +56,6 @@ void StepperMotorNEMA17::runToDesiredPosition() {
 	this->stepper.disableOutputs();
 }
 
-void StepperMotorNEMA17::resetStepperToStartingPosition() {
-	this->setDesiredPosition(NEMA17_CCW_LIMIT);//TODO replace with non-blocking mechanism
-	this->stepper.enableOutputs();
-	this->runToDesiredPosition();
-	this->stepper.disableOutputs();
-}
-
 long StepperMotorNEMA17::getCurrentPosition() {
 	return this->stepper.currentPosition();
 }

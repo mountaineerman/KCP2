@@ -87,12 +87,7 @@ bool ModuleGT::runStepperIfNecessary() {
 	return isAMotorStillInMotion;	
 }
 
-void ModuleGT::resetStepperToStartingPosition() {
-	this->stepper_Density.resetStepperToStartingPosition();
-	this->stepper_Speed.resetStepperToStartingPosition();
-	this->stepper_VertSpeed.resetStepperToStartingPosition();
-	this->stepper_RadarAlt.resetStepperToStartingPosition();
-}
+
 
 
 

@@ -40,11 +40,6 @@ void StepperMotor::runToDesiredPosition() {
 	this->stepper.runToPosition();
 }
 
-void StepperMotor::resetStepperToStartingPosition() {
-	this->setDesiredPosition(STEPPER_CCW_LIMIT);//TODO replace with non-blocking mechanism
-	this->runToDesiredPosition();
-}
-
 long StepperMotor::getCurrentPosition() {
 	return this->stepper.currentPosition();
 }

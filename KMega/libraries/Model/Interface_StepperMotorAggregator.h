@@ -9,7 +9,6 @@ class Interface_StepperMotorAggregator
 {
 public:
 	virtual bool runStepperIfNecessary() = 0;
-	virtual void resetStepperToStartingPosition() = 0;
 };
 
 #endif

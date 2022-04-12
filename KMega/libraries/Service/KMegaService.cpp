@@ -24,9 +24,12 @@ KMegaService::KMegaService()
 	////Test Diagnostic Mode:
 	//this->controlPanel.runDiagnosticMode();
 	
-//	while(true) { //TODO move out of constructor
-//		this->standardOperatingMode(); //TODO move out of constructor
-//	}
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
+	while(!this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
+		this->standardOperatingMode(); //TODO move out of constructor
+	}
+	
+	this->shutdownMode(); //TODO move out of constructor
 }
 
 void KMegaService::startupMode() {
@@ -118,6 +121,20 @@ void KMegaService::standardOperatingMode() {
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
 }
 
+//void KMegaService::diagnosticMode() {
+//	//controlPanel.runDiagnosticMode();
+//}
+
+void KMegaService::shutdownMode() {
+	
+	//TODO Teardown KNano Serial Communication Channel.
+	serialCommunicator.teardownSerialLink();
+
+	controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
+	
+	controlPanel.setAllLEDsOff();
+}
+
 void KMegaService::clearOutputRefreshPacket() {//TODO combine with clearInputRefreshPacket into generic method
 	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		this->outputRefreshPacket[i] = 0x00;
@@ -132,14 +149,7 @@ void KMegaService::clearInputRefreshPacket() {
 
 
 
-//void KMegaService::diagnosticMode() {
-//	//controlPanel.runDiagnosticMode();
-//}
-//
-//void KMegaService::shutdownMode() {
-//	//controlPanel.resetStepperToStartingPosition();
-//	serialCommunicator.teardownSerialLink();
-//}
+
 
 void KMegaService::displayOutputRefreshPacket() { //TODO remove
 	Serial.println("KMegaService.displayOutputRefreshPacket(): (decimal format)");

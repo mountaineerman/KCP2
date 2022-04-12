@@ -30,7 +30,6 @@ public:
 	
 	//Check if any stepper in the Module needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
 	bool runStepperIfNecessary();
-	void resetStepperToStartingPosition();
 	
 	//Parts:
 	SwitchSP2T switch_HeatLife; // 0 = Heat,  1 = Life

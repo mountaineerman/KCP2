@@ -17,7 +17,7 @@ private:
 	void startupMode();
 	void standardOperatingMode();
 	//void diagnosticMode();
-	//void shutdownMode();
+	void shutdownMode();
 	void clearOutputRefreshPacket();
 	void clearInputRefreshPacket();
 	void displayOutputRefreshPacket(); //TODO remove

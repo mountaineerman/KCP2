@@ -107,11 +107,7 @@ bool ModuleI::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-void ModuleI::resetStepperToStartingPosition() {
-	this->stepper_Fuel.resetStepperToStartingPosition();
-	this->stepper_Charge.resetStepperToStartingPosition();
-	this->stepper_MonopropellantIntake.resetStepperToStartingPosition();
-}
+
 
 
 	

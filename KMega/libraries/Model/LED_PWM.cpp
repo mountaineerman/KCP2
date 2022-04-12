@@ -10,6 +10,10 @@ LED_PWM::LED_PWM(uint16_t channel, Adafruit_TLC5947& ledDriverBoards)
 	this->pwm = 0;
 }
 
+LED_PWM::~LED_PWM() {
+	this->setPWM(PWM_LED_MINIMUM);
+}
+
 void LED_PWM::setPWM(int pwm) {
 	
 	if (pwm > PWM_LED_MAXIMUM) {

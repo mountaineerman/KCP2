@@ -71,10 +71,7 @@ bool ModuleC::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-void ModuleC::resetStepperToStartingPosition() {
-	this->stepper_HeatLife.resetStepperToStartingPosition();
-	this->stepper_Gforce.resetStepperToStartingPosition();
-}
+
 
 
 

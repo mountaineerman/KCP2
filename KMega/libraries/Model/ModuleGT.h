@@ -23,7 +23,6 @@ public:
 	
 	//Check if any stepper in the Module needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
 	bool runStepperIfNecessary();
-	void resetStepperToStartingPosition();
 	
 	//Parts:
 	LED_PWM ledPWM_DENSITY_Red;

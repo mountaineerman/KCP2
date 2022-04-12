@@ -88,11 +88,7 @@ bool ModuleG::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-void ModuleG::resetStepperToStartingPosition() {
-	this->stepper_Mach.resetStepperToStartingPosition();
-	this->stepper_Pitch.resetStepperToStartingPosition();
-	//this->stepper_Heading.resetStepperToStartingPosition();//TODO deal with Heading stepper hibernation...
-}
+
 
 
 	

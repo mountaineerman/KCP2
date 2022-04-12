@@ -35,9 +35,6 @@ public:
 	//Move the stepper. Block until it is in position. See AccelStepper::runToPosition() for more info.
 	void runToDesiredPosition();
 	
-	//Move the motor to its CCW limit.
-	void resetStepperToStartingPosition();
-	
 	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	long getCurrentPosition();
 	

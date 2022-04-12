@@ -16,6 +16,8 @@ class LED_PWM
 public:
 	LED_PWM(uint16_t channel, Adafruit_TLC5947& ledDriverBoards);
 	
+	~LED_PWM();
+	
 	//Sets the pwm level for the LED_PWM. Requires a call to controlPanel.writeLEDStatusToLEDDriverBoards() to "push" the value to the LED Driver Boards and make the LED change state.
 	void setPWM(int pwm);
 	//Sets the pwm level for the LED_PWM and "pushes" the value to the LED Driver Boards immediately.

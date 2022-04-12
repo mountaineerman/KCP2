@@ -197,15 +197,15 @@ static const int PIN_LEDDB_RADARALT_RGBLED_BLU = 83;			//	(Pin 11)	[LED Board 4]
 //Stepper Motors
 static const float STEPPER_MAX_SPEED = 4000.0; //Maximum Permitted Speed (steps per second). The maximum speed achievable depends on your processor and clock speed.
 static const float STEPPER_MAX_ACCELERATION = 8000.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared). Must be > 0.0.
-static const long STEPPER_CCW_LIMIT = 0;
-static const long STEPPER_CW_LIMIT = 3779;
+static const long STEPPER_CCW_LIMIT = 0;  //TODO switch to int?
+static const long STEPPER_CW_LIMIT = 3779;//TODO switch to int?
 
 //===========================================================================================================================================================================
 //Heading Gauge NEMA17 Stepper Motor
 static const float NEMA17_MAX_SPEED = 1000.0; //Maximum Permitted Speed (steps per second). The maximum speed achievable depends on your processor and clock speed.
 static const float NEMA17_MAX_ACCELERATION = 200.0; //Maximum Permitted Acceleration/Deceleration Rate (steps per second squared). Must be > 0.0.
-static const long NEMA17_CCW_LIMIT = 0;
-static const long NEMA17_CW_LIMIT = 1599;
+static const long NEMA17_CCW_LIMIT = 0;  //TODO switch to int?
+static const long NEMA17_CW_LIMIT = 1599;//TODO switch to int?
 
 //===========================================================================================================================================================================
 //Control Panel

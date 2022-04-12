@@ -118,20 +118,20 @@ bool ControlPanel::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
+void ControlPanel::blockRunAllSteppersToPosition(long position) {
 	
-//	this->moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CW_LIMIT);
-	this->moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleG.stepper_Mach.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleG.stepper_Pitch.setDesiredPosition(STEPPER_CW_LIMIT);
+//	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
+	this->moduleC.stepper_Gforce.setDesiredPosition(position);
+//	this->moduleG.stepper_Mach.setDesiredPosition(position);
+//	this->moduleG.stepper_Pitch.setDesiredPosition(position);
 //	//this->moduleG.stepper_Heading...
-//	this->moduleI.stepper_Fuel.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleI.stepper_Charge.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleGT.stepper_Density.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleGT.stepper_Speed.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleGT.stepper_VertSpeed.setDesiredPosition(STEPPER_CW_LIMIT);
-//	this->moduleGT.stepper_RadarAlt.setDesiredPosition(STEPPER_CW_LIMIT);
+//	this->moduleI.stepper_Fuel.setDesiredPosition(position);
+//	this->moduleI.stepper_Charge.setDesiredPosition(position);
+//	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
+//	this->moduleGT.stepper_Density.setDesiredPosition(position);
+//	this->moduleGT.stepper_Speed.setDesiredPosition(position);
+//	this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
+//	this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
 		
 	//long startTime = millis();
 	while(this->runStepperIfNecessary()) {
@@ -140,36 +140,11 @@ void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
 	}
 	//long endTime = millis();
 	//Serial.print("Time to CW (ms): "); Serial.println(endTime - startTime);
-	
-	
-	
-	
-//	this->moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleG.stepper_Mach.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleG.stepper_Pitch.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	//this->moduleG.stepper_Heading...
-//	this->moduleI.stepper_Fuel.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleI.stepper_Charge.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleGT.stepper_Density.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleGT.stepper_Speed.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleGT.stepper_VertSpeed.setDesiredPosition(STEPPER_CCW_LIMIT);
-//	this->moduleGT.stepper_RadarAlt.setDesiredPosition(STEPPER_CCW_LIMIT);
-	
-	//startTime = millis();
-	while(this->runStepperIfNecessary()) {
-		//delay(STEPPER_STEP_MINIMUM_TIME_INTERVAL);
-	}
-	//endTime = millis();
-	//Serial.print("Time to CCW (ms): "); Serial.println(endTime - startTime);
 }
 
-void ControlPanel::resetStepperToStartingPosition() {
-	this->moduleC.resetStepperToStartingPosition();
-	this->moduleG.resetStepperToStartingPosition();
-	this->moduleI.resetStepperToStartingPosition();
-	this->moduleGT.resetStepperToStartingPosition();
+void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
+	this->blockRunAllSteppersToPosition(STEPPER_CW_LIMIT);
+	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 }
 
 void ControlPanel::runDiagnosticMode() {
