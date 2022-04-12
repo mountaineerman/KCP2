@@ -26,6 +26,9 @@ private:
 	
 	void saveByteToInputRefreshPacket(byte theByte, int byteNumber);
 	
+	//Saves integer number value at the specified byte numbers. byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	void saveNumberAtByteNumbersToInputRefreshPacket(int number, int byteNum1, int byteNum2);
+	
 	ControlPanel& controlPanel;
 	byte * inputRefreshPacket; //See KMegaService
 };

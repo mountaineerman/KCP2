@@ -133,7 +133,12 @@ void PacketAssembler::assembleInputRefreshPacket() {
 										   false);//Unused
 	this->saveByteToInputRefreshPacket(tempByte, 16);
 	
-	//TODO Add analog outputs
+	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleA.analogInput_Throttle.getInputStatus(), 17, 18);
+	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleB.analogInput_Joystick_Pitch.getInputStatus(), 19, 20);
+	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleB.analogInput_Joystick_Yaw.getInputStatus(), 21, 22);
+	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleB.analogInput_Joystick_Roll.getInputStatus(), 23, 24);
+	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleF.analogInput_MultiPot.getInputStatus(), 25, 26);
+	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleF.analogInput_Current.getInputStatus(), 27, 28);
 	
 	//this->displayInputRefreshPacketInDecimal();
 }
@@ -154,10 +159,41 @@ byte PacketAssembler::compressBoolsIntoByte(bool bool1, bool bool2, bool bool3, 
 }
 
 void PacketAssembler::saveByteToInputRefreshPacket(byte theByte, int byteNumber) {
+	
+	if (this->inputRefreshPacket == NULL) {
+		//TODO throw exception
+		Serial.println("Exception: PacketAssembler.saveByteToInputRefreshPacket(): inputRefreshPacket is not initialized");
+	}
+	
 	this->inputRefreshPacket[byteNumber - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES] = theByte;
 }
 
-
+void PacketAssembler::saveNumberAtByteNumbersToInputRefreshPacket(int number, int byteNum1, int byteNum2) {
+	
+	if (this->inputRefreshPacket == NULL) {
+		//TODO throw exception
+		Serial.println("Exception: PacketAssembler.saveNumberAtByteNumbersToInputRefreshPacket(): inputRefreshPacket is not initialized");
+	}
+	
+	if (number > 65535) {
+		//TODO throw exception
+		Serial.println("Exception: PacketAssembler.saveNumberAtByteNumbersToInputRefreshPacket(): the number is larger than what can be stored in two bytes (65,535)");
+	}
+	
+	int largeByteNum = 0;
+	int smallByteNum = 0;
+	
+	if (byteNum1 > byteNum2) {
+		largeByteNum = byteNum1 - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+		smallByteNum = byteNum2 - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+	} else {
+		largeByteNum = byteNum2 - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+		smallByteNum = byteNum1 - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+	}
+	
+	this->inputRefreshPacket[smallByteNum] = (byte) (number & 0xFF);
+	this->inputRefreshPacket[largeByteNum] = (byte) ((number >> 8) & 0xFF);
+}
 
 
 
