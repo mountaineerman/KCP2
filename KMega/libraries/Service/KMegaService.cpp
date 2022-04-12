@@ -21,15 +21,22 @@ KMegaService::KMegaService()
 	
 	this->startupMode(); //TODO move out of constructor
 	
-	////Test Diagnostic Mode:
-	//this->controlPanel.runDiagnosticMode();
 	
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for DiagnosticMode
 	this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
-	while(!this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
-		this->standardOperatingMode(); //TODO move out of constructor
+	while (true) {//TODO move out of constructor
+		
+		if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
+			this->controlPanel.runDiagnosticMode();
+			this->shutdownMode();
+			break;
+		} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
+			this->shutdownMode();
+			break;
+		} else {
+			this->standardOperatingMode();
+		}
 	}
-	
-	this->shutdownMode(); //TODO move out of constructor
 }
 
 void KMegaService::startupMode() {
