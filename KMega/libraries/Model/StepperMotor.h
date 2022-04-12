@@ -29,8 +29,8 @@ public:
 	//Set the desired position, relative to the current position (negative == CCW, positive == CW).
 	void setDesiredRelativePosition(long desiredRelativePosition);
 	
-	//Check if the stepper needs to move. Move it one step if it does. See AccelStepper::run() for more info.
-	void runStepperIfNecessary();
+	//Check if the stepper needs to move. Move it one step if it does. Returns true if the motor is still running to the desired position. See AccelStepper::run() for more info.
+	bool runStepperIfNecessary();
 	
 	//Move the stepper. Block until it is in position. See AccelStepper::runToPosition() for more info.
 	void runToDesiredPosition();

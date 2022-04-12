@@ -57,7 +57,9 @@ public:
 	void activateLEDOverride();
 	void disableLEDOverride();
 	
-	void runStepperIfNecessary();
+	//Check if any stepper in the Panel needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
+	bool runStepperIfNecessary();
+	void sweepStepperMotorsThroughMaxMinToCalibrate();
 	void resetStepperToStartingPosition();
 	
 	void runDiagnosticMode();

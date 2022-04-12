@@ -24,18 +24,24 @@ KMegaService::KMegaService()
 	////Test Diagnostic Mode:
 	//this->controlPanel.runDiagnosticMode();
 	
-	while(true) { //TODO move out of constructor
-		this->standardOperatingMode(); //TODO move out of constructor
-	}
+//	while(true) { //TODO move out of constructor
+//		this->standardOperatingMode(); //TODO move out of constructor
+//	}
 }
 
 void KMegaService::startupMode() {
-	//Control Panel Startup Test:
+
 	controlPanel.setAllLEDsOn();
 	delay(1000);
 	controlPanel.setAllLEDsOff();
 	delay(100);
-	//TODO Add startup test for Stepper Motors
+	
+//	//Establish KKIM Serial Communication Channel:
+//	this->controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Start of Establishing KKIM Serial Communication Channel
+//	this->serialCommunicator.establishSerialLink();
+//	this->controlPanel.moduleH.ledPWM_GlassCockpit_BR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate End of Establishing KKIM Serial Communication Channel
+	
+	controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
 	
 	//Establish KKIM Serial Communication Channel:
 	this->controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Start of Establishing KKIM Serial Communication Channel
@@ -94,7 +100,7 @@ void KMegaService::standardOperatingMode() {
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
 	time10 = millis();
 	
-//	this->controlPanel.runStepperIfNecessary(); //TODO deal with Heading stepper hibernation...
+	this->controlPanel.runStepperIfNecessary();
 	
 //	if (sentInputRefreshPacket && gotOutputRefreshPacket) {
 //		Serial.println();

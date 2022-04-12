@@ -25,8 +25,15 @@ void StepperMotor::setDesiredRelativePosition(long desiredRelativePosition) {
 	this->stepper.move(desiredRelativePosition);
 }
 
-void StepperMotor::runStepperIfNecessary() {
-	this->stepper.run();
+bool StepperMotor::runStepperIfNecessary() {
+	return this->stepper.run();
+	
+//	bool isStillMoving = false;
+//	unsigned long startTime = micros();
+//	isStillMoving = this->stepper.run();
+//	unsigned long endTime = micros();
+//	Serial.print(isStillMoving); Serial.print(" "); Serial.println(endTime - startTime);
+//	return isStillMoving;
 }
 
 void StepperMotor::runToDesiredPosition() {

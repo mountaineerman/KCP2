@@ -80,16 +80,18 @@ void ModuleG::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
-void ModuleG::runStepperIfNecessary() {
-	this->stepper_Mach.runStepperIfNecessary();
-	this->stepper_Pitch.runStepperIfNecessary();
-	this->stepper_Heading.runStepperIfNecessary();
+bool ModuleG::runStepperIfNecessary() {
+	bool isAMotorStillInMotion = false;
+	isAMotorStillInMotion = this->stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->stepper_Pitch.runStepperIfNecessary() || isAMotorStillInMotion;
+	//this->stepper_Heading.runStepperIfNecessary();
+	return isAMotorStillInMotion;
 }
 
 void ModuleG::resetStepperToStartingPosition() {
 	this->stepper_Mach.resetStepperToStartingPosition();
 	this->stepper_Pitch.resetStepperToStartingPosition();
-	this->stepper_Heading.resetStepperToStartingPosition();
+	//this->stepper_Heading.resetStepperToStartingPosition();//TODO deal with Heading stepper hibernation...
 }
 
 
