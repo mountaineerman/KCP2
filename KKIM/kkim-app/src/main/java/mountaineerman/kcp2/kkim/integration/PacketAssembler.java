@@ -43,14 +43,14 @@ public class PacketAssembler {
 		
 		// (3) Populate Payload:
 		//LEDs
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
 		
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
 		
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
 		//TODO Add remaining LEDs
 		//Stepper Motors
-		this.savePWMAtByteNumbersInOutputRefreshPacketBuffer(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
@@ -66,9 +66,9 @@ public class PacketAssembler {
 		this.outputRefreshPacketBuffer[byteNumber - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes()] = (byte) theByte;
 	}
 	
-	//Saves LED PWM value at the specified byte numbers (see ICD).
+	//Saves number value at the specified byte numbers (see ICD).
 	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
-	private void savePWMAtByteNumbersInOutputRefreshPacketBuffer(int byteNum1, int byteNum2, int PWM) {
+	private void saveNumberAtByteNumbersToOutputRefreshPacketBuffer(int byteNum1, int byteNum2, int number) {
 		
 		int largeByteNum = 0;
 		int smallByteNum = 0;
@@ -81,8 +81,8 @@ public class PacketAssembler {
 			smallByteNum = byteNum1 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
 		}
 		
-		this.outputRefreshPacketBuffer[smallByteNum] = (byte) (PWM & 0xFF);
-		this.outputRefreshPacketBuffer[largeByteNum] = (byte) ((PWM >> 8) & 0xFF);
+		this.outputRefreshPacketBuffer[smallByteNum] = (byte) (number & 0xFF);
+		this.outputRefreshPacketBuffer[largeByteNum] = (byte) ((number >> 8) & 0xFF);
 	}
 }
 

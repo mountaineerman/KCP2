@@ -13,6 +13,10 @@ public class ModuleB {
 	public SwitchSP2T trimYawSwitch = null;
 	public SwitchSP2T trimRollSwitch = null;
 	
+	public AnalogInput analogInput_Joystick_Pitch = null;
+	public AnalogInput analogInput_Joystick_Yaw = null;
+	public AnalogInput analogInput_Joystick_Roll = null;
+	
 	public ModuleB() {
 		
 		this.abortButton = new SwitchMom(IP.AbortButton);
@@ -24,6 +28,9 @@ public class ModuleB {
 		this.trimYawSwitch = new SwitchSP2T(IP.TrimYawSwitch);
 		this.trimRollSwitch = new SwitchSP2T(IP.TrimRollSwitch);
 		
+		this.analogInput_Joystick_Pitch = new AnalogInput(IP.AnalogInput_Joystick_Pitch);
+		this.analogInput_Joystick_Yaw = new AnalogInput(IP.AnalogInput_Joystick_Yaw);
+		this.analogInput_Joystick_Roll = new AnalogInput(IP.AnalogInput_Joystick_Roll);
 	}
 	
 	@Override
@@ -35,6 +42,10 @@ public class ModuleB {
 				
 				this.trimPitchSwitch.toString() +
 				this.trimYawSwitch.toString() +
-				this.trimRollSwitch.toString();
+				this.trimRollSwitch.toString() +
+				
+				this.analogInput_Joystick_Pitch.toString() +
+				this.analogInput_Joystick_Yaw.toString() +
+				this.analogInput_Joystick_Roll.toString();
 	}
 }

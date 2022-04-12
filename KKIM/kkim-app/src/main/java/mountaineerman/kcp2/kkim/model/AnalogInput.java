@@ -1,16 +1,34 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.IP;
+
 public class AnalogInput extends Part {
 
 	private static int ANALOGREAD_MIN_VALUE = 0;
 	private static int ANALOGREAD_MAX_VALUE = 1023;
-
-	/** Range: 0-1023 */
-	private int calibratedValue;
-	/** Range: 0-1023 */
+	private static int RESCALE_MIN_VALUE = 0;
+	private static int RESCALE_MAX_VALUE = 1000;
+	
+	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
+	private int rawValue = 0;
+	/** Range: lowerCalibrationLimit - upperCalibrationLimit */
+	private int boundValue = 0;
+	/** Range: RESCALE_MIN_VALUE(0) - RESCALE_MAX_VALUE(1000) */
+	private int rescaledValue = 0;
+	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int lowerCalibrationLimit;
-	/** Range: 0-1023 */
+	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int upperCalibrationLimit;
+	
+	public AnalogInput(IP ip) {
+		super(ip.partName, ip.moduleID);
+		
+		validateAnalogValue(ip.minCalibLim, "lowerCalibrationLimit");
+		validateAnalogValue(ip.maxCalibLim, "upperCalibrationLimit");
+		validateCalibrationLimits(ip.minCalibLim, ip.maxCalibLim);
+		this.lowerCalibrationLimit = ip.minCalibLim;
+		this.upperCalibrationLimit = ip.maxCalibLim;
+	}
 	
 	/**
 	 * @param name
@@ -43,23 +61,36 @@ public class AnalogInput extends Part {
 		}
 	}
 	
-	public int getCalibratedValue() {
-		return calibratedValue;
-	}
-
-	public void setCalibratedValue(int rawValue) {
-		
-		validateAnalogValue(rawValue, "rawValue");
-		
-		if(rawValue < this.lowerCalibrationLimit) {
-			rawValue = this.lowerCalibrationLimit;
-		}
-		if(rawValue > this.upperCalibrationLimit) {
-			rawValue = this.upperCalibrationLimit;
-		}
-		
-		this.calibratedValue = (rawValue - this.lowerCalibrationLimit) * (ANALOGREAD_MAX_VALUE - ANALOGREAD_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit);
+	public int getRawValue() {
+		return this.rawValue;
 	}
 	
+	public int getBoundValue() {
+		return this.boundValue;
+	}
+	
+	public int getRescaledValue() {
+		return this.rescaledValue;
+	}
+
+	public void setRawValueAndCalculateBoundAndCalibratedValues(int rawValue) {
+		
+		validateAnalogValue(rawValue, "rawValue");
+		this.rawValue = rawValue;
+		
+		if(this.rawValue < this.lowerCalibrationLimit) {
+			this.boundValue = this.lowerCalibrationLimit;
+		} else if (this.rawValue > this.upperCalibrationLimit) {
+			this.boundValue = this.upperCalibrationLimit;
+		} else {
+			this.boundValue = this.rawValue;
+		}
+		
+		this.rescaledValue = (this.boundValue - this.lowerCalibrationLimit) * (RESCALE_MAX_VALUE - RESCALE_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit) + RESCALE_MIN_VALUE;
+	}
+	
+	public String toString() {
+		return this.getModuleID() + ": " + this.getName() + ": RAW[" + this.getRawValue() + "],\tBOUND["+ this.getBoundValue() + "]\tRESCALED[" + this.getRescaledValue() + "]\n";
+	}
 	
 }

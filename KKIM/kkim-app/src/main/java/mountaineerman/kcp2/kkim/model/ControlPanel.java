@@ -268,14 +268,14 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		return  this.moduleA.toString() + //TODO compress to fit on 1 screen...
 				this.moduleB.toString() +
-				this.moduleC.toString() +
-				this.moduleD.toString() +
-				this.moduleE.toString() +
-				this.moduleF.toString() +
-				this.moduleG.toString() +
-				this.moduleH.toString() +
-				this.moduleI.toString() +
-				this.moduleGT.toString();
+				//this.moduleC.toString() +
+				//this.moduleD.toString() +
+				//this.moduleE.toString() +
+				this.moduleF.toString();// +
+				//this.moduleG.toString() +
+				//this.moduleH.toString() +
+				//this.moduleI.toString() +
+				//this.moduleGT.toString();
 	}
 	
 	public void setAllLEDsOff() {//TODO
@@ -295,7 +295,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	}
 	
 	private int scaleIntegerToNewRange(int number, int oldRangeMin, int oldRangeMax, int newRangeMin, int newRangeMax) {//TODO VERIFY
-		return number * (newRangeMax - newRangeMin) / (oldRangeMax - oldRangeMin) + newRangeMin;
+		return (number - oldRangeMin) * (newRangeMax - newRangeMin) / (oldRangeMax - oldRangeMin) + newRangeMin;
 	}
 }
 

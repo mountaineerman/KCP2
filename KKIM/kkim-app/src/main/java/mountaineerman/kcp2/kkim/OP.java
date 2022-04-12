@@ -15,7 +15,7 @@ public enum OP {
 //	TODO Add remaining LEDs
 	
 //Stepper Motors			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Stepper_Gforce			(170,		171,		ModuleID.C,		 195,		3430,		"G-Force Stepper Motor");
+	Stepper_Gforce			(170,		171,		ModuleID.C,		195,		3430,		"G-Force Stepper Motor");
 	
 	
 	public final int firstByte;//See Onenote:ICD
