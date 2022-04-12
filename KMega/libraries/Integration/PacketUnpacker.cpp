@@ -44,11 +44,15 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 		Serial.println("Exception: PacketUnpacker.unpackOutputRefreshPacketIntoModel(): OutputRefreshPacket is not initialized");
 	}
 	
-	controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(10,11) );
-	controlPanel.moduleD.ledPWM_BrakeModuleD.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(12,13) );
-	//TODO Add remaining outputs
-	controlPanel.moduleI.ledPWM_FUEL_Green.setPWM( convertTwoBytesInOutputRefreshPacketIntoInteger(116,117) );
-	//TODO Add remaining outputs
+	//LEDs
+	controlPanel.moduleA.ledPWM_BrakeModuleA.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(10,11) );
+	controlPanel.moduleD.ledPWM_BrakeModuleD.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(12,13) );
+	//TODO Add remaining LEDs
+	controlPanel.moduleI.ledPWM_FUEL_Green.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(116,117) );
+	//TODO Add remaining LEDs
+	
+	//Stepper Motors
+	controlPanel.moduleC.stepper_Gforce.setDesiredPosition( this->convertTwoBytesInOutputRefreshPacketIntoInteger(170,171) );
 	
 	this->clearOutputRefreshPacket();
 }
