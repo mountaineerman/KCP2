@@ -7,10 +7,10 @@
 
 
 ModuleA::ModuleA(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards)
-	: analogInput_Throttle	(PIN_THROTTLE)
+	: analogInput_Throttle	(PIN_THROTTLE, true)
 	, switch_BrakeButton	(PIN_MUX_BRAKE_BUTTON,	true,  MULTIPLEXER_IO_ROW_1, mux)
 	, switch_StagingButton	(PIN_MUX_STAGING_BUTTON,false, MULTIPLEXER_IO_ROW_2, mux)
-	, ledPWM_BrakeModuleA		(PIN_LEDDB_BRAKE_LED_MODULE_A, ledDriverBoards)
+	, ledPWM_BrakeModuleA	(PIN_LEDDB_BRAKE_LED_MODULE_A, ledDriverBoards)
 {
 	
 }

@@ -7,9 +7,9 @@
 
 
 ModuleB::ModuleB(MuxShield& mux)
-	: analogInput_Joystick_Pitch(PIN_JOYSTICK_PITCH)
-	, analogInput_Joystick_Yaw	(PIN_JOYSTICK_YAW)
-	, analogInput_Joystick_Roll	(PIN_JOYSTICK_ROLL)
+	: analogInput_Joystick_Pitch(PIN_JOYSTICK_PITCH, false)
+	, analogInput_Joystick_Yaw	(PIN_JOYSTICK_YAW, false)
+	, analogInput_Joystick_Roll	(PIN_JOYSTICK_ROLL, false)
 	, switch_Joystick		(PIN_MUX_JOYSTICK_BUTTON,	true,	MULTIPLEXER_IO_ROW_1, mux)
 	, switch_TimeWarpDown	(PIN_TIME_WARP_DOWN, 		true)
 	, switch_TimeWarpUp		(PIN_TIME_WARP_UP, 			true)

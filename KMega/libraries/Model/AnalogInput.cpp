@@ -1,13 +1,18 @@
 #include <Arduino.h>
 #include <AnalogInput.h>
 
-AnalogInput::AnalogInput(uint8_t pinNumber) {
+AnalogInput::AnalogInput(uint8_t pinNumber, bool isInverted) {
 	this->pinNumber = pinNumber;
+	this->isInverted = isInverted;
 	//Note: no pinMode initialization is required for analog inputs
 }
 
 void AnalogInput::refreshInputStatus() {
-	this->pinReading = analogRead(this->pinNumber);
+	if (this->isInverted) {
+		this->pinReading = ANALOG_INPUT_MAXIMUM - analogRead(this->pinNumber);
+	} else {
+		this->pinReading = analogRead(this->pinNumber);
+	}
 }
 
 int AnalogInput::getInputStatus() {
@@ -16,9 +21,4 @@ int AnalogInput::getInputStatus() {
 
 String AnalogInput::getInputStatusAsString() {
 	return String(this->pinReading);
-}
-
-//Used for simulation only:
-void AnalogInput::setPinReading(int simulatedPinReading) {
-	this->pinReading = simulatedPinReading;
 }
