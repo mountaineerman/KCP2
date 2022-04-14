@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <AnalogInput.h>
+#include "../../configuration.h"
 
 AnalogInput::AnalogInput(uint8_t pinNumber, bool isInverted) {
 	this->pinNumber = pinNumber;
