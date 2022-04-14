@@ -86,9 +86,9 @@ public class PacketUnpacker {
 		controlPanel.moduleI.monopropIntakeSwitch.setStatus(	this.fetchBitInByteInPacket(inputRefreshPacket, IP.MonopropIntakeSwitch.firstByte, IP.MonopropIntakeSwitch.bitNumber));
 		
 		controlPanel.moduleA.analogInput_Throttle.setRawValueAndCalculateBoundAndCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Throttle.firstByte, IP.AnalogInput_Throttle.lastByte));
-		controlPanel.moduleB.analogInput_Joystick_Pitch.setRawValueAndCalculateBoundAndCalibratedValues(this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_Pitch.firstByte, IP.AnalogInput_Joystick_Pitch.lastByte));
-		controlPanel.moduleB.analogInput_Joystick_Yaw.setRawValueAndCalculateBoundAndCalibratedValues(	this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_Yaw.firstByte, IP.AnalogInput_Joystick_Yaw.lastByte));
-		controlPanel.moduleB.analogInput_Joystick_Roll.setRawValueAndCalculateBoundAndCalibratedValues(	this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_Roll.firstByte, IP.AnalogInput_Joystick_Roll.lastByte));
+		controlPanel.moduleB.analogInput_Joystick_FwdBck.setRawValueAndCalculateBoundAndCalibratedValues(this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_FwdBck.firstByte, IP.AnalogInput_Joystick_FwdBck.lastByte));
+		controlPanel.moduleB.analogInput_Joystick_LftRgh.setRawValueAndCalculateBoundAndCalibratedValues(	this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_LftRgh.firstByte, IP.AnalogInput_Joystick_LftRgh.lastByte));
+		controlPanel.moduleB.analogInput_Joystick_Twist.setRawValueAndCalculateBoundAndCalibratedValues(	this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_Twist.firstByte, IP.AnalogInput_Joystick_Twist.lastByte));
 		controlPanel.moduleF.analogInput_MultiPot.setRawValueAndCalculateBoundAndCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_MultiPot.firstByte, IP.AnalogInput_MultiPot.lastByte));
 		controlPanel.moduleF.analogInput_Current.setRawValueAndCalculateBoundAndCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Current.firstByte, IP.AnalogInput_Current.lastByte));
 	}

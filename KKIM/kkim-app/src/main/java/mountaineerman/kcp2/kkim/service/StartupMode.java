@@ -26,6 +26,9 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 		
 		try {Thread.sleep(KKIMProp.getkkimInitialStartupDelayInMilliseconds());} catch (InterruptedException e) {e.printStackTrace();}
 		
+		//TODO: Set autopilot LED "backlighting":
+		//kkimService.controlPanel.moduleD.
+		
         kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
     }
 }

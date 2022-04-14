@@ -6,19 +6,20 @@ public class AnalogInput extends Part {
 
 	private static int ANALOGREAD_MIN_VALUE = 0;
 	private static int ANALOGREAD_MAX_VALUE = 1023;
-	private static int RESCALE_MIN_VALUE = 0;
-	private static int RESCALE_MAX_VALUE = 1000;
+	
 	
 	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int rawValue = 0;
 	/** Range: lowerCalibrationLimit - upperCalibrationLimit */
 	private int boundValue = 0;
-	/** Range: RESCALE_MIN_VALUE(0) - RESCALE_MAX_VALUE(1000) */
+	/** Range: lowerRescaleLimit - upperRescaleLimit */
 	private int rescaledValue = 0;
 	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int lowerCalibrationLimit;
 	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int upperCalibrationLimit;
+	private int lowerRescaleLimit = 0;
+	private int upperRescaleLimit = 0;
 	
 	public AnalogInput(IP ip) {
 		super(ip.partName, ip.moduleID);
@@ -28,6 +29,8 @@ public class AnalogInput extends Part {
 		validateCalibrationLimits(ip.minCalibLim, ip.maxCalibLim);
 		this.lowerCalibrationLimit = ip.minCalibLim;
 		this.upperCalibrationLimit = ip.maxCalibLim;
+		this.lowerRescaleLimit = ip.minRescaleLim;
+		this.upperRescaleLimit = ip.maxRescaleLim;
 	}
 	
 	/**
@@ -36,7 +39,7 @@ public class AnalogInput extends Part {
 	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value. Minimum: 0
 	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value. Maximum: 1023
 	 */
-	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {
+	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {//TODO SCRAP or add lowerRescaleLimit+upperRescaleLimit...
 		super(name, moduleID);
 		
 		validateAnalogValue(lowerCalibrationLimit, "lowerCalibrationLimit");
@@ -86,7 +89,7 @@ public class AnalogInput extends Part {
 			this.boundValue = this.rawValue;
 		}
 		
-		this.rescaledValue = (this.boundValue - this.lowerCalibrationLimit) * (RESCALE_MAX_VALUE - RESCALE_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit) + RESCALE_MIN_VALUE;
+		this.rescaledValue = (this.boundValue - this.lowerCalibrationLimit) * (this.upperRescaleLimit - this.lowerRescaleLimit) / (this.upperCalibrationLimit - this.lowerCalibrationLimit) + this.lowerRescaleLimit;
 	}
 	
 	public String toString() {
