@@ -5,6 +5,7 @@
 AnalogInput::AnalogInput(uint8_t pinNumber, bool isInverted) {
 	this->pinNumber = pinNumber;
 	this->isInverted = isInverted;
+	this->pinReading = 0;
 	//Note: no pinMode initialization is required for analog inputs
 }
 
