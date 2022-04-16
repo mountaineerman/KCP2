@@ -1,11 +1,16 @@
 #include <Arduino.h>
-#include "..\..\configuration.h"
 #include <AltitudeGauge.h>
+#include "..\..\configuration.h"
 
 
 AltitudeGauge::AltitudeGauge()
 	: sevenSegmentDisplay()
+	, led_Altitude_m	(PIN_ALTITUDE_m)
+	, led_Altitude_km	(PIN_ALTITUDE_km)
+	, led_Altitude_Mm	(PIN_ALTITUDE_Mm)
+	, led_Altitude_Gm	(PIN_ALTITUDE_Gm)
 {
+	this->setAllLEDsOff();
 	this->setAltitude(STARTING_ALTITUDE);
 
 	byte numDigits = 3;
@@ -29,43 +34,79 @@ AltitudeGauge::AltitudeGauge()
 
 void AltitudeGauge::setAltitude(float altitude) {
 	this->altitude = altitude;
-	sevenSegmentDisplay.setNumber(this->altitude);
+	
+	sevenSegmentDisplay.setNumber(this->altitude);//TODO verify
+	
+	if (this->altitude < 0) {//TODO verify
+		this->led_Altitude_m.setState(true);
+		this->led_Altitude_km.setState(true);
+		this->led_Altitude_Mm.setState(true);
+		this->led_Altitude_Gm.setState(true);
+	} else if (this->altitude < 1000) {
+		this->led_Altitude_m.setState(true);
+		this->led_Altitude_km.setState(false);
+		this->led_Altitude_Mm.setState(false);
+		this->led_Altitude_Gm.setState(false);
+	} else if (this->altitude < 1000000) {
+		this->led_Altitude_m.setState(false);
+		this->led_Altitude_km.setState(true);
+		this->led_Altitude_Mm.setState(false);
+		this->led_Altitude_Gm.setState(false);
+	} else if (this->altitude < 1000000000) {
+		this->led_Altitude_m.setState(false);
+		this->led_Altitude_km.setState(false);
+		this->led_Altitude_Mm.setState(true);
+		this->led_Altitude_Gm.setState(false);
+	} else if (this->altitude < 1000000000000) {
+		this->led_Altitude_m.setState(false);
+		this->led_Altitude_km.setState(false);
+		this->led_Altitude_Mm.setState(false);
+		this->led_Altitude_Gm.setState(true);
+	} else
+		this->led_Altitude_m.setState(true);
+		this->led_Altitude_km.setState(true);
+		this->led_Altitude_Mm.setState(true);
+		this->led_Altitude_Gm.setState(true);
+	}
+}
+
+void AltitudeGauge::refreshSevenSegmentDisplay() {
 	sevenSegmentDisplay.refreshDisplay();
-	//TODO
 }
 
 void AltitudeGauge::setAllLEDsOff() {
 	this->sevenSegmentDisplay.blank();
+	this->led_Altitude_m.setState(false);
+	this->led_Altitude_km.setState(false);
+	this->led_Altitude_Mm.setState(false);
+	this->led_Altitude_Gm.setState(false);
 }
 
 void AltitudeGauge::setAllLEDsOn() {
-	this->sevenSegmentDisplay.setNumber(888);
-	this->sevenSegmentDisplay.refreshDisplay();
-	delay(1);
-	//TODO: Understand how all 3 decimal points can be displayed at the same time.
-	//Note: decimal point position:
+	//Note: sevenSegmentDisplay.setNumber(number, decimal_point): decimal point position:
 	// 0 = right
 	// 1 = center
 	// 2 = left
-	//this->sevenSegmentDisplay.setNumber(888,0);
-	//this->sevenSegmentDisplay.refreshDisplay();
-	//delay(1);
-	//this->sevenSegmentDisplay.setNumber(888,1);
-	//this->sevenSegmentDisplay.refreshDisplay();
-	//delay(1);
-	//this->sevenSegmentDisplay.setNumber(888,2);
-	//this->sevenSegmentDisplay.refreshDisplay();
-	//delay(1);
-	
-	//TODO: The seven segment display requires frequent refreshes in order to work.
+	this->sevenSegmentDisplay.setNumber(888,0);//Note: for simplicity, does not light up all 3 decimal LEDs at the same time, just the right one.
+	this->led_Altitude_m.setState(true);
+	this->led_Altitude_km.setState(true);
+	this->led_Altitude_Mm.setState(true);
+	this->led_Altitude_Gm.setState(true);
 }
 
 void AltitudeGauge::testLEDsSequentially() {
 	
-	for(int i = 0; i < DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS; i++){
-		this->setAllLEDsOn();
-	}
-	this->setAllLEDsOff();
+	auto blinkLED = [](const LED& led) { 
+		led.setState(true);
+		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
+		led.setState(false);
+	};
+	
+	blinkLED(this->led_Altitude_Gm);
+	blinkLED(this->led_Altitude_Mm);
+	blinkLED(this->led_Altitude_m);
+	blinkLED(this->led_Altitude_km);
+	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
 	

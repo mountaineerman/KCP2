@@ -1,7 +1,7 @@
 #include "Arduino.h"
 
 #include "configuration.h"
-#include <GaugeTower.h>
+#include <KNanoService.h>
 
 /* REMINDER: 
 When programming KNano, set:
@@ -12,21 +12,6 @@ When programming KNano, set:
 */
 
 void setup() {
-	//Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
-	//Serial.begin(BAUD_RATE);
-	delay(1000);
-}
-
-void loop() {
-	delay(1000);
-
-	GaugeTower gaugeTower;
-
-	while(true)
-	{
-		gaugeTower.testLEDsSequentially();
-	}
-	
-	delay(500);
+	KNanoService kNanoService;
 	exit(EXIT_SUCCESS);
 }
