@@ -53,11 +53,13 @@ void KMegaService::startupMode() {
 	
 	controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
 	
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);//TODO verify blink is sufficient
 	this->serialCommunicator.establishKKIMSerialLink();
-	this->controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //TODO replace with COMMS LED...
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);//TODO verify blink is sufficient
 	
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);//TODO verify blink is sufficient
 	this->serialCommunicator.establishKNanoSerialLink();
-	this->controlPanel.moduleH.ledPWM_GlassCockpit_TL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //TODO replace with COMMS LED...
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);//TODO verify blink is sufficient
 }
 
 void KMegaService::standardOperatingMode() {
