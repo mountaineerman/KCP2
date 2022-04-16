@@ -7,24 +7,23 @@
 #include <Arduino.h>
 
 //===========================================================================================================================================================================
-//Computer Interface
-static const String COMMUNICATION_PORT = "COM4";
-static const unsigned long COMPUTER_BAUD_RATE = 115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
+//Common Serial Communication Settings
 static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time kMega will wait before timing out during a serial read operation
-static const int REFRESH_PERIOD_IN_MILLISECONDS = 1;//TODO replace in program...
-static const int INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS = 100;
-
-
 static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C = '<'
 static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecutive packet delimiter bytes that mark the beginning of a packet
+
+//KKIM Interface
+static const String COMMUNICATION_PORT = "COM4";
+static const unsigned long COMPUTER_BAUD_RATE = 115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
+static const int REFRESH_PERIOD_IN_MILLISECONDS = 1;//TODO replace in program...
+static const int INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS = 100;
 static const int OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 195;//Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 31;  //Length of Delimiter + Header + Payload.
-
 static const int MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS = 1000;
 
-//===========================================================================================================================================================================
 //KNano Interface
 static const unsigned long KNANO_BAUD_RATE = COMPUTER_BAUD_RATE;
+static const int ALTITUDE_PACKET_LENGTH_IN_BYTES = 16;  //Length of Delimiter + Header + Payload.
 static const float STARTING_ALTITUDE = -1.0e1;
 
 //===========================================================================================================================================================================

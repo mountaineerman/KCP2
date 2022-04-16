@@ -12,6 +12,8 @@ SerialCommunicator::SerialCommunicator()
 	this->packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES] = {};
 	this->clearPacketBuffer();
 	
+	this->altitudePacket = NULL;
+	
 	this->inputRefreshPacket = NULL;
 	this->numberOfBytesWritten = 0;
 	
@@ -32,13 +34,22 @@ void SerialCommunicator::setOutputRefreshPacket(const byte * outputRefreshPacket
 	this->outputRefreshPacket = outputRefreshPacket;
 }
 
+void SerialCommunicator::setAltitudePacket(const byte * altitudePacket) {
+	this->altitudePacket = altitudePacket;
+}
+
 void SerialCommunicator::setInputRefreshPacket(const byte * inputRefreshPacket) {
 	this->inputRefreshPacket = inputRefreshPacket;
 }
 
-void SerialCommunicator::establishSerialLink() {
+void SerialCommunicator::establishKKIMSerialLink() {
 	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
 	Serial.begin(COMPUTER_BAUD_RATE);
+}
+
+void SerialCommunicator::establishKNanoSerialLink() {
+	Serial1.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);//TODO Confirm Serial1
+	Serial1.begin(KNANO_BAUD_RATE);
 }
 
 void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
@@ -104,6 +115,13 @@ bool SerialCommunicator::getOutputRefreshPacket() {
 	}
 }
 
+void SerialCommunicator::sendAltitudePacket() {
+	
+	if ( Serial1.availableForWrite() >= ALTITUDE_PACKET_LENGTH_IN_BYTES) {//TODO verify Serial1
+		Serial1.write(altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES);//TODO verify Serial1
+	}
+}
+
 void SerialCommunicator::sendInputRefreshPacket() {
 	
 	if ( Serial.availableForWrite() >= INPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
@@ -146,8 +164,9 @@ void SerialCommunicator::displayCommunicationsDiagnosticData() {
 	Serial.println();
 }
 
-void SerialCommunicator::teardownSerialLink() {
+void SerialCommunicator::teardownSerialLinks() {
 	Serial.end();
+	Serial1.end();//TODO verify
 }
 
 void SerialCommunicator::clearPacketBuffer() {

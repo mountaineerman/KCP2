@@ -53,6 +53,9 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	
 	//Stepper Motors
 	controlPanel.moduleC.stepper_Gforce.setDesiredPosition( this->convertTwoBytesInOutputRefreshPacketIntoInteger(170,171) );
+	//TODO Add remaining Stepper Motors
+	
+	controlPanel.altitude = this->convertFourBytesInOutputRefreshPacketIntoFloat(10, 13);
 	
 	this->clearOutputRefreshPacket();
 }
@@ -63,7 +66,6 @@ void PacketUnpacker::clearOutputRefreshPacket() {
 	}
 }
 
-// byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote)
 int PacketUnpacker::convertTwoBytesInOutputRefreshPacketIntoInteger(int byteNum1, int byteNum2) {
 	
 	if (byteNum1 > OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
@@ -93,5 +95,43 @@ int PacketUnpacker::convertTwoBytesInOutputRefreshPacketIntoInteger(int byteNum1
 	
 	return (*((int *)tempTwoByteArray));
 }
+
+
+float PacketUnpacker::convertFourBytesInOutputRefreshPacketIntoFloat(int firstByteNum, int lastByteNum) {
+	
+	union {
+		float theFloat;
+		unsigned char theByteArray[4];
+	} byteArrayToFloat;
+	
+	int start = firstByteNum - 1;
+	int end = lastByteNum - 1;
+	int j = 0;
+	
+	for (int i = start; i < end; i++) {
+		byteArrayToFloat.theByteArray[j++] = this->outputRefreshPacket[i];
+	}
+	
+	return byteArrayToFloat.theFloat;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

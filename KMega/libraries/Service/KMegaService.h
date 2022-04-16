@@ -18,18 +18,17 @@ private:
 	void standardOperatingMode();
 	//void diagnosticMode();
 	void shutdownMode();
-	void clearOutputRefreshPacket();
-	void clearInputRefreshPacket();
-	void displayOutputRefreshPacket(); //TODO remove
-	void displayInputRefreshPacket(); //TODO remove
+	void clearPacket(const byte * packet, int packetLength);
+	void displayPacket(const byte * packet, int packetLength, String packetName);
 	
 	ControlPanel controlPanel;
 	SerialCommunicator serialCommunicator;
 	PacketUnpacker packetUnpacker;
 	PacketAssembler packetAssembler;
 	
-	byte outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES]; //READ-ONLY after initialization
-	byte inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES];   //READ-ONLY after initialization
+	byte outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];//READ-ONLY by KMegaService after initialization
+	byte altitudePacket[ALTITUDE_PACKET_LENGTH_IN_BYTES];			//READ-ONLY by KMegaService after initialization
+	byte inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES];	//READ-ONLY by KMegaService after initialization
 	
 	long inputRefreshPacketLastSendTimeInMilliseconds;
 };

@@ -32,6 +32,8 @@ ControlPanel::ControlPanel()
 	pinMode(PIN_LED_DRIVER_BOARDS_OVERRIDE, OUTPUT);
 	this->disableLEDOverride();
 	
+	altitude = STARTING_ALTITUDE;
+	
 	this->setAllLEDsOff();
 }
 
