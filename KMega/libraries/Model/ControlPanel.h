@@ -76,8 +76,6 @@ public:
 	ModuleH moduleH;
 	ModuleI moduleI;
 	ModuleGT moduleGT;
-	
-	float altitude;
 };
 
 #endif

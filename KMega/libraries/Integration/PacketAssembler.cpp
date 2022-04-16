@@ -68,7 +68,7 @@ void PacketAssembler::assembleAltitudePacket() {
 	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 9);
 	
 	// (3) Populate Payload:
-	this->saveFloatToAltitudePacketAtByteNumbers(controlPanel.altitude, 10, 13);
+	this->saveFloatToAltitudePacketAtByteNumbers(controlPanel.moduleGT.altitude, 10, 13);
 	
 	
 	this->displayPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES, "altitudePacket");//TODO test
