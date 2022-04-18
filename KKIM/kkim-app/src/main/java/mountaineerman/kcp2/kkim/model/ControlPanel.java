@@ -26,9 +26,23 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float joystick_Twist = 0; //Range: -1(TBD) to 1(TBD)
 	
 	//TODO WRAP IN KSP class:
-	public float fuel = 0;//TODO replace
+	//TODO double-check variable types in kRPC...
+	//heat: loop through all parts?: getTemperature()/getMaxTemperature(), getSkinTemperature()/getMaxSkinTemperature()
+	//life support: TBD
 	public float gforce = 0;//TODO replace
 	private int milliGforce = 0;//TODO replace
+	public float mach = 0;
+	public float pitch = 0;	 //Units: degrees. Range: -90.0 to +90.0
+	public float heading = 0;//Units: degrees. Range: 0.0 to 360.0
+	public float fuel = 0;//TODO replace
+	public float charge = 0;//TODO replace
+	public float monopropellant = 0;//TODO replace
+	public float intakeAir = 0;//TODO replace
+	public float airDensity = 0;
+	public double speed = 0;//Units: meters/second.
+	public double verticalSpeed = 0;//Units: meters/second.
+	public double altitudeAboveSurface = 0;//Units: meters. Measured from the center of mass of the vessel.
+	public double altitudeAboveSeaLevel = 0;//Units: meters. Measured from the center of mass of the vessel.
 	
 	public ControlPanel() {
 		

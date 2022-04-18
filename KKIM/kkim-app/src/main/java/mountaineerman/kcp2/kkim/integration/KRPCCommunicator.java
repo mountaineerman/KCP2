@@ -60,9 +60,22 @@ public class KRPCCommunicator {
 
 		try {
 			this.resources = this.vessel.resourcesInDecoupleStage(this.control.getCurrentStage()-1, false);
-			this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?
-			//System.out.println("fuel: " + this.resources.amount("LiquidFuel"));
 			this.controlPanel.gforce = this.flight.getGForce();
+			this.controlPanel.mach = this.flight.getMach();
+			this.controlPanel.pitch = this.flight.getPitch();
+			this.controlPanel.heading = this.flight.getHeading();
+			this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?//TODO other fuel types...
+			//System.out.println("fuel: " + this.resources.amount("LiquidFuel"));
+			//this.controlPanel.charge = this.resources.amount("TBD");//TODO pull constants into config file?
+			//this.controlPanel.monopropellant = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
+			//this.controlPanel.intakeAir = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
+			//this.controlPanel.airDensity = this.flight.getAtmosphereDensity() / CelestialBody.densityAt(Altitude); + Vessel.getSituation()... OR: getStaticPressure()/getStaticPressureAtMSL();
+			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
+			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?
+			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
+			
+			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude(); 
+			
 			//System.out.println("altitude: " + this.flight.getMeanAltitude());
 		} catch (RPCException e) {
 			e.printStackTrace();
