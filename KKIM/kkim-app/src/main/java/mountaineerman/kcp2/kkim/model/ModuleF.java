@@ -5,6 +5,7 @@ import mountaineerman.kcp2.kkim.IP;
 public class ModuleF implements LEDAggregator {
 
 	public SwitchSP2T trimPrimarySwitch = null;
+	//public SensitivitySwitch sensitivitySwitch = null;//FIXME
 	public SwitchSP2T sp4t_AB = null;
 	public SwitchSP2T sp4t_CD = null;
 	public AnalogInput analogInput_MultiPot = null;

@@ -249,9 +249,58 @@ public class KRPCCommunicator {
 		//Multi-Module
 		try {
 			this.control.setBrakes(this.controlPanel.brake);
-		} catch (RPCException e) {
-			e.printStackTrace();
-		}
+		} catch (RPCException e) {e.printStackTrace();}
+		
+		//TODO Disable other controls when switching between modes...
+		//RKT Mode
+			try {
+				this.control.set_throttle(this.controlPanel.throttleLever);
+			} catch (RPCException e) {e.printStackTrace();}
+			
+			//RKT Mode:Rotation
+			try {
+				this.control.set_pitch(this.controlPanel.joystick_FwdBck);
+			} catch (RPCException e) {e.printStackTrace();}
+			try {
+				this.control.set_yaw(this.controlPanel.joystick_LftRgh);
+			} catch (RPCException e) {e.printStackTrace();}
+			try {
+				this.control.set_roll(this.controlPanel.joystick_Twist);
+			} catch (RPCException e) {e.printStackTrace();}
+			
+		//	//RKT Mode:Translation
+		//	try {
+		//		this.control.set_forward(this.controlPanel.joystick_Twist);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//	try {
+		//		this.control.set_up(this.controlPanel.joystick_FwdBck);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//	try {
+		//		this.control.set_right(this.controlPanel.joystick_LftRgh);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//
+		////PLN Mode (TBD)
+		//	try {
+		//		this.control.set_throttle(this.controlPanel.throttleLever);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//	
+		//	try {
+		//		this.control.set_pitch(this.controlPanel.joystick_FwdBck);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//	try {
+		//		this.control.set_yaw(this.controlPanel.joystick_Twist);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//	try {
+		//		this.control.set_roll(this.controlPanel.joystick_LftRgh);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//
+		////RVR Mode (TBD)
+		//	try {
+		//		this.control.set_wheel_throttle(this.controlPanel.TBD);
+		//	} catch (RPCException e) {e.printStackTrace();}
+		//	try {
+		//		this.control.set_wheel_steering(this.controlPanel.joystick_LftRgh);
+		//	} catch (RPCException e) {e.printStackTrace();}
 	}
 }
 

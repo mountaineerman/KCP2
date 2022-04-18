@@ -20,6 +20,10 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	
 	//TODO WRAP IN KMEGA class:
 	public boolean brake = false;
+	public float throttleLever = 0;	 //Range: 0 to 1
+	public float joystick_FwdBck = 0;//Range: -1(TBD) to 1(TBD)
+	public float joystick_LftRgh = 0;//Range: -1(TBD) to 1(TBD)
+	public float joystick_Twist = 0; //Range: -1(TBD) to 1(TBD)
 	
 	//TODO WRAP IN KSP class:
 	public float fuel = 0;//TODO replace
@@ -56,6 +60,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
+		this.moduleF.sensitivitySwitch.updatePosition();
+		
 		if (this.fuel > 0) { //TODO replace
 			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
 		} else {
@@ -75,9 +81,16 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 //		System.out.println("desiredPosition (scaled): " + temp);
 		this.moduleC.stepper_Gforce.setDesiredPosition(temp);
 		
+		if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
+			throttleLever = 0.0;
+		} else {
+			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / 1000.0;//TODO add configuration
+		}
+		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / 1000.0; //TODO add configuration	//TODO: Add middle deadzone
+		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / 1000.0; //TODO add configuration	//TODO: Add middle deadzone
+		joystick_Twist = ((this.moduleB.analogInput_Joystick_Twist.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / 1000.0;   //TODO add configuration	//TODO: Add middle deadzone
 		
 		//TODO add remaining parts
-		
 	}
 	
 	@Override
