@@ -42,6 +42,8 @@ public:
 	StepperMotor stepper_Speed;
 	StepperMotor stepper_VertSpeed;
 	StepperMotor stepper_RadarAlt;
+	
+	float altitude;
 };
 
 #endif

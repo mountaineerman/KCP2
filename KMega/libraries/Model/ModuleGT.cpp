@@ -22,7 +22,7 @@ ModuleGT::ModuleGT(Adafruit_TLC5947& ledDriverBoards)
 , stepper_VertSpeed	(PIN_VID6606_3_FREQUENCY_VERTICALSPEED,	PIN_VID6606_3_DIRECTION_VERTICALSPEED,	true)
 , stepper_RadarAlt	(PIN_VID6606_3_FREQUENCY_RADARALTITUDE,	PIN_VID6606_3_DIRECTION_RADARALTITUDE,	true)
 {
-	
+	this->altitude = STARTING_ALTITUDE;
 }
 
 void ModuleGT::setAllLEDsOff() {	

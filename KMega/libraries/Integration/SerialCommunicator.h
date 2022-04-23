@@ -11,9 +11,11 @@ class SerialCommunicator
 public:
 	SerialCommunicator();
 	void setOutputRefreshPacket(const byte * outputRefreshPacket);
+	void setAltitudePacket(const byte * altitudePacket);
 	void setInputRefreshPacket(const byte * inputRefreshPacket);
 	
-	void establishSerialLink();
+	void establishKKIMSerialLink();
+	void establishKNanoSerialLink();
 	
 	//Ingests data from the Arduino Serial Buffer until:
 	// a) A complete and valid OutputRefreshPacket has been stored in the Packet Buffer, OR
@@ -23,13 +25,15 @@ public:
 	//Attempts to populate (shared) outputRefreshPacket. Returns true if successful and false if not.
 	bool getOutputRefreshPacket();
 	
+	//Attempts to send an altitudePacket to KNano.
+	void sendAltitudePacket();
 	//Attempts to send an inputRefreshPacket to KKIM.
 	void sendInputRefreshPacket();
 	
 	void tallyCommunicationsDiagnosticData();//TODO Inject Communications Diagnostic Data into inputRefreshPacket
 	void displayCommunicationsDiagnosticData();
 	
-	void teardownSerialLink();
+	void teardownSerialLinks();
 
 private:
 	//Clear the packetBuffer and associated variables
@@ -42,6 +46,8 @@ private:
 	byte receivedByte;
 	byte packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];
 	byte * outputRefreshPacket; //See KMegaService
+	
+	byte * altitudePacket; 		//See KMegaService
 	
 	int numberOfBytesWritten;
 	byte * inputRefreshPacket;  //See KMegaService

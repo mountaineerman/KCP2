@@ -6,38 +6,77 @@
 PacketAssembler::PacketAssembler(ControlPanel& controlPanel)
 	: controlPanel(controlPanel)
 {
+	this->altitudePacket = NULL;
 	this->inputRefreshPacket = NULL;
+}
+
+void PacketAssembler::setAltitudePacket(const byte * altitudePacket) {
+	this->altitudePacket = altitudePacket;
 }
 
 void PacketAssembler::setInputRefreshPacket(const byte * inputRefreshPacket) {
 	this->inputRefreshPacket = inputRefreshPacket;
 }
 
-void PacketAssembler::displayInputRefreshPacketInDecimal() {
+void PacketAssembler::displayPacket(const byte * packet, int packetLength, String packetName) {//TODO verify
 	
-	if (this->inputRefreshPacket == NULL) {
+	if (this->packet == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.displayInputRefreshPacketInDecimal(): inputRefreshPacket is not initialized");
+		Serial.print("Exception: PacketAssembler.displayPacket(): "); Serial.print(packetName); Serial.println(" is not initialized");
 	}
 	
-	Serial.println("PacketAssembler: inputRefreshPacket: (Decimal Format)");
-	Serial.print("Position: N/A\tN/A\tN/A\t");
-	for (int i = 0; i < (INPUT_REFRESH_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES); i++) {
+	Serial.println("PacketAssembler.displayPacket(): (decimal format)");
+	Serial.print("Packet: "); Serial.println(packetName);
+	Serial.print("Byte Num: ");
+	for (int i = 0; i < packetLength; i++) {
 		Serial.print(i+1);
 		Serial.print("\t");
 	}
 	Serial.println();
+	
 	Serial.print("Value:    ");
-	for (int i = 0; i < INPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
-		Serial.print(this->inputRefreshPacket[i]);
+	for (int i = 0; i < packetLength; i++) {
+		Serial.print(packet[i]);
 		Serial.print("\t");
 	}
 	Serial.println();
 }
 
+void PacketAssembler::assembleAltitudePacket() {
+	
+	this->displayPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES, "altitudePacket");//TODO test
+	
+	if (this->altitudePacket == NULL) {
+		//TODO throw exception
+		Serial.println("Exception: PacketAssembler.assembleAltitudePacket(): altitudePacket is not initialized");
+	}
+	
+	// (1) Populate Delimiter:
+	for (int i = 0; i < NUMBER_OF_PACKET_DELIMITER_BYTES; i++) {
+		this->altitudePacket[i] = PACKET_DELIMITER_BYTE;
+	}
+	
+	// (2) Populate Header:
+	/* Originator */	this->saveByteToInputRefreshPacket(0x01, 1);
+	/* Packet Type */	this->saveByteToInputRefreshPacket(0x03, 2);
+	/* Packet Length */	this->saveByteToInputRefreshPacket((ALTITUDE_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES), 3);
+	/* Current Mode */	this->saveByteToInputRefreshPacket(0x00, 4);//TODO
+	/* Command */		this->saveByteToInputRefreshPacket(0x00, 5);
+	/* Parity Byte */	this->saveByteToInputRefreshPacket(0x00, 6);//TODO
+	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 7);
+	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 8);
+	/* Empty */			this->saveByteToInputRefreshPacket(0x00, 9);
+	
+	// (3) Populate Payload:
+	this->saveFloatToAltitudePacketAtByteNumbers(controlPanel.moduleGT.altitude, 10, 13);
+	
+	
+	this->displayPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES, "altitudePacket");//TODO test
+}
+
 void PacketAssembler::assembleInputRefreshPacket() {
 	
-	//this->displayInputRefreshPacketInDecimal();
+	//this->displayPacket(this->inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES, "inputRefreshPacket");
 	
 	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
@@ -133,14 +172,14 @@ void PacketAssembler::assembleInputRefreshPacket() {
 										   false);//Unused
 	this->saveByteToInputRefreshPacket(tempByte, 16);
 	
-	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleA.analogInput_Throttle.getInputStatus(), 17, 18);
-	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleB.analogInput_Joystick_Pitch.getInputStatus(), 19, 20);
-	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleB.analogInput_Joystick_Yaw.getInputStatus(), 21, 22);
-	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleB.analogInput_Joystick_Roll.getInputStatus(), 23, 24);
-	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleF.analogInput_MultiPot.getInputStatus(), 25, 26);
-	this->saveNumberAtByteNumbersToInputRefreshPacket(controlPanel.moduleF.analogInput_Current.getInputStatus(), 27, 28);
+	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleA.analogInput_Throttle.getInputStatus(), 17, 18);
+	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleB.analogInput_Joystick_Pitch.getInputStatus(), 19, 20);
+	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleB.analogInput_Joystick_Yaw.getInputStatus(), 21, 22);
+	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleB.analogInput_Joystick_Roll.getInputStatus(), 23, 24);
+	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleF.analogInput_MultiPot.getInputStatus(), 25, 26);
+	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleF.analogInput_Current.getInputStatus(), 27, 28);
 	
-	//this->displayInputRefreshPacketInDecimal();
+	//this->displayPacket(this->inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES, "inputRefreshPacket");
 }
 
 byte PacketAssembler::compressBoolsIntoByte(bool bool1, bool bool2, bool bool3, bool bool4,
@@ -168,16 +207,16 @@ void PacketAssembler::saveByteToInputRefreshPacket(byte theByte, int byteNumber)
 	this->inputRefreshPacket[byteNumber - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES] = theByte;
 }
 
-void PacketAssembler::saveNumberAtByteNumbersToInputRefreshPacket(int number, int byteNum1, int byteNum2) {
+void PacketAssembler::saveNumberToInputRefreshPacketAtByteNumbers(int number, int byteNum1, int byteNum2) {
 	
 	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.saveNumberAtByteNumbersToInputRefreshPacket(): inputRefreshPacket is not initialized");
+		Serial.println("Exception: PacketAssembler.saveNumberToInputRefreshPacketAtByteNumbers(): inputRefreshPacket is not initialized");
 	}
 	
 	if (number > 65535) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.saveNumberAtByteNumbersToInputRefreshPacket(): the number is larger than what can be stored in two bytes (65,535)");
+		Serial.println("Exception: PacketAssembler.saveNumberToInputRefreshPacketAtByteNumbers(): the number is larger than what can be stored in two bytes (65,535)");
 	}
 	
 	int largeByteNum = 0;
@@ -195,7 +234,28 @@ void PacketAssembler::saveNumberAtByteNumbersToInputRefreshPacket(int number, in
 	this->inputRefreshPacket[largeByteNum] = (byte) ((number >> 8) & 0xFF);
 }
 
-
+void PacketAssembler::saveFloatToAltitudePacketAtByteNumbers(float number, int firstByteNum, int lastByteNum) {
+	
+	if (this->altitudePacket == NULL) {
+		//TODO throw exception
+		Serial.println("Exception: PacketAssembler.saveFloatAtByteNumbersToAltitudePacket(): altitudePacket is not initialized");
+	}
+	
+	union {
+		float theFloat;
+		unsigned char theByteArray[4];
+	} floatToByteArray;
+	
+	floatToByteArray.theFloat = number;
+	
+	int start = firstByteNum - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+	int end = lastByteNum - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+	int j = 0;
+	
+	for (int i = start; i < end; i++) {
+		this->altitudePacket[i] = floatToByteArray.theByteArray[j++];
+	}
+}
 
 
 

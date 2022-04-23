@@ -5,17 +5,19 @@
 
 /* Packet Assembler
  * Responsible for reading the status of inputs in the KMega (ControlPanel) Model and assembling
- * them into an InputRefreshPacket.
+ * them into the InputRefreshPacket and AltitudePacket.
  */
 class PacketAssembler
 {
 public:
 	PacketAssembler(ControlPanel& controlPanel);
+	void setAltitudePacket(const byte * altitudePacket);
 	void setInputRefreshPacket(const byte * inputRefreshPacket);
-	void displayInputRefreshPacketInDecimal();
-	//void displayInputRefreshPacketInHexadecimal(); //TODO
-	//void displayInputRefreshPacketInBinary(); //TODO
 	
+	displayPacket(const byte * packet, int packetLength, String packetName);
+	
+	//Assembles the altitudePacket
+	void assembleAltitudePacket();
 	//Assembles the status of inputs in the KMega (ControlPanel) Model into an InputRefreshPacket
 	void assembleInputRefreshPacket();
 
@@ -27,10 +29,14 @@ private:
 	void saveByteToInputRefreshPacket(byte theByte, int byteNumber);
 	
 	//Saves integer number value at the specified byte numbers. byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
-	void saveNumberAtByteNumbersToInputRefreshPacket(int number, int byteNum1, int byteNum2);
+	void saveNumberToInputRefreshPacketAtByteNumbers(int number, int byteNum1, int byteNum2);
+	
+	//Saves float number value at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Onenote).
+	void saveFloatToAltitudePacketAtByteNumbers(float number, int firstByteNum, int lastByteNum);
 	
 	ControlPanel& controlPanel;
-	byte * inputRefreshPacket; //See KMegaService
+	byte * altitudePacket;		//See KMegaService
+	byte * inputRefreshPacket;	//See KMegaService
 };
 
 #endif
