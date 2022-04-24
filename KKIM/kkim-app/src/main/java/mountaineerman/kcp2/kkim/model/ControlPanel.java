@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
@@ -44,6 +45,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public double verticalSpeed = 0;//Units: meters/second.
 	public double altitudeAboveSurface = 0;//Units: meters. Measured from the center of mass of the vessel.
 	public double altitudeAboveSeaLevel = 0;//Units: meters. Measured from the center of mass of the vessel.
+	public float altitudeToDisplay = 0;//altitudeAboveSurface or altitudeAboveSeaLevel, depending on the position of the SpeedMode SP3T Switch
 	
 	public ControlPanel() {
 		
@@ -77,14 +79,16 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
-			//double altitudeAboveSurface
+			this.altitudeToDisplay = (float) this.altitudeAboveSurface;
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
-			//double altitudeAboveSeaLevel
+			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
-			//double altitudeAboveSeaLevel
+			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
 		} else {//INVALID
-			//999 Gm
+			this.altitudeToDisplay = KKIMProp.getkmegaAltitudeGaugeErrorAltitude();
 		}
+		CommonUtilities.clearScreen();
+		System.out.println("displayAltitude: " + this.altitudeToDisplay);
 		
 		this.moduleE.sp3tVehicleModeSwitch.updatePosition();
 		

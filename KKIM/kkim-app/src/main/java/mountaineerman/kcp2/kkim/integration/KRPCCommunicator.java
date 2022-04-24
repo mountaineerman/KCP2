@@ -72,10 +72,7 @@ public class KRPCCommunicator {
 			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
 			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?
 			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
-			
 			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude(); 
-			
-			//System.out.println("altitude: " + this.flight.getMeanAltitude());
 		} catch (RPCException e) {
 			e.printStackTrace();
 		}

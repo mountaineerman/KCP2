@@ -41,8 +41,11 @@ public enum OP {
 //	TODO Add remaining LEDs
 	
 //Stepper Motors			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Stepper_Gforce			(170,		171,		ModuleID.C,		195,		3430,		"G-Force Stepper Motor");
-	
+	Stepper_Gforce			(170,		171,		ModuleID.C,		195,		3430,		"G-Force Stepper Motor"),
+//	TODO Add remaining Stepper Motors	
+//Altitude					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	Altitude				(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");
+
 	/*
 	// =================================================================================================================
 	// PARTS - Outputs

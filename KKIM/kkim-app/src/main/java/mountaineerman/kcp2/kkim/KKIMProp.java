@@ -19,6 +19,7 @@ public class KKIMProp {
 	private static int kmegaMinPWM = 0;
 	private static int kmegaDimPWM = 0;
 	private static int kmegaMaxPWM = 0;
+	private static float kmegaAltitudeGaugeErrorAltitude = 999000000000L;
 	
 	private static int kkimInitialStartupDelayInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
@@ -43,6 +44,7 @@ public class KKIMProp {
 		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.minPWM"));
 		kmegaDimPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.dimPWM"));
 		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.maxPWM"));
+		kmegaAltitudeGaugeErrorAltitude = (float) Long.valueOf(properties.getProperty("kmega.AltitudeGauge.ErrorAltitude"));
 		
 		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
@@ -113,6 +115,10 @@ public class KKIMProp {
 	
 	public static int getkmegaMaxPWM() {
 		return kmegaMaxPWM;
+	}
+	
+	public static float getkmegaAltitudeGaugeErrorAltitude() {
+		return kmegaAltitudeGaugeErrorAltitude;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
