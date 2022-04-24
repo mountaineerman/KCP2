@@ -17,6 +17,7 @@ public class KKIMProp {
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
 	private static int kMegaInputRefreshPacketReadRateInMilliseconds = 0;
 	private static int kmegaMinPWM = 0;
+	private static int kmegaDimPWM = 0;
 	private static int kmegaMaxPWM = 0;
 	
 	private static int kkimInitialStartupDelayInMilliseconds = 0;
@@ -39,8 +40,9 @@ public class KKIMProp {
 		kMegaOutputRefreshPacketSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.sendRateInMilliseconds"));
 		kMegaInputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.lengthInBytes"));
 		kMegaInputRefreshPacketReadRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.readRateInMilliseconds"));
-		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.minPWM"));
-		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.maxPWM"));
+		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.minPWM"));
+		kmegaDimPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.dimPWM"));
+		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.maxPWM"));
 		
 		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
@@ -103,6 +105,10 @@ public class KKIMProp {
 	
 	public static int getkmegaMinPWM() {
 		return kmegaMinPWM;
+	}
+	
+	public static int getkmegaDimPWM() {
+		return kmegaDimPWM;
 	}
 	
 	public static int getkmegaMaxPWM() {
