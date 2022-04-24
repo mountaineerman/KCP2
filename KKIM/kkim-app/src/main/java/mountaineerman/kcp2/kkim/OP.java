@@ -10,6 +10,11 @@ public enum OP {
 //							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	ModuleDBrakeLED			(12,		13,			ModuleID.D,		-1,			-1,			"Module D Brake LED"),
 //	TODO Add remaining LEDs
+//	 						 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	Sensitivity100PercentLED(32,		33,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 100% LED"),
+	Sensitivity75PercentLED	(34,		35,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 75% LED"),
+	Sensitivity50PercentLED	(36,		37,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 50% LED"),
+	Sensitivity25PercentLED	(38,		39,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 25% LED"),
 //							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	StepperLED_Fuel_Green	(116,		117,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Green"),
 //	TODO Add remaining LEDs
@@ -24,7 +29,6 @@ public enum OP {
 	
 	// ========================================== LED_PWM ==============================================================
 	
-	LED_PWM moduleDBrakeLED = new LED_PWM("moduleDBrakeLED", ModuleID.D);
 	LED_PWM autoHoldLED = new LED_PWM("autoHoldLED", ModuleID.D);
 	LED_PWM autoProgradeLED = new LED_PWM("autoProgradeLED", ModuleID.D);
 	LED_PWM autoRetrogradeLED = new LED_PWM("autoRetrogradeLED", ModuleID.D);
@@ -35,11 +39,6 @@ public enum OP {
 	LED_PWM SP3T_Speed_ORB_LED = new LED_PWM("SP3T_Speed_ORB_LED", ModuleID.E);
 	LED_PWM SP3T_Mode_PLN_LED = new LED_PWM("SP3T_Mode_PLN_LED", ModuleID.E);
 	LED_PWM SP3T_Pitch_30_LED = new LED_PWM("SP3T_Pitch_30_LED", ModuleID.E);
-	
-	LED_PWM inputRange100LED = new LED_PWM("inputRange100LED", ModuleID.F);
-	LED_PWM inputRange75LED = new LED_PWM("inputRange75LED", ModuleID.F);
-	LED_PWM inputRange50LED = new LED_PWM("inputRange50LED", ModuleID.F);
-	LED_PWM inputRange25LED = new LED_PWM("inputRange25LED", ModuleID.F);
 	
 	LED_PWM commsLED = new LED_PWM("commsLED", ModuleID.G);
 	

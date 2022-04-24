@@ -46,6 +46,18 @@ public class PacketAssembler {
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
 		
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
+		//TODO Add remaining LEDs: Module D
+		
+		//TODO Add remaining LEDs: Module E
+		
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Sensitivity100PercentLED.firstByte, OP.Sensitivity100PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity100PercentLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Sensitivity75PercentLED.firstByte, OP.Sensitivity75PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity75PercentLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Sensitivity50PercentLED.firstByte, OP.Sensitivity50PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity50PercentLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Sensitivity25PercentLED.firstByte, OP.Sensitivity25PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity25PercentLED.getPWM());
+		
+		//TODO Add remaining LEDs: Module G
+		
+		//TODO Add remaining LEDs: Module H
 		
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
 		//TODO Add remaining LEDs

@@ -5,11 +5,9 @@ import java.io.IOException;
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.services.SpaceCenter;
-import krpc.client.services.SpaceCenter.Camera;
 import krpc.client.services.SpaceCenter.Control;
 import krpc.client.services.SpaceCenter.Flight;
 import krpc.client.services.SpaceCenter.Resources;
-import krpc.client.services.SpaceCenter.SASMode;
 import krpc.client.services.SpaceCenter.Vessel;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 
@@ -23,7 +21,7 @@ public class KRPCCommunicator {
 	private Vessel vessel = null;
 	private Flight flight = null;
 	private Control control = null;
-	private Camera camera = null;
+	//private Camera camera = null;
 	private Resources resources = null;
 	
 	
@@ -50,7 +48,7 @@ public class KRPCCommunicator {
 			this.flight = this.vessel.flight(this.vessel.getSurfaceReferenceFrame());
 			//this.flight = this.vessel.flight(this.vessel.getOrbitalReferenceFrame());
 			this.control = this.vessel.getControl();
-			this.camera = this.spaceCenter.getCamera();
+			//this.camera = this.spaceCenter.getCamera();
 		} catch (RPCException e) {
 			e.printStackTrace();
 		}
@@ -267,18 +265,18 @@ public class KRPCCommunicator {
 		//TODO Disable other controls when switching between modes...
 		//RKT Mode
 			try {
-				this.control.set_throttle(this.controlPanel.throttleLever);
+				this.control.setThrottle(this.controlPanel.throttleLever);
 			} catch (RPCException e) {e.printStackTrace();}
 			
 			//RKT Mode:Rotation
 			try {
-				this.control.set_pitch(this.controlPanel.joystick_FwdBck);
+				this.control.setPitch(this.controlPanel.joystick_FwdBck);
 			} catch (RPCException e) {e.printStackTrace();}
 			try {
-				this.control.set_yaw(this.controlPanel.joystick_LftRgh);
+				this.control.setYaw(this.controlPanel.joystick_LftRgh);
 			} catch (RPCException e) {e.printStackTrace();}
 			try {
-				this.control.set_roll(this.controlPanel.joystick_Twist);
+				this.control.setRoll(this.controlPanel.joystick_Twist);
 			} catch (RPCException e) {e.printStackTrace();}
 			
 		//	//RKT Mode:Translation

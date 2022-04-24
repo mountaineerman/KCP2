@@ -71,9 +71,9 @@ public class PacketUnpacker {
 		controlPanel.moduleE.chuteButton.setSP2TStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.ChuteButton.firstByte, IP.ChuteButton.bitNumber));
 		
 		controlPanel.moduleF.trimPrimarySwitch.setStatus(		this.fetchBitInByteInPacket(inputRefreshPacket, IP.TrimPrimarySwitch.firstByte, IP.TrimPrimarySwitch.bitNumber));
-		controlPanel.moduleF.sp4t_AB.setStatus(					this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP4T_AB.firstByte, IP.SP4T_AB.bitNumber));
-		controlPanel.moduleF.sp4t_CD.setStatus(					this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP4T_CD.firstByte, IP.SP4T_CD.bitNumber));
-
+		controlPanel.moduleF.sensitivitySwitch.setsensorABStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SensitivitySwitch_AB.firstByte, IP.SensitivitySwitch_AB.bitNumber));
+		controlPanel.moduleF.sensitivitySwitch.setsensorCDStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SensitivitySwitch_CD.firstByte, IP.SensitivitySwitch_CD.bitNumber));
+		
 		controlPanel.moduleG.heatLifeSwitch.setStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.HeatLifeSwitch.firstByte, IP.HeatLifeSwitch.bitNumber));
 		
 		controlPanel.moduleH.glassTL_Button.setSP2TStatus(		this.fetchBitInByteInPacket(inputRefreshPacket, IP.GlassTL_Button.firstByte, IP.GlassTL_Button.bitNumber));
