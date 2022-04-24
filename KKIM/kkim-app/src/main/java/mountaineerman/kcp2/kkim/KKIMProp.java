@@ -21,7 +21,8 @@ public class KKIMProp {
 	
 	private static int kkimInitialStartupDelayInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
-	
+	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
+	private static int kkimJoystickCenterDeadzoneMaxLimit = 0;
 	
 	public static void initializeProperties () {
 		
@@ -43,6 +44,8 @@ public class KKIMProp {
 		
 		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
+		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
+		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
 		
 		System.out.println("DONE");
 	}
@@ -114,5 +117,13 @@ public class KKIMProp {
 	
 	public static int getkkimRefreshFrequencyInMilliseconds() {
 		return kkimRefreshFrequencyInMilliseconds;
+	}
+	
+	public static int getkkimJoystickCenterDeadzoneMinLimit() {
+		return kkimJoystickCenterDeadzoneMinLimit;
+	}
+	
+	public static int getkkimJoystickCenterDeadzoneMaxLimit() {
+		return kkimJoystickCenterDeadzoneMaxLimit;
 	}
 }

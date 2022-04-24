@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.IP;
 
 public class AnalogInput extends Part {
@@ -11,15 +12,15 @@ public class AnalogInput extends Part {
 	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int rawValue = 0;
 	/** Range: lowerCalibrationLimit - upperCalibrationLimit */
-	private int boundValue = 0;
+	protected int boundValue = 0;
 	/** Range: lowerRescaleLimit - upperRescaleLimit */
-	private int rescaledValue = 0;
+	protected int rescaledValue = 0;
 	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int lowerCalibrationLimit;
 	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int upperCalibrationLimit;
-	private int lowerRescaleLimit = 0;
-	private int upperRescaleLimit = 0;
+	protected int lowerRescaleLimit = 0;
+	protected int upperRescaleLimit = 0;
 	
 	public AnalogInput(IP ip) {
 		super(ip.partName, ip.moduleID);
@@ -39,7 +40,7 @@ public class AnalogInput extends Part {
 	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value. Minimum: 0
 	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value. Maximum: 1023
 	 */
-	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {//TODO SCRAP or add lowerRescaleLimit+upperRescaleLimit...
+	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {//TODO SCRAP
 		super(name, moduleID);
 		
 		validateAnalogValue(lowerCalibrationLimit, "lowerCalibrationLimit");
@@ -76,7 +77,7 @@ public class AnalogInput extends Part {
 		return this.rescaledValue;
 	}
 
-	public void setRawValueAndCalculateBoundAndCalibratedValues(int rawValue) {
+	public void setRawValueAndCalculateCalibratedValues(int rawValue) {
 		
 		validateAnalogValue(rawValue, "rawValue");
 		this.rawValue = rawValue;
@@ -89,7 +90,9 @@ public class AnalogInput extends Part {
 			this.boundValue = this.rawValue;
 		}
 		
-		this.rescaledValue = (this.boundValue - this.lowerCalibrationLimit) * (this.upperRescaleLimit - this.lowerRescaleLimit) / (this.upperCalibrationLimit - this.lowerCalibrationLimit) + this.lowerRescaleLimit;
+		this.rescaledValue = CommonUtilities.rescaleValue(this.boundValue,
+														  this.lowerCalibrationLimit, this.upperCalibrationLimit,
+														  this.lowerRescaleLimit, this.upperRescaleLimit);
 	}
 	
 	public String toString() {

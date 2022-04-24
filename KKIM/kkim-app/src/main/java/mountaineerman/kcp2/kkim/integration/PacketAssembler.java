@@ -2,6 +2,7 @@ package mountaineerman.kcp2.kkim.integration;
 
 import java.util.Arrays;
 
+import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
@@ -63,6 +64,7 @@ public class PacketAssembler {
 		//TODO Add remaining LEDs
 		//Stepper Motors
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
+		
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original

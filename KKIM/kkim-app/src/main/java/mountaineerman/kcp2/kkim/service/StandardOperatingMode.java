@@ -63,7 +63,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 //			time8 = System.currentTimeMillis();
 			kkimService.controlPanel.refresh();
 //			time9 = System.currentTimeMillis();
-			//CommonUtilities.clearScreen(); System.out.println(kkimService.controlPanel);
+			//CommonUtilities.clearScreen(); System.out.println(kkimService.controlPanel.toString());
 		}
 //		
 //		//TEMP: Write data from Serial Buffer (KMega) to the terminal console

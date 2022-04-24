@@ -23,6 +23,10 @@ public class CommonUtilities {
 //		}
 	}
 	
+	public static int rescaleValue(int value, int oldLowerLimit, int oldUpperLimit, int newLowerLimit, int newUpperLimit) {//TODO add verification of inputs (see AnalogInput.validateCalibrationLimits())
+		return (value - oldLowerLimit) * (newUpperLimit - newLowerLimit) / (oldUpperLimit - oldLowerLimit) + newLowerLimit;
+	}
+	
 	public static String convertByteToBinaryString(byte theByte) {
 		return String.format("%8s", Integer.toBinaryString(theByte & 0xFF)).replace(' ', '0');
 	}
