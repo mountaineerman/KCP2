@@ -52,7 +52,7 @@ void KMegaService::startupMode() {
 	controlPanel.setAllLEDsOff();
 	delay(100);
 	
-	//controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();//TODO re-enable
+	controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
 	
 	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
@@ -143,7 +143,7 @@ void KMegaService::shutdownMode() {
 	
 	serialCommunicator.teardownSerialLinks();
 
-	controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
+	controlPanel.blockRunAllSteppersToPosition(GEARED_STEPPER_CCW_LIMIT);
 	
 	controlPanel.setAllLEDsOff();
 }

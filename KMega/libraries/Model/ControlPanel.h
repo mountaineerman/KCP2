@@ -62,7 +62,7 @@ public:
 	bool runStepperIfNecessary();
 	//Run all steppers to position. Blocks until all steppers have arrived at the position.
 	void blockRunAllSteppersToPosition(long position);//TODO switch to int?
-	//Run all geared steppers to STEPPER_CW_LIMIT, then STEPPER_CCW_LIMIT. TODO Heading Gauge... Blocks until all steppers have arrived at the position.
+	//Run all geared steppers to GEARED_STEPPER_CW_LIMIT, then GEARED_STEPPER_CCW_LIMIT. TODO Heading Gauge... Blocks until all steppers have arrived at the position.
 	void sweepStepperMotorsThroughMaxMinToCalibrate();
 	
 	void runDiagnosticMode();

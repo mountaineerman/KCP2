@@ -143,7 +143,7 @@ void ControlPanel::blockRunAllSteppersToPosition(long position) {
 }
 
 void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
-	this->blockRunAllSteppersToPosition(STEPPER_CW_LIMIT);
+	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT);//TODO handle Heading gauge...
 	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 }
 
@@ -519,7 +519,7 @@ void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& ste
 	
 	while(true) {
 		clearScreen();
-		Serial.print("Stepper Motor Position ["); Serial.print(NEMA17_CCW_LIMIT); Serial.print("-"); Serial.print(NEMA17_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(NEMA17_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
 		Serial.println("");
 		Serial.println("Select one of the following options:");
 		Serial.println("[0] Return to previous menu");
@@ -538,7 +538,7 @@ void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& ste
 		if(userInput == "0") {
 			return;
 		} else if(userInput == "1") {
-			stepperMotorUnderTest.setDesiredPosition(NEMA17_CCW_LIMIT);
+			stepperMotorUnderTest.setDesiredPosition(STEPPER_CCW_LIMIT);
 			stepperMotorUnderTest.runToDesiredPosition();
 		} else if(userInput == "2") {
 			stepperMotorUnderTest.setDesiredPosition(NEMA17_CW_LIMIT);

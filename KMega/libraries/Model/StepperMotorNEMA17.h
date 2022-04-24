@@ -46,7 +46,7 @@ private:
 	uint8_t pinMS2;		 //MicroStep Input 2 (see constructor)
 
 	/* A number describing KKIM's desired stepper motor position, in steps.
-	 * Range: [0-1599] [NEMA17_CCW_LIMIT-NEMA17_CW_LIMIT]
+	 * Range: [0-1599] [STEPPER_CCW_LIMIT-NEMA17_CW_LIMIT]
 	 * e.g., kkimDesiredPosition of 0 corresponds to North.
 	 * e.g., kkimDesiredPosition of 1 corresponds to one step East of North.
 	 * e.g., kkimDesiredPosition of 1599 corresponds to one step West of North. */
