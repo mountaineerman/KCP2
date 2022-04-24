@@ -68,7 +68,7 @@ private:
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//DYNAMIC PARAMETERS
 	/* A number describing the desired stepper motor position, in steps.
-	 * Range: [0-3779] [GEARED_STEPPER_CCW_LIMIT-GEARED_STEPPER_CW_LIMIT]
+	 * Range: [0-3779] [STEPPER_CCW_LIMIT-GEARED_STEPPER_CW_LIMIT]
 	 * e.g., desiredPosition of 0 is the farthest CCW position possible.
 	 * e.g., desiredPosition of 3779 is the farthest CW position possible. */
 	int desiredPosition;

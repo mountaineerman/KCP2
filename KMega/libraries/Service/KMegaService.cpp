@@ -143,7 +143,7 @@ void KMegaService::shutdownMode() {
 	
 	serialCommunicator.teardownSerialLinks();
 
-	controlPanel.blockRunAllSteppersToPosition(GEARED_STEPPER_CCW_LIMIT);
+	controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 	
 	controlPanel.setAllLEDsOff();
 }
