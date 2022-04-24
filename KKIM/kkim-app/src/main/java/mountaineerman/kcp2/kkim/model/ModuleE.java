@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleE implements LEDAggregator{
@@ -42,6 +43,9 @@ public class ModuleE implements LEDAggregator{
 		
 		this.fairingLED = new LED_PWM(OP.FairingLED);
 		this.parachuteLED = new LED_PWM(OP.ParachuteLED);
+		
+		this.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());//TODO
+		this.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());//TODO
 	}
 	
 	@Override
