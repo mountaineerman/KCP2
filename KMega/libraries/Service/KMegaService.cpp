@@ -24,29 +24,25 @@ KMegaService::KMegaService()
 	
 	this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
 	
-	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(100);
-	this->controlPanel.moduleC.stepper_Gforce.blockRunToDesiredPosition();
-	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
-	this->controlPanel.moduleC.stepper_Gforce.blockRunToDesiredPosition();
 	
-	//this->startupMode(); //TODO move out of constructor
-	//
-	//
-	//this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for DiagnosticMode
-	//this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
-	//while (true) {//TODO move out of constructor
-	//	
-	//	if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
-	//		this->controlPanel.runDiagnosticMode();
-	//		this->shutdownMode();
-	//		break;
-	//	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
-	//		this->shutdownMode();
-	//		break;
-	//	} else {
-	//		this->standardOperatingMode();
-	//	}
-	//}
+	this->startupMode(); //TODO move out of constructor
+	
+	
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for DiagnosticMode
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
+	while (true) {//TODO move out of constructor
+		
+		if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
+			this->controlPanel.runDiagnosticMode();
+			this->shutdownMode();
+			break;
+		} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
+			this->shutdownMode();
+			break;
+		} else {
+			this->standardOperatingMode();
+		}
+	}
 }
 
 void KMegaService::startupMode() {
@@ -56,15 +52,15 @@ void KMegaService::startupMode() {
 	controlPanel.setAllLEDsOff();
 	delay(100);
 	
-	controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
+	//controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();//TODO re-enable
 	
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);//TODO verify blink is sufficient
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);//TODO verify blink is sufficient
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
 	
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);//TODO verify blink is sufficient
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKNanoSerialLink();
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);//TODO verify blink is sufficient
+	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 }
 
 void KMegaService::standardOperatingMode() {
@@ -79,6 +75,8 @@ void KMegaService::standardOperatingMode() {
 	long time8 = 0;
 	long time9 = 0;
 	long time10 = 0;
+	long time11 = 0;
+	long time12 = 0;
 	bool sentInputRefreshPacket = false;
 	bool gotOutputRefreshPacket = false;
 
@@ -150,7 +148,7 @@ void KMegaService::shutdownMode() {
 	controlPanel.setAllLEDsOff();
 }
 
-void KMegaService::clearPacket(const byte * packet, int packetLength) {
+void KMegaService::clearPacket(byte * packet, int packetLength) {
 	for (int i = 0; i < packetLength; i++) {
 		packet[i] = 0x00;
 	}

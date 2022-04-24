@@ -37,6 +37,7 @@ private:
 	void diagnosticMode_testStepperMotors();
 	void diagnosticMode_testGearedStepperMotor(StepperMotor& stepperMotorUnderTest);
 	void diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest); //TODO remove
+	void diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest);
 	//TODO: Add diagnostic mode for MUX only (see commented code in ControlPanel.cpp)
 
 	MuxShield mux;

@@ -18,7 +18,7 @@ private:
 	void standardOperatingMode();
 	//void diagnosticMode();
 	void shutdownMode();
-	void clearPacket(const byte * packet, int packetLength);
+	void clearPacket(byte * packet, int packetLength);
 	void displayPacket(const byte * packet, int packetLength, String packetName);
 	
 	ControlPanel controlPanel;

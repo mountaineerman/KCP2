@@ -20,8 +20,11 @@ class StepperMotor2 : public Interface_StepperMotorAggregator
 public:
 	StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int maxSpeed, int ccwLimit, int cwLimit);
 	
-	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or runToDesiredPosition()
-	void setDesiredPosition(int desiredPosition);//TODO add error checking for out-of-bounds values.
+	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or blockRunToDesiredPosition()
+	void setDesiredPosition(int desiredPosition);
+	
+	//Set the desired position, relative to the current position (negative == CCW, positive == CW).
+	void setDesiredRelativePosition(int desiredRelativePosition);
 	
 	//Check if the stepper needs to move. Move it one step if it does. Returns true if the motor is still running to the desired position.
 	bool runStepperIfNecessary();
@@ -32,7 +35,15 @@ public:
 	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	int getCurrentPosition();
 	
+	int get_maxSpeed();
+	long get_maxTimeBetweenSteps();
+	int get_ccwLimit();
+	int get_cwLimit();
+	
 private:
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//CONFIGURATION PARAMETERS
 	//The Step input to the driver. Low to High transition means to step.
 	uint8_t pinStep;
 
@@ -46,8 +57,16 @@ private:
 	int maxSpeed;
 	
 	//Desired time between steps required to achieve maxSpeed, in microseconds.
-	int maxTimeBetweenSteps;
+	long maxTimeBetweenSteps;
 	
+	//The step number associated with the counter-clockwise limit of the stepper motor.
+	int ccwLimit;
+	
+	//The step number associated with the clockwise limit of the stepper motor.
+	int cwLimit;
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//DYNAMIC PARAMETERS
 	/* A number describing the desired stepper motor position, in steps.
 	 * Range: [0-3779] [STEPPER_CCW_LIMIT-STEPPER_CW_LIMIT]
 	 * e.g., desiredPosition of 0 is the farthest CCW position possible.

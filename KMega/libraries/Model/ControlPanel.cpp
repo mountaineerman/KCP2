@@ -376,7 +376,7 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		} else if(userInput == "1") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_HeatLife);
 		} else if(userInput == "2") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_Gforce);
+			this->diagnosticMode_testStepperMotor2(this->moduleC.stepper_Gforce);
 		} else if(userInput == "3") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Mach);
 		} else if(userInput == "4") {
@@ -401,7 +401,7 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 	}
 }
 
-void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperMotor& stepperMotorUnderTest) { 
+void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperMotor& stepperMotorUnderTest) { //TODO delete
 	
 	String userInput;
 	
@@ -455,6 +455,63 @@ void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperM
 	}
 }
 
+void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest) {//TODO rename
+	
+	String userInput;
+	
+	while(true) {
+		clearScreen();
+		Serial.print("Max Speed (steps per second): "); Serial.println(stepperMotorUnderTest.get_maxSpeed());
+		Serial.print("Max time between steps (microseconds): "); Serial.println(stepperMotorUnderTest.get_maxTimeBetweenSteps());
+		Serial.print("CCW Limit (steps): "); Serial.println(stepperMotorUnderTest.get_ccwLimit());
+		Serial.print("CW Limit (steps): "); Serial.println(stepperMotorUnderTest.get_cwLimit());
+		Serial.print("Stepper Motor Position (steps): "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.println("");
+		Serial.println("Select one of the following options:");
+		Serial.println("[0] Return to previous menu");
+		Serial.println("[1] Move to maximum CCW position");
+		Serial.println("[2] Move to maximum CW position");
+		Serial.println("[3] Manual Control Mode (via Joystick) [TODO]");
+		Serial.println("[4] Move 1000 steps CCW");
+		Serial.println("[5] Move 1000 steps CW");
+		Serial.println("[6] Move 100 steps CCW");
+		Serial.println("[7] Move 100 steps CW");
+		Serial.println("[8] Move 10 steps CCW");
+		Serial.println("[9] Move 10 steps CW");
+		
+		userInput = Serial.readStringUntil('\n');
+		
+		if(userInput == "0") {
+			return;
+		} else if(userInput == "1") {
+			stepperMotorUnderTest.setDesiredPosition(stepperMotorUnderTest.get_ccwLimit());
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+		} else if(userInput == "2") {
+			stepperMotorUnderTest.setDesiredPosition(stepperMotorUnderTest.get_cwLimit());
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+//		} else if(userInput == '3') {
+//			//TODO
+		} else if(userInput == "4") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-1000);
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+		} else if(userInput == "5") {
+			stepperMotorUnderTest.setDesiredRelativePosition(1000);
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+		} else if(userInput == "6") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-100);
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+		} else if(userInput == "7") {
+			stepperMotorUnderTest.setDesiredRelativePosition(100);
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+		} else if(userInput == "8") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-10);
+			stepperMotorUnderTest.blockRunToDesiredPosition();
+		} else if(userInput == "9") {
+			stepperMotorUnderTest.setDesiredRelativePosition(10);
+			stepperMotorUnderTest.blockRunToDesiredPosition();			
+		}
+	}
+}
 
 void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest) { //TODO remove
 	

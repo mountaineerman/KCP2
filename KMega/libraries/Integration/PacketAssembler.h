@@ -14,7 +14,7 @@ public:
 	void setAltitudePacket(const byte * altitudePacket);
 	void setInputRefreshPacket(const byte * inputRefreshPacket);
 	
-	displayPacket(const byte * packet, int packetLength, String packetName);
+	void displayPacket(const byte * packet, int packetLength, String packetName);
 	
 	//Assembles the altitudePacket
 	void assembleAltitudePacket();

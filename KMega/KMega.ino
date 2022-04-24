@@ -11,7 +11,7 @@ When programming KMega, set:
 	4. Tools > Port = COM4
 */
 
-void setup() { //TODO replace with main()
+void setup() {
 	KMegaService kMegaService;
 	exit(EXIT_SUCCESS);
 }

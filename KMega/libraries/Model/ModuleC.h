@@ -6,6 +6,7 @@
 #include <Interface_StepperMotorAggregator.h>
 #include <LED_PWM.h>
 #include <StepperMotor.h>
+#include <StepperMotor2.h>//TODO
 
 
 /* Module C
@@ -34,7 +35,8 @@ public:
 	LED_PWM ledPWM_GFORCE_Green;
 	LED_PWM ledPWM_GFORCE_Blue;
 	StepperMotor stepper_HeatLife;
-	StepperMotor2 stepper_Gforce;
+	//StepperMotor stepper_Gforce;//TODO
+	StepperMotor2 stepper_Gforce;//TODO
 };
 
 #endif

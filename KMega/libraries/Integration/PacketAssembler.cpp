@@ -20,7 +20,7 @@ void PacketAssembler::setInputRefreshPacket(const byte * inputRefreshPacket) {
 
 void PacketAssembler::displayPacket(const byte * packet, int packetLength, String packetName) {//TODO verify
 	
-	if (this->packet == NULL) {
+	if (packet == NULL) {
 		//TODO throw exception
 		Serial.print("Exception: PacketAssembler.displayPacket(): "); Serial.print(packetName); Serial.println(" is not initialized");
 	}
