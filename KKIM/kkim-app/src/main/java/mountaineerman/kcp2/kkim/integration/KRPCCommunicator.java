@@ -10,6 +10,7 @@ import krpc.client.services.SpaceCenter.Flight;
 import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
+import mountaineerman.kcp2.kkim.model.SP3TPosition;
 
 
 public class KRPCCommunicator {
@@ -262,13 +263,14 @@ public class KRPCCommunicator {
 			this.control.setBrakes(this.controlPanel.brake);
 		} catch (RPCException e) {e.printStackTrace();}
 		
+		
 		//TODO Disable other controls when switching between modes...
-		//RKT Mode
+		if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.TOP) {//RKT
 			try {
 				this.control.setThrottle(this.controlPanel.throttleLever);
 			} catch (RPCException e) {e.printStackTrace();}
 			
-			//RKT Mode:Rotation
+			//Rotation Mode
 			try {
 				this.control.setPitch(this.controlPanel.joystick_FwdBck);
 			} catch (RPCException e) {e.printStackTrace();}
@@ -279,39 +281,45 @@ public class KRPCCommunicator {
 				this.control.setRoll(this.controlPanel.joystick_Twist);
 			} catch (RPCException e) {e.printStackTrace();}
 			
-		//	//RKT Mode:Translation
-		//	try {
-		//		this.control.set_forward(this.controlPanel.joystick_Twist);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//	try {
-		//		this.control.set_up(this.controlPanel.joystick_FwdBck);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//	try {
-		//		this.control.set_right(this.controlPanel.joystick_LftRgh);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//
-		////PLN Mode (TBD)
-		//	try {
-		//		this.control.set_throttle(this.controlPanel.throttleLever);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//	
-		//	try {
-		//		this.control.set_pitch(this.controlPanel.joystick_FwdBck);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//	try {
-		//		this.control.set_yaw(this.controlPanel.joystick_Twist);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//	try {
-		//		this.control.set_roll(this.controlPanel.joystick_LftRgh);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//
-		////RVR Mode (TBD)
-		//	try {
-		//		this.control.set_wheel_throttle(this.controlPanel.TBD);
-		//	} catch (RPCException e) {e.printStackTrace();}
-		//	try {
-		//		this.control.set_wheel_steering(this.controlPanel.joystick_LftRgh);
-		//	} catch (RPCException e) {e.printStackTrace();}
+//			//TODO Translation Mode
+//			try {
+//				this.control.setForward(this.controlPanel.joystick_Twist);
+//			} catch (RPCException e) {e.printStackTrace();}
+//			try {
+//				this.control.setUp(this.controlPanel.joystick_FwdBck);
+//			} catch (RPCException e) {e.printStackTrace();}
+//			try {
+//				this.control.setRight(this.controlPanel.joystick_LftRgh);
+//			} catch (RPCException e) {e.printStackTrace();}
+		} else if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.CENTER) {//PLN
+			try {
+				this.control.setThrottle(this.controlPanel.throttleLever);
+			} catch (RPCException e) {e.printStackTrace();}
+			try {
+				this.control.setPitch(this.controlPanel.joystick_FwdBck);
+			} catch (RPCException e) {e.printStackTrace();}
+			try {
+				this.control.setYaw(this.controlPanel.joystick_Twist);
+			} catch (RPCException e) {e.printStackTrace();}
+			try {
+				this.control.setRoll(this.controlPanel.joystick_LftRgh);
+			} catch (RPCException e) {e.printStackTrace();}
+		} else if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//RVR
+			try {
+				this.control.setWheelSteering(this.controlPanel.joystick_LftRgh);
+			} catch (RPCException e) {e.printStackTrace();}
+			
+			//Forward "Gear"
+			try {
+				this.control.setWheelThrottle(this.controlPanel.throttleLever);
+			} catch (RPCException e) {e.printStackTrace();}
+			//TODO Reverse "Gear"
+//			try {
+//				this.control.setWheelThrottle(this.controlPanel.throttleLever * -1);
+//			} catch (RPCException e) {e.printStackTrace();}
+		} else {//INVALID
+			//TODO
+		}
 	}
 }
 

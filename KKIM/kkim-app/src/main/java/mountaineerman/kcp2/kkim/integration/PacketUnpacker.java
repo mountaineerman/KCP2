@@ -53,12 +53,12 @@ public class PacketUnpacker {
 		controlPanel.moduleD.autoAntiTargetButton.setSP2TStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.AutoAntiTargetButton.firstByte, IP.AutoAntiTargetButton.bitNumber));
 		controlPanel.moduleD.autoManeuverButton.setSP2TStatus(	this.fetchBitInByteInPacket(inputRefreshPacket, IP.AutoManeuverButton.firstByte, IP.AutoManeuverButton.bitNumber));
 		
-		controlPanel.moduleE.sp3t_SFC_Switch.setStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_SFC_Switch.firstByte, IP.SP3T_SFC_Switch.bitNumber));
-		controlPanel.moduleE.sp3t_TGT_Switch.setStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_TGT_Switch.firstByte, IP.SP3T_TGT_Switch.bitNumber));
-		controlPanel.moduleE.sp3t_RKT_Switch.setStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_RKT_Switch.firstByte, IP.SP3T_RKT_Switch.bitNumber));
-		controlPanel.moduleE.sp3t_RVR_Switch.setStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_RVR_Switch.firstByte, IP.SP3T_RVR_Switch.bitNumber));
-		controlPanel.moduleE.sp3t_90degSwitch.setStatus(		this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_90degSwitch.firstByte, IP.SP3T_90degSwitch.bitNumber));
-		controlPanel.moduleE.sp3t_9degSwitch.setStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_9degSwitch.firstByte, IP.SP3T_9degSwitch.bitNumber));
+		controlPanel.moduleE.sp3tSpeedModeSwitch.setTopSensorStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_SpeedMode_SFC_Switch.firstByte, IP.SP3T_SpeedMode_SFC_Switch.bitNumber));
+		controlPanel.moduleE.sp3tSpeedModeSwitch.setBottomSensorStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_SpeedMode_TGT_Switch.firstByte, IP.SP3T_SpeedMode_TGT_Switch.bitNumber));
+		controlPanel.moduleE.sp3tVehicleModeSwitch.setTopSensorStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_VehicleMode_RKT_Switch.firstByte, IP.SP3T_VehicleMode_RKT_Switch.bitNumber));
+		controlPanel.moduleE.sp3tVehicleModeSwitch.setBottomSensorStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_VehicleMode_RVR_Switch.firstByte, IP.SP3T_VehicleMode_RVR_Switch.bitNumber));
+		controlPanel.moduleE.sp3tPitchSwitch.setTopSensorStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_Pitch_90degSwitch.firstByte, IP.SP3T_Pitch_90degSwitch.bitNumber));
+		controlPanel.moduleE.sp3tPitchSwitch.setBottomSensorStatus(this.fetchBitInByteInPacket(inputRefreshPacket, IP.SP3T_Pitch_9degSwitch.firstByte, IP.SP3T_Pitch_9degSwitch.bitNumber));
 		controlPanel.moduleE.ag1Switch.setSP2TStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.Ag1Switch.firstByte, IP.Ag1Switch.bitNumber));
 		controlPanel.moduleE.ag2Switch.setSP2TStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.Ag2Switch.firstByte, IP.Ag2Switch.bitNumber));
 		controlPanel.moduleE.ag3Switch.setSP2TStatus(			this.fetchBitInByteInPacket(inputRefreshPacket, IP.Ag3Switch.firstByte, IP.Ag3Switch.bitNumber));

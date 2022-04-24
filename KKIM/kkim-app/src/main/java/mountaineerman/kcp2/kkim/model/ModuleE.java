@@ -1,15 +1,13 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleE implements LEDAggregator{
 
-	public SwitchSP2T sp3t_SFC_Switch = null;
-	public SwitchSP2T sp3t_TGT_Switch = null;
-	public SwitchSP2T sp3t_RKT_Switch = null;
-	public SwitchSP2T sp3t_RVR_Switch = null;
-	public SwitchSP2T sp3t_90degSwitch = null;
-	public SwitchSP2T sp3t_9degSwitch = null;
+	public SwitchSP3T sp3tSpeedModeSwitch = null;
+	public SwitchSP3T sp3tVehicleModeSwitch = null;
+	public SwitchSP3T sp3tPitchSwitch = null;
 	
 	public SwitchMom ag1Switch = null;
 	public SwitchMom ag2Switch = null;
@@ -22,14 +20,14 @@ public class ModuleE implements LEDAggregator{
 	public SwitchMom fairingButton = null;
 	public SwitchMom chuteButton = null;
 	
+	public LED_PWM fairingLED = null;
+	public LED_PWM parachuteLED = null;
+	
 	public ModuleE() {
 		
-		this.sp3t_SFC_Switch = new SwitchSP2T(IP.SP3T_SFC_Switch);
-		this.sp3t_TGT_Switch = new SwitchSP2T(IP.SP3T_TGT_Switch);
-		this.sp3t_RKT_Switch = new SwitchSP2T(IP.SP3T_RKT_Switch);
-		this.sp3t_RVR_Switch = new SwitchSP2T(IP.SP3T_RVR_Switch);
-		this.sp3t_90degSwitch = new SwitchSP2T(IP.SP3T_90degSwitch);
-		this.sp3t_9degSwitch = new SwitchSP2T(IP.SP3T_9degSwitch);
+		this.sp3tSpeedModeSwitch = new SwitchSP3T(IP.SP3T_SpeedMode_Switch, IP.SP3T_SpeedMode_SFC_Switch, IP.SP3T_SpeedMode_TGT_Switch, OP.SP3T_SpeedMode_ORB_LED);
+		this.sp3tVehicleModeSwitch = new SwitchSP3T(IP.SP3T_VehicleMode_Switch, IP.SP3T_VehicleMode_RKT_Switch, IP.SP3T_VehicleMode_RVR_Switch, OP.SP3T_VehicleMode_PLN_LED);
+		this.sp3tPitchSwitch = new SwitchSP3T(IP.SP3T_Pitch_Switch, IP.SP3T_Pitch_90degSwitch, IP.SP3T_Pitch_9degSwitch, OP.SP3T_Pitch_30degLED);
 		
 		this.ag1Switch = new SwitchMom(IP.Ag1Switch);
 		this.ag2Switch = new SwitchMom(IP.Ag2Switch);
@@ -42,6 +40,8 @@ public class ModuleE implements LEDAggregator{
 		this.fairingButton = new SwitchMom(IP.FairingButton);
 		this.chuteButton = new SwitchMom(IP.ChuteButton);
 		
+		this.fairingLED = new LED_PWM(OP.FairingLED);
+		this.parachuteLED = new LED_PWM(OP.ParachuteLED);
 	}
 	
 	@Override
@@ -66,13 +66,9 @@ public class ModuleE implements LEDAggregator{
 				this.solarSwitch.toString() +
 				this.ladderSwitch.toString() +
 				this.atnvSwitch.toString() +
-				this.sp3t_SFC_Switch.toString() +
-				this.sp3t_TGT_Switch.toString() +
-				this.sp3t_RKT_Switch.toString() +
-				this.sp3t_RVR_Switch.toString() +
-				this.sp3t_90degSwitch.toString() +
-				this.sp3t_9degSwitch.toString() +
-				
+				this.sp3tSpeedModeSwitch.toString() +
+				this.sp3tVehicleModeSwitch.toString() +
+				this.sp3tPitchSwitch.toString() +
 				this.fairingButton.toString() +
 				this.chuteButton.toString();
 	}

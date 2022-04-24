@@ -1,5 +1,5 @@
 package mountaineerman.kcp2.kkim.model;
 
-public enum SwitchSP3TPosition {
+public enum SP3TPosition {
 	BOTTOM, CENTER, TOP, INVALID;
 }

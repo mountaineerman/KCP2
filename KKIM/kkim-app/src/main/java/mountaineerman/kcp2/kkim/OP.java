@@ -26,7 +26,11 @@ public enum OP {
 	AutoAntiTargetRedLED	(92,		93,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Red LED"),
 	AutoAntiTargetBluLED	(94,		95,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Blue LED"),
 //				 			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-//	TODO Add remaining LEDs
+	FairingLED				(22,		23,			ModuleID.E,		-1,			-1,			"Fairing LED"),
+	ParachuteLED			(24,		25,			ModuleID.E,		-1,			-1,			"Parachute LED"),
+	SP3T_SpeedMode_ORB_LED	(26,		27,			ModuleID.E,		-1,			-1,			"SP3T Speed Mode Switch: ORB LED"),
+	SP3T_VehicleMode_PLN_LED(28,		29,			ModuleID.E,		-1,			-1,			"SP3T Vehicle Mode Switch: PLN LED"),
+	SP3T_Pitch_30degLED		(30,		31,			ModuleID.E,		-1,			-1,			"SP3T Pitch Switch: 30 degrees LED"),
 //	 						 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	Sensitivity100PercentLED(32,		33,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 100% LED"),
 	Sensitivity75PercentLED	(34,		35,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 75% LED"),
@@ -46,13 +50,6 @@ public enum OP {
 	
 	// ========================================== LED_PWM ==============================================================
 	
-	
-	
-	LED_PWM fairingLED = new LED_PWM("fairingLED", ModuleID.E);
-	LED_PWM chuteLED = new LED_PWM("chuteLED", ModuleID.E);
-	LED_PWM SP3T_Speed_ORB_LED = new LED_PWM("SP3T_Speed_ORB_LED", ModuleID.E);
-	LED_PWM SP3T_Mode_PLN_LED = new LED_PWM("SP3T_Mode_PLN_LED", ModuleID.E);
-	LED_PWM SP3T_Pitch_30_LED = new LED_PWM("SP3T_Pitch_30_LED", ModuleID.E);
 	
 	LED_PWM commsLED = new LED_PWM("commsLED", ModuleID.G);
 	

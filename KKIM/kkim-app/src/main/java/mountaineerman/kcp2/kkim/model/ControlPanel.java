@@ -1,6 +1,5 @@
 package mountaineerman.kcp2.kkim.model;
 
-import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
@@ -24,7 +23,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public boolean brake = false;
 	public float throttleLever = 0;	 //Range: 0(OFF) to 1(Max Thrust)
 	public float joystick_FwdBck = 0;//Range: -1(Back) to 1(Forward)
-	public float joystick_LftRgh = 0;//Range: -1(Left) to 1(Right)
+	public float joystick_LftRgh = 0;//Range: -1(Right) to 1(Left)
 	public float joystick_Twist = 0; //Range: -1(CCW) to 1(CW)
 	
 	//TODO WRAP IN KSP class:
@@ -76,6 +75,30 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
+		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
+		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
+			//double altitudeAboveSurface
+		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
+			//double altitudeAboveSeaLevel
+		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
+			//double altitudeAboveSeaLevel
+		} else {//INVALID
+			//999 Gm
+		}
+		
+		this.moduleE.sp3tVehicleModeSwitch.updatePosition();
+		
+		this.moduleE.sp3tPitchSwitch.updatePosition();
+		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
+			//TODO Pitch Gauge...
+		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
+			//TODO Pitch Gauge...
+		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
+			//TODO Pitch Gauge...
+		} else {//INVALID
+			//TODO Pitch Gauge...
+		}
+		
 		this.moduleF.sensitivitySwitch.updatePosition();
 		
 		if (this.fuel > 0) { //TODO replace
@@ -103,7 +126,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
 		}
 		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_FwdBck.maxRescaleLim;
-		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_LftRgh.maxRescaleLim;
+		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) -IP.AnalogInput_Joystick_LftRgh.maxRescaleLim;
 		joystick_Twist = ((this.moduleB.analogInput_Joystick_Twist.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_Twist.maxRescaleLim;
 		
 		
@@ -113,15 +136,15 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	@Override
 	public String toString() {
 		
-		return  //this.moduleA.toString() + //TODO compress to fit on 1 screen...
-				this.moduleB.toString();// +
-				//this.moduleC.toString() +
-				//this.moduleD.toString() +
-				//this.moduleE.toString() +
-				//this.moduleF.toString();// +
-				//this.moduleG.toString() +
-				//this.moduleH.toString() +
-				//this.moduleI.toString() +
+		return  //this.moduleA.toString(); //TODO compress to fit on 1 screen...
+				//this.moduleB.toString();
+				//this.moduleC.toString();
+				//this.moduleD.toString();
+				this.moduleE.toString();
+				//this.moduleF.toString();
+				//this.moduleG.toString();
+				//this.moduleH.toString();
+				//this.moduleI.toString();
 				//this.moduleGT.toString();
 	}
 	
@@ -141,7 +164,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 	}
 	
-	private int scaleIntegerToNewRange(int number, int oldRangeMin, int oldRangeMax, int newRangeMin, int newRangeMax) {//TODO VERIFY
+	private int scaleIntegerToNewRange(int number, int oldRangeMin, int oldRangeMax, int newRangeMin, int newRangeMax) {//TODO remove and use CommonUtilities instead
 		return (number - oldRangeMin) * (newRangeMax - newRangeMin) / (oldRangeMax - oldRangeMin) + newRangeMin;
 	}
 }

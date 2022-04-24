@@ -1,18 +1,30 @@
 package mountaineerman.kcp2.kkim.model;
 
-public class SwitchSP3T extends Part {
+import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.OP;
 
-	private SwitchSP2T topSensor;
-	private SwitchSP2T bottomSensor;
-	private SwitchSP3TPosition position;
+public class SwitchSP3T extends Part implements LEDAggregator {
+
+	private SwitchSP2T topSensor = null;
+	private SwitchSP2T bottomSensor = null;
+	private SP3TPosition position = SP3TPosition.INVALID;
+	public LED_PWM centerPositionLED = null;
 	
-	public SwitchSP3T(String name, ModuleID moduleID, SwitchSP2T topSensor, SwitchSP2T bottomSensor) {
+	public SwitchSP3T(IP ipSP3T, IP ipTopSensor, IP ipBottomSensor, OP opCenterLED) {
+		super(ipSP3T.partName, ipSP3T.moduleID);
+		this.topSensor = new SwitchSP2T(ipTopSensor);
+		this.bottomSensor = new SwitchSP2T(ipBottomSensor);
+		this.centerPositionLED = new LED_PWM(opCenterLED);
+	}
+	
+	public SwitchSP3T(String name, ModuleID moduleID, SwitchSP2T topSensor, SwitchSP2T bottomSensor) {//TODO SCRAP
 		super(name, moduleID);
 		this.topSensor = topSensor; //TODO confirm format
 		this.bottomSensor = bottomSensor; //TODO confirm format
 	}
 
-	public SwitchSP3TPosition getPosition() {
+	public SP3TPosition getPosition() {
 		return position;
 	}
 
@@ -27,18 +39,38 @@ public class SwitchSP3T extends Part {
 	public void updatePosition() {
 		if(this.topSensor.getStatus() == true) {
 			if(this.bottomSensor.getStatus() == true) {
-				this.position = SwitchSP3TPosition.INVALID;
+				this.position = SP3TPosition.INVALID;
+				this.centerPositionLED.setPWM(KKIMProp.getkmegaMinPWM());
 				String message = String.format("%s is in an invalid position. Top and Bottom sensors are both ON.", this.name);
 				throw new IllegalArgumentException(message); //TODO Replace with better exception type; Handle exception gracefully...
 			} else {
-				this.position = SwitchSP3TPosition.TOP;
+				this.position = SP3TPosition.TOP;
+				this.centerPositionLED.setPWM(KKIMProp.getkmegaMinPWM());
 			}
 		} else {
 			if(this.bottomSensor.getStatus() == true) {
-				this.position = SwitchSP3TPosition.BOTTOM;
+				this.position = SP3TPosition.BOTTOM;
+				this.centerPositionLED.setPWM(KKIMProp.getkmegaMinPWM());
 			} else {
-				this.position = SwitchSP3TPosition.CENTER;
+				this.position = SP3TPosition.CENTER;
+				this.centerPositionLED.setPWM(KKIMProp.getkmegaMaxPWM());
 			}
-		}	
+		}
+	}
+	
+	@Override
+	public void setAllLEDsOff() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAllLEDsOn() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String toString() {
+		return this.getModuleID() + ": " + this.getName() + ": Top[" + this.topSensor.getStatus() + "], Bottom[" + this.bottomSensor.getStatus() + "], Position: " + this.getPosition() + "\n";
 	}
 }

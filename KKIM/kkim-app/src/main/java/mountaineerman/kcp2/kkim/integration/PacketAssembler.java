@@ -63,7 +63,11 @@ public class PacketAssembler {
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoAntiTargetBluLED.firstByte, OP.AutoAntiTargetBluLED.lastByte, controlPanel.moduleD.autoAntiTargetBluLED.getPWM());
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoManeuverLED.firstByte, OP.AutoManeuverLED.lastByte, controlPanel.moduleD.autoManeuverLED.getPWM());
 		
-		//TODO Add remaining LEDs: Module E
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.FairingLED.firstByte, OP.FairingLED.lastByte, controlPanel.moduleE.fairingLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ParachuteLED.firstByte, OP.ParachuteLED.lastByte, controlPanel.moduleE.parachuteLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.SP3T_SpeedMode_ORB_LED.firstByte, OP.SP3T_SpeedMode_ORB_LED.lastByte, controlPanel.moduleE.sp3tSpeedModeSwitch.centerPositionLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.SP3T_VehicleMode_PLN_LED.firstByte, OP.SP3T_VehicleMode_PLN_LED.lastByte, controlPanel.moduleE.sp3tVehicleModeSwitch.centerPositionLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.SP3T_Pitch_30degLED.firstByte, OP.SP3T_Pitch_30degLED.lastByte, controlPanel.moduleE.sp3tPitchSwitch.centerPositionLED.getPWM());
 		
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Sensitivity100PercentLED.firstByte, OP.Sensitivity100PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity100PercentLED.getPWM());
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.Sensitivity75PercentLED.firstByte, OP.Sensitivity75PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity75PercentLED.getPWM());
