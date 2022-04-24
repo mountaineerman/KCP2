@@ -2,7 +2,6 @@ package mountaineerman.kcp2.kkim.integration;
 
 import java.util.Arrays;
 
-import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
@@ -47,7 +46,22 @@ public class PacketAssembler {
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
 		
 		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
-		//TODO Add remaining LEDs: Module D
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoHoldLED.firstByte, OP.AutoHoldLED.lastByte, controlPanel.moduleD.autoHoldLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoProgradeLED.firstByte, OP.AutoProgradeLED.lastByte, controlPanel.moduleD.autoProgradeLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoRetrogradeLED.firstByte, OP.AutoRetrogradeLED.lastByte, controlPanel.moduleD.autoRetrogradeLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoNormalRedLED.firstByte, OP.AutoNormalRedLED.lastByte, controlPanel.moduleD.autoNormalRedLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoNormalBluLED.firstByte, OP.AutoNormalBluLED.lastByte, controlPanel.moduleD.autoNormalBluLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoAntiNormalRedLED.firstByte, OP.AutoAntiNormalRedLED.lastByte, controlPanel.moduleD.autoAntiNormalRedLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoAntiNormalBluLED.firstByte, OP.AutoAntiNormalBluLED.lastByte, controlPanel.moduleD.autoAntiNormalBluLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoRadialInGrnLED.firstByte, OP.AutoRadialInGrnLED.lastByte, controlPanel.moduleD.autoRadialInGrnLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoRadialInBluLED.firstByte, OP.AutoRadialInBluLED.lastByte, controlPanel.moduleD.autoRadialInBluLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoRadialOutGrnLED.firstByte, OP.AutoRadialOutGrnLED.lastByte, controlPanel.moduleD.autoRadialOutGrnLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoRadialOutBluLED.firstByte, OP.AutoRadialOutBluLED.lastByte, controlPanel.moduleD.autoRadialOutBluLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoTargetRedLED.firstByte, OP.AutoTargetRedLED.lastByte, controlPanel.moduleD.autoTargetRedLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoTargetBluLED.firstByte, OP.AutoTargetBluLED.lastByte, controlPanel.moduleD.autoTargetBluLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoAntiTargetRedLED.firstByte, OP.AutoAntiTargetRedLED.lastByte, controlPanel.moduleD.autoAntiTargetRedLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoAntiTargetBluLED.firstByte, OP.AutoAntiTargetBluLED.lastByte, controlPanel.moduleD.autoAntiTargetBluLED.getPWM());
+		this.saveNumberAtByteNumbersToOutputRefreshPacketBuffer(OP.AutoManeuverLED.firstByte, OP.AutoManeuverLED.lastByte, controlPanel.moduleD.autoManeuverLED.getPWM());
 		
 		//TODO Add remaining LEDs: Module E
 		
@@ -70,6 +84,7 @@ public class PacketAssembler {
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
 	}
 	
+	@SuppressWarnings("unused")
 	private void displayOutputRefreshPacketBufferInDecimal() {
 		System.out.println("PacketAssembler: Displaying outputRefreshPacketBuffer in decimal format:");
 		System.out.println(Arrays.toString(this.outputRefreshPacketBuffer));

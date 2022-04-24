@@ -9,6 +9,23 @@ public enum OP {
 	ModuleABrakeLED			(10,		11,			ModuleID.A,		-1,			-1,			"Module A Brake LED"),
 //							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	ModuleDBrakeLED			(12,		13,			ModuleID.D,		-1,			-1,			"Module D Brake LED"),
+	AutoHoldLED				(14,		15,			ModuleID.D,		-1,			-1,			"Autopilot: Hold LED"),
+	AutoProgradeLED			(16,		17,			ModuleID.D,		-1,			-1,			"Autopilot: Prograde LED"),
+	AutoRetrogradeLED		(18,		19,			ModuleID.D,		-1,			-1,			"Autopilot: Retrograde LED"),
+	AutoManeuverLED			(20,		21,			ModuleID.D,		-1,			-1,			"Autopilot: Maneuver LED"),
+	AutoNormalRedLED		(72,		73,			ModuleID.D,		-1,			-1,			"Autopilot: Normal: Red LED"),
+	AutoNormalBluLED		(74,		75,			ModuleID.D,		-1,			-1,			"Autopilot: Normal: Blue LED"),
+	AutoAntiNormalRedLED	(76,		77,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Normal: Red LED"),
+	AutoAntiNormalBluLED	(78,		79,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Normal: Blue LED"),
+	AutoRadialInGrnLED		(80,		81,			ModuleID.D,		-1,			-1,			"Autopilot: Radial In: Green LED"),
+	AutoRadialInBluLED		(82,		83,			ModuleID.D,		-1,			-1,			"Autopilot: Radial In: Blue LED"),
+	AutoRadialOutGrnLED		(84,		85,			ModuleID.D,		-1,			-1,			"Autopilot: Radial Out: Green LED"),
+	AutoRadialOutBluLED		(86,		87,			ModuleID.D,		-1,			-1,			"Autopilot: Radial Out: Blue LED"),
+	AutoTargetRedLED		(88,		89,			ModuleID.D,		-1,			-1,			"Autopilot: Target: Red LED"),
+	AutoTargetBluLED		(90,		91,			ModuleID.D,		-1,			-1,			"Autopilot: Target: Blue LED"),
+	AutoAntiTargetRedLED	(92,		93,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Red LED"),
+	AutoAntiTargetBluLED	(94,		95,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Blue LED"),
+//				 			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 //	TODO Add remaining LEDs
 //	 						 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	Sensitivity100PercentLED(32,		33,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 100% LED"),
@@ -29,10 +46,7 @@ public enum OP {
 	
 	// ========================================== LED_PWM ==============================================================
 	
-	LED_PWM autoHoldLED = new LED_PWM("autoHoldLED", ModuleID.D);
-	LED_PWM autoProgradeLED = new LED_PWM("autoProgradeLED", ModuleID.D);
-	LED_PWM autoRetrogradeLED = new LED_PWM("autoRetrogradeLED", ModuleID.D);
-	LED_PWM autoManeuverLED = new LED_PWM("autoManeuverLED", ModuleID.D);
+	
 	
 	LED_PWM fairingLED = new LED_PWM("fairingLED", ModuleID.E);
 	LED_PWM chuteLED = new LED_PWM("chuteLED", ModuleID.E);
@@ -67,36 +81,6 @@ public enum OP {
 	tempBluLED = new LED_PWM("gforceBluLED", ModuleID.C);
 	LED_PWM_RGB gforceRGBLED = new LED_PWM_RGB("gforceRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
 	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("autoNormalRedLED", ModuleID.D);
-	tempBluLED = new LED_PWM("autoNormalBluLED", ModuleID.D);
-	LED_PWM_RGB autoNormalRGBLED = new LED_PWM_RGB("autoNormalRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
-	tempRedLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("autoAntiNormalRedLED", ModuleID.D);
-	tempBluLED = new LED_PWM("autoAntiNormalBluLED", ModuleID.D);
-	LED_PWM_RGB autoAntiNormalRGBLED = new LED_PWM_RGB("autoAntiNormalRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
-	tempRedLED = null; tempBluLED = null;
-	
-	tempGrnLED = new LED_PWM("autoRadialInGrnLED", ModuleID.D);
-	tempBluLED = new LED_PWM("autoRadialInBluLED", ModuleID.D);
-	LED_PWM_RGB autoRadialInRGBLED = new LED_PWM_RGB("autoRadialInRGBLED", ModuleID.D, null, tempGrnLED, tempBluLED);
-	tempGrnLED = null; tempBluLED = null;
-	
-	tempGrnLED = new LED_PWM("autoRadialOutGrnLED", ModuleID.D);
-	tempBluLED = new LED_PWM("autoRadialOutBluLED", ModuleID.D);
-	LED_PWM_RGB autoRadialOutRGBLED = new LED_PWM_RGB("autoRadialOutRGBLED", ModuleID.D, null, tempGrnLED, tempBluLED);
-	tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("autoTargetRedLED", ModuleID.D);
-	tempBluLED = new LED_PWM("autoTargetBluLED", ModuleID.D);
-	LED_PWM_RGB autoTargetRGBLED = new LED_PWM_RGB("autoTargetRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
-	tempRedLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("autoAntiTargetRedLED", ModuleID.D);
-	tempBluLED = new LED_PWM("autoAntiTargetBluLED", ModuleID.D);
-	LED_PWM_RGB autoAntiTargetRGBLED = new LED_PWM_RGB("autoAntiTargetRGBLED", ModuleID.D, tempRedLED, null, tempBluLED);
-	tempRedLED = null; tempBluLED = null;
 	
 	tempRedLED = new LED_PWM("machRedLED", ModuleID.G);
 	tempGrnLED = new LED_PWM("machGrnLED", ModuleID.G);
