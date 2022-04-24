@@ -118,7 +118,7 @@ bool ControlPanel::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-void ControlPanel::blockRunAllSteppersToPosition(long position) {
+void ControlPanel::blockRunAllSteppersToPosition(int position) {
 	
 //	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
 	this->moduleC.stepper_Gforce.setDesiredPosition(position);
@@ -132,14 +132,10 @@ void ControlPanel::blockRunAllSteppersToPosition(long position) {
 //	this->moduleGT.stepper_Speed.setDesiredPosition(position);
 //	this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
 //	this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
-		
-	//long startTime = millis();
+	
 	while(this->runStepperIfNecessary()) {
-		//Serial.println(this->moduleC.stepper_HeatLife.getCurrentPosition());
-		//delay(STEPPER_STEP_MINIMUM_TIME_INTERVAL);
+		delayMicroseconds(this->moduleC.stepper_Gforce.get_maxTimeBetweenSteps() - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);//TODO Works right for 1 gauge. Fix for all gauges...
 	}
-	//long endTime = millis();
-	//Serial.print("Time to CW (ms): "); Serial.println(endTime - startTime);
 }
 
 void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
