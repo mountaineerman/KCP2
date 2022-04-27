@@ -1,11 +1,18 @@
 package mountaineerman.kcp2.kkim.model;
 
-public class SwitchSP2T extends Part implements InputAggregator {
+import mountaineerman.kcp2.kkim.IP;
+
+public class SwitchSP2T extends Part {
 
 	/** true = HIGH/ON, false = LOW/OFF */
 	private boolean status;
 	
-	public SwitchSP2T(String name, ModuleID moduleID) {
+	public SwitchSP2T(IP ip) {
+		super(ip.partName, ip.moduleID);
+		status = false;
+	}
+	
+	public SwitchSP2T(String name, ModuleID moduleID) {//TODO scrap and cleanup unit tests
 		super(name, moduleID);
 		status = false;
 	}

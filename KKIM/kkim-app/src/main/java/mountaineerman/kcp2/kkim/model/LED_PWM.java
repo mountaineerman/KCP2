@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.OP;
 
 /** Pulse-Width Modulation (dimmable) Light Emitting Diode */
 public class LED_PWM extends Part {
@@ -11,6 +12,11 @@ public class LED_PWM extends Part {
 	 *     -Adafruit_TLC5947.h
 	 *     -http://www.adafruit.com/products/1429 */
 	private int pwm;
+	
+	public LED_PWM(OP op) {
+		super(op.partName, op.moduleID);
+		this.setPWM(KKIMProp.getkmegaMinPWM());
+	}
 	
 	public LED_PWM(String name, ModuleID moduleID) {
 		super(name, moduleID);

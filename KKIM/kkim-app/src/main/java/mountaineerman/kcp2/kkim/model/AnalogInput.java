@@ -1,16 +1,38 @@
 package mountaineerman.kcp2.kkim.model;
 
+import mountaineerman.kcp2.kkim.CommonUtilities;
+import mountaineerman.kcp2.kkim.IP;
+
 public class AnalogInput extends Part {
 
 	private static int ANALOGREAD_MIN_VALUE = 0;
 	private static int ANALOGREAD_MAX_VALUE = 1023;
-
-	/** Range: 0-1023 */
-	private int calibratedValue;
-	/** Range: 0-1023 */
+	
+	
+	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
+	private int rawValue = 0;
+	/** Range: lowerCalibrationLimit - upperCalibrationLimit */
+	protected int boundValue = 0;
+	/** Range: lowerRescaleLimit - upperRescaleLimit */
+	protected int rescaledValue = 0;
+	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int lowerCalibrationLimit;
-	/** Range: 0-1023 */
+	/** Range: ANALOGREAD_MIN_VALUE(0) - ANALOGREAD_MAX_VALUE(1023) */
 	private int upperCalibrationLimit;
+	protected int lowerRescaleLimit = 0;
+	protected int upperRescaleLimit = 0;
+	
+	public AnalogInput(IP ip) {
+		super(ip.partName, ip.moduleID);
+		
+		validateAnalogValue(ip.minCalibLim, "lowerCalibrationLimit");
+		validateAnalogValue(ip.maxCalibLim, "upperCalibrationLimit");
+		validateCalibrationLimits(ip.minCalibLim, ip.maxCalibLim);
+		this.lowerCalibrationLimit = ip.minCalibLim;
+		this.upperCalibrationLimit = ip.maxCalibLim;
+		this.lowerRescaleLimit = ip.minRescaleLim;
+		this.upperRescaleLimit = ip.maxRescaleLim;
+	}
 	
 	/**
 	 * @param name
@@ -18,7 +40,7 @@ public class AnalogInput extends Part {
 	 * @param lowerCalibrationLimit - Lower physical calibration offset for raw value. Minimum: 0
 	 * @param upperCalibrationLimit - Upper physical calibration offset for raw value. Maximum: 1023
 	 */
-	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {
+	public AnalogInput(String name, ModuleID moduleID, int lowerCalibrationLimit, int upperCalibrationLimit) {//TODO SCRAP
 		super(name, moduleID);
 		
 		validateAnalogValue(lowerCalibrationLimit, "lowerCalibrationLimit");
@@ -28,7 +50,6 @@ public class AnalogInput extends Part {
 		this.upperCalibrationLimit = upperCalibrationLimit;
 	}
 	
-	//TODO Ensure this is: A) hard crash for calibration limits, B) triggers WARNING flag for rawValues
 	private void validateAnalogValue(int analogValue, String valueType) {
 		if(analogValue < ANALOGREAD_MIN_VALUE || analogValue > ANALOGREAD_MAX_VALUE) {
 			String message = String.format("%s '%s' (%d) is outside of allowed range [%d-%d].", this.name, valueType, analogValue, ANALOGREAD_MIN_VALUE, ANALOGREAD_MAX_VALUE);
@@ -43,23 +64,40 @@ public class AnalogInput extends Part {
 		}
 	}
 	
-	public int getCalibratedValue() {
-		return calibratedValue;
-	}
-
-	public void setCalibratedValue(int rawValue) {
-		
-		validateAnalogValue(rawValue, "rawValue");
-		
-		if(rawValue < this.lowerCalibrationLimit) {
-			rawValue = this.lowerCalibrationLimit;
-		}
-		if(rawValue > this.upperCalibrationLimit) {
-			rawValue = this.upperCalibrationLimit;
-		}
-		
-		this.calibratedValue = (rawValue - this.lowerCalibrationLimit) * (ANALOGREAD_MAX_VALUE - ANALOGREAD_MIN_VALUE) / (this.upperCalibrationLimit - this.lowerCalibrationLimit);
+	public int getRawValue() {
+		return this.rawValue;
 	}
 	
+	public int getBoundValue() {
+		return this.boundValue;
+	}
+	
+	public int getRescaledValue() {
+		return this.rescaledValue;
+	}
+
+	public void setRawValueAndCalculateCalibratedValues(int rawValue) {
+		
+		try {
+			validateAnalogValue(rawValue, "rawValue");
+		} catch (IllegalArgumentException e) {e.printStackTrace();}
+		this.rawValue = rawValue;
+		
+		if(this.rawValue < this.lowerCalibrationLimit) {
+			this.boundValue = this.lowerCalibrationLimit;
+		} else if (this.rawValue > this.upperCalibrationLimit) {
+			this.boundValue = this.upperCalibrationLimit;
+		} else {
+			this.boundValue = this.rawValue;
+		}
+		
+		this.rescaledValue = CommonUtilities.rescaleValue(this.boundValue,
+														  this.lowerCalibrationLimit, this.upperCalibrationLimit,
+														  this.lowerRescaleLimit, this.upperRescaleLimit);
+	}
+	
+	public String toString() {
+		return this.getModuleID() + ": " + this.getName() + ": RAW[" + this.getRawValue() + "],\tBOUND["+ this.getBoundValue() + "]\tRESCALED[" + this.getRescaledValue() + "]\n";
+	}
 	
 }

@@ -1,0 +1,5 @@
+package mountaineerman.kcp2.kkim.integration;
+
+public enum PacketType {
+	INVALID, INPUT_REFRESH_PACKET, OUTPUT_REFRESH_PACKET, ALTITUDE_PACKET, KKIM_TERMINAL_DISPLAY_PACKET, KKIM_USER_INPUT_PACKET;
+}

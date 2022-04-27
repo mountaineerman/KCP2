@@ -12,16 +12,20 @@ public class KKIMProp {
 	private static byte allPacketsDelimiterByte = 0x00;
 	private static byte allPacketsNullByte = 0x00;
 	private static int allPacketsNumberOfDelimiterBytes = 0;
+	private static int allPacketsHeaderLengthInBytes = 0;
 	private static int kMegaOutputRefreshPacketLengthInBytes = 0;
 	private static int kMegaOutputRefreshPacketSendRateInMilliseconds = 0;
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
 	private static int kMegaInputRefreshPacketReadRateInMilliseconds = 0;
 	private static int kmegaMinPWM = 0;
+	private static int kmegaDimPWM = 0;
 	private static int kmegaMaxPWM = 0;
+	private static float kmegaAltitudeGaugeErrorAltitude = 999000000000L;
 	
 	private static int kkimInitialStartupDelayInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
-	
+	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
+	private static int kkimJoystickCenterDeadzoneMaxLimit = 0;
 	
 	public static void initializeProperties () {
 		
@@ -34,15 +38,20 @@ public class KKIMProp {
 		allPacketsDelimiterByte = Byte.valueOf(properties.getProperty("allPackets.delimiter.byte"));
 		allPacketsNullByte = Byte.valueOf(properties.getProperty("allPackets.null.byte"));
 		allPacketsNumberOfDelimiterBytes = Integer.valueOf(properties.getProperty("allPackets.numberOfDelimiterBytes"));
+		allPacketsHeaderLengthInBytes = Integer.valueOf(properties.getProperty("allPackets.headerLengthInBytes"));
 		kMegaOutputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.lengthInBytes"));
 		kMegaOutputRefreshPacketSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.sendRateInMilliseconds"));
 		kMegaInputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.lengthInBytes"));
 		kMegaInputRefreshPacketReadRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.readRateInMilliseconds"));
-		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.minPWM"));
-		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.maxPWM"));
+		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.minPWM"));
+		kmegaDimPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.dimPWM"));
+		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.maxPWM"));
+		kmegaAltitudeGaugeErrorAltitude = (float) Long.valueOf(properties.getProperty("kmega.AltitudeGauge.ErrorAltitude"));
 		
 		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
+		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
+		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
 		
 		System.out.println("DONE");
 	}
@@ -82,6 +91,10 @@ public class KKIMProp {
 		return allPacketsNumberOfDelimiterBytes;
 	}
 	
+	public static int getallPacketsHeaderLengthInBytes() {
+		return allPacketsHeaderLengthInBytes;
+	}
+	
 	public static int getkMegaOutputRefreshPacketLengthInBytes() {
 		return kMegaOutputRefreshPacketLengthInBytes;
 	}
@@ -102,8 +115,16 @@ public class KKIMProp {
 		return kmegaMinPWM;
 	}
 	
+	public static int getkmegaDimPWM() {
+		return kmegaDimPWM;
+	}
+	
 	public static int getkmegaMaxPWM() {
 		return kmegaMaxPWM;
+	}
+	
+	public static float getkmegaAltitudeGaugeErrorAltitude() {
+		return kmegaAltitudeGaugeErrorAltitude;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,5 +135,13 @@ public class KKIMProp {
 	
 	public static int getkkimRefreshFrequencyInMilliseconds() {
 		return kkimRefreshFrequencyInMilliseconds;
+	}
+	
+	public static int getkkimJoystickCenterDeadzoneMinLimit() {
+		return kkimJoystickCenterDeadzoneMinLimit;
+	}
+	
+	public static int getkkimJoystickCenterDeadzoneMaxLimit() {
+		return kkimJoystickCenterDeadzoneMaxLimit;
 	}
 }

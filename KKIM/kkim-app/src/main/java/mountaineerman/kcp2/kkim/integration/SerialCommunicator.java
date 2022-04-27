@@ -1,8 +1,6 @@
 package mountaineerman.kcp2.kkim.integration;
 
 import java.util.Arrays;
-import java.util.Date;
-
 import com.fazecast.jSerialComm.*; // Serial Communication library
 import mountaineerman.kcp2.kkim.KKIMProp; 
 
@@ -19,15 +17,16 @@ public class SerialCommunicator {
 	
 	private SerialPort serialPort = null;
 	
-	//InputRefreshPacket:
-	private byte[] tempBuffer = new byte[1];
+	//All Packets:
+	private byte[] oneByteBuffer = new byte[1];
 	private byte receivedByte = KKIMProp.getallPacketsNullByte();
 	private int delimiterByteCounter = 0;
-	private byte[] inputRefreshPacketBuffer = new byte[KKIMProp.getkMegaInputRefreshPacketLengthInBytes()];
-	private int inputRefreshPacketBufferCursor = 0;
-	private boolean isValidPacketInInputRefreshPacketBuffer = false;
-	
-	//OutputRefreshPacket:
+	private int packetBufferByteCounter = 0;
+	private byte[] packetHeaderBuffer = new byte[KKIMProp.getallPacketsHeaderLengthInBytes()];
+	private int packetLength = 0;
+	private PacketType packetType = PacketType.INVALID;
+	private byte[] packetBuffer = new byte[0];
+	private boolean isValidPacketInPacketBuffer = false;
 	
 	//Communications Diagnostic Information:
 	private long numberOfRejectedIncomingBytes = 0;
@@ -38,10 +37,7 @@ public class SerialCommunicator {
 	
 	
 	public SerialCommunicator() {
-		
-		Arrays.fill(this.tempBuffer, KKIMProp.getallPacketsNullByte());
-		Arrays.fill(this.inputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
-		
+		this.clearPacketBufferAndFriends();
 	}
 	
  	public void establishSerialLink() {
@@ -60,9 +56,11 @@ public class SerialCommunicator {
 	}
 		
 	//Ingests data from the Serial Read Buffer until:
-	// a) A complete and valid InputRefreshPacket has been stored in the inputRefreshPacketBuffer, OR
-	// b) There is no data left in the Serial Buffer
-	public void ingestDataFromSerialPortToInputRefreshPacketBuffer() throws RuntimeException {
+	// a) A complete and valid InputRefreshPacket has been stored in the packetBuffer, OR
+ 	// b) A complete and valid KKIMTerminalDisplayPacket has been stored in the packetBuffer, OR
+ 	// c) There is no data left in the Serial Buffer
+ 	
+	public void ingestDataFromSerialPortToPacketBuffer() throws RuntimeException {
 		
 		//		if (this.serialPort.bytesAvailable() > 0) {
 		//			System.out.println("Bytes available in Serial Buffer: " + this.serialPort.bytesAvailable());
@@ -70,8 +68,8 @@ public class SerialCommunicator {
 		
 		while (this.serialPort.bytesAvailable() > 0) {
 			
-			this.serialPort.readBytes(this.tempBuffer, 1);
-			this.receivedByte = this.tempBuffer[0];
+			this.serialPort.readBytes(this.oneByteBuffer, 1);
+			this.receivedByte = this.oneByteBuffer[0];
 			
 			if (0 <= this.delimiterByteCounter && this.delimiterByteCounter < KKIMProp.getallPacketsNumberOfDelimiterBytes()) { //Packet has not started yet
 				if (this.receivedByte == KKIMProp.getallPacketsDelimiterByte()) {
@@ -81,31 +79,45 @@ public class SerialCommunicator {
 					this.numberOfRejectedIncomingBytes++;
 				}
 			} else if (this.delimiterByteCounter == KKIMProp.getallPacketsNumberOfDelimiterBytes()) { //Packet read in progress
-				this.inputRefreshPacketBuffer[this.inputRefreshPacketBufferCursor] = this.receivedByte;
-				this.inputRefreshPacketBufferCursor++;
+				this.packetBufferByteCounter++;
+				if (this.packetBufferByteCounter < KKIMProp.getallPacketsHeaderLengthInBytes()) {//Header read in progress
+					this.packetHeaderBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
+				} else if (this.packetBufferByteCounter == KKIMProp.getallPacketsHeaderLengthInBytes()) {//Header read complete
+					this.packetHeaderBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
+					this.determinePacketTypeBasedOnHeader(this.getIntegerInPacketAtByteNumber(this.packetHeaderBuffer, 2));
+					this.packetLength = this.getIntegerInPacketAtByteNumber(this.packetHeaderBuffer, 3);
+					this.packetBuffer = new byte[this.packetLength];
+					Arrays.fill(this.packetBuffer, KKIMProp.getallPacketsNullByte());
+					System.arraycopy(this.packetHeaderBuffer, 0, this.packetBuffer, 0, KKIMProp.getallPacketsHeaderLengthInBytes());
+				} else {//Payload read in progress
+					this.packetBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
+					if (this.packetBufferByteCounter == this.packetLength) { //A full packet is in the packetBuffer
+						if (true /*TODO:packet is valid*/) {
+							this.isValidPacketInPacketBuffer = true;
+							this.numberOfAcceptedInputRefreshPackets++;
+							return;
+						} else { //Packet is invalid
+							this.clearPacketBufferAndFriends();
+							this.numberOfRejectedInputRefreshPackets++;
+						}
+					}
+				}
 			} else {
 				throw new RuntimeException("SerialCommunicator's delimiterByteCounter is outside of permitted range [0-" + KKIMProp.getallPacketsNumberOfDelimiterBytes() + "]: " + this.delimiterByteCounter);					
-			}
-			
-			if (this.inputRefreshPacketBufferCursor == KKIMProp.getkMegaInputRefreshPacketLengthInBytes()) { //A full packet is in the inputRefreshPacketBuffer
-				if (true /*TODO:packet is valid*/) {
-					this.isValidPacketInInputRefreshPacketBuffer = true;
-					this.numberOfAcceptedInputRefreshPackets++;
-					return;
-				} else { //Packet is invalid
-					this.clearInputRefreshPacketBuffer();
-					this.numberOfRejectedInputRefreshPackets++;
-				}
 			}
 		}
 	}
 	
-	public boolean getisValidPacketInInputRefreshPacketBuffer() {
-		return this.isValidPacketInInputRefreshPacketBuffer;
+	public boolean getisValidPacketInPacketBuffer() {
+		return this.isValidPacketInPacketBuffer;
 	}
 	
-	public byte[] getinputRefreshPacketBuffer() {
-		return this.inputRefreshPacketBuffer;
+	public PacketType getPacketTypeInPacketBuffer() {
+		return this.packetType;
+	}
+	
+	public byte[] getPacketBuffer() {
+		return this.packetBuffer;
 	}
 	
 	public void printCommunicationsDiagnosticInformation() {
@@ -119,11 +131,16 @@ public class SerialCommunicator {
 	}
 
 	//Clear the inputRefreshPacketBuffer and reset associated variables
-	public void clearInputRefreshPacketBuffer() {
+	public void clearPacketBufferAndFriends() {
+		Arrays.fill(this.oneByteBuffer, KKIMProp.getallPacketsNullByte());
+		this.receivedByte = KKIMProp.getallPacketsNullByte();
 		this.delimiterByteCounter = 0;
-		this.inputRefreshPacketBufferCursor = 0;	
-		this.isValidPacketInInputRefreshPacketBuffer = false;	
-		Arrays.fill(this.inputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
+		this.packetBufferByteCounter = 0;	
+		Arrays.fill(this.packetHeaderBuffer, KKIMProp.getallPacketsNullByte());
+		this.packetLength = 0;
+		this.packetType = PacketType.INVALID;
+		Arrays.fill(this.packetBuffer, KKIMProp.getallPacketsNullByte());
+		this.isValidPacketInPacketBuffer = false;
 	}
 
 	//Sends an outputRefreshPacket to KMega
@@ -142,7 +159,7 @@ public class SerialCommunicator {
 		
 	}
 	
-	public void ingestDataFromSerialPortAndDisplay() {
+	public void ingestDataFromSerialPortAndDisplay() {//TODO scrap
 	
 		if (this.serialPort.bytesAvailable() > 0) {
 			int numberOfBytesAvailableInSerialBuffer = this.serialPort.bytesAvailable();
@@ -150,6 +167,29 @@ public class SerialCommunicator {
 			this.serialPort.readBytes(displayBuffer, numberOfBytesAvailableInSerialBuffer);
 			String result = new String(displayBuffer);
 			System.out.print(result);
+		}
+	}
+	
+	private int getIntegerInPacketAtByteNumber(byte[] packet, int byteNumber) {
+		return (int) packet[byteNumber-1];		
+	}
+	
+	private void determinePacketTypeBasedOnHeader(int intPacketType) {
+		switch (intPacketType) {
+			case 0: this.packetType = PacketType.INVALID;
+				break;
+			case 1: this.packetType = PacketType.INPUT_REFRESH_PACKET;
+				break;
+			case 2: this.packetType = PacketType.OUTPUT_REFRESH_PACKET;
+				break;
+			case 3: this.packetType = PacketType.ALTITUDE_PACKET;
+				break;
+			case 4: this.packetType = PacketType.KKIM_TERMINAL_DISPLAY_PACKET;
+				break;
+			case 5: this.packetType = PacketType.KKIM_USER_INPUT_PACKET;
+				break;
+			default: this.packetType = PacketType.INVALID;
+				break;
 		}
 	}
 }
