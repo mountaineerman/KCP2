@@ -136,14 +136,10 @@ public class PacketAssembler {
 		}
 		
 		int intBits =  Float.floatToIntBits(theFloat);
-//		this.outputRefreshPacketBuffer[smallByteNum]   = (byte) (intBits & 0xFF);
-//		this.outputRefreshPacketBuffer[smallByteNum+1] = (byte) ((intBits >> 8) & 0xFF);
-//		this.outputRefreshPacketBuffer[smallByteNum+2] = (byte) ((intBits >> 16) & 0xFF);
-//		this.outputRefreshPacketBuffer[largeByteNum]   = (byte) ((intBits >> 24) & 0xFF);
-		this.outputRefreshPacketBuffer[smallByteNum]   = (byte) ((intBits >> 24) & 0xFF);
-		this.outputRefreshPacketBuffer[smallByteNum+1] = (byte) ((intBits >> 16) & 0xFF);
-		this.outputRefreshPacketBuffer[smallByteNum+2] = (byte) ((intBits >> 8) & 0xFF);
-		this.outputRefreshPacketBuffer[largeByteNum]   = (byte) (intBits & 0xFF);
+		this.outputRefreshPacketBuffer[smallByteNum]   = (byte) (intBits >> 24);
+		this.outputRefreshPacketBuffer[smallByteNum+1] = (byte) (intBits >> 16);
+		this.outputRefreshPacketBuffer[smallByteNum+2] = (byte) (intBits >> 8);
+		this.outputRefreshPacketBuffer[largeByteNum]   = (byte) (intBits);
 	}
 }
 

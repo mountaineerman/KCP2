@@ -12,6 +12,7 @@ public class KKIMProp {
 	private static byte allPacketsDelimiterByte = 0x00;
 	private static byte allPacketsNullByte = 0x00;
 	private static int allPacketsNumberOfDelimiterBytes = 0;
+	private static int allPacketsHeaderLengthInBytes = 0;
 	private static int kMegaOutputRefreshPacketLengthInBytes = 0;
 	private static int kMegaOutputRefreshPacketSendRateInMilliseconds = 0;
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
@@ -37,6 +38,7 @@ public class KKIMProp {
 		allPacketsDelimiterByte = Byte.valueOf(properties.getProperty("allPackets.delimiter.byte"));
 		allPacketsNullByte = Byte.valueOf(properties.getProperty("allPackets.null.byte"));
 		allPacketsNumberOfDelimiterBytes = Integer.valueOf(properties.getProperty("allPackets.numberOfDelimiterBytes"));
+		allPacketsHeaderLengthInBytes = Integer.valueOf(properties.getProperty("allPackets.headerLengthInBytes"));
 		kMegaOutputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.lengthInBytes"));
 		kMegaOutputRefreshPacketSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.sendRateInMilliseconds"));
 		kMegaInputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.lengthInBytes"));
@@ -87,6 +89,10 @@ public class KKIMProp {
 	
 	public static int getallPacketsNumberOfDelimiterBytes() {
 		return allPacketsNumberOfDelimiterBytes;
+	}
+	
+	public static int getallPacketsHeaderLengthInBytes() {
+		return allPacketsHeaderLengthInBytes;
 	}
 	
 	public static int getkMegaOutputRefreshPacketLengthInBytes() {

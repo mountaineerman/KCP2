@@ -26,6 +26,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float joystick_FwdBck = 0;//Range: -1(Back) to 1(Forward)
 	public float joystick_LftRgh = 0;//Range: -1(Right) to 1(Left)
 	public float joystick_Twist = 0; //Range: -1(CCW) to 1(CW)
+	public float receivedAltitude = -100; //TODO remove
 	
 	//TODO WRAP IN KSP class:
 	//TODO double-check variable types in kRPC...
@@ -87,8 +88,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {//INVALID
 			this.altitudeToDisplay = KKIMProp.getkmegaAltitudeGaugeErrorAltitude();
 		}
-		CommonUtilities.clearScreen();
-		System.out.println("displayAltitude: " + this.altitudeToDisplay);
 		
 		this.moduleE.sp3tVehicleModeSwitch.updatePosition();
 		

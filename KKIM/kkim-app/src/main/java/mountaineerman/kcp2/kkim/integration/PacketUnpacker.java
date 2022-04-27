@@ -1,8 +1,10 @@
 package mountaineerman.kcp2.kkim.integration;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 
 /* Packet Unpacker
@@ -91,6 +93,8 @@ public class PacketUnpacker {
 		controlPanel.moduleB.analogInput_Joystick_Twist.setRawValueAndCalculateCalibratedValues(	this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_Twist.firstByte, IP.AnalogInput_Joystick_Twist.lastByte));
 		controlPanel.moduleF.analogInput_MultiPot.setRawValueAndCalculateCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_MultiPot.firstByte, IP.AnalogInput_MultiPot.lastByte));
 		controlPanel.moduleF.analogInput_Current.setRawValueAndCalculateCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Current.firstByte, IP.AnalogInput_Current.lastByte));
+		
+		controlPanel.receivedAltitude = this.retrieveFloatInPacketAtByteNumbers(inputRefreshPacket, 29, 32);
 	}
 	
 	//Returns the integer stored in packet located at the specified byte numbers (see ICD).
@@ -123,6 +127,30 @@ public class PacketUnpacker {
 		int temp = 8 - bitNumber;
 		int bit = (tempByte >> temp) & 1;
 		return (bit == 1);
+	}
+	
+	
+	//Returns the float stored in packet located at the specified byte numbers (see ICD).
+	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	private float retrieveFloatInPacketAtByteNumbers (byte[] packet, int byteNum1, int byteNum2) {
+		
+		int largestByteNum = 0;
+		int smallestByteNum = 0;
+		
+		if (byteNum1 > byteNum2) {
+			largestByteNum = byteNum1 - 1;
+			smallestByteNum = byteNum2 - 1;
+		} else {
+			largestByteNum = byteNum2 - 1;
+			smallestByteNum = byteNum1 - 1;
+		}
+		
+		int intBits = packet[smallestByteNum] << 24 |
+				  	 (packet[smallestByteNum+1] & 0xFF) << 16 |
+				  	 (packet[smallestByteNum+2] & 0xFF) << 8 |
+				  	 (packet[largestByteNum] & 0xFF);
+		
+		return Float.intBitsToFloat(intBits);		
 	}
 }
 
