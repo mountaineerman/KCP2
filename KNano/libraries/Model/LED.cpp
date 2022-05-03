@@ -10,12 +10,8 @@ LED::LED(uint8_t pin) {
 void LED::setState(bool state) {
 	this->state = state;
 	if (this->state == true) {
-		digitalWrite(this->pin, HIGH);
-	} else {
 		digitalWrite(this->pin, LOW);
+	} else {
+		digitalWrite(this->pin, HIGH);
 	}
-}
-
-bool LED::getState() {
-	return this->state;
 }
