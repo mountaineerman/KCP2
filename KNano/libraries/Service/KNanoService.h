@@ -15,8 +15,7 @@ public:
 private:
 	void startupMode();
 	void standardOperatingMode();
-	void shutdownMode();
-	void clearPacket(const byte * packet, int packetLength);
+	void clearPacket(byte * packet, int packetLength);
 	
 	AltitudeGauge altitudeGauge;
 	SerialCommunicator serialCommunicator;
@@ -24,7 +23,8 @@ private:
 	
 	byte altitudePacket[ALTITUDE_PACKET_LENGTH_IN_BYTES];//READ-ONLY by KNanoService after initialization
 	
-	//long inputRefreshPacketLastSendTimeInMilliseconds;//TODO delete?
+	long lastByteArrivalTime;
+	long lastAltitudePacketArrivalTime;
 };
 
 #endif
