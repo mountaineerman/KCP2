@@ -27,91 +27,81 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		//System.out.println("Standard Operating Mode");
 		//TODO Confirm connection to kRPC, KMega, and KPhone
 		
-//		long time1 = 0;
-//		long time2 = 0;
-//		long time3 = 0;
-//		long time4 = 0;
-//		long time5 = 0;
-//		long time6 = 0;
-//		long time7 = 0;
-//		long time8 = 0;
-//		long time9 = 0;
-//		long time10 = 0;
-//		long time11 = 0;
-//		long time12 = 0;
-//		boolean pulledData = false;
-//		boolean sentOutputRefreshPacket = false;
+		long time1 = 0;
+		long time2 = 0;
+		long time3 = 0;
+		long time4 = 0;
+		long time5 = 0;
+		long time6 = 0;
+		long time7 = 0;
+		long time8 = 0;
+		long time9 = 0;
+		long time10 = 0;
+		long time11 = 0;
+		long time12 = 0;
+		boolean pulledData = false;
+		boolean sentOutputRefreshPacket = false;
 		
 		//Pull Information
 		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
-//			time1 = System.currentTimeMillis();
+			time1 = System.currentTimeMillis();
 			kkimService.serialCommunicator.ingestDataFromSerialPortToPacketBuffer();
 			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
-//			time2 = System.currentTimeMillis();
+			time2 = System.currentTimeMillis();
 			if (kkimService.serialCommunicator.getisValidPacketInPacketBuffer()) {
 				switch (kkimService.serialCommunicator.getPacketTypeInPacketBuffer()) {
 					case INPUT_REFRESH_PACKET:
-//						pulledData = true;
+						pulledData = true;
 						//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
-//						time3 = System.currentTimeMillis();
+						time3 = System.currentTimeMillis();
 						kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getPacketBuffer());
-//						time4 = System.currentTimeMillis();
+						time4 = System.currentTimeMillis();
 						kkimService.serialCommunicator.clearPacketBufferAndFriends();
-//						time5 = System.currentTimeMillis();
+						time5 = System.currentTimeMillis();
 						
-//						time6 = System.currentTimeMillis();
+						time6 = System.currentTimeMillis();
 						kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
-//						time7 = System.currentTimeMillis();
+						time7 = System.currentTimeMillis();
 						
-//						time8 = System.currentTimeMillis();
+						time8 = System.currentTimeMillis();
 						kkimService.controlPanel.refresh();
-//						time9 = System.currentTimeMillis();
+						time9 = System.currentTimeMillis();
 						//CommonUtilities.clearScreen(); System.out.println(kkimService.controlPanel.toString());
-						
-						//CommonUtilities.clearScreen();//TODO remove
-						//System.out.println("altitudeToDisplay: " + kkimService.controlPanel.altitudeToDisplay);//TODO remove
-						//System.out.println("receivedAltitude: " + kkimService.controlPanel.receivedAltitude);//TODO remove
 						break;
 					case KKIM_TERMINAL_DISPLAY_PACKET:
 						byte[] kkimTerminalDisplayPacket = kkimService.serialCommunicator.getPacketBuffer();
-						String payload = new String(Arrays.copyOfRange(kkimTerminalDisplayPacket, KKIMProp.getallPacketsHeaderLengthInBytes(), kkimTerminalDisplayPacket.length-1));
-						System.out.print("KMEGA: " + payload);
-						System.out.println("altitudeToDisplay: " + kkimService.controlPanel.altitudeToDisplay);//TODO remove
+						String payload = new String(Arrays.copyOfRange(kkimTerminalDisplayPacket, KKIMProp.getallPacketsHeaderLengthInBytes(), kkimTerminalDisplayPacket.length));
+						System.out.println("KMEGA: " + payload);
+						kkimService.serialCommunicator.clearPacketBufferAndFriends();
 						break;
 					default:
 						break;
 				}
 			}
 		}
-//		
-//		//TEMP: Write data from Serial Buffer (KMega) to the terminal console
-//		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
-//			kkimService.serialCommunicator.ingestDataFromSerialPortAndDisplay();
-//			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
-//		}
 		
 		//Send outputRefreshPacket
 		if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
-//			sentOutputRefreshPacket = true;
-//			time10 = System.currentTimeMillis();
+			sentOutputRefreshPacket = true;
+			time10 = System.currentTimeMillis();
 			byte[] outputRefreshPacket = kkimService.packetAssembler.assembleOutputRefreshPacket();
-//			time11 = System.currentTimeMillis();
+			time11 = System.currentTimeMillis();
 			kkimService.serialCommunicator.sendOutputRefreshPacket(outputRefreshPacket);
-//			time12 = System.currentTimeMillis();
-			//CommonUtilities.clearScreen();
-			//kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
+			time12 = System.currentTimeMillis();
+//			CommonUtilities.clearScreen();
+//			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
 			this.outputRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 		}
 		
-//		long time13 = System.currentTimeMillis();
+		long time13 = System.currentTimeMillis();
 		kkimService.kRPCCommunicator.sendInfoFromModelToKSP();
-//		long time14 = System.currentTimeMillis();
+		long time14 = System.currentTimeMillis();
 		
 //		if (pulledData && sentOutputRefreshPacket) {
 //			CommonUtilities.clearScreen();
 //			System.out.println("serialCommunicator.ingestDataFromSerialPortToInputRefreshPacketBuffer(): " + (time2 - time1));
 //			System.out.println("packetUnpacker.unpackInputRefreshPacketIntoModel(): " + (time4 - time3));
-//			System.out.println("serialCommunicator.clearInputRefreshPacketBuffer(): " + (time5 - time4));
+//			System.out.println("serialCommunicator.clearPacketBufferAndFriends(): " + (time5 - time4));
 //			System.out.println("kRPCCommunicator.pullInfoFromKSPIntoModel(): " + (time7 - time6));
 //			System.out.println("controlPanel.refresh(): " + (time9 - time8));
 //			System.out.println("packetAssembler.assembleOutputRefreshPacket(): " + (time11 - time10));
