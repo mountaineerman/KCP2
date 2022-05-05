@@ -32,6 +32,8 @@ public class SerialCommunicator {
 	private long numberOfRejectedIncomingBytes = 0;
 	private long numberOfRejectedInputRefreshPackets = 0;
 	private long numberOfAcceptedInputRefreshPackets = 0;
+	private long numberOfAcceptedKKIMTerminalDisplayPackets = 0;
+	private long numberOfRejectedKKIMTerminalDisplayPackets = 0;
 	private long numberOfSentOutputRefreshPackets = 0;
 	private long numberOfOutputRefreshPacketsNotSent = 0;
 	
@@ -75,6 +77,7 @@ public class SerialCommunicator {
 				if (this.receivedByte == KKIMProp.getallPacketsDelimiterByte()) {
 					this.delimiterByteCounter++;
 				} else {
+					//System.out.println("Rejected byte: [" + this.receivedByte + "]. Expected: [" + KKIMProp.getallPacketsDelimiterByte() + "].");
 					this.delimiterByteCounter = 0;
 					this.numberOfRejectedIncomingBytes++;
 				}
@@ -85,6 +88,7 @@ public class SerialCommunicator {
 				} else if (this.packetBufferByteCounter == KKIMProp.getallPacketsHeaderLengthInBytes()) {//Header read complete
 					this.packetHeaderBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
 					this.determinePacketTypeBasedOnHeader(this.getIntegerInPacketAtByteNumber(this.packetHeaderBuffer, 2));
+					//System.out.println("packetType: " + this.packetType);
 					this.packetLength = this.getIntegerInPacketAtByteNumber(this.packetHeaderBuffer, 3);
 					this.packetBuffer = new byte[this.packetLength];
 					Arrays.fill(this.packetBuffer, KKIMProp.getallPacketsNullByte());
@@ -92,13 +96,29 @@ public class SerialCommunicator {
 				} else {//Payload read in progress
 					this.packetBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
 					if (this.packetBufferByteCounter == this.packetLength) { //A full packet is in the packetBuffer
-						if (true /*TODO:packet is valid*/) {
-							this.isValidPacketInPacketBuffer = true;
-							this.numberOfAcceptedInputRefreshPackets++;
-							return;
-						} else { //Packet is invalid
-							this.clearPacketBufferAndFriends();
-							this.numberOfRejectedInputRefreshPackets++;
+						switch (this.packetType) {
+							case INPUT_REFRESH_PACKET:
+								if (true /*TODO:packet is valid*/) {
+									this.isValidPacketInPacketBuffer = true;
+									this.numberOfAcceptedInputRefreshPackets++;
+									return;
+								} else { //Packet is invalid
+									this.clearPacketBufferAndFriends();
+									this.numberOfRejectedInputRefreshPackets++;
+								}
+								break;
+							case KKIM_TERMINAL_DISPLAY_PACKET:
+								if (true /*TODO:packet is valid*/) {
+									this.isValidPacketInPacketBuffer = true;
+									this.numberOfAcceptedKKIMTerminalDisplayPackets++;
+									return;
+								} else { //Packet is invalid
+									this.clearPacketBufferAndFriends();
+									this.numberOfRejectedKKIMTerminalDisplayPackets++;
+								}
+								break;
+							default:
+								break;
 						}
 					}
 				}
@@ -124,6 +144,10 @@ public class SerialCommunicator {
 		System.out.println("numberOfRejectedIncomingBytes: " + numberOfRejectedIncomingBytes);
 		System.out.println("numberOfRejectedInputRefreshPackets: " + numberOfRejectedInputRefreshPackets);
 		System.out.println("numberOfAcceptedInputRefreshPackets: " + numberOfAcceptedInputRefreshPackets);
+		System.out.println();
+		System.out.println("numberOfAcceptedKKIMTerminalDisplayPackets: " + numberOfAcceptedKKIMTerminalDisplayPackets);
+		System.out.println("numberOfRejectedKKIMTerminalDisplayPackets: " + numberOfRejectedKKIMTerminalDisplayPackets);
+		System.out.println();
 		System.out.println("numberOfSentOutputRefreshPackets: " + numberOfSentOutputRefreshPackets);
 		System.out.println("numberOfOutputRefreshPacketsNotSent: " + numberOfOutputRefreshPacketsNotSent);
 		System.out.println("Bytes available in Serial Read Buffer: " + this.serialPort.bytesAvailable());

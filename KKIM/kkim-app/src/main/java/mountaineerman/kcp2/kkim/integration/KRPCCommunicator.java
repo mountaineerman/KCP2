@@ -60,17 +60,17 @@ public class KRPCCommunicator {
 		try {
 			this.resources = this.vessel.resourcesInDecoupleStage(this.control.getCurrentStage()-1, false);
 			this.controlPanel.gforce = this.flight.getGForce();
-			this.controlPanel.mach = this.flight.getMach();
-			this.controlPanel.pitch = this.flight.getPitch();
-			this.controlPanel.heading = this.flight.getHeading();
+//			this.controlPanel.mach = this.flight.getMach();
+//			this.controlPanel.pitch = this.flight.getPitch();
+//			this.controlPanel.heading = this.flight.getHeading();
 			this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?//TODO other fuel types...
 			//System.out.println("fuel: " + this.resources.amount("LiquidFuel"));
 			//this.controlPanel.charge = this.resources.amount("TBD");//TODO pull constants into config file?
 			//this.controlPanel.monopropellant = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
 			//this.controlPanel.intakeAir = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
 			//this.controlPanel.airDensity = this.flight.getAtmosphereDensity() / CelestialBody.densityAt(Altitude); + Vessel.getSituation()... OR: getStaticPressure()/getStaticPressureAtMSL();
-			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
-			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?
+//			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
+//			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?
 			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
 			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude(); 
 		} catch (RPCException e) {
@@ -203,17 +203,17 @@ public class KRPCCommunicator {
 //			} catch (RPCException e) {e.printStackTrace();}
 //		}
 		
-		if (this.controlPanel.moduleE.solarSwitch.getDebouncedStatus()) {
-			try {
-				this.control.setActionGroup(5, true);//FIXME toggle not working
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.ladderSwitch.getDebouncedStatus()) {
-			try {
-				this.control.setActionGroup(4, true);//FIXME toggle not working
-			} catch (RPCException e) {e.printStackTrace();}
-		}
+//		if (this.controlPanel.moduleE.solarSwitch.getDebouncedStatus()) {
+//			try {
+//				this.control.setActionGroup(5, true);//FIXME toggle not working
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
+//		
+//		if (this.controlPanel.moduleE.ladderSwitch.getDebouncedStatus()) {
+//			try {
+//				this.control.setActionGroup(4, true);//FIXME toggle not working
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
 		
 //		if (this.controlPanel.moduleE.atnvSwitch.getDebouncedStatus()) {
 //			try {
@@ -221,36 +221,36 @@ public class KRPCCommunicator {
 //			} catch (RPCException e) {e.printStackTrace();}
 //		}
 		
-		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
-			try {
-				this.control.setActionGroup(1, true);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
-			try {
-				this.control.setActionGroup(2, true);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
-			try {
-				this.control.setActionGroup(3, true);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
-			try {
-				this.control.setActionGroup(7, true);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {//TODO repack parachute?
-			try {
-				this.control.setActionGroup(6, true);
-				//this.control.setParachutes(true);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
+//		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
+//			try {
+//				this.control.setActionGroup(1, true);
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
+//		
+//		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
+//			try {
+//				this.control.setActionGroup(2, true);
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
+//		
+//		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
+//			try {
+//				this.control.setActionGroup(3, true);
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
+//		
+//		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
+//			try {
+//				this.control.setActionGroup(7, true);
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
+//		
+//		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {//TODO repack parachute?
+//			try {
+//				this.control.setActionGroup(6, true);
+//				//this.control.setParachutes(true);
+//			} catch (RPCException e) {e.printStackTrace();}
+//		}
 		
 		//Module F
 		
