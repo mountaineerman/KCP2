@@ -150,12 +150,12 @@ void ControlPanel::runDiagnosticMode() {
 	while(true) {
 	
 		clearScreen();
-		Serial.println("Diagnostic Mode activated. Select one of the following:");
-		Serial.println("[0] Exit");
-		Serial.println("[1] Test all inputs");
-		Serial.println("[2] Test all LEDs (simultaneously)");
-		Serial.println("[3] Test LEDs sequentially");
-		Serial.println("[4] Test Stepper Motors");
+		Serial.println(F("Diagnostic Mode activated. Select one of the following:"));
+		Serial.println(F("[0] Exit"));
+		Serial.println(F("[1] Test all inputs"));
+		Serial.println(F("[2] Test all LEDs (simultaneously)"));
+		Serial.println(F("[3] Test LEDs sequentially"));
+		Serial.println(F("[4] Test Stepper Motors"));
 		
 		userInput = Serial.readStringUntil('\n');
 		//Serial.println(userInput);
@@ -260,7 +260,7 @@ void ControlPanel::diagnosticMode_testAllInputs() {
 	while(true) {
 		
 		clearScreen();
-		Serial.println("Testing All Inputs. Enter '0' at any time to return to the main menu.");
+		Serial.println(F("Testing All Inputs. Enter '0' at any time to return to the main menu."));
 		this->refreshInputStatus();
 		this->getInputStatusAsString();//TODO: Fix: //Serial.println(this->getInputStatusAsString());
 		
@@ -277,7 +277,7 @@ void ControlPanel::diagnosticMode_testAllInputs() {
 void ControlPanel::diagnosticMode_testAllLEDs() {
 	
 	clearScreen();
-	Serial.println("Testing All LEDs. Enter '0' at any time to return to the main menu.");
+	Serial.println(F("Testing All LEDs. Enter '0' at any time to return to the main menu."));
 	this->setAllLEDsOn();
 	
 	String userInput;
@@ -302,19 +302,19 @@ void ControlPanel::diagnosticMode_testLEDsSequentially() {
 	while(true) {
 	
 		clearScreen();
-		Serial.println("Testing LEDs Sequentially. LEDs will be lit top to bottom, left to right.");
-		Serial.println("RGB LEDs will be lit in R>G>B order. Select which module(s) to test:");
-		Serial.println("[0] Return to main menu");
-		Serial.println("[all] All");
-		Serial.println("[a] Module A");
-		Serial.println("[c] Module C");
-		Serial.println("[d] Module D");
-		Serial.println("[e] Module E");
-		Serial.println("[f] Module F");
-		Serial.println("[g] Module G");
-		Serial.println("[h] Module H");
-		Serial.println("[i] Module I");
-		Serial.println("[gt] Gauge Tower");
+		Serial.println(F("Testing LEDs Sequentially. LEDs will be lit top to bottom, left to right."));
+		Serial.println(F("RGB LEDs will be lit in R>G>B order. Select which module(s) to test:"));
+		Serial.println(F("[0] Return to main menu"));
+		Serial.println(F("[all] All"));
+		Serial.println(F("[a] Module A"));
+		Serial.println(F("[c] Module C"));
+		Serial.println(F("[d] Module D"));
+		Serial.println(F("[e] Module E"));
+		Serial.println(F("[f] Module F"));
+		Serial.println(F("[g] Module G"));
+		Serial.println(F("[h] Module H"));
+		Serial.println(F("[i] Module I"));
+		Serial.println(F("[gt] Gauge Tower"));
 		
 		userInput = Serial.readStringUntil('\n');
 		
@@ -350,20 +350,20 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 	
 	while(true) {
 		clearScreen();
-		Serial.println("Testing Stepper Motors. Select a stepper motor to test:");
-		Serial.println("[0] Return to main menu");
-		Serial.println("[1] Heat/Life");
-		Serial.println("[2] G-Force");
-		Serial.println("[3] Mach Number");
-		Serial.println("[4] Pitch");
-		Serial.println("[5] Heading");
-		Serial.println("[6] Fuel");
-		Serial.println("[7] Charge");
-		Serial.println("[8] Monopropellant/Intake Air");
-		Serial.println("[9] Air Density");
-		Serial.println("[10] Speed");
-		Serial.println("[11] Vertical Speed");
-		Serial.println("[12] Radar Altitude");
+		Serial.println(F("Testing Stepper Motors. Select a stepper motor to test:"));
+		Serial.println(F("[0] Return to main menu"));
+		Serial.println(F("[1] Heat/Life"));
+		Serial.println(F("[2] G-Force"));
+		Serial.println(F("[3] Mach Number"));
+		Serial.println(F("[4] Pitch"));
+		Serial.println(F("[5] Heading"));
+		Serial.println(F("[6] Fuel"));
+		Serial.println(F("[7] Charge"));
+		Serial.println(F("[8] Monopropellant/Intake Air"));
+		Serial.println(F("[9] Air Density"));
+		Serial.println(F("[10] Speed"));
+		Serial.println(F("[11] Vertical Speed"));
+		Serial.println(F("[12] Radar Altitude"));
 		
 		userInput = Serial.readStringUntil('\n');
 		
@@ -405,17 +405,17 @@ void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperM
 		clearScreen();
 		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(STEPPER_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
 		Serial.println("");
-		Serial.println("Select one of the following options:");
-		Serial.println("[0] Return to previous menu");
-		Serial.println("[1] Move to maximum CCW position");
-		Serial.println("[2] Move to maximum CW position");
-		Serial.println("[3] Manual Control Mode (via Joystick) [TODO]");
-		Serial.println("[4] Move 1000 steps CCW");
-		Serial.println("[5] Move 1000 steps CW");
-		Serial.println("[6] Move 100 steps CCW");
-		Serial.println("[7] Move 100 steps CW");
-		Serial.println("[8] Move 10 steps CCW");
-		Serial.println("[9] Move 10 steps CW");
+		Serial.println(F("Select one of the following options:"));
+		Serial.println(F("[0] Return to previous menu"));
+		Serial.println(F("[1] Move to maximum CCW position"));
+		Serial.println(F("[2] Move to maximum CW position"));
+		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
+		Serial.println(F("[4] Move 1000 steps CCW"));
+		Serial.println(F("[5] Move 1000 steps CW"));
+		Serial.println(F("[6] Move 100 steps CCW"));
+		Serial.println(F("[7] Move 100 steps CW"));
+		Serial.println(F("[8] Move 10 steps CCW"));
+		Serial.println(F("[9] Move 10 steps CW"));
 		
 		userInput = Serial.readStringUntil('\n');
 		
@@ -457,23 +457,23 @@ void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorU
 	
 	while(true) {
 		clearScreen();
-		Serial.print("Max Speed (steps per second): "); Serial.println(stepperMotorUnderTest.get_maxSpeed());
-		Serial.print("Max time between steps (microseconds): "); Serial.println(stepperMotorUnderTest.get_maxTimeBetweenSteps());
-		Serial.print("CCW Limit (steps): "); Serial.println(stepperMotorUnderTest.get_ccwLimit());
-		Serial.print("CW Limit (steps): "); Serial.println(stepperMotorUnderTest.get_cwLimit());
-		Serial.print("Stepper Motor Position (steps): "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
-		Serial.println("");
-		Serial.println("Select one of the following options:");
-		Serial.println("[0] Return to previous menu");
-		Serial.println("[1] Move to maximum CCW position");
-		Serial.println("[2] Move to maximum CW position");
-		Serial.println("[3] Manual Control Mode (via Joystick) [TODO]");
-		Serial.println("[4] Move 1000 steps CCW");
-		Serial.println("[5] Move 1000 steps CW");
-		Serial.println("[6] Move 100 steps CCW");
-		Serial.println("[7] Move 100 steps CW");
-		Serial.println("[8] Move 10 steps CCW");
-		Serial.println("[9] Move 10 steps CW");
+		Serial.print(F("Max Speed (steps per second): ")); Serial.println(stepperMotorUnderTest.get_maxSpeed());
+		Serial.print(F("Max time between steps (microseconds): ")); Serial.println(stepperMotorUnderTest.get_maxTimeBetweenSteps());
+		Serial.print(F("CCW Limit (steps): ")); Serial.println(stepperMotorUnderTest.get_ccwLimit());
+		Serial.print(F("CW Limit (steps): ")); Serial.println(stepperMotorUnderTest.get_cwLimit());
+		Serial.print(F("Stepper Motor Position (steps): ")); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.println();
+		Serial.println(F("Select one of the following options:"));
+		Serial.println(F("[0] Return to previous menu"));
+		Serial.println(F("[1] Move to maximum CCW position"));
+		Serial.println(F("[2] Move to maximum CW position"));
+		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
+		Serial.println(F("[4] Move 1000 steps CCW"));
+		Serial.println(F("[5] Move 1000 steps CW"));
+		Serial.println(F("[6] Move 100 steps CCW"));
+		Serial.println(F("[7] Move 100 steps CW"));
+		Serial.println(F("[8] Move 10 steps CCW"));
+		Serial.println(F("[9] Move 10 steps CW"));
 		
 		userInput = Serial.readStringUntil('\n');
 		
@@ -515,19 +515,19 @@ void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& ste
 	
 	while(true) {
 		clearScreen();
-		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(NEMA17_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
-		Serial.println("");
-		Serial.println("Select one of the following options:");
-		Serial.println("[0] Return to previous menu");
-		Serial.println("[1] Move to maximum CCW position");
-		Serial.println("[2] Move to maximum CW position");
-		Serial.println("[3] Manual Control Mode (via Joystick) [TODO]");
-		Serial.println("[4] Move 1000 steps CCW");
-		Serial.println("[5] Move 1000 steps CW");
-		Serial.println("[6] Move 100 steps CCW");
-		Serial.println("[7] Move 100 steps CW");
-		Serial.println("[8] Move 10 steps CCW");
-		Serial.println("[9] Move 10 steps CW");
+		Serial.print(F("Stepper Motor Position [")); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(NEMA17_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.println();
+		Serial.println(F("Select one of the following options:"));
+		Serial.println(F("[0] Return to previous menu"));
+		Serial.println(F("[1] Move to maximum CCW position"));
+		Serial.println(F("[2] Move to maximum CW position"));
+		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
+		Serial.println(F("[4] Move 1000 steps CCW"));
+		Serial.println(F("[5] Move 1000 steps CW"));
+		Serial.println(F("[6] Move 100 steps CCW"));
+		Serial.println(F("[7] Move 100 steps CW"));
+		Serial.println(F("[8] Move 10 steps CCW"));
+		Serial.println(F("[9] Move 10 steps CW"));
 		
 		userInput = Serial.readStringUntil('\n');
 		

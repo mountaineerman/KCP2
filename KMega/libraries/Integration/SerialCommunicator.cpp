@@ -2,9 +2,6 @@
 #include <SerialCommunicator.h>
 #include "../../configuration.h"
 
-//Note: the Arduino Serial buffer is 64 Bytes long by default. See:
-//https://www.hobbytronics.co.uk/arduino-serial-buffer-size#:~:text=The%20Arduino%20core%20code%20contains,only%2064%20bytes%20in%20size.
-
 SerialCommunicator::SerialCommunicator()
 {
 	this->outputRefreshPacket = NULL;
@@ -79,7 +76,7 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 			
 		} else {
 			//TODO throw exception
-			Serial.println("Exception: SerialCommunicator.ingestDataFromSerialBufferToPacketBuffer(): delimiterByteCounter is out of range");
+			Serial.println(F("Exception: SerialCommunicator.ingestDataFromSerialBufferToPacketBuffer(): delimiterByteCounter is out of range"));
 		}
 		
 		
@@ -101,7 +98,7 @@ bool SerialCommunicator::getOutputRefreshPacket() {
 	
 	if (this->outputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: SerialCommunicator.getOutputRefreshPacket(): outputRefreshPacket is not initialized");
+		Serial.println(F("Exception: SerialCommunicator.getOutputRefreshPacket(): outputRefreshPacket is not initialized"));
 	}
 	
 	if (this->isValidPacketInPacketBuffer) {
@@ -117,8 +114,8 @@ bool SerialCommunicator::getOutputRefreshPacket() {
 
 void SerialCommunicator::sendAltitudePacket() {
 	
-	if ( Serial1.availableForWrite() >= ALTITUDE_PACKET_LENGTH_IN_BYTES) {//TODO verify Serial1
-		Serial1.write(altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES);//TODO verify Serial1
+	if ( Serial1.availableForWrite() >= ALTITUDE_PACKET_LENGTH_IN_BYTES) {
+		Serial1.write(altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES);
 	}
 }
 
@@ -135,6 +132,48 @@ void SerialCommunicator::sendInputRefreshPacket() {
 	} else {
 		this->running_numberOfInputRefreshPacketsNotSent++;
 	}
+}
+
+void SerialCommunicator::sendKKIMTerminalDisplayPacket(char * charArrayToDisplay, int charArrayLength) {//TODO add support for KKIMTerminalDisplayPackets longer than the ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES
+	
+	//Serial.print("charArrayLength: "); Serial.println(charArrayLength);
+	int packetLength = NUMBER_OF_PACKET_DELIMITER_BYTES + PACKET_HEADER_LENGTH_IN_BYTES + charArrayLength;
+	//Serial.print("packetLength: "); Serial.println(packetLength);
+	
+	if (packetLength > ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES) {
+		//Serial.print("charArrayLength too long ("); Serial.print(charArrayLength); Serial.print("). Maximum length is "); Serial.print(ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES - PACKET_HEADER_LENGTH_IN_BYTES); Serial.println(". Cropping array at max limit.");
+		packetLength = ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES;
+		charArrayLength = ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES - PACKET_HEADER_LENGTH_IN_BYTES;
+	}
+	byte KKIMTerminalDisplayPacketBuffer[packetLength] = {};
+	
+	// (1) Populate Delimiter:
+	KKIMTerminalDisplayPacketBuffer[0] = PACKET_DELIMITER_BYTE;
+	KKIMTerminalDisplayPacketBuffer[1] = PACKET_DELIMITER_BYTE;
+	KKIMTerminalDisplayPacketBuffer[2] = PACKET_DELIMITER_BYTE;
+	
+	// (2) Populate Header:
+	/* Originator */	KKIMTerminalDisplayPacketBuffer[3] = 1;
+	/* Packet Type */	KKIMTerminalDisplayPacketBuffer[4] = 4;
+	/* Packet Length */	KKIMTerminalDisplayPacketBuffer[5] = (packetLength - NUMBER_OF_PACKET_DELIMITER_BYTES);
+	/* Current Mode */	KKIMTerminalDisplayPacketBuffer[6] = 0;//TODO
+	/* Command */		KKIMTerminalDisplayPacketBuffer[7] = 0;//TODO
+	/* Parity Byte */	KKIMTerminalDisplayPacketBuffer[8] = 0;//TODO
+	/* Empty */			KKIMTerminalDisplayPacketBuffer[9] = 0;
+	/* Empty */			KKIMTerminalDisplayPacketBuffer[10] = 0;
+	/* Empty */			KKIMTerminalDisplayPacketBuffer[11] = 0;
+	
+	// (3) Populate Payload:
+	int j = NUMBER_OF_PACKET_DELIMITER_BYTES + PACKET_HEADER_LENGTH_IN_BYTES;
+	for (int i = 0; i < charArrayLength; i++) {
+		KKIMTerminalDisplayPacketBuffer[j++] = charArrayToDisplay[i];
+	}
+	
+	while (Serial.availableForWrite() < packetLength) {
+		delay(1);
+	}
+	
+	Serial.write(KKIMTerminalDisplayPacketBuffer, packetLength);
 }
 
 void SerialCommunicator::tallyCommunicationsDiagnosticData() {

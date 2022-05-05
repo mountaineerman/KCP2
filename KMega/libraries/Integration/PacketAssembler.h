@@ -34,6 +34,8 @@ private:
 	//Saves float number value at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Onenote).
 	void saveFloatToAltitudePacketAtByteNumbers(float number, int firstByteNum, int lastByteNum);
 	
+	//void saveFloatToInputRefreshPacketAtByteNumbers(float number, int firstByteNum, int lastByteNum); //(For Debugging)
+	
 	ControlPanel& controlPanel;
 	byte * altitudePacket;		//See KMegaService
 	byte * inputRefreshPacket;	//See KMegaService

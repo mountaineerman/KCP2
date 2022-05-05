@@ -17,10 +17,10 @@ void PacketUnpacker::displayOutputRefreshPacketInDecimal() {
 	
 	if (this->outputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketUnpacker.displayOutputRefreshPacketInDecimal(): OutputRefreshPacket is not initialized");
+		Serial.println(F("Exception: PacketUnpacker.displayOutputRefreshPacketInDecimal(): OutputRefreshPacket is not initialized"));
 	}
 	
-	Serial.println("PacketUnpacker: outputRefreshPacket: (Decimal Format)");
+	Serial.println(F("PacketUnpacker: outputRefreshPacket: (Decimal Format)"));
 	Serial.print("Position: ");
 	for (int i = 0; i < OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES; i++) {
 		Serial.print(i+1);
@@ -41,7 +41,7 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	
 	if (this->outputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketUnpacker.unpackOutputRefreshPacketIntoModel(): OutputRefreshPacket is not initialized");
+		Serial.println(F("Exception: PacketUnpacker.unpackOutputRefreshPacketIntoModel(): OutputRefreshPacket is not initialized"));
 	}
 	
 	//LEDs
@@ -157,7 +157,7 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition( this->convertTwoBytesInOutputRefreshPacketIntoInteger(190,191) );
 	
 	//Altitude
-	controlPanel.moduleGT.altitude = this->convertFourBytesInOutputRefreshPacketIntoFloat(10,13);
+	controlPanel.moduleGT.altitude = this->convertFourBytesInOutputRefreshPacketIntoFloat(192,195);
 	
 	this->clearOutputRefreshPacket();
 }
@@ -172,12 +172,12 @@ int PacketUnpacker::convertTwoBytesInOutputRefreshPacketIntoInteger(int byteNum1
 	
 	if (byteNum1 > OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
 		//TODO throw exception
-		Serial.println("Exception: PacketUnpacker.convertTwoByteArrayIntoInteger(): byteNum1 greater than length of OutputRefreshPacket");
+		Serial.println(F("Exception: PacketUnpacker.convertTwoByteArrayIntoInteger(): byteNum1 greater than length of OutputRefreshPacket"));
 	}
 	
 	if (byteNum2 > OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES) {
 		//TODO throw exception
-		Serial.println("Exception: PacketUnpacker.convertTwoByteArrayIntoInteger(): byteNum2 greater than length of OutputRefreshPacket");
+		Serial.println(F("Exception: PacketUnpacker.convertTwoByteArrayIntoInteger(): byteNum2 greater than length of OutputRefreshPacket"));
 	}
 	
 	int largestByteNum = 0;
@@ -201,6 +201,12 @@ int PacketUnpacker::convertTwoBytesInOutputRefreshPacketIntoInteger(int byteNum1
 
 float PacketUnpacker::convertFourBytesInOutputRefreshPacketIntoFloat(int firstByteNum, int lastByteNum) {
 	
+	if (firstByteNum + 3 != lastByteNum) {
+		//TODO throw exception
+		Serial.println(F("Exception: PacketUnpacker::convertFourBytesInOutputRefreshPacketIntoFloat(): firstByteNum and lastByteNum are not a 4 bytes range."));
+		return -1;
+	}
+	
 	union {
 		float theFloat;
 		unsigned char theByteArray[4];
@@ -208,11 +214,11 @@ float PacketUnpacker::convertFourBytesInOutputRefreshPacketIntoFloat(int firstBy
 	
 	int start = firstByteNum - 1;
 	int end = lastByteNum - 1;
-	int j = 0;
 	
-	for (int i = start; i < end; i++) {
-		byteArrayToFloat.theByteArray[j++] = this->outputRefreshPacket[i];
-	}
+	byteArrayToFloat.theByteArray[3] = this->outputRefreshPacket[start];
+	byteArrayToFloat.theByteArray[2] = this->outputRefreshPacket[start+1];
+	byteArrayToFloat.theByteArray[1] = this->outputRefreshPacket[start+2];
+	byteArrayToFloat.theByteArray[0] = this->outputRefreshPacket[end];
 	
 	return byteArrayToFloat.theFloat;
 }

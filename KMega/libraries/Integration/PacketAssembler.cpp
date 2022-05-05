@@ -22,19 +22,19 @@ void PacketAssembler::displayPacket(const byte * packet, int packetLength, Strin
 	
 	if (packet == NULL) {
 		//TODO throw exception
-		Serial.print("Exception: PacketAssembler.displayPacket(): "); Serial.print(packetName); Serial.println(" is not initialized");
+		Serial.print(F("Exception: PacketAssembler.displayPacket(): ")); Serial.print(packetName); Serial.println(F(" is not initialized"));
 	}
 	
-	Serial.println("PacketAssembler.displayPacket(): (decimal format)");
-	Serial.print("Packet: "); Serial.println(packetName);
-	Serial.print("Byte Num: ");
+	Serial.println(F("PacketAssembler.displayPacket(): (decimal format)"));
+	Serial.print(F("Packet: ")); Serial.println(packetName);
+	Serial.print(F("Byte Num: "));
 	for (int i = 0; i < packetLength; i++) {
 		Serial.print(i+1);
 		Serial.print("\t");
 	}
 	Serial.println();
 	
-	Serial.print("Value:    ");
+	Serial.print(F("Value:    "));
 	for (int i = 0; i < packetLength; i++) {
 		Serial.print(packet[i]);
 		Serial.print("\t");
@@ -43,8 +43,6 @@ void PacketAssembler::displayPacket(const byte * packet, int packetLength, Strin
 }
 
 void PacketAssembler::assembleAltitudePacket() {
-	
-	this->displayPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES, "altitudePacket");//TODO test
 	
 	if (this->altitudePacket == NULL) {
 		//TODO throw exception
@@ -71,7 +69,7 @@ void PacketAssembler::assembleAltitudePacket() {
 	this->saveFloatToAltitudePacketAtByteNumbers(controlPanel.moduleGT.altitude, 10, 13);
 	
 	
-	this->displayPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES, "altitudePacket");//TODO test
+	//this->displayPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES, "altitudePacket");
 }
 
 void PacketAssembler::assembleInputRefreshPacket() {
@@ -80,7 +78,7 @@ void PacketAssembler::assembleInputRefreshPacket() {
 	
 	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.assembleInputRefreshPacket(): inputRefreshPacket is not initialized");
+		Serial.println(F("Exception: PacketAssembler.assembleInputRefreshPacket(): inputRefreshPacket is not initialized"));
 	}
 	
 	// (1) Populate Delimiter:
@@ -179,6 +177,8 @@ void PacketAssembler::assembleInputRefreshPacket() {
 	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleF.analogInput_MultiPot.getInputStatus(), 25, 26);
 	this->saveNumberToInputRefreshPacketAtByteNumbers(controlPanel.moduleF.analogInput_Current.getInputStatus(), 27, 28);
 	
+	//this->saveFloatToInputRefreshPacketAtByteNumbers(controlPanel.moduleGT.altitude, 29, 32);//(For Debugging)
+	
 	//this->displayPacket(this->inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES, "inputRefreshPacket");
 }
 
@@ -201,7 +201,7 @@ void PacketAssembler::saveByteToInputRefreshPacket(byte theByte, int byteNumber)
 	
 	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.saveByteToInputRefreshPacket(): inputRefreshPacket is not initialized");
+		Serial.println(F("Exception: PacketAssembler.saveByteToInputRefreshPacket(): inputRefreshPacket is not initialized"));
 	}
 	
 	this->inputRefreshPacket[byteNumber - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES] = theByte;
@@ -211,12 +211,12 @@ void PacketAssembler::saveNumberToInputRefreshPacketAtByteNumbers(int number, in
 	
 	if (this->inputRefreshPacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.saveNumberToInputRefreshPacketAtByteNumbers(): inputRefreshPacket is not initialized");
+		Serial.println(F("Exception: PacketAssembler.saveNumberToInputRefreshPacketAtByteNumbers(): inputRefreshPacket is not initialized"));
 	}
 	
 	if (number > 65535) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.saveNumberToInputRefreshPacketAtByteNumbers(): the number is larger than what can be stored in two bytes (65,535)");
+		Serial.println(F("Exception: PacketAssembler.saveNumberToInputRefreshPacketAtByteNumbers(): the number is larger than what can be stored in two bytes (65,535)"));
 	}
 	
 	int largeByteNum = 0;
@@ -238,7 +238,7 @@ void PacketAssembler::saveFloatToAltitudePacketAtByteNumbers(float number, int f
 	
 	if (this->altitudePacket == NULL) {
 		//TODO throw exception
-		Serial.println("Exception: PacketAssembler.saveFloatAtByteNumbersToAltitudePacket(): altitudePacket is not initialized");
+		Serial.println(F("Exception: PacketAssembler.saveFloatAtByteNumbersToAltitudePacket(): altitudePacket is not initialized"));
 	}
 	
 	union {
@@ -250,16 +250,36 @@ void PacketAssembler::saveFloatToAltitudePacketAtByteNumbers(float number, int f
 	
 	int start = firstByteNum - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
 	int end = lastByteNum - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
-	int j = 0;
 	
-	for (int i = start; i < end; i++) {
-		this->altitudePacket[i] = floatToByteArray.theByteArray[j++];
-	}
+	this->altitudePacket[start]   = floatToByteArray.theByteArray[3];
+	this->altitudePacket[start+1] = floatToByteArray.theByteArray[2];
+	this->altitudePacket[start+2] = floatToByteArray.theByteArray[1];
+	this->altitudePacket[end]     = floatToByteArray.theByteArray[0];
 }
 
-
-
-
+//(For Debugging)
+//void PacketAssembler::saveFloatToInputRefreshPacketAtByteNumbers(float number, int firstByteNum, int lastByteNum) {
+//	
+//	if (this->inputRefreshPacket == NULL) {
+//		//TODO throw exception
+//		Serial.println(F("Exception: PacketAssembler.saveFloatToInputRefreshPacketAtByteNumbers(): inputRefreshPacket is not initialized"));
+//	}
+//	
+//	union {
+//		float theFloat;
+//		unsigned char theByteArray[4];
+//	} floatToByteArray;
+//	
+//	floatToByteArray.theFloat = number;
+//	
+//	int start = firstByteNum - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+//	int end = lastByteNum - 1 + NUMBER_OF_PACKET_DELIMITER_BYTES;
+//	
+//	this->inputRefreshPacket[start]   = floatToByteArray.theByteArray[3];
+//	this->inputRefreshPacket[start+1] = floatToByteArray.theByteArray[2];
+//	this->inputRefreshPacket[start+2] = floatToByteArray.theByteArray[1];
+//	this->inputRefreshPacket[end]     = floatToByteArray.theByteArray[0];
+//}
 
 
 

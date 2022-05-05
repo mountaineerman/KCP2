@@ -9,8 +9,11 @@
 //===========================================================================================================================================================================
 //Common Serial Communication Settings
 static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time kMega will wait before timing out during a serial read operation
-static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C = '<'
+static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C == '<' == 0d60
 static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecutive packet delimiter bytes that mark the beginning of a packet
+static const int PACKET_HEADER_LENGTH_IN_BYTES = 9;
+static const int ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES = 64;//Note: the Arduino Serial buffer is 64 Bytes long by default. See: https://www.hobbytronics.co.uk/arduino-serial-buffer-size#:~:text=The%20Arduino%20core%20code%20contains,only%2064%20bytes%20in%20size.
+
 
 //KKIM Interface
 static const String COMMUNICATION_PORT = "COM4";
@@ -22,7 +25,7 @@ static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 31;  //Length of Delimit
 static const int MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS = 1000;
 
 //KNano Interface
-static const unsigned long KNANO_BAUD_RATE = COMPUTER_BAUD_RATE;
+static const unsigned long KNANO_BAUD_RATE = 9600;
 static const int ALTITUDE_PACKET_LENGTH_IN_BYTES = 16;  //Length of Delimiter + Header + Payload.
 static const float STARTING_ALTITUDE = -1.0e1;
 

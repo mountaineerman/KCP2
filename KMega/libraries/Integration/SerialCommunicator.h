@@ -29,6 +29,8 @@ public:
 	void sendAltitudePacket();
 	//Attempts to send an inputRefreshPacket to KKIM.
 	void sendInputRefreshPacket();
+	//Attempts to send a KKIMTerminalDisplayPacket to KKIM.
+	void sendKKIMTerminalDisplayPacket(char * charArrayToDisplay, int charArrayLength);
 	
 	void tallyCommunicationsDiagnosticData();//TODO Inject Communications Diagnostic Data into inputRefreshPacket
 	void displayCommunicationsDiagnosticData();
