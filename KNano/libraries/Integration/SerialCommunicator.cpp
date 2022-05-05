@@ -22,7 +22,12 @@ void SerialCommunicator::establishKMegaSerialLink() {
 	Serial.begin(BAUD_RATE);
 }
 
-void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
+//Returns true if some data was read, false otherwise.
+bool SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
+	
+	if (Serial.available() <= 0) {
+		return false;
+	}
 	
 	while (Serial.available()) { // There are bytes available in the Arduino Serial Buffer
 		
@@ -42,12 +47,13 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 		if (this->packetBufferCursor == ALTITUDE_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
 			if (true /*TODO:packet is valid*/) {
 				this->isValidPacketInPacketBuffer = true;
-				return;				
+				return true;
 			} else { //Packet is invalid
 				this->clearPacketBuffer();
 			}
 		}
 	}
+	return true;
 }
 
 bool SerialCommunicator::getAltitudePacket() {

@@ -27,21 +27,20 @@ float PacketUnpacker::convertFourBytesInAltitudePacketIntoFloat(int firstByteNum
 	
 	int start = firstByteNum - 1;
 	int end = lastByteNum - 1;
-	int j = 0;
 	
-	for (int i = start; i < end; i++) {
-		byteArrayToFloat.theByteArray[j++] = this->altitudePacket[i];
-	}
+	byteArrayToFloat.theByteArray[3] = this->altitudePacket[start];
+	byteArrayToFloat.theByteArray[2] = this->altitudePacket[start+1];
+	byteArrayToFloat.theByteArray[1] = this->altitudePacket[start+2];
+	byteArrayToFloat.theByteArray[0] = this->altitudePacket[end];
 	
 	return byteArrayToFloat.theFloat;
 }
 
-void PacketUnpacker::clearOutputRefreshPacket() {
+void PacketUnpacker::clearAltitudePacket() {
 	for (int i = 0; i < ALTITUDE_PACKET_LENGTH_IN_BYTES; i++) {
 		this->altitudePacket[i] = 0x00;
 	}
 }
-
 
 
 
