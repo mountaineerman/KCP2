@@ -93,8 +93,6 @@ public class PacketUnpacker {
 		controlPanel.moduleB.analogInput_Joystick_Twist.setRawValueAndCalculateCalibratedValues(	this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Joystick_Twist.firstByte, IP.AnalogInput_Joystick_Twist.lastByte));
 		controlPanel.moduleF.analogInput_MultiPot.setRawValueAndCalculateCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_MultiPot.firstByte, IP.AnalogInput_MultiPot.lastByte));
 		controlPanel.moduleF.analogInput_Current.setRawValueAndCalculateCalibratedValues(		this.convertTwoBytesInPacketIntoInteger(inputRefreshPacket, IP.AnalogInput_Current.firstByte, IP.AnalogInput_Current.lastByte));
-		
-		controlPanel.receivedAltitude = this.retrieveFloatInPacketAtByteNumbers(inputRefreshPacket, 29, 32);
 	}
 	
 	//Returns the integer stored in packet located at the specified byte numbers (see ICD).

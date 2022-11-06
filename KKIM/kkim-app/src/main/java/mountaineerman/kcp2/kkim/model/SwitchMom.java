@@ -18,6 +18,10 @@ public class SwitchMom {
 		this.ignoreTimerIsActive = false;
 	}
 
+	public boolean getRawStatus() {
+		return this.sp2t.getStatus();
+	}
+	
 	public boolean getDebouncedStatus() {
 		return this.debouncedStatus;
 	}

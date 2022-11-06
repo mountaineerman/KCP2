@@ -78,12 +78,16 @@ public class PacketAssembler {
 		
 		//TODO Add remaining LEDs: Module H
 		
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Red.firstByte, OP.StepperLED_Fuel_Red.lastByte, controlPanel.moduleI.stepperLED_Fuel_Red.getPWM());//TODO replace with RGB_PWM_LED
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel_Green.getPWM());//TODO replace with RGB_PWM_LED
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Blue.firstByte, OP.StepperLED_Fuel_Blue.lastByte, controlPanel.moduleI.stepperLED_Fuel_Blue.getPWM());//TODO replace with RGB_PWM_LED
 		//TODO Add remaining LEDs
-		//Stepper Motors
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
 		
-		//TODO Altitude
+		//Stepper Motors
+		//this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Stepper_Fuel.firstByte, OP.Stepper_Fuel.lastByte, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
+		
+		//Altitude
 		this.saveFloatToOutputRefreshPacketBufferAtByteNumbers(OP.Altitude.firstByte, OP.Altitude.lastByte, controlPanel.altitudeToDisplay);
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();

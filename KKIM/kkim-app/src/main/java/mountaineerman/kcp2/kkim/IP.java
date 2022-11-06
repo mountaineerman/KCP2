@@ -73,7 +73,7 @@ public enum IP {
 	//Byte 16 Bit 7 unused
 	//Byte 16 Bit 8 unused
 //								firstByte	lastByte	bitNumber	minCalibLim	maxCalibLim	minRescaleLim	maxRescaleLim	moduleID		partName
-	AnalogInput_Throttle		(17,		18,			-1,			45,			840,		0,				1000,			ModuleID.A,		"Analog Input: Throttle"),
+	AnalogInput_Throttle		(17,		18,			-1,			65,			820,		0,				1000,			ModuleID.A,		"Analog Input: Throttle"),
 	AnalogInput_Joystick_FwdBck	(19,		20,			-1,			15,			1007,		-1000,			1000,			ModuleID.B,		"Analog Input: Joystick: Forward-Back"),
 	AnalogInput_Joystick_LftRgh	(21,		22,			-1,			15,			1007,		-1000,			1000,			ModuleID.B,		"Analog Input: Joystick: Left-Right"),
 	AnalogInput_Joystick_Twist	(23,		24,			-1,			15,			1007,		-1000,			1000,			ModuleID.B,		"Analog Input: Joystick: Twist"),
