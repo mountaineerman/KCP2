@@ -111,9 +111,9 @@ void ControlPanel::testLEDsSequentially() {
 
 bool ControlPanel::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
-	isAMotorStillInMotion = this->moduleC.runStepperIfNecessary() || isAMotorStillInMotion;
+//	isAMotorStillInMotion = this->moduleC.runStepperIfNecessary() || isAMotorStillInMotion;
 //	isAMotorStillInMotion = this->moduleG.runStepperIfNecessary() || isAMotorStillInMotion;
-//	isAMotorStillInMotion = this->moduleI.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleI.runStepperIfNecessary() || isAMotorStillInMotion;
 //	isAMotorStillInMotion = this->moduleGT.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;
 }
@@ -121,11 +121,11 @@ bool ControlPanel::runStepperIfNecessary() {
 void ControlPanel::blockRunAllSteppersToPosition(int position) {
 	
 //	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
-	this->moduleC.stepper_Gforce.setDesiredPosition(position);
+//	this->moduleC.stepper_Gforce.setDesiredPosition(position);
 //	this->moduleG.stepper_Mach.setDesiredPosition(position);
 //	this->moduleG.stepper_Pitch.setDesiredPosition(position);
 //	//this->moduleG.stepper_Heading...
-//	this->moduleI.stepper_Fuel.setDesiredPosition(position);
+	this->moduleI.stepper_Fuel.setDesiredPosition(position);
 //	this->moduleI.stepper_Charge.setDesiredPosition(position);
 //	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
 //	this->moduleGT.stepper_Density.setDesiredPosition(position);
@@ -372,6 +372,7 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		} else if(userInput == "1") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_HeatLife);
 		} else if(userInput == "2") {
+			//this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_Gforce);
 			this->diagnosticMode_testStepperMotor2(this->moduleC.stepper_Gforce);
 		} else if(userInput == "3") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Mach);
@@ -380,7 +381,8 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		} else if(userInput == "5") {
 			this->diagnosticMode_testNEMA17StepperMotor(this->moduleG.stepper_Heading);//TODO: Combine StepperMotor with StepperMotorNEMA17?
 		} else if(userInput == "6") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Fuel);
+			//this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Fuel);
+			this->diagnosticMode_testStepperMotor2(this->moduleI.stepper_Fuel);
 		} else if(userInput == "7") {
 			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Charge);
 		} else if(userInput == "8") {

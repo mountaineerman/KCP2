@@ -215,7 +215,7 @@ void KMegaService::testAltitudeGauge() {
 		this->packetAssembler.assembleAltitudePacket();
 		this->serialCommunicator.sendAltitudePacket();
 		delay(6000);
-		-10km
+		//-10km
 		this->controlPanel.moduleGT.altitude = -9950;
 		this->packetAssembler.assembleAltitudePacket();
 		this->serialCommunicator.sendAltitudePacket();
@@ -308,7 +308,7 @@ void KMegaService::testAltitudeGauge() {
 		this->packetAssembler.assembleAltitudePacket();
 		this->serialCommunicator.sendAltitudePacket();
 		delay(6000);
-		9.9m
+		//9.9m
 		this->controlPanel.moduleGT.altitude = 9.94;
 		this->packetAssembler.assembleAltitudePacket();
 		this->serialCommunicator.sendAltitudePacket();

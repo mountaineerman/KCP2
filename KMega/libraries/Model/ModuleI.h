@@ -8,6 +8,7 @@
 #include <SwitchSP2T.h>
 #include <LED_PWM.h>
 #include <StepperMotor.h>
+#include <StepperMotor2.h>//TODO
 
 
 /* Module I
@@ -47,7 +48,8 @@ public:
 	LED_PWM ledPWM_INTAKE_Red;
 	LED_PWM ledPWM_INTAKE_Green;
 	LED_PWM ledPWM_INTAKE_Blue;
-	StepperMotor stepper_Fuel;
+	//StepperMotor stepper_Fuel;
+	StepperMotor2 stepper_Fuel;	
 	StepperMotor stepper_Charge;
 	StepperMotor stepper_MonopropellantIntake;
 };
