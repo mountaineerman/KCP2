@@ -63,13 +63,10 @@ public class KRPCCommunicator {
 //			this.controlPanel.mach = this.flight.getMach();
 //			this.controlPanel.pitch = this.flight.getPitch();
 //			this.controlPanel.heading = this.flight.getHeading();
-			
-			
 			this.controlPanel.currentLiquidFuel = this.resources.amount("LiquidFuel");//TODO
 			this.controlPanel.maxLiquidFuel = this.resources.max("LiquidFuel");//TODO
 			this.controlPanel.currentSolidFuel = this.resources.amount("SolidFuel");//TODO
 			this.controlPanel.maxSolidFuel = this.resources.max("SolidFuel");//TODO
-			//this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?//TODO other fuel types...
 			
 			//System.out.println("fuel: " + this.resources.amount("LiquidFuel"));
 			//this.controlPanel.charge = this.resources.amount("TBD");//TODO pull constants into config file?
