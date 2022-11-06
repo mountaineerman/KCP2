@@ -37,11 +37,14 @@ public enum OP {
 	Sensitivity50PercentLED	(36,		37,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 50% LED"),
 	Sensitivity25PercentLED	(38,		39,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 25% LED"),
 //							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	StepperLED_Fuel_Red		(114,		115,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Red"),
 	StepperLED_Fuel_Green	(116,		117,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Green"),
+	StepperLED_Fuel_Blue	(118,		119,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Blue"),
 //	TODO Add remaining LEDs
 	
 //Stepper Motors			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Stepper_Gforce			(170,		171,		ModuleID.C,		195,		3430,		"G-Force Stepper Motor"),
+	Stepper_Gforce			(170,		171,		ModuleID.C,		160,		3400,		"G-Force Stepper Motor"),
+	Stepper_Fuel			(178,		179,		ModuleID.I,		45,			3650,		"Fuel Stepper Motor"),
 //	TODO Add remaining Stepper Motors	
 //Altitude					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	Altitude				(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");

@@ -63,7 +63,14 @@ public class KRPCCommunicator {
 //			this.controlPanel.mach = this.flight.getMach();
 //			this.controlPanel.pitch = this.flight.getPitch();
 //			this.controlPanel.heading = this.flight.getHeading();
-			this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?//TODO other fuel types...
+			
+			
+			this.controlPanel.currentLiquidFuel = this.resources.amount("LiquidFuel");//TODO
+			this.controlPanel.maxLiquidFuel = this.resources.max("LiquidFuel");//TODO
+			this.controlPanel.currentSolidFuel = this.resources.amount("SolidFuel");//TODO
+			this.controlPanel.maxSolidFuel = this.resources.max("SolidFuel");//TODO
+			//this.controlPanel.fuel = this.resources.amount("LiquidFuel");//TODO pull constants into config file?//TODO other fuel types...
+			
 			//System.out.println("fuel: " + this.resources.amount("LiquidFuel"));
 			//this.controlPanel.charge = this.resources.amount("TBD");//TODO pull constants into config file?
 			//this.controlPanel.monopropellant = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
@@ -72,7 +79,7 @@ public class KRPCCommunicator {
 //			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
 //			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?
 			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
-			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude(); 
+			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude();
 		} catch (RPCException e) {
 			e.printStackTrace();
 		}
@@ -88,9 +95,14 @@ public class KRPCCommunicator {
 		}
 		
 		//Module B
-		try {
-			this.control.setAbort(this.controlPanel.moduleB.abortButton.getDebouncedStatus());
-		} catch (RPCException e) {e.printStackTrace();}
+//		try {
+//			this.control.setAbort(this.controlPanel.moduleB.abortButton.getDebouncedStatus());
+//		} catch (RPCException e) {e.printStackTrace();}
+		if (this.controlPanel.moduleB.abortButton.getDebouncedStatus()) {
+			try {
+				this.control.activateNextStage();
+			} catch (RPCException e) {e.printStackTrace();}	
+		}
 		
 		//Module D
 		if (this.controlPanel.moduleD.sasSwitch.getStatus()) {
@@ -203,12 +215,16 @@ public class KRPCCommunicator {
 //			} catch (RPCException e) {e.printStackTrace();}
 //		}
 		
-//		if (this.controlPanel.moduleE.solarSwitch.getDebouncedStatus()) {
-//			try {
-//				this.control.setActionGroup(5, true);//FIXME toggle not working
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
-//		
+		if (this.controlPanel.moduleE.solarSwitch.getDebouncedStatus()) {
+			try {
+				this.control.setActionGroup(5, true);//FIXME toggle not working
+			} catch (RPCException e) {e.printStackTrace();}
+		} else {
+			try {
+				this.control.setActionGroup(5, false);//FIXME toggle not working
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
 //		if (this.controlPanel.moduleE.ladderSwitch.getDebouncedStatus()) {
 //			try {
 //				this.control.setActionGroup(4, true);//FIXME toggle not working
@@ -239,18 +255,26 @@ public class KRPCCommunicator {
 //			} catch (RPCException e) {e.printStackTrace();}
 //		}
 //		
-//		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
-//			try {
-//				this.control.setActionGroup(7, true);
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
-//		
-//		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {//TODO repack parachute?
-//			try {
-//				this.control.setActionGroup(6, true);
-//				//this.control.setParachutes(true);
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
+		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
+			try {
+				this.control.setActionGroup(7, true);
+			} catch (RPCException e) {e.printStackTrace();}
+		} else {
+			try {
+				this.control.setActionGroup(7, false);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
+		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {//TODO repack parachute?
+			try {
+				this.control.setActionGroup(6, true);
+				//this.control.setParachutes(true);
+			} catch (RPCException e) {e.printStackTrace();}
+		} else {
+			try {
+				this.control.setActionGroup(6, false);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
 		
 		//Module F
 		

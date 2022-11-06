@@ -26,7 +26,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float joystick_FwdBck = 0;//Range: -1(Back) to 1(Forward)
 	public float joystick_LftRgh = 0;//Range: -1(Right) to 1(Left)
 	public float joystick_Twist = 0; //Range: -1(CCW) to 1(CW)
-	public float receivedAltitude = -100; //TODO remove
 	
 	//TODO WRAP IN KSP class:
 	//TODO double-check variable types in kRPC...
@@ -37,7 +36,11 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float mach = 0;
 	public float pitch = 0;	 //Units: degrees. Range: -90.0 to +90.0
 	public float heading = 0;//Units: degrees. Range: 0.0 to 360.0
-	public float fuel = 0;//TODO replace
+	public float currentLiquidFuel = 0;//TODO replace
+	public float maxLiquidFuel = 0;//TODO replace
+	public float currentSolidFuel = 0;//TODO replace
+	public float maxSolidFuel = 0;//TODO replace
+	private int milliPercentFuel = 0;//TODO replace
 	public float charge = 0;//TODO replace
 	public float monopropellant = 0;//TODO replace
 	public float intakeAir = 0;//TODO replace
@@ -78,6 +81,18 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
+		if (this.moduleE.fairingButton.getRawStatus() == true) {
+			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMinPWM());
+		} else {
+			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());
+		}
+		
+		if (this.moduleE.chuteButton.getRawStatus() == true) {
+			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMinPWM());
+		} else {
+			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());
+		}
+		
 		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
 			this.altitudeToDisplay = (float) this.altitudeAboveSurface;
@@ -104,24 +119,67 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		this.moduleF.sensitivitySwitch.updatePosition();
 		
-		if (this.fuel > 0) { //TODO replace
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
-		} else {
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
-		}
 		
-		this.milliGforce = Math.round(this.gforce * 1000);
-		if (this.milliGforce < 0) {
-			this.milliGforce = 0;
-		} else if (this.milliGforce > 15000) {
-			this.milliGforce = 15000;
+		if (this.maxSolidFuel > 0) { //TODO replace
+			this.milliPercentFuel = (int) (this.currentSolidFuel / this.maxSolidFuel * 100 * 1000);
+		} else if (this.maxLiquidFuel > 0) {
+			this.milliPercentFuel = (int) (this.currentLiquidFuel / this.maxLiquidFuel * 100 * 1000);
+		} else {
+			this.milliPercentFuel = 0;
 		}
-		int temp = this.scaleIntegerToNewRange(this.milliGforce, 0, 15000, OP.Stepper_Gforce.calibrationCCWLimit, OP.Stepper_Gforce.calibrationCWLimit);
-//		System.out.println();
-//		System.out.println("G-Force (float): " + this.gforce);
-//		System.out.println("Milli G-Force (int): " + this.milliGforce);
-//		System.out.println("desiredPosition (scaled): " + temp);
-		this.moduleC.stepper_Gforce.setDesiredPosition(temp);
+		if (this.milliPercentFuel > 100000) {//TODO unnecessary?
+			this.milliPercentFuel = 100000;
+		}
+		if (this.milliPercentFuel > 99000) {
+			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMaxPWM());
+		} else if (this.milliPercentFuel > 90000) {
+			//green
+			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMinPWM());
+		} else if (this.milliPercentFuel > 20000) {
+			//white
+			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMaxPWM());
+		} else if (this.milliPercentFuel > 10000) {
+			//yellow
+			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMinPWM());
+		} else if (this.milliPercentFuel > 100) {
+			//red
+			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMinPWM());
+		} else {
+			//off
+			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaDimPWM());
+			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaDimPWM());
+			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaDimPWM());
+		}
+		int temp = this.scaleIntegerToNewRange(this.milliPercentFuel, 0, 100000, OP.Stepper_Fuel.calibrationCCWLimit, OP.Stepper_Fuel.calibrationCWLimit);
+		//System.out.println();
+		//System.out.println(" Solid Fuel: " + this.currentSolidFuel + " / " + this.maxSolidFuel);
+		//System.out.println("Liquid Fuel: " + this.currentLiquidFuel + " / " + this.maxLiquidFuel);
+		//System.out.println("milliPercentFuel: " + this.milliPercentFuel);
+		//System.out.println("milliPercentFuel (scaled): " + temp);
+		this.moduleI.stepper_Fuel.setDesiredPosition(temp);
+		
+//		this.milliGforce = Math.round(this.gforce * 1000);
+//		if (this.milliGforce < 0) {
+//			this.milliGforce = 0;
+//		} else if (this.milliGforce > 15000) {
+//			this.milliGforce = 15000;
+//		}
+//		int temp = this.scaleIntegerToNewRange(this.milliGforce, 0, 15000, OP.Stepper_Gforce.calibrationCCWLimit, OP.Stepper_Gforce.calibrationCWLimit);
+////		System.out.println();
+////		System.out.println("G-Force (float): " + this.gforce);
+////		System.out.println("Milli G-Force (int): " + this.milliGforce);
+////		System.out.println("desiredPosition (scaled): " + temp);
+//		this.moduleC.stepper_Gforce.setDesiredPosition(temp);
 		
 		if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
 			throttleLever = (float) 0;
@@ -129,7 +187,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
 		}
 		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_FwdBck.maxRescaleLim;
-		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) -IP.AnalogInput_Joystick_LftRgh.maxRescaleLim;
+		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_LftRgh.maxRescaleLim;
 		joystick_Twist = ((this.moduleB.analogInput_Joystick_Twist.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_Twist.maxRescaleLim;
 		
 		
