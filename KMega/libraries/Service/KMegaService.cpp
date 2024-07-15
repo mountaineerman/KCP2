@@ -53,7 +53,8 @@ void KMegaService::startupMode() {
 	controlPanel.setAllLEDsOff();
 	delay(100);
 	
-	controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
+	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
+	//controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
 	
 	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
@@ -125,7 +126,8 @@ void KMegaService::standardOperatingMode() {
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
 	time12 = millis();
 	
-	this->controlPanel.runStepperIfNecessary();
+	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
+	//this->controlPanel.runStepperIfNecessary();
 	
 //	if (sentInputRefreshPacket && gotOutputRefreshPacket) {
 //		Serial.println();
