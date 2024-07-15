@@ -16,3 +16,6 @@ build
 **/.settings
 **/.classpath
 **/bin/**
+
+# Ignore "handy" files
+Kerbal Space Program - Shortcut.lnk

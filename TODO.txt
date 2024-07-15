@@ -1,0 +1,38 @@
+Clean up uncommitted changes
+Rename master > main
+Consider using PlatformIO (+VS Code?) instead of Arduino IDE
+
+
+
+Add interrupt logic for stepper motors (don't let the packet processing slow down the motor movement)
+Convert all other stepper motors from StepperMotor to StepperMotor2.
+
+Chute/Fair: LED ON when switch up, OFF when pressed.
+Send Button info to KSP
+Send LED info to KMega
+Send Stepper info to KMega
+Extract all needed information from kRPC. Measure performance.
+kRPC: streams?
+Replace LED brightness (0-4095) with 1 byte (0-255).
+
+
+
+Integrate:
+Time Warp+
+Time Warp-
+Map
+Mute
+Autopilot Modes
+Science
+Reset
+
+Fix:
+Gear/Landing Legs
+Solar (reset right)
+Ladder (reset right)
+
+Configure auto action groups as follows (in KSP):
+Action Group 4: Toggle Ladder
+Action Group 5: Toggle Solar Panel / Deploy Solar Panel (some cannot be toggled)
+Action Group 6: Deploy parachute
+Action Group 7: Jettison fairing
