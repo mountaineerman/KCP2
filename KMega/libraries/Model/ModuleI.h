@@ -28,8 +28,11 @@ public:
 	void setAllLEDsOn();
 	void testLEDsSequentially();
 	
-	//Check if any stepper in the Module needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
-	bool runStepperIfNecessary();
+	//Check if any stepper in the Module needs to move. Move them one step if they do.
+	void runStepperIfNecessary();
+	
+	//Returns true if any stepper is in motion.
+	bool isMoving();
 	
 	//Parts:
 	SwitchSP2T switch_MonopropellantIntake; // 0 = Monopropellant,  1 = Intake Air

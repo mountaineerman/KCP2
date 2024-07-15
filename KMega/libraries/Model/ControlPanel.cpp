@@ -109,13 +109,20 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleGT.testLEDsSequentially();
 }
 
-bool ControlPanel::runStepperIfNecessary() {
-	bool isAMotorStillInMotion = false;
-//	isAMotorStillInMotion = this->moduleC.runStepperIfNecessary() || isAMotorStillInMotion;
-//	isAMotorStillInMotion = this->moduleG.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->moduleI.runStepperIfNecessary() || isAMotorStillInMotion;
-//	isAMotorStillInMotion = this->moduleGT.runStepperIfNecessary() || isAMotorStillInMotion;
-	return isAMotorStillInMotion;
+void ControlPanel::runStepperIfNecessary() {
+//	this->moduleC.runStepperIfNecessary();
+//	this->moduleG.runStepperIfNecessary();
+	this->moduleI.runStepperIfNecessary();
+//	this->moduleGT.runStepperIfNecessary();
+}
+
+bool ControlPanel::isMoving() {
+	bool isAStepperInMotion = false;
+//	isAStepperInMotion = this->moduleC.isMoving() || isAStepperInMotion;
+//	isAStepperInMotion = this->moduleG.isMoving() || isAStepperInMotion;
+	isAStepperInMotion = this->moduleI.isMoving() || isAStepperInMotion;
+//	isAStepperInMotion = this->moduleGT.isMoving() || isAStepperInMotion;
+	return isAStepperInMotion;
 }
 
 void ControlPanel::blockRunAllSteppersToPosition(int position) {
@@ -133,8 +140,9 @@ void ControlPanel::blockRunAllSteppersToPosition(int position) {
 //	this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
 //	this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
 	
-	while(this->runStepperIfNecessary()) {
-		delayMicroseconds(this->moduleC.stepper_Gforce.get_maxTimeBetweenSteps() - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);//TODO Works right for 1 gauge. Fix for all gauges...
+	while(this->isMoving()) {
+		//delayMicroseconds(this->moduleC.stepper_Gforce.get_maxTimeBetweenSteps() - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);//TODO Works right for 1 gauge. Fix for all gauges...//TODO REMOVE
+		delay(1);
 	}
 }
 

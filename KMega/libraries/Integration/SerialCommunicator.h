@@ -31,6 +31,8 @@ public:
 	void sendInputRefreshPacket();
 	//Attempts to send a KKIMTerminalDisplayPacket to KKIM.
 	void sendKKIMTerminalDisplayPacket(char * charArrayToDisplay, int charArrayLength);
+	void sendKKIMTerminalDisplayPacket(long longToDisplay);
+	void sendKKIMTerminalDisplayPacket(float floatToDisplay);//TODO verify
 	
 	void tallyCommunicationsDiagnosticData();//TODO Inject Communications Diagnostic Data into inputRefreshPacket
 	void displayCommunicationsDiagnosticData();

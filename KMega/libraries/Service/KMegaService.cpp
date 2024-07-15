@@ -24,14 +24,14 @@ KMegaService::KMegaService()
 	
 	this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
 	
-	
-	this->startupMode(); //TODO move out of constructor
-	
 	//this->testAltitudeGauge();
+}
+
+void KMegaService::run() {
 	
-	this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for DiagnosticMode
-	this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
-	while (true) {//TODO move out of constructor
+	this->startupMode();
+	
+	while (true) {
 		
 		if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
 			this->controlPanel.runDiagnosticMode();
@@ -48,20 +48,23 @@ KMegaService::KMegaService()
 
 void KMegaService::startupMode() {
 
-	controlPanel.setAllLEDsOn();
+	this->controlPanel.setAllLEDsOn();
 	delay(1000);
-	controlPanel.setAllLEDsOff();
+	this->controlPanel.setAllLEDsOff();
 	delay(100);
 	
-	controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
+	this->controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
 	
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
 	
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKNanoSerialLink();
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for DiagnosticMode
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
 }
 
 void KMegaService::standardOperatingMode() {
@@ -124,8 +127,6 @@ void KMegaService::standardOperatingMode() {
 	//this->serialCommunicator.tallyCommunicationsDiagnosticData();
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
 	time12 = millis();
-	
-	this->controlPanel.runStepperIfNecessary();
 	
 //	if (sentInputRefreshPacket && gotOutputRefreshPacket) {
 //		Serial.println();

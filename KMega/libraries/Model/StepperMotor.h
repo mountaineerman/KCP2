@@ -18,7 +18,7 @@
  *
  * PRE-REQUISITE: Motor begins in STEPPER_CCW_LIMIT position
  * No input validation is performed: TODO remove*/
-class StepperMotor : public Interface_StepperMotorAggregator
+class StepperMotor //: public Interface_StepperMotorAggregator
 {
 public:
 	StepperMotor(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted);

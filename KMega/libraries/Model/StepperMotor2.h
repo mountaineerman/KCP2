@@ -20,14 +20,17 @@ class StepperMotor2 : public Interface_StepperMotorAggregator
 public:
 	StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int maxSpeed, int ccwLimit, int cwLimit);
 	
-	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or blockRunToDesiredPosition()
+	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary()
 	void setDesiredPosition(int desiredPosition);
 	
 	//Set the desired position, relative to the current position (negative == CCW, positive == CW).
 	void setDesiredRelativePosition(int desiredRelativePosition);
 	
-	//Check if the stepper needs to move. Move it one step if it does. Returns true if the motor is still running to the desired position.
-	bool runStepperIfNecessary();
+	//Check if the stepper needs to move. Move it one step if it does.
+	void runStepperIfNecessary();
+	
+	//Returns true if the stepper is in motion (currentPosition != desiredPosition)
+	bool isMoving();
 	
 	//Move the stepper. Block until it is in position.
 	void blockRunToDesiredPosition();

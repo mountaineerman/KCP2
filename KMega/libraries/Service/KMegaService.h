@@ -13,6 +13,9 @@ class KMegaService
 {
 public:
 	KMegaService();
+	void run();
+	ControlPanel controlPanel;
+	SerialCommunicator serialCommunicator;
 private:
 	void startupMode();
 	void standardOperatingMode();
@@ -22,8 +25,8 @@ private:
 	void displayPacket(const byte * packet, int packetLength, String packetName);
 	void testAltitudeGauge();
 	
-	ControlPanel controlPanel;
-	SerialCommunicator serialCommunicator;
+	
+	//SerialCommunicator serialCommunicator;
 	PacketUnpacker packetUnpacker;
 	PacketAssembler packetAssembler;
 	

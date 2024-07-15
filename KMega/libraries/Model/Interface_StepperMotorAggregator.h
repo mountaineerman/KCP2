@@ -8,7 +8,9 @@
 class Interface_StepperMotorAggregator
 {
 public:
-	virtual bool runStepperIfNecessary() = 0;
+	virtual void runStepperIfNecessary() = 0;
+	//bool isMoving(); TODO?
+	//void blockRunToDesiredPosition(); TODO?
 };
 
 #endif

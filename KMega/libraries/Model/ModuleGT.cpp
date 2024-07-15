@@ -78,13 +78,11 @@ void ModuleGT::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
-bool ModuleGT::runStepperIfNecessary() {
-	bool isAMotorStillInMotion = false;
-	isAMotorStillInMotion = this->stepper_Density.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_Speed.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_VertSpeed.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_RadarAlt.runStepperIfNecessary() || isAMotorStillInMotion;
-	return isAMotorStillInMotion;	
+void ModuleGT::runStepperIfNecessary() {
+	this->stepper_Density.runStepperIfNecessary();
+	this->stepper_Speed.runStepperIfNecessary();
+	this->stepper_VertSpeed.runStepperIfNecessary();
+	this->stepper_RadarAlt.runStepperIfNecessary();
 }
 
 

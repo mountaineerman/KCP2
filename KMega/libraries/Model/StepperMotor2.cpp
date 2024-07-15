@@ -38,11 +38,9 @@ void StepperMotor2::setDesiredRelativePosition(int desiredRelativePosition) {
 	this->setDesiredPosition(this->currentPosition + desiredRelativePosition);
 }
 
-bool StepperMotor2::runStepperIfNecessary() {
+void StepperMotor2::runStepperIfNecessary() {
 	
-	if (this->currentPosition == this->desiredPosition) {
-		return false;
-	} else {
+	if (this->currentPosition != this->desiredPosition) {
 		if (this->currentPosition < this->desiredPosition) {//Set direction: Clockwise
 			if (this->arePinsInverted) {
 				digitalWrite(this->pinDirection, HIGH);
@@ -62,13 +60,16 @@ bool StepperMotor2::runStepperIfNecessary() {
 		digitalWrite(this->pinStep, HIGH); //Note: transition from LOW to HIGH causes step
 		delayMicroseconds(STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS);
 		digitalWrite(this->pinStep, LOW); //Reset for future steps
-		return true;
 	}
 }
 
+bool StepperMotor2::isMoving() {
+	return (this->currentPosition != this->desiredPosition);
+}
+
 void StepperMotor2::blockRunToDesiredPosition() {
-	while(this->runStepperIfNecessary()) {
-		delayMicroseconds(this->maxTimeBetweenSteps - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);
+	while(this->isMoving()) {
+		delay(1);
 	}
 }
 

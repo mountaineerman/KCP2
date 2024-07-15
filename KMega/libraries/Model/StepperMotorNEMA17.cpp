@@ -42,11 +42,10 @@ void StepperMotorNEMA17::setDesiredRelativePosition(long desiredRelativePosition
 	this->stepper.move(desiredRelativePosition);
 }
 
-bool StepperMotorNEMA17::runStepperIfNecessary() {
+void StepperMotorNEMA17::runStepperIfNecessary() {
 	this->stepper.enableOutputs();
-	bool isStepperStillInMotion = this->stepper.run();
+	this->stepper.run();
 	this->stepper.disableOutputs();
-	return isStepperStillInMotion;
 	//TODO Try adding hibernation later (AccelStepper:  disableOutputs(); enableOutputs();)
 }
 

@@ -100,15 +100,19 @@ void ModuleI::testLEDsSequentially() {
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
 
-bool ModuleI::runStepperIfNecessary() {
-	bool isAMotorStillInMotion = false;
-	isAMotorStillInMotion = this->stepper_Fuel.runStepperIfNecessary() || isAMotorStillInMotion;
-	//isAMotorStillInMotion = this->stepper_Charge.runStepperIfNecessary() || isAMotorStillInMotion;
-	//isAMotorStillInMotion = this->stepper_MonopropellantIntake.runStepperIfNecessary() || isAMotorStillInMotion;
-	return isAMotorStillInMotion;
+void ModuleI::runStepperIfNecessary() {
+	this->stepper_Fuel.runStepperIfNecessary();
+	//this->stepper_Charge.runStepperIfNecessary();
+	//this->stepper_MonopropellantIntake.runStepperIfNecessary();
 }
 
-
+bool ModuleI::isMoving() {
+	bool isAStepperInMotion = false;
+	isAStepperInMotion = this->stepper_Fuel.isMoving() || isAStepperInMotion;
+//	isAStepperInMotion = this->stepper_Charge.isMoving() || isAStepperInMotion;
+//	isAStepperInMotion = this->stepper_MonopropellantIntake.isMoving() || isAStepperInMotion;
+	return isAStepperInMotion;
+}
 
 
 	

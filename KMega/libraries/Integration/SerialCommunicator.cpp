@@ -176,6 +176,19 @@ void SerialCommunicator::sendKKIMTerminalDisplayPacket(char * charArrayToDisplay
 	Serial.write(KKIMTerminalDisplayPacketBuffer, packetLength);
 }
 
+void SerialCommunicator::sendKKIMTerminalDisplayPacket(long longToDisplay) {
+	char charArray[16] = "                ";
+	ltoa(longToDisplay, charArray, 10);
+	this->sendKKIMTerminalDisplayPacket(charArray, 16);
+}
+
+void SerialCommunicator::sendKKIMTerminalDisplayPacket(float floatToDisplay) {//TODO VERIFY
+	char floatAsCharArray[50] = {};
+	//dtostrf(float_value, min_width, num_digits_after_decimal, where_to_store_string)
+	dtostrf(floatToDisplay, 50, 45, floatAsCharArray);
+	this->sendKKIMTerminalDisplayPacket(floatAsCharArray, 50);
+}
+
 void SerialCommunicator::tallyCommunicationsDiagnosticData() {
 	if ( (millis() - this->timer) > MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS ) {
 		this->numberOfRejectedIncomingBytes 		= this->running_numberOfRejectedIncomingBytes;
