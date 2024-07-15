@@ -32,3 +32,7 @@ void LED_PWM::setPWMAndWriteImmediately(int pwm) {
 	this->setPWM(pwm);
 	this->ledDriverBoards.write();
 }
+
+int LED_PWM::getPWM() {
+	return this->pwm;
+}

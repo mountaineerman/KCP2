@@ -9,6 +9,7 @@ Fly:
 	Select "Add server"
 	Keep default settings (TBC)
 	Select "Start"
+7. Launch KKIM (Ctrl+F11) << to be confirmed
 
 If Control Panel (KMega/KNano) is not correctly programmed, run: re-program_control_panel.cmd
 
@@ -33,6 +34,14 @@ Diagnostic Mode:
 
 
 TROUBLESHOOTING
+
+Symptoms:
+-COMMS LED is flashing
+-KKIM ok.
+-Control Panel not displaying any information from KSP
+-Control Panel not able to control any values in KSP
+Fix:
+Double-check the COM port in KMega configuration.h matches what Arduino IDE is detecting
 
 Symptoms:
 -Most lights on.

@@ -18,6 +18,7 @@ private:
 	void standardOperatingMode();
 	//void diagnosticMode();
 	void shutdownMode();
+	void updateCommsLEDToIndicateError();
 	void clearPacket(byte * packet, int packetLength);
 	void displayPacket(const byte * packet, int packetLength, String packetName);
 	void testAltitudeGauge();
@@ -32,6 +33,8 @@ private:
 	byte inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES];	//READ-ONLY by KMegaService after initialization
 	
 	long inputRefreshPacketLastSendTimeInMilliseconds;
+	long outputRefreshPacketLastReceiveTimeInMilliseconds;
+	long commsLEDErrorStateLastToggleTimeInMilliseconds;
 };
 
 #endif

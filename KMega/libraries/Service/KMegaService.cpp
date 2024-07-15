@@ -23,6 +23,8 @@ KMegaService::KMegaService()
 	this->packetAssembler.setInputRefreshPacket(inputRefreshPacket);
 	
 	this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
+	this->outputRefreshPacketLastReceiveTimeInMilliseconds = millis();
+	this->commsLEDErrorStateLastToggleTimeInMilliseconds = millis();
 	
 	
 	this->startupMode(); //TODO move out of constructor
@@ -48,100 +50,58 @@ KMegaService::KMegaService()
 
 void KMegaService::startupMode() {
 
-	controlPanel.setAllLEDsOn();
+	this->controlPanel.setAllLEDsOn();
 	delay(1000);
-	controlPanel.setAllLEDsOff();
+	this->controlPanel.setAllLEDsOff();
 	delay(100);
 	
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
 	//controlPanel.sweepStepperMotorsThroughMaxMinToCalibrate();
 	
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
 	
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKNanoSerialLink();
-	controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 }
 
 void KMegaService::standardOperatingMode() {
 
-	long time1 = 0;
-	long time2 = 0;
-	long time3 = 0;
-	long time4 = 0;
-	long time5 = 0;
-	long time6 = 0;
-	long time7 = 0;
-	long time8 = 0;
-	long time9 = 0;
-	long time10 = 0;
-	long time11 = 0;
-	long time12 = 0;
 	bool sentInputRefreshPacket = false;
 	bool gotOutputRefreshPacket = false;
 
-
 	if ( (millis() - this->inputRefreshPacketLastSendTimeInMilliseconds) > INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS ) {
 		sentInputRefreshPacket = true;
-		time1 = millis();
 		this->controlPanel.refreshInputStatus();
-		time2 = millis();
 		this->packetAssembler.assembleInputRefreshPacket();
-		time3 = millis();
 		//this->displayPacket(inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES, "inputRefreshPacket");//TODO verify. Old: //this->displayInputRefreshPacket();
 		this->serialCommunicator.sendInputRefreshPacket();
-		time4 = millis();
 		this->inputRefreshPacketLastSendTimeInMilliseconds = millis();
 	}
 	
-	time5 = millis();
 	this->serialCommunicator.ingestDataFromSerialBufferToPacketBuffer();
-	time6 = millis();
 	if ( this->serialCommunicator.getOutputRefreshPacket() ) {
 		gotOutputRefreshPacket = true;
+		this->outputRefreshPacketLastReceiveTimeInMilliseconds = millis();
 		//this->displayPacket(outputRefreshPacket, OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES, "outputRefreshPacket");//TODO verify. Old: //this->displayOutputRefreshPacket();
-		time7 = millis();
 		this->packetUnpacker.unpackOutputRefreshPacketIntoModel();
 		
-		//TODO remove eventually:
-		//this->serialCommunicator.sendKKIMTerminalDisplayPacket("Hello world!", 12);
-		//char floatAsCharArray[50] = {};
-		//dtostrf(float_value, min_width, num_digits_after_decimal, where_to_store_string)
-		//dtostrf(this->controlPanel.moduleGT.altitude, 50, 45, floatAsCharArray);
-		//this->serialCommunicator.sendKKIMTerminalDisplayPacket("altitude: ",10);
-		//this->serialCommunicator.sendKKIMTerminalDisplayPacket(floatAsCharArray,50);
-		
-		time8 = millis();
 		this->controlPanel.writeLEDStatusToLEDDriverBoards();
-		time9 = millis();
 		this->packetAssembler.assembleAltitudePacket();
-		time10 = millis();
 		this->serialCommunicator.sendAltitudePacket();
-		time11 = millis();
+	}
+	
+	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAXIMUM_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_IN_MILLISECONDS ) {
+		this->updateCommsLEDToIndicateError();
 	}
 	
 	//this->serialCommunicator.tallyCommunicationsDiagnosticData();
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
-	time12 = millis();
 	
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
 	//this->controlPanel.runStepperIfNecessary();
-	
-//	if (sentInputRefreshPacket && gotOutputRefreshPacket) {
-//		Serial.println();
-//		Serial.print("controlPanel.refreshInputStatus: "); Serial.println(time2 - time1);
-//		Serial.print("packetAssembler.assembleInputRefreshPacket: "); Serial.println(time3 - time2);
-//		Serial.print("serialCommunicator.sendInputRefreshPacket: "); Serial.println(time4 - time3);
-//		Serial.print("serialCommunicator.ingestDataFromSerialBufferToPacketBuffer: "); Serial.println(time6 - time5);
-//		Serial.print("serialCommunicator.getOutputRefreshPacket: "); Serial.println(time7 - time6);
-//		Serial.print("packetUnpacker.unpackOutputRefreshPacketIntoModel: "); Serial.println(time8 - time7);
-//		Serial.print("controlPanel.writeLEDStatusToLEDDriverBoards: "); Serial.println(time9 - time8);
-//		Serial.print("packetAssembler.assembleAltitudePacket: "); Serial.println(time10 - time9);
-//		Serial.print("serialCommunicator.sendAltitudePacket: "); Serial.println(time11 - time10);
-//		Serial.print("Total: "); Serial.println(time12 - time1);
-//	}
 	
 	//TODO Idle if necessary
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
@@ -155,9 +115,21 @@ void KMegaService::shutdownMode() {
 	
 	serialCommunicator.teardownSerialLinks();
 
-	controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
+	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
+	//controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 	
 	controlPanel.setAllLEDsOff();
+}
+
+void KMegaService::updateCommsLEDToIndicateError() {
+	if ( (millis() - this->commsLEDErrorStateLastToggleTimeInMilliseconds) > 1000 ) {
+		if ( this->controlPanel.moduleG.ledPWM_Comms.getPWM() == PWM_LED_MAXIMUM ) {
+			this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+		} else {
+			this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+		}
+		this->commsLEDErrorStateLastToggleTimeInMilliseconds = millis();
+	}
 }
 
 void KMegaService::clearPacket(byte * packet, int packetLength) {

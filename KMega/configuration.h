@@ -16,12 +16,13 @@ static const int ARDUINO_SERIAL_WRITE_BUFFER_LENGTH_IN_BYTES = 64;//Note: the Ar
 
 
 //KKIM Interface
-static const String COMMUNICATION_PORT = "COM4";
+static const String COMMUNICATION_PORT = "COM3"; //or COM4 required?
 static const unsigned long COMPUTER_BAUD_RATE = 115200; //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
 static const int REFRESH_PERIOD_IN_MILLISECONDS = 1;//TODO replace in program...
 static const int INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS = 100;
 static const int OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 195;//Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 31;  //Length of Delimiter + Header + Payload.
+static const int MAXIMUM_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_IN_MILLISECONDS = 1000; //The length of time before the controlPanel.moduleG.ledPWM_Comms LED will start flashing, indicating no output packet has been received
 static const int MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS = 1000;
 
 //KNano Interface

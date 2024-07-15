@@ -22,6 +22,8 @@ public:
 	void setPWM(int pwm);
 	//Sets the pwm level for the LED_PWM and "pushes" the value to the LED Driver Boards immediately.
 	void setPWMAndWriteImmediately(int pwm);
+	//Returns the pwm level for the LED_PWM.
+	int getPWM();
 	
 private:
 	/* Range: Board1: 0-23,
