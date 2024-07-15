@@ -44,7 +44,7 @@ public enum OP {
 	
 //Stepper Motors			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	Stepper_Gforce			(170,		171,		ModuleID.C,		160,		3400,		"G-Force Stepper Motor"),
-	Stepper_Fuel			(178,		179,		ModuleID.I,		45,			3650,		"Fuel Stepper Motor"),
+	Stepper_Fuel			(178,		179,		ModuleID.I,		80,			3699,		"Fuel Stepper Motor"),
 //	TODO Add remaining Stepper Motors	
 //Altitude					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
 	Altitude				(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");
