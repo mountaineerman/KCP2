@@ -20,6 +20,7 @@ Graceful shutdown: (center-right glass cockpit button)
 Optional: Open ckan.exe & apply mod updates
 
 
+Logging in to GitHub: use Personal Access Token
 
 
 Diagnostic Mode:
