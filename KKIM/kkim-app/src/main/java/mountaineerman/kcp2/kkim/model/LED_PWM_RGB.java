@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.OP;
 
 public class LED_PWM_RGB extends Part {
 
@@ -9,11 +10,17 @@ public class LED_PWM_RGB extends Part {
 	private LED_PWM bluLED;
 	private LED_RGB_Mode mode;
 	
-	public LED_PWM_RGB(String name, ModuleID moduleID, LED_PWM red, LED_PWM green, LED_PWM blue) {
-		super(name, moduleID);
-		this.redLED = red; //TODO confirm format
-		this.grnLED = green; //TODO confirm format
-		this.bluLED = blue; //TODO confirm format
+	public LED_PWM_RGB(OP op_rgb, OP op_red, OP op_green, OP op_blue) {
+
+		super(op_rgb.partName, op_rgb.moduleID);
+		
+		assert (op_rgb.moduleID == op_red.moduleID);
+		assert (op_rgb.moduleID == op_green.moduleID);
+		assert (op_rgb.moduleID == op_blue.moduleID);
+		
+		this.redLED = new LED_PWM(op_red);
+		this.grnLED = new LED_PWM(op_green);
+		this.bluLED = new LED_PWM(op_blue);
 		this.setMode(LED_RGB_Mode.OFF);
 	}
 	
@@ -81,12 +88,24 @@ public class LED_PWM_RGB extends Part {
 				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
+			case DIM_WHITE:
+				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				break;
 			case OFF:
 				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
 				break;
 		}
+	}
+	
+	public String toString() {
+		return this.getModuleID() + ": " + this.getName() + ":\n" +
+			   this.redLED.toString() +
+			   this.grnLED.toString() +
+			   this.bluLED.toString();
 	}
 
 }

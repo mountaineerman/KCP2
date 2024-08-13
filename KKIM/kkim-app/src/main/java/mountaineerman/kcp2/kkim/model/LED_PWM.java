@@ -18,10 +18,10 @@ public class LED_PWM extends Part {
 		this.setPWM(KKIMProp.getkmegaMinPWM());
 	}
 	
-	public LED_PWM(String name, ModuleID moduleID) {
-		super(name, moduleID);
-		this.setPWM(KKIMProp.getkmegaMinPWM());
-	}
+//	public LED_PWM(String name, ModuleID moduleID) { //FIXME Remove after LED_PWM unit test is cleaned up 
+//		super(name, moduleID);
+//		this.setPWM(KKIMProp.getkmegaMinPWM());
+//	}
 
 	public int getPWM() {
 		return pwm;

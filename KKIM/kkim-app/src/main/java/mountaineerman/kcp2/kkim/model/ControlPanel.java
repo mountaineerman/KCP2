@@ -40,7 +40,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float maxLiquidFuel = 0;//TODO replace
 	public float currentSolidFuel = 0;//TODO replace
 	public float maxSolidFuel = 0;//TODO replace
-	private int milliPercentFuel = 0;//TODO replace
+	private int percentFuel = 0;//Range: 0 to 100
 	public float charge = 0;//TODO replace
 	public float monopropellant = 0;//TODO replace
 	public float intakeAir = 0;//TODO replace
@@ -69,8 +69,16 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	}
 	
 	//Re-calculate state of higher-level members based on state of lower-level members
-	public void refresh() {//TODO re-write...
+	public void refresh() {
+		//TODO Stepper Motors...
 		
+		//Update inputs that are depended on by other Modules
+		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
+		this.moduleE.sp3tVehicleModeSwitch.updatePosition();
+		this.moduleE.sp3tPitchSwitch.updatePosition();
+		this.moduleF.sensitivitySwitch.updatePosition();
+		
+		//Module A (+D+F) =====================================================
 		if (this.moduleA.brakeButton.getStatus() ^ this.moduleD.brakeSwitch.getStatus()) {//XOR
 			this.brake = true;
 			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
@@ -81,93 +89,24 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
-		if (this.moduleE.fairingButton.getRawStatus() == true) {
-			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMinPWM());
+		if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
+			throttleLever = (float) 0;
 		} else {
-			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());
+			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
 		}
 		
-		if (this.moduleE.chuteButton.getRawStatus() == true) {
-			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMinPWM());
-		} else {
-			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());
-		}
+		//Module B (+F) =======================================================
+		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_FwdBck.maxRescaleLim;
+		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_LftRgh.maxRescaleLim;
+		joystick_Twist = ((this.moduleB.analogInput_Joystick_Twist.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_Twist.maxRescaleLim;
 		
-		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
-		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
-			this.altitudeToDisplay = (float) this.altitudeAboveSurface;
-		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
-			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
-		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
-			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
-		} else {//INVALID
-			this.altitudeToDisplay = KKIMProp.getkmegaAltitudeGaugeErrorAltitude();
-		}
+		//TODO Joystick button logic...
 		
-		this.moduleE.sp3tVehicleModeSwitch.updatePosition();
+		//TODO Trim Logic (+Module F potentiometer)
 		
-		this.moduleE.sp3tPitchSwitch.updatePosition();
-		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
-			//TODO Pitch Gauge...
-		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
-			//TODO Pitch Gauge...
-		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
-			//TODO Pitch Gauge...
-		} else {//INVALID
-			//TODO Pitch Gauge...
-		}
-		
-		this.moduleF.sensitivitySwitch.updatePosition();
-		
-		
-		if (this.maxSolidFuel > 0) { //TODO replace
-			this.milliPercentFuel = (int) (this.currentSolidFuel / this.maxSolidFuel * 100 * 1000);
-		} else if (this.maxLiquidFuel > 0) {
-			this.milliPercentFuel = (int) (this.currentLiquidFuel / this.maxLiquidFuel * 100 * 1000);
-		} else {
-			this.milliPercentFuel = 0;
-		}
-		if (this.milliPercentFuel > 100000) {//TODO unnecessary?
-			this.milliPercentFuel = 100000;
-		}
-		if (this.milliPercentFuel > 99000) {
-			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMaxPWM());
-		} else if (this.milliPercentFuel > 90000) {
-			//green
-			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMinPWM());
-		} else if (this.milliPercentFuel > 20000) {
-			//white
-			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMaxPWM());
-		} else if (this.milliPercentFuel > 10000) {
-			//yellow
-			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMinPWM());
-		} else if (this.milliPercentFuel > 100) {
-			//red
-			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaMinPWM());
-		} else {
-			//off
-			this.moduleI.stepperLED_Fuel_Red.setPWM(KKIMProp.getkmegaDimPWM());
-			this.moduleI.stepperLED_Fuel_Green.setPWM(KKIMProp.getkmegaDimPWM());
-			this.moduleI.stepperLED_Fuel_Blue.setPWM(KKIMProp.getkmegaDimPWM());
-		}
-		int temp = this.scaleIntegerToNewRange(this.milliPercentFuel, 0, 100000, OP.Stepper_Fuel.calibrationCCWLimit, OP.Stepper_Fuel.calibrationCWLimit);
-		//System.out.println();
-		//System.out.println(" Solid Fuel: " + this.currentSolidFuel + " / " + this.maxSolidFuel);
-		//System.out.println("Liquid Fuel: " + this.currentLiquidFuel + " / " + this.maxLiquidFuel);
-		//System.out.println("milliPercentFuel: " + this.milliPercentFuel);
-		//System.out.println("milliPercentFuel (scaled): " + temp);
-		this.moduleI.stepper_Fuel.setDesiredPosition(temp);
-		
+		//Module C (+G) =======================================================
+		//TODO HEAT/LIFE LED
+		//TODO G-FORCE LED
 //		this.milliGforce = Math.round(this.gforce * 1000);
 //		if (this.milliGforce < 0) {
 //			this.milliGforce = 0;
@@ -181,17 +120,101 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 ////		System.out.println("desiredPosition (scaled): " + temp);
 //		this.moduleC.stepper_Gforce.setDesiredPosition(temp);
 		
-		if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
-			throttleLever = (float) 0;
+		//Module D ============================================================
+		//TODO Autopilot modes
+		//Brake: see Module A
+		//TODO Map
+		//TODO Mute
+		
+		//Module E (+G +GT) ===================================================
+		//TODO Science
+		//TODO Reset
+		//TODO Solar Panels (PV)
+		//TODO Ladder
+		//TODO AutoNavigation (ATNV)
+		//TODO Action Groups 1/2/3 (AG1/AG2/AG3)
+		
+		//TODO Activate Fairing
+		if (this.moduleE.fairingButton.getRawStatus() == true) {
+			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMinPWM());
 		} else {
-			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
+			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());
 		}
-		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_FwdBck.maxRescaleLim;
-		joystick_LftRgh = ((this.moduleB.analogInput_Joystick_LftRgh.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_LftRgh.maxRescaleLim;
-		joystick_Twist = ((this.moduleB.analogInput_Joystick_Twist.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_Twist.maxRescaleLim;
 		
+		//TODO Activate Parachute
+		if (this.moduleE.chuteButton.getRawStatus() == true) {
+			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMinPWM());
+		} else {
+			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());
+		}
 		
-		//TODO add remaining parts
+		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
+			this.altitudeToDisplay = (float) this.altitudeAboveSurface;
+		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
+			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
+		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
+			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
+		} else {//INVALID
+			this.altitudeToDisplay = KKIMProp.getkmegaAltitudeGaugeErrorAltitude();
+		}
+		
+		//TODO Move e.g., vehicle mode logic from KRPCCommunicator::sendInfoFromModelToKSP() to here?
+		
+		//Pitch: see Module G
+		
+		//Module F ============================================================
+		//Trim: see Module B
+		//Sensitivity Switch: See Modules A, B
+		
+		//Module G (+E) =======================================================
+		//TODO MACH
+		
+		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
+			//blue
+		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
+			//green
+			//TODO Pitch Gauge...
+		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
+			//red
+			//TODO Pitch Gauge...
+		} else {//INVALID
+			//TODO Pitch Gauge...
+		}
+		
+		//TODO HEADING
+		
+		//Module H ============================================================
+		//TODO find Diagnostic Mode and Graceful Shutdown logic elsewhere...
+		
+		//Module I ============================================================
+		if (this.maxSolidFuel > 0) {
+			this.percentFuel = (int) (this.currentSolidFuel / this.maxSolidFuel * 100);
+		} else if (this.maxLiquidFuel > 0) {
+			this.percentFuel = (int) (this.currentLiquidFuel / this.maxLiquidFuel * 100);
+		} else {
+			this.percentFuel = 0;
+		}
+		
+		if (this.percentFuel > 99) {
+			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.BLUE);
+		} else if (this.percentFuel > 90) {
+			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.GREEN);
+		} else if (this.percentFuel > 20) {
+			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.WHITE);
+		} else if (this.percentFuel > 10) {
+			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.YELLOW);
+		} else if (this.percentFuel > 1) {
+			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.RED);
+		} else {
+			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.DIM_WHITE);
+		}
+		//int temp = this.scaleIntegerToNewRange(this.percentFuel, 0, 100, OP.Stepper_Fuel.calibrationCCWLimit, OP.Stepper_Fuel.calibrationCWLimit);
+		//System.out.println();
+		//System.out.println(" Solid Fuel: " + this.currentSolidFuel + " / " + this.maxSolidFuel);
+		//System.out.println("Liquid Fuel: " + this.currentLiquidFuel + " / " + this.maxLiquidFuel);
+		//System.out.println("percentFuel: " + this.percentFuel);
+		//System.out.println("percentFuel (scaled): " + temp);
+		//this.moduleI.stepper_Fuel.setDesiredPosition(temp);
 	}
 	
 	@Override

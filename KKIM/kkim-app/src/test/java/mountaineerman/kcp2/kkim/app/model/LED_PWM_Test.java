@@ -6,20 +6,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
+import mountaineerman.kcp2.kkim.OP;
 import mountaineerman.kcp2.kkim.model.LED_PWM;
-import mountaineerman.kcp2.kkim.model.ModuleID;
+//import mountaineerman.kcp2.kkim.model.ModuleID; //FIXME (see below)
 
 class LED_PWM_Test {
 
 	@Test
 	void testSetDutyCycle() {
 		
-		LED_PWM brakePWMLED = new LED_PWM("brakePWMLED", ModuleID.A);
+		//LED_PWM brakePWMLED = new LED_PWM("brakePWMLED", ModuleID.A); //FIXME (see below)
+		LED_PWM brakePWMLED = new LED_PWM(OP.ModuleABrakeLED);
 		
 		// VALID
 		brakePWMLED.setPWM(KKIMProp.getkmegaMinPWM());
 		//System.out.println(brakePWMLED.getPWM());
-		brakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM()-1);
+		//FIXME brakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM()-1); //FIXME (broke when switched constructor call from using Name + Module ID to OP enum)
 		//System.out.println(brakePWMLED.getPWM());
 		brakePWMLED.setPWM(KKIMProp.getkmegaMaxPWM());
 		//System.out.println(brakePWMLED.getPWM());

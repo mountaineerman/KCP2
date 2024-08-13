@@ -1,3 +1,5 @@
+FOCUS2: Add more lights!
+
 Fun: cut the +5v wire in the USB cable to be able to actually turn off the panel.
 	-Test communication to kkim still works
 	-Test programming still works

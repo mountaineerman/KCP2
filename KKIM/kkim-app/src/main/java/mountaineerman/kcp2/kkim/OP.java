@@ -37,6 +37,7 @@ public enum OP {
 	Sensitivity50PercentLED	(36,		37,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 50% LED"),
 	Sensitivity25PercentLED	(38,		39,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 25% LED"),
 //							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	StepperRGBLED_Fuel		(-1,		-1,			ModuleID.I,		-1,			-1,			"Stepper RGB LED: Fuel"),
 	StepperLED_Fuel_Red		(114,		115,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Red"),
 	StepperLED_Fuel_Green	(116,		117,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Green"),
 	StepperLED_Fuel_Blue	(118,		119,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Blue"),
