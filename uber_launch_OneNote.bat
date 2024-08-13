@@ -1,0 +1,1 @@
+start "OneNote" "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe"
