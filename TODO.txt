@@ -1,12 +1,10 @@
-Re-establish basic working system
-	COM3 vs COM4?
-
 Fun: cut the +5v wire in the USB cable to be able to actually turn off the panel.
 	-Test communication to kkim still works
 	-Test programming still works
 
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
+Add functionality to KKIM to be able to support switch from Flight Mode to the Space Center and ...
 
 Solve stepper motor performance
 	Re-enable commented sections (search keyword "TODO: Stepper Logic disabled until performance is fixed (do not modify)"
