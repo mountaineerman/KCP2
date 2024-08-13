@@ -42,19 +42,55 @@ public class SerialCommunicator {
 		this.clearPacketBufferAndFriends();
 	}
 	
- 	public void establishSerialLink() {
+ 	public void establishSerialLinkToKMega() throws RuntimeException {
  		
- 		System.out.print("Establishing serial connection to KMega... ");
+ 		System.out.println("Establishing serial connection to KMega on " + KKIMProp.getkMegaPortNumber() + "...");
  		
- 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
- 		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
- 		this.serialPort.openPort();
+ 		//Start of new way of opening communications:
+ 		SerialPort[] serialPorts = SerialPort.getCommPorts();
+ 		boolean desiredPortIsOpen = false;
+ 		String portName = new String("");
+ 		System.out.println("  Open ports:");
+        for (SerialPort p: serialPorts) {
+            p.openPort();
+            if (p.isOpen()) {                
+            	portName = p.getSystemPortName();
+            	System.out.println("    Port: '" + portName + "'");
+                
+                if (portName.equals(KKIMProp.getkMegaPortNumber())) {
+                	desiredPortIsOpen = true;
+                	this.serialPort = p;
+                } else {
+                	p.closePort();
+                }
+            }
+        }
+        
+        if (!desiredPortIsOpen) {
+        	//TODO replace print statement with exception:
+        	//throw new RuntimeException("Desired COM port (" KKIMProp.getkMegaPortNumber() + ") is not open");
+        	System.out.println("ERROR: Desired COM port (" + KKIMProp.getkMegaPortNumber() + ") is not open. Aborting...");
+        	System.exit(-1);
+        }
+        
+		System.out.println("  " + KKIMProp.getkMegaPortNumber() + " is open. Updating Baud Rate and flushing buffers...");
+		this.serialPort.closePort();
+		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
+		this.serialPort.openPort();
  		this.serialPort.flushIOBuffers();
+ 		//End of new way of opening communications
+
+// 		//Start of original way of opening communications:
+// 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
+//		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
+//		this.serialPort.openPort();
+// 		this.serialPort.flushIOBuffers();
+// 		//End of original way of opening communications
  		
  		//System.out.println("Computer Serial Read Buffer Size: " + serialPort.getDeviceReadBufferSize());
  		//System.out.println("Computer Serial Write Buffer Size: " + serialPort.getDeviceWriteBufferSize());
  		
- 		System.out.println("DONE");
+ 		System.out.println("  DONE");
 	}
 		
 	//Ingests data from the Serial Read Buffer until:

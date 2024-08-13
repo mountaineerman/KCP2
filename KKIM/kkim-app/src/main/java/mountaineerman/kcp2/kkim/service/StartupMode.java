@@ -20,7 +20,7 @@ public final class StartupMode implements OperatingMode { //SINGLETON
     {
         //System.out.println("Startup Mode");
         
-		kkimService.serialCommunicator.establishSerialLink();
+		kkimService.serialCommunicator.establishSerialLinkToKMega();
 		kkimService.kRPCCommunicator.establishKRPCLink();        
 		//TODO Establish connection to phone
 		
