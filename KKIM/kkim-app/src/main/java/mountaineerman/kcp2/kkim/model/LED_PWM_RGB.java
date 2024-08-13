@@ -93,6 +93,26 @@ public class LED_PWM_RGB extends Part {
 				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
 				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
 				break;
+			case DIM_BLUE:
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				break;
+			case DIM_GREEN:
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				break;
+			case DIM_YELLOW:
+				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				break;
+			case DIM_RED:
+				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				break;
 			case OFF:
 				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());

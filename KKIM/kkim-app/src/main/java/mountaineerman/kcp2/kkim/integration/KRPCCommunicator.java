@@ -23,7 +23,8 @@ public class KRPCCommunicator {
 	private Flight flight = null;
 	private Control control = null;
 	//private Camera camera = null;
-	private Resources resources = null;
+	private Resources currentStageResources = null;
+	private Resources vesselResources = null;
 	
 	
 	public KRPCCommunicator(ControlPanel controlPanel) {
@@ -57,21 +58,40 @@ public class KRPCCommunicator {
 
 	public void pullInfoFromKSPIntoModel() {//TODO Rewrite
 
+		/*
+		 * See: https://krpc.github.io/krpc/java/api/space-center/vessel.html
+		 * 		https://krpc.github.io/krpc/java/api/space-center/resources.html#
+		 * 
+		 * Possible Resources:
+		 *   ElectricCharge, MonoPropellant, Food, Water, Oxygen, CarbonDioxide, Waste, WasteWater, LiquidFuel, SolidFuel, Oxidizer, IntakeAir //TODO exotic fuels...
+		 */
+		
 		try {
-			this.resources = this.vessel.resourcesInDecoupleStage(this.control.getCurrentStage()-1, false);
+			this.currentStageResources = this.vessel.resourcesInDecoupleStage(this.control.getCurrentStage()-1, false);
+			//System.out.println("Current Stage Resources: " + this.currentStageResources.getNames());
+			this.vesselResources = this.vessel.getResources();
+			//System.out.println("Vessel Resources: " + this.vesselResources.getNames());
+			
+			
 			this.controlPanel.gforce = this.flight.getGForce();
 //			this.controlPanel.mach = this.flight.getMach();
 //			this.controlPanel.pitch = this.flight.getPitch();
 //			this.controlPanel.heading = this.flight.getHeading();
-			this.controlPanel.currentLiquidFuel = this.resources.amount("LiquidFuel");//TODO
-			this.controlPanel.maxLiquidFuel = this.resources.max("LiquidFuel");//TODO
-			this.controlPanel.currentSolidFuel = this.resources.amount("SolidFuel");//TODO
-			this.controlPanel.maxSolidFuel = this.resources.max("SolidFuel");//TODO
+			this.controlPanel.currentLiquidFuel = this.currentStageResources.amount("LiquidFuel");
+			this.controlPanel.maxLiquidFuel = this.currentStageResources.max("LiquidFuel");
+			this.controlPanel.currentSolidFuel = this.currentStageResources.amount("SolidFuel");
+			this.controlPanel.maxSolidFuel = this.currentStageResources.max("SolidFuel");
+			this.controlPanel.currentElectricCharge = this.vesselResources.amount("ElectricCharge");
+			this.controlPanel.maxElectricCharge = this.vesselResources.max("ElectricCharge");
+			this.controlPanel.currentMonopropellant = this.vesselResources.amount("MonoPropellant");
+			this.controlPanel.maxMonopropellant = this.vesselResources.max("MonoPropellant");
 			
-			//System.out.println("fuel: " + this.resources.amount("LiquidFuel"));
-			//this.controlPanel.charge = this.resources.amount("TBD");//TODO pull constants into config file?
-			//this.controlPanel.monopropellant = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
-			//this.controlPanel.intakeAir = this.resources.amount("TBD");//TODO pull constants into config file?//TODO other fuel types...
+			//FIXME always getting 0 current/max Intake Air. Must be different values (flow?)
+			this.controlPanel.currentIntakeAir = this.currentStageResources.amount("IntakeAir");
+			this.controlPanel.maxIntakeAir = this.currentStageResources.max("IntakeAir");
+			//System.out.println("currentIntakeAir: " + this.controlPanel.currentIntakeAir);
+			//System.out.println("maxIntakeAir: " + this.controlPanel.maxIntakeAir);
+			
 			//this.controlPanel.airDensity = this.flight.getAtmosphereDensity() / CelestialBody.densityAt(Altitude); + Vessel.getSituation()... OR: getStaticPressure()/getStaticPressureAtMSL();
 //			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
 //			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?

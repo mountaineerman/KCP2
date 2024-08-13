@@ -1,7 +1,8 @@
 package mountaineerman.kcp2.kkim.model;
 
 public enum LED_RGB_Mode {
-	WHITE, VIOLET, MAGENTA, BLUE, CYAN, GREEN, YELLOW, ORANGE, RED,
-	DIM_WHITE,
+	WHITE,	   BLUE,	 GREEN,		YELLOW,		ORANGE,		RED,
+	DIM_WHITE, DIM_BLUE, DIM_GREEN, DIM_YELLOW,  			DIM_RED,
+	VIOLET, MAGENTA, CYAN,
 	OFF;
 }

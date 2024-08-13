@@ -81,7 +81,20 @@ public class PacketAssembler {
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Red.firstByte, OP.StepperLED_Fuel_Red.lastByte, controlPanel.moduleI.stepperLED_Fuel.getRedPWMValue());
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel.getGrnPWMValue());
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Blue.firstByte, OP.StepperLED_Fuel_Blue.lastByte, controlPanel.moduleI.stepperLED_Fuel.getBluPWMValue());
-		//TODO Add remaining LEDs
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.DeltaChargeLED_Red.firstByte, OP.DeltaChargeLED_Red.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.DeltaChargeLED_Green.firstByte, OP.DeltaChargeLED_Green.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.DeltaChargeLED_Blue.firstByte, OP.DeltaChargeLED_Blue.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Charge_Red.firstByte, OP.StepperLED_Charge_Red.lastByte, controlPanel.moduleI.stepperLED_Charge.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Charge_Green.firstByte, OP.StepperLED_Charge_Green.lastByte, controlPanel.moduleI.stepperLED_Charge.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Charge_Blue.firstByte, OP.StepperLED_Charge_Blue.lastByte, controlPanel.moduleI.stepperLED_Charge.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Red.firstByte, OP.StepperLED_Monopropellant_Red.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Green.firstByte, OP.StepperLED_Monopropellant_Green.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Blue.firstByte, OP.StepperLED_Monopropellant_Blue.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Red.firstByte, OP.StepperLED_IntakeAir_Red.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Green.firstByte, OP.StepperLED_IntakeAir_Green.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Blue.firstByte, OP.StepperLED_IntakeAir_Blue.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getBluPWMValue());
+		
+		//TODO Add remaining LEDs: Module GT
 		
 		//Stepper Motors
 		//this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());

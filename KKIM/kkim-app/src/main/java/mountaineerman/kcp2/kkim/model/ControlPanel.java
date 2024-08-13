@@ -36,14 +36,22 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float mach = 0;
 	public float pitch = 0;	 //Units: degrees. Range: -90.0 to +90.0
 	public float heading = 0;//Units: degrees. Range: 0.0 to 360.0
-	public float currentLiquidFuel = 0;//TODO replace
-	public float maxLiquidFuel = 0;//TODO replace
-	public float currentSolidFuel = 0;//TODO replace
-	public float maxSolidFuel = 0;//TODO replace
+	public float currentLiquidFuel = 0;
+	public float maxLiquidFuel = 0;
+	public float currentSolidFuel = 0;
+	public float maxSolidFuel = 0;
 	private int percentFuel = 0;//Range: 0 to 100
-	public float charge = 0;//TODO replace
-	public float monopropellant = 0;//TODO replace
-	public float intakeAir = 0;//TODO replace
+	public float currentElectricCharge = 0;
+	private float previousElectricCharge = 0;
+	public float maxElectricCharge = 0;
+	private int percentElectricCharge = 0;//Range: 0 to 100
+	public float currentMonopropellant = 0;
+	public float maxMonopropellant = 0;
+	private int percentMonopropellant = 0;//Range: 0 to 100
+	public float currentIntakeAir = 0;
+	public float maxIntakeAir = 0;
+	private int percentIntakeAir = 0;//Range: 0 to 100
+	
 	public float airDensity = 0;
 	public double speed = 0;//Units: meters/second.
 	public double verticalSpeed = 0;//Units: meters/second.
@@ -203,7 +211,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.WHITE);
 		} else if (this.percentFuel > 10) {
 			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.YELLOW);
-		} else if (this.percentFuel > 1) {
+		} else if (this.percentFuel > 0) {
 			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.RED);
 		} else {
 			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.DIM_WHITE);
@@ -215,6 +223,110 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//System.out.println("percentFuel: " + this.percentFuel);
 		//System.out.println("percentFuel (scaled): " + temp);
 		//this.moduleI.stepper_Fuel.setDesiredPosition(temp);
+		
+		if (this.maxElectricCharge > 0) {
+			this.percentElectricCharge = (int) (this.currentElectricCharge / this.maxElectricCharge * 100);
+		} else {
+			this.percentElectricCharge = 0;
+		}
+		
+		if (this.percentElectricCharge > 99) {
+			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.BLUE);
+		} else if (this.percentElectricCharge > 90) {
+			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.GREEN);
+		} else if (this.percentElectricCharge > 20) {
+			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.WHITE);
+		} else if (this.percentElectricCharge > 10) {
+			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.YELLOW);
+		} else if (this.percentElectricCharge > 0) {
+			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.RED);
+		} else {
+			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.DIM_WHITE);
+		}
+		
+		if (this.currentElectricCharge > this.previousElectricCharge) {
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.GREEN);
+		} else if (this.currentElectricCharge == this.previousElectricCharge) {
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.DIM_WHITE);
+		} else {
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.RED);
+		}
+		this.previousElectricCharge = this.currentElectricCharge;
+		
+		
+		
+		
+		if (this.maxMonopropellant > 0) {
+			this.percentMonopropellant = (int) (this.currentMonopropellant / this.maxMonopropellant * 100);
+		} else {
+			this.percentMonopropellant = 0;
+		}
+		
+		//FIXME always getting 0 current/max Intake Air. Must be different values (flow?)
+//		if (this.maxIntakeAir > 0) {
+//			this.percentIntakeAir = (int) (this.currentIntakeAir / this.maxIntakeAir * 100);
+//		} else {
+//			this.percentIntakeAir = 0;
+//		}
+		
+		if (this.moduleI.monopropIntakeSwitch.getStatus()) {//Intake Air selected
+			if (this.percentMonopropellant > 99) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_BLUE);
+			} else if (this.percentMonopropellant > 90) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_GREEN);
+			} else if (this.percentMonopropellant > 20) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_WHITE);
+			} else if (this.percentMonopropellant > 10) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_YELLOW);
+			} else if (this.percentMonopropellant > 0) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_RED);
+			} else {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_WHITE);
+			}
+			
+			
+//			if (this.percentIntakeAir > 99) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.BLUE);
+//			} else if (this.percentIntakeAir > 90) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.GREEN);
+//			} else if (this.percentIntakeAir > 20) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.WHITE);
+//			} else if (this.percentIntakeAir > 10) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.YELLOW);
+//			} else if (this.percentIntakeAir > 0) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.RED);
+//			} else {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_WHITE);
+//			}
+		} else {//Monopropellant selected
+			if (this.percentMonopropellant > 99) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.BLUE);
+			} else if (this.percentMonopropellant > 90) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.GREEN);
+			} else if (this.percentMonopropellant > 20) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.WHITE);
+			} else if (this.percentMonopropellant > 10) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.YELLOW);
+			} else if (this.percentMonopropellant > 0) {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.RED);
+			} else {
+				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_WHITE);
+			}
+			
+//			if (this.percentIntakeAir > 99) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_BLUE);
+//			} else if (this.percentIntakeAir > 90) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_GREEN);
+//			} else if (this.percentIntakeAir > 20) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_WHITE);
+//			} else if (this.percentIntakeAir > 10) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_YELLOW);
+//			} else if (this.percentIntakeAir > 0) {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_RED);
+//			} else {
+//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_WHITE);
+//			}
+		}
 	}
 	
 	@Override
