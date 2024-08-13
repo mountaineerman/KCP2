@@ -5,159 +5,136 @@ import mountaineerman.kcp2.kkim.model.ModuleID;
 //Fixed values associated with the User Output parts and the OutputRefreshPacket
 public enum OP {
 	
-//LEDs						 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	ModuleABrakeLED			(10,		11,			ModuleID.A,		-1,			-1,			"Module A Brake LED"),
-//							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	ModuleDBrakeLED			(12,		13,			ModuleID.D,		-1,			-1,			"Module D Brake LED"),
-	AutoHoldLED				(14,		15,			ModuleID.D,		-1,			-1,			"Autopilot: Hold LED"),
-	AutoProgradeLED			(16,		17,			ModuleID.D,		-1,			-1,			"Autopilot: Prograde LED"),
-	AutoRetrogradeLED		(18,		19,			ModuleID.D,		-1,			-1,			"Autopilot: Retrograde LED"),
-	AutoManeuverLED			(20,		21,			ModuleID.D,		-1,			-1,			"Autopilot: Maneuver LED"),
-	AutoNormalRedLED		(72,		73,			ModuleID.D,		-1,			-1,			"Autopilot: Normal: Red LED"),
-	AutoNormalBluLED		(74,		75,			ModuleID.D,		-1,			-1,			"Autopilot: Normal: Blue LED"),
-	AutoAntiNormalRedLED	(76,		77,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Normal: Red LED"),
-	AutoAntiNormalBluLED	(78,		79,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Normal: Blue LED"),
-	AutoRadialInGrnLED		(80,		81,			ModuleID.D,		-1,			-1,			"Autopilot: Radial In: Green LED"),
-	AutoRadialInBluLED		(82,		83,			ModuleID.D,		-1,			-1,			"Autopilot: Radial In: Blue LED"),
-	AutoRadialOutGrnLED		(84,		85,			ModuleID.D,		-1,			-1,			"Autopilot: Radial Out: Green LED"),
-	AutoRadialOutBluLED		(86,		87,			ModuleID.D,		-1,			-1,			"Autopilot: Radial Out: Blue LED"),
-	AutoTargetRedLED		(88,		89,			ModuleID.D,		-1,			-1,			"Autopilot: Target: Red LED"),
-	AutoTargetBluLED		(90,		91,			ModuleID.D,		-1,			-1,			"Autopilot: Target: Blue LED"),
-	AutoAntiTargetRedLED	(92,		93,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Red LED"),
-	AutoAntiTargetBluLED	(94,		95,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Blue LED"),
-//				 			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	FairingLED				(22,		23,			ModuleID.E,		-1,			-1,			"Fairing LED"),
-	ParachuteLED			(24,		25,			ModuleID.E,		-1,			-1,			"Parachute LED"),
-	SP3T_SpeedMode_ORB_LED	(26,		27,			ModuleID.E,		-1,			-1,			"SP3T Speed Mode Switch: ORB LED"),
-	SP3T_VehicleMode_PLN_LED(28,		29,			ModuleID.E,		-1,			-1,			"SP3T Vehicle Mode Switch: PLN LED"),
-	SP3T_Pitch_30degLED		(30,		31,			ModuleID.E,		-1,			-1,			"SP3T Pitch Switch: 30 degrees LED"),
-//	 						 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Sensitivity100PercentLED(32,		33,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 100% LED"),
-	Sensitivity75PercentLED	(34,		35,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 75% LED"),
-	Sensitivity50PercentLED	(36,		37,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 50% LED"),
-	Sensitivity25PercentLED	(38,		39,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 25% LED"),
-//							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	StepperRGBLED_Fuel		(-1,		-1,			ModuleID.I,		-1,			-1,			"Stepper RGB LED: Fuel"),
-	StepperLED_Fuel_Red		(114,		115,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Red"),
-	StepperLED_Fuel_Green	(116,		117,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Green"),
-	StepperLED_Fuel_Blue	(118,		119,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Blue"),
-//	TODO Add remaining LEDs
+//LEDs								 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	ModuleABrakeLED					(10,		11,			ModuleID.A,		-1,			-1,			"Module A Brake LED"),
+//									 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	StepperRGBLED_Heat				(-1,		-1,			ModuleID.C,		-1,			-1,			"Stepper RGB LED: Heat"),
+	StepperLED_Heat_Red				(54,		55,			ModuleID.C,		-1,			-1,			"Stepper LED: Heat: Red"),
+	StepperLED_Heat_Green			(56,		57,			ModuleID.C,		-1,			-1,			"Stepper LED: Heat: Green"),
+	StepperLED_Heat_Blue			(58,		59,			ModuleID.C,		-1,			-1,			"Stepper LED: Heat: Blue"),
 	
-//Stepper Motors			 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Stepper_Gforce			(170,		171,		ModuleID.C,		160,		3400,		"G-Force Stepper Motor"),
-	Stepper_Fuel			(178,		179,		ModuleID.I,		80,			3699,		"Fuel Stepper Motor"),
-//	TODO Add remaining Stepper Motors	
-//Altitude					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Altitude				(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");
+	StepperRGBLED_LifeSupport		(-1,		-1,			ModuleID.C,		-1,			-1,			"Stepper RGB LED: Life Support"),
+	StepperLED_LifeSupport_Red		(60,		61,			ModuleID.C,		-1,			-1,			"Stepper LED: Life Support: Red"),
+	StepperLED_LifeSupport_Green	(62,		63,			ModuleID.C,		-1,			-1,			"Stepper LED: Life Support: Green"),
+	StepperLED_LifeSupport_Blue		(64,		65,			ModuleID.C,		-1,			-1,			"Stepper LED: Life Support: Blue"),
+	
+	StepperRGBLED_GForce			(-1,		-1,			ModuleID.C,		-1,			-1,			"Stepper RGB LED: G-Force"),
+	StepperLED_GForce_Red			(66,		67,			ModuleID.C,		-1,			-1,			"Stepper LED: G-Force: Red"),
+	StepperLED_GForce_Green			(68,		69,			ModuleID.C,		-1,			-1,			"Stepper LED: G-Force: Green"),
+	StepperLED_GForce_Blue			(70,		71,			ModuleID.C,		-1,			-1,			"Stepper LED: G-Force: Blue"),
+//									 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	ModuleDBrakeLED					(12,		13,			ModuleID.D,		-1,			-1,			"Module D Brake LED"),
+	AutoHoldLED						(14,		15,			ModuleID.D,		-1,			-1,			"Autopilot: Hold LED"),
+	AutoProgradeLED					(16,		17,			ModuleID.D,		-1,			-1,			"Autopilot: Prograde LED"),
+	AutoRetrogradeLED				(18,		19,			ModuleID.D,		-1,			-1,			"Autopilot: Retrograde LED"),
+	AutoManeuverLED					(20,		21,			ModuleID.D,		-1,			-1,			"Autopilot: Maneuver LED"),
+	AutoNormalRedLED				(72,		73,			ModuleID.D,		-1,			-1,			"Autopilot: Normal: Red LED"),
+	AutoNormalBluLED				(74,		75,			ModuleID.D,		-1,			-1,			"Autopilot: Normal: Blue LED"),
+	AutoAntiNormalRedLED			(76,		77,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Normal: Red LED"),
+	AutoAntiNormalBluLED			(78,		79,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Normal: Blue LED"),
+	AutoRadialInGrnLED				(80,		81,			ModuleID.D,		-1,			-1,			"Autopilot: Radial In: Green LED"),
+	AutoRadialInBluLED				(82,		83,			ModuleID.D,		-1,			-1,			"Autopilot: Radial In: Blue LED"),
+	AutoRadialOutGrnLED				(84,		85,			ModuleID.D,		-1,			-1,			"Autopilot: Radial Out: Green LED"),
+	AutoRadialOutBluLED				(86,		87,			ModuleID.D,		-1,			-1,			"Autopilot: Radial Out: Blue LED"),
+	AutoTargetRedLED				(88,		89,			ModuleID.D,		-1,			-1,			"Autopilot: Target: Red LED"),
+	AutoTargetBluLED				(90,		91,			ModuleID.D,		-1,			-1,			"Autopilot: Target: Blue LED"),
+	AutoAntiTargetRedLED			(92,		93,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Red LED"),
+	AutoAntiTargetBluLED			(94,		95,			ModuleID.D,		-1,			-1,			"Autopilot: Anti-Target: Blue LED"),
+//				 					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	FairingLED						(22,		23,			ModuleID.E,		-1,			-1,			"Fairing LED"),
+	ParachuteLED					(24,		25,			ModuleID.E,		-1,			-1,			"Parachute LED"),
+	SP3T_SpeedMode_ORB_LED			(26,		27,			ModuleID.E,		-1,			-1,			"SP3T Speed Mode Switch: ORB LED"),
+	SP3T_VehicleMode_PLN_LED		(28,		29,			ModuleID.E,		-1,			-1,			"SP3T Vehicle Mode Switch: PLN LED"),
+	SP3T_Pitch_30degLED				(30,		31,			ModuleID.E,		-1,			-1,			"SP3T Pitch Switch: 30 degrees LED"),
+//	 								 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	Sensitivity100PercentLED		(32,		33,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 100% LED"),
+	Sensitivity75PercentLED			(34,		35,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 75% LED"),
+	Sensitivity50PercentLED			(36,		37,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 50% LED"),
+	Sensitivity25PercentLED			(38,		39,			ModuleID.F,		-1,			-1,			"Sensitivity Switch: 25% LED"),
+//									 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	CommunicationsLED				(40,		41,			ModuleID.G,		-1,			-1,			"Communications LED"),
+	
+	StepperRGBLED_Mach				(-1,		-1,			ModuleID.G,		-1,			-1,			"Stepper RGB LED: Mach Number"),
+	StepperLED_Mach_Red				(96,		97,			ModuleID.G,		-1,			-1,			"Stepper LED: Mach Number: Red"),
+	StepperLED_Mach_Green			(98,		99,			ModuleID.G,		-1,			-1,			"Stepper LED: Mach Number: Green"),
+	StepperLED_Mach_Blue			(100,		101,		ModuleID.G,		-1,			-1,			"Stepper LED: Mach Number: Blue"),
+	
+	StepperRGBLED_Pitch				(-1,		-1,			ModuleID.G,		-1,			-1,			"Stepper RGB LED: Pitch"),
+	StepperLED_Pitch_Red			(102,		103,		ModuleID.G,		-1,			-1,			"Stepper LED: Pitch: Red"),
+	StepperLED_Pitch_Green			(104,		105,		ModuleID.G,		-1,			-1,			"Stepper LED: Pitch: Green"),
+	StepperLED_Pitch_Blue			(106,		107,		ModuleID.G,		-1,			-1,			"Stepper LED: Pitch: Blue"),
+	
+	StepperRGBLED_Heading			(-1,		-1,			ModuleID.G,		-1,			-1,			"Stepper RGB LED: Heading"),
+	StepperLED_Heading_Red			(108,		109,		ModuleID.G,		-1,			-1,			"Stepper LED: Heading: Red"),
+	StepperLED_Heading_Green		(110,		111,		ModuleID.G,		-1,			-1,			"Stepper LED: Heading: Green"),
+	StepperLED_Heading_Blue			(112,		113,		ModuleID.G,		-1,			-1,			"Stepper LED: Heading: Blue"),
+//									 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	GlassCockpitLED_TL				(42,		43,			ModuleID.H,		-1,			-1,			"Glass Cockpit LED: Top-Left (white)"),
+	GlassCockpitLED_CL				(44,		45,			ModuleID.H,		-1,			-1,			"Glass Cockpit LED: Center-Left (yellow)"),
+	GlassCockpitLED_BL				(46,		47,			ModuleID.H,		-1,			-1,			"Glass Cockpit LED: Bottom-Left (white)"),
+	GlassCockpitLED_TR				(48,		49,			ModuleID.H,		-1,			-1,			"Glass Cockpit LED: Top-Right (white)"),
+	GlassCockpitLED_CR				(50,		51,			ModuleID.H,		-1,			-1,			"Glass Cockpit LED: Center-Right (yellow)"),
+	GlassCockpitLED_BR				(52,		53,			ModuleID.H,		-1,			-1,			"Glass Cockpit LED: Bottom-Right (white)"),
+//									 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	StepperRGBLED_Fuel				(-1,		-1,			ModuleID.I,		-1,			-1,			"Stepper RGB LED: Fuel"),
+	StepperLED_Fuel_Red				(114,		115,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Red"),
+	StepperLED_Fuel_Green			(116,		117,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Green"),
+	StepperLED_Fuel_Blue			(118,		119,		ModuleID.I,		-1,			-1,			"Stepper LED: Fuel: Blue"),
+	
+	StepperRGBLED_Charge			(-1,		-1,			ModuleID.I,		-1,			-1,			"Stepper RGB LED: Charge"),
+	StepperLED_Charge_Red			(120,		121,		ModuleID.I,		-1,			-1,			"Stepper LED: Charge: Red"),
+	StepperLED_Charge_Green			(122,		123,		ModuleID.I,		-1,			-1,			"Stepper LED: Charge: Green"),
+	StepperLED_Charge_Blue			(124,		125,		ModuleID.I,		-1,			-1,			"Stepper LED: Charge: Blue"),
+	
+	RGBLED_deltaCharge				(-1,		-1,			ModuleID.I,		-1,			-1,			"RGB LED: delta Charge"),
+	DeltaChargeLED_Red				(126,		127,		ModuleID.I,		-1,			-1,			"LED: delta Charge: Red"),
+	DeltaChargeLED_Green			(128,		129,		ModuleID.I,		-1,			-1,			"LED: delta Charge: Green"),
+	DeltaChargeLED_Blue				(130,		131,		ModuleID.I,		-1,			-1,			"LED: delta Charge: Blue"),
+	
+	StepperRGBLED_Monopropellant	(-1,		-1,			ModuleID.I,		-1,			-1,			"Stepper RGB LED: Monopropellant"),
+	StepperLED_Monopropellant_Red	(132,		133,		ModuleID.I,		-1,			-1,			"Stepper LED: Monopropellant: Red"),
+	StepperLED_Monopropellant_Green	(134,		135,		ModuleID.I,		-1,			-1,			"Stepper LED: Monopropellant: Green"),
+	StepperLED_Monopropellant_Blue	(136,		137,		ModuleID.I,		-1,			-1,			"Stepper LED: Monopropellant: Blue"),
+	
+	StepperRGBLED_IntakeAir			(-1,		-1,			ModuleID.I,		-1,			-1,			"Stepper RGB LED: Intake Air"),
+	StepperLED_IntakeAir_Red		(138,		139,		ModuleID.I,		-1,			-1,			"Stepper LED: Intake Air: Red"),
+	StepperLED_IntakeAir_Green		(140,		141,		ModuleID.I,		-1,			-1,			"Stepper LED: Intake Air: Green"),
+	StepperLED_IntakeAir_Blue		(142,		143,		ModuleID.I,		-1,			-1,			"Stepper LED: Intake Air: Blue"),
+//									 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	StepperRGBLED_AirDensity		(-1,		-1,			ModuleID.GT,	-1,			-1,			"Stepper RGB LED: Air Density"),
+	StepperLED_AirDensity_Red		(144,		145,		ModuleID.GT,	-1,			-1,			"Stepper LED: Air Density: Red"),
+	StepperLED_AirDensity_Green		(146,		147,		ModuleID.GT,	-1,			-1,			"Stepper LED: Air Density: Green"),
+	StepperLED_AirDensity_Blue		(148,		149,		ModuleID.GT,	-1,			-1,			"Stepper LED: Air Density: Blue"),
+	
+	StepperRGBLED_Speed				(-1,		-1,			ModuleID.GT,	-1,			-1,			"Stepper RGB LED: Speed"),
+	StepperLED_Speed_Red			(150,		151,		ModuleID.GT,	-1,			-1,			"Stepper LED: Speed: Red"),
+	StepperLED_Speed_Green			(152,		153,		ModuleID.GT,	-1,			-1,			"Stepper LED: Speed: Green"),
+	StepperLED_Speed_Blue			(154,		155,		ModuleID.GT,	-1,			-1,			"Stepper LED: Speed: Blue"),
+	
+	StepperRGBLED_VerticalSpeed		(-1,		-1,			ModuleID.GT,	-1,			-1,			"Stepper RGB LED: Vertical Speed"),
+	StepperLED_VerticalSpeed_Red	(156,		157,		ModuleID.GT,	-1,			-1,			"Stepper LED: Vertical Speed: Red"),
+	StepperLED_VerticalSpeed_Green	(158,		159,		ModuleID.GT,	-1,			-1,			"Stepper LED: Vertical Speed: Green"),
+	StepperLED_VerticalSpeed_Blue	(160,		161,		ModuleID.GT,	-1,			-1,			"Stepper LED: Vertical Speed: Blue"),
+	
+	StepperRGBLED_RadarAltitude		(-1,		-1,			ModuleID.GT,	-1,			-1,			"Stepper RGB LED: Radar Altitude"),
+	StepperLED_RadarAltitude_Red	(162,		163,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Red"),
+	StepperLED_RadarAltitude_Green	(164,		165,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Green"),
+	StepperLED_RadarAltitude_Blue	(166,		167,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Blue"),
+
+	Altitude						(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)"),
+
+//Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	Stepper_Gforce					(170,		171,		ModuleID.C,		160,		3400,		"G-Force Stepper Motor"),
+	Stepper_Fuel					(178,		179,		ModuleID.I,		80,			3699,		"Fuel Stepper Motor");
+//	TODO Add remaining Stepper Motors
+	
+	
 
 	/*
 	// =================================================================================================================
 	// PARTS - Outputs
 	// =================================================================================================================
-	
-	// ========================================== LED_PWM ==============================================================
-	
-	
-	LED_PWM commsLED = new LED_PWM("commsLED", ModuleID.G);
-	
-	LED_PWM glassTL_LED = new LED_PWM("glassTL_LED", ModuleID.H);
-	LED_PWM glassCL_LED = new LED_PWM("glassCL_LED", ModuleID.H);
-	LED_PWM glassBL_LED = new LED_PWM("glassBL_LED", ModuleID.H);
-	LED_PWM glassTR_LED = new LED_PWM("glassTR_LED", ModuleID.H);
-	LED_PWM glassCR_LED = new LED_PWM("glassCR_LED", ModuleID.H);
-	LED_PWM glassBR_LED = new LED_PWM("glassBR_LED", ModuleID.H);
-	
-	// ========================================== LED_PWM_RGB ==========================================================
-	LED_PWM tempRedLED = new LED_PWM("heatRedLED", ModuleID.C);
-	LED_PWM tempGrnLED = new LED_PWM("heatGrnLED", ModuleID.C);
-	LED_PWM tempBluLED = new LED_PWM("heatBluLED", ModuleID.C);
-	LED_PWM_RGB heatRGBLED = new LED_PWM_RGB("heatRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("lifeRedLED", ModuleID.C);
-	tempGrnLED = new LED_PWM("lifeGrnLED", ModuleID.C);
-	tempBluLED = new LED_PWM("lifeBluLED", ModuleID.C);
-	LED_PWM_RGB lifeRGBLED = new LED_PWM_RGB("lifeRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("gforceRedLED", ModuleID.C);
-	tempGrnLED = new LED_PWM("gforceGrnLED", ModuleID.C);
-	tempBluLED = new LED_PWM("gforceBluLED", ModuleID.C);
-	LED_PWM_RGB gforceRGBLED = new LED_PWM_RGB("gforceRGBLED", ModuleID.C, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("machRedLED", ModuleID.G);
-	tempGrnLED = new LED_PWM("machGrnLED", ModuleID.G);
-	tempBluLED = new LED_PWM("machBluLED", ModuleID.G);
-	LED_PWM_RGB machRGBLED = new LED_PWM_RGB("machRGBLED", ModuleID.G, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("pitchRedLED", ModuleID.G);
-	tempGrnLED = new LED_PWM("pitchGrnLED", ModuleID.G);
-	tempBluLED = new LED_PWM("pitchBluLED", ModuleID.G);
-	LED_PWM_RGB pitchRGBLED = new LED_PWM_RGB("pitchRGBLED", ModuleID.G, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("headingRedLED", ModuleID.G);
-	tempGrnLED = new LED_PWM("headingGrnLED", ModuleID.G);
-	tempBluLED = new LED_PWM("headingBluLED", ModuleID.G);
-	LED_PWM_RGB headingRGBLED = new LED_PWM_RGB("headingRGBLED", ModuleID.G, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("fuelRedLED", ModuleID.I);
-	tempGrnLED = new LED_PWM("fuelGrnLED", ModuleID.I);
-	tempBluLED = new LED_PWM("fuelBluLED", ModuleID.I);
-	LED_PWM_RGB fuelRGBLED = new LED_PWM_RGB("fuelRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("chargeRedLED", ModuleID.I);
-	tempGrnLED = new LED_PWM("chargeGrnLED", ModuleID.I);
-	tempBluLED = new LED_PWM("chargeBluLED", ModuleID.I);
-	LED_PWM_RGB chargeRGBLED = new LED_PWM_RGB("chargeRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("deltaChargeRedLED", ModuleID.I);
-	tempGrnLED = new LED_PWM("deltaChargeGrnLED", ModuleID.I);
-	tempBluLED = new LED_PWM("deltaChargeBluLED", ModuleID.I);
-	LED_PWM_RGB deltaChargeRGBLED = new LED_PWM_RGB("deltaChargeRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("mnprpRedLED", ModuleID.I);
-	tempGrnLED = new LED_PWM("mnprpGrnLED", ModuleID.I);
-	tempBluLED = new LED_PWM("mnprpBluLED", ModuleID.I);
-	LED_PWM_RGB mnprpRGBLED = new LED_PWM_RGB("mnprpRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("intakeRedLED", ModuleID.I);
-	tempGrnLED = new LED_PWM("intakeGrnLED", ModuleID.I);
-	tempBluLED = new LED_PWM("intakeBluLED", ModuleID.I);
-	LED_PWM_RGB intakeRGBLED = new LED_PWM_RGB("intakeRGBLED", ModuleID.I, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("densityRedLED", ModuleID.GT);
-	tempGrnLED = new LED_PWM("densityGrnLED", ModuleID.GT);
-	tempBluLED = new LED_PWM("densityBluLED", ModuleID.GT);
-	LED_PWM_RGB densityRGBLED = new LED_PWM_RGB("densityRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("speedRedLED", ModuleID.GT);
-	tempGrnLED = new LED_PWM("speedGrnLED", ModuleID.GT);
-	tempBluLED = new LED_PWM("speedBluLED", ModuleID.GT);
-	LED_PWM_RGB speedRGBLED = new LED_PWM_RGB("speedRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("vertSpeedRedLED", ModuleID.GT);
-	tempGrnLED = new LED_PWM("vertSpeedGrnLED", ModuleID.GT);
-	tempBluLED = new LED_PWM("vertSpeedBluLED", ModuleID.GT);
-	LED_PWM_RGB vertSpeedRGBLED = new LED_PWM_RGB("vertSpeedRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
-	tempRedLED = new LED_PWM("radAltRedLED", ModuleID.GT);
-	tempGrnLED = new LED_PWM("radAltGrnLED", ModuleID.GT);
-	tempBluLED = new LED_PWM("radAltBluLED", ModuleID.GT);
-	LED_PWM_RGB radAltRGBLED = new LED_PWM_RGB("radAltRGBLED", ModuleID.GT, tempRedLED, tempGrnLED, tempBluLED);
-	tempRedLED = null; tempGrnLED = null; tempBluLED = null;
-	
+
 	// ========================================== StepperMotor =========================================================
 	StepperMotor heatLifeStepper = new StepperMotor("heatLifeStepper", ModuleID.C);
 	StepperMotor machStepper = new StepperMotor("machStepper", ModuleID.G);
@@ -172,9 +149,6 @@ public enum OP {
 	
 	// ========================================== NEMA17StepperMotor ===================================================
 	StepperMotorNEMA17 headingStepper = new StepperMotorNEMA17("headingStepper", ModuleID.G);
-	
-	// ========================================== AltitudeGauge ========================================================
-	AltitudeGauge altitudeGauge = new AltitudeGauge("altitudeGauge", ModuleID.GT);
 	*/
 	
 	
