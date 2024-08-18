@@ -128,6 +128,7 @@ void KMegaService::shutdownMode() {
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
 	//controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 	
+	controlPanel.moduleG.ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
 	controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
 }
 
