@@ -1,12 +1,14 @@
 package mountaineerman.kcp2.kkim.integration;
 
 import java.io.IOException;
+import java.util.List;
 
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.services.SpaceCenter;
 import krpc.client.services.SpaceCenter.Control;
 import krpc.client.services.SpaceCenter.Flight;
+import krpc.client.services.SpaceCenter.Part;
 import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
@@ -72,7 +74,25 @@ public class KRPCCommunicator {
 			this.vesselResources = this.vessel.getResources();
 			//System.out.println("Vessel Resources: " + this.vesselResources.getNames());
 			
+			int highestPercentTemperature = 0;
+			for (Part part : this.vessel.getParts().getAll()) {
+				int t1 = (int) (part.getTemperature() / part.getMaxTemperature() * 100);
+				if (t1 > highestPercentTemperature) {
+					highestPercentTemperature = t1;
+				}
+				int t2 = (int) (part.getSkinTemperature() / part.getMaxSkinTemperature() * 100);
+				if (t2 > highestPercentTemperature) {
+					highestPercentTemperature = t1;
+				}
+			}
+			this.controlPanel.percentTemperatureHealth = 100 - highestPercentTemperature;
 			
+			this.controlPanel.currentFood = this.vesselResources.amount("Food");
+			this.controlPanel.maxFood = this.vesselResources.max("Food");
+			this.controlPanel.currentWater = this.vesselResources.amount("Water");
+			this.controlPanel.maxWater = this.vesselResources.max("Water");
+			this.controlPanel.currentOxygen = this.vesselResources.amount("Oxygen");
+			this.controlPanel.maxOxygen = this.vesselResources.max("Oxygen");
 			this.controlPanel.gforce = this.flight.getGForce();
 //			this.controlPanel.mach = this.flight.getMach();
 //			this.controlPanel.pitch = this.flight.getPitch();
@@ -85,12 +105,9 @@ public class KRPCCommunicator {
 			this.controlPanel.maxElectricCharge = this.vesselResources.max("ElectricCharge");
 			this.controlPanel.currentMonopropellant = this.vesselResources.amount("MonoPropellant");
 			this.controlPanel.maxMonopropellant = this.vesselResources.max("MonoPropellant");
-			
-			//FIXME always getting 0 current/max Intake Air. Must be different values (flow?)
-			this.controlPanel.currentIntakeAir = this.currentStageResources.amount("IntakeAir");
-			this.controlPanel.maxIntakeAir = this.currentStageResources.max("IntakeAir");
-			//System.out.println("currentIntakeAir: " + this.controlPanel.currentIntakeAir);
-			//System.out.println("maxIntakeAir: " + this.controlPanel.maxIntakeAir);
+			//FIXME Use Intake part: Flow instead: https://krpc.github.io/krpc/csharp/api/space-center/parts.html#intake
+			//for (Intake intake : this.vessel.getParts().getIntakes()) {	
+			//}
 			
 			//this.controlPanel.airDensity = this.flight.getAtmosphereDensity() / CelestialBody.densityAt(Altitude); + Vessel.getSituation()... OR: getStaticPressure()/getStaticPressureAtMSL();
 //			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?

@@ -1,3 +1,4 @@
+Invert Pitch for Plane mode
 FOCUS2: Add more lights!
 
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE

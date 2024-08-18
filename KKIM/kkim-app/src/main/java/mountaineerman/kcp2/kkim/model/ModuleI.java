@@ -23,7 +23,7 @@ public class ModuleI implements LEDAggregator, StepperMotorAggregator {
 				new LED_PWM_RGB(OP.StepperRGBLED_Fuel,
 								OP.StepperLED_Fuel_Red,
 								OP.StepperLED_Fuel_Green,
-								OP.StepperLED_Fuel_Blue);		
+								OP.StepperLED_Fuel_Blue);
 		this.stepperLED_deltaCharge =
 				new LED_PWM_RGB(OP.RGBLED_deltaCharge,
 								OP.DeltaChargeLED_Red,
@@ -60,6 +60,7 @@ public class ModuleI implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
+//		return  this.stepper_Fuel.toString() +
 		return  this.monopropIntakeSwitch.toString() +
 				
 				this.stepperLED_Fuel.toString() +		

@@ -45,15 +45,15 @@ public class PacketAssembler {
 		//LEDs
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
 		
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Red.firstByte, OP.StepperLED_Heat_Red.lastByte, controlPanel.moduleC.stepperLED_Heat.getRedPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Green.firstByte, OP.StepperLED_Heat_Green.lastByte, controlPanel.moduleC.stepperLED_Heat.getGrnPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Blue.firstByte, OP.StepperLED_Heat_Blue.lastByte, controlPanel.moduleC.stepperLED_Heat.getBluPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Red.firstByte, OP.StepperLED_LifeSupport_Red.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getRedPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Green.firstByte, OP.StepperLED_LifeSupport_Green.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getGrnPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Blue.firstByte, OP.StepperLED_LifeSupport_Blue.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getBluPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Red.firstByte, OP.StepperLED_GForce_Red.lastByte, controlPanel.moduleC.stepperLED_GForce.getRedPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Green.firstByte, OP.StepperLED_GForce_Green.lastByte, controlPanel.moduleC.stepperLED_GForce.getGrnPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Blue.firstByte, OP.StepperLED_GForce_Blue.lastByte, controlPanel.moduleC.stepperLED_GForce.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Red.firstByte, OP.StepperLED_Heat_Red.lastByte, controlPanel.moduleC.stepperLED_Heat.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Green.firstByte, OP.StepperLED_Heat_Green.lastByte, controlPanel.moduleC.stepperLED_Heat.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Blue.firstByte, OP.StepperLED_Heat_Blue.lastByte, controlPanel.moduleC.stepperLED_Heat.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Red.firstByte, OP.StepperLED_LifeSupport_Red.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Green.firstByte, OP.StepperLED_LifeSupport_Green.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Blue.firstByte, OP.StepperLED_LifeSupport_Blue.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Red.firstByte, OP.StepperLED_GForce_Red.lastByte, controlPanel.moduleC.stepperLED_GForce.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Green.firstByte, OP.StepperLED_GForce_Green.lastByte, controlPanel.moduleC.stepperLED_GForce.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Blue.firstByte, OP.StepperLED_GForce_Blue.lastByte, controlPanel.moduleC.stepperLED_GForce.getBluPWMValue());
 		
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoHoldLED.firstByte, OP.AutoHoldLED.lastByte, controlPanel.moduleD.autoHoldLED.getPWM());

@@ -30,9 +30,18 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	//TODO WRAP IN KSP class:
 	//TODO double-check variable types in kRPC...
 	//heat: loop through all parts?: getTemperature()/getMaxTemperature(), getSkinTemperature()/getMaxSkinTemperature()
-	//life support: TBD
-	public float gforce = 0;//TODO replace
-	private int milliGforce = 0;//TODO replace
+	public int percentTemperatureHealth = 0; //Health of the hottest part on the vessel. Range: 0 to 100. 0=bad, 100=good.
+	public float currentFood = 0;
+	public float maxFood = 0;
+	public int percentFood = 0;//Range: 0 to 100
+	public float currentWater = 0;
+	public float maxWater = 0;
+	public int percentWater = 0;//Range: 0 to 100
+	public float currentOxygen = 0;
+	public float maxOxygen = 0;
+	public int percentOxygen = 0;//Range: 0 to 100
+	public int percentLifeSupport = 0;//Range: 0 to 100. Worst of Food/Water/Oxygen. Does not include Electric Charge, since it has its own dedicated gauge
+	public float gforce = 0;
 	public float mach = 0;
 	public float pitch = 0;	 //Units: degrees. Range: -90.0 to +90.0
 	public float heading = 0;//Units: degrees. Range: 0.0 to 360.0
@@ -49,8 +58,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float maxMonopropellant = 0;
 	private int percentMonopropellant = 0;//Range: 0 to 100
 	public float currentIntakeAir = 0;
-	public float maxIntakeAir = 0;
-	private int percentIntakeAir = 0;//Range: 0 to 100
 	
 	public float airDensity = 0;
 	public double speed = 0;//Units: meters/second.
@@ -113,20 +120,43 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//TODO Trim Logic (+Module F potentiometer)
 		
 		//Module C (+G) =======================================================
-		//TODO HEAT/LIFE LED
-		//TODO G-FORCE LED
-//		this.milliGforce = Math.round(this.gforce * 1000);
-//		if (this.milliGforce < 0) {
-//			this.milliGforce = 0;
-//		} else if (this.milliGforce > 15000) {
-//			this.milliGforce = 15000;
-//		}
-//		int temp = this.scaleIntegerToNewRange(this.milliGforce, 0, 15000, OP.Stepper_Gforce.calibrationCCWLimit, OP.Stepper_Gforce.calibrationCWLimit);
-////		System.out.println();
-////		System.out.println("G-Force (float): " + this.gforce);
-////		System.out.println("Milli G-Force (int): " + this.milliGforce);
-////		System.out.println("desiredPosition (scaled): " + temp);
-//		this.moduleC.stepper_Gforce.setDesiredPosition(temp);
+		if (this.maxFood > 0) {
+			this.percentFood = (int) (this.currentFood / this.maxFood * 100);
+		} else {
+			this.percentFood = -1;
+		}
+		if (this.maxWater > 0) {
+			this.percentWater = (int) (this.currentWater / this.maxWater * 100);
+		} else {
+			this.percentWater = -1;
+		}
+		if (this.maxOxygen > 0) {
+			this.percentOxygen = (int) (this.currentOxygen / this.maxOxygen * 100);
+		} else {
+			this.percentOxygen = -1;
+		}
+		this.percentLifeSupport = Math.min(this.percentFood, this.percentWater);
+		this.percentLifeSupport = Math.min(this.percentLifeSupport, this.percentOxygen);
+		
+		if (this.moduleG.heatLifeSwitch.getStatus()) {//Life Support selected
+			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
+			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
+		} else {//Heat selected
+			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.BRIGHT, this.percentTemperatureHealth);
+			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
+		}
+		
+		if (this.gforce > 10.0) {
+			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.RED);
+		} else if (this.gforce > 8.0) {
+			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.YELLOW);
+		} else if (this.gforce > 3.0) {
+			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.WHITE);
+		} else if (this.gforce > 0.05) {
+			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.GREEN);
+		} else {
+			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.BLUE);
+		}
 		
 		//Module D ============================================================
 		//TODO Autopilot modes
@@ -200,22 +230,10 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else if (this.maxLiquidFuel > 0) {
 			this.percentFuel = (int) (this.currentLiquidFuel / this.maxLiquidFuel * 100);
 		} else {
-			this.percentFuel = 0;
+			this.percentFuel = -1;
 		}
+		refreshPercentRGBLED(this.moduleI.stepperLED_Fuel, LED_RGB_Brightness.BRIGHT, this.percentFuel);
 		
-		if (this.percentFuel > 99) {
-			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.BLUE);
-		} else if (this.percentFuel > 90) {
-			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.GREEN);
-		} else if (this.percentFuel > 20) {
-			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.WHITE);
-		} else if (this.percentFuel > 10) {
-			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.YELLOW);
-		} else if (this.percentFuel > 0) {
-			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.RED);
-		} else {
-			this.moduleI.stepperLED_Fuel.setMode(LED_RGB_Mode.DIM_WHITE);
-		}
 		//int temp = this.scaleIntegerToNewRange(this.percentFuel, 0, 100, OP.Stepper_Fuel.calibrationCCWLimit, OP.Stepper_Fuel.calibrationCWLimit);
 		//System.out.println();
 		//System.out.println(" Solid Fuel: " + this.currentSolidFuel + " / " + this.maxSolidFuel);
@@ -227,27 +245,14 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		if (this.maxElectricCharge > 0) {
 			this.percentElectricCharge = (int) (this.currentElectricCharge / this.maxElectricCharge * 100);
 		} else {
-			this.percentElectricCharge = 0;
+			this.percentElectricCharge = -1;
 		}
-		
-		if (this.percentElectricCharge > 99) {
-			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.BLUE);
-		} else if (this.percentElectricCharge > 90) {
-			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.GREEN);
-		} else if (this.percentElectricCharge > 20) {
-			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.WHITE);
-		} else if (this.percentElectricCharge > 10) {
-			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.YELLOW);
-		} else if (this.percentElectricCharge > 0) {
-			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.RED);
-		} else {
-			this.moduleI.stepperLED_Charge.setMode(LED_RGB_Mode.DIM_WHITE);
-		}
+		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
 		if (this.currentElectricCharge > this.previousElectricCharge) {
 			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.GREEN);
 		} else if (this.currentElectricCharge == this.previousElectricCharge) {
-			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.DIM_WHITE);
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.WHITE);
 		} else {
 			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.RED);
 		}
@@ -259,7 +264,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		if (this.maxMonopropellant > 0) {
 			this.percentMonopropellant = (int) (this.currentMonopropellant / this.maxMonopropellant * 100);
 		} else {
-			this.percentMonopropellant = 0;
+			this.percentMonopropellant = -1;
 		}
 		
 		//FIXME always getting 0 current/max Intake Air. Must be different values (flow?)
@@ -270,62 +275,47 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 //		}
 		
 		if (this.moduleI.monopropIntakeSwitch.getStatus()) {//Intake Air selected
-			if (this.percentMonopropellant > 99) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_BLUE);
-			} else if (this.percentMonopropellant > 90) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_GREEN);
-			} else if (this.percentMonopropellant > 20) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_WHITE);
-			} else if (this.percentMonopropellant > 10) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_YELLOW);
-			} else if (this.percentMonopropellant > 0) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_RED);
-			} else {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_WHITE);
-			}
-			
-			
-//			if (this.percentIntakeAir > 99) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.BLUE);
-//			} else if (this.percentIntakeAir > 90) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.GREEN);
-//			} else if (this.percentIntakeAir > 20) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.WHITE);
-//			} else if (this.percentIntakeAir > 10) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.YELLOW);
-//			} else if (this.percentIntakeAir > 0) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.RED);
-//			} else {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_WHITE);
-//			}
+			refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.DIM, this.percentMonopropellant);
+			//TODO percentIntakeAir:BRIGHT
 		} else {//Monopropellant selected
-			if (this.percentMonopropellant > 99) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.BLUE);
-			} else if (this.percentMonopropellant > 90) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.GREEN);
-			} else if (this.percentMonopropellant > 20) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.WHITE);
-			} else if (this.percentMonopropellant > 10) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.YELLOW);
-			} else if (this.percentMonopropellant > 0) {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.RED);
+			refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
+			//TODO percentIntakeAir:DIM
+		}
+	}
+	
+	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, int percentage) {
+		if (brightness == LED_RGB_Brightness.BRIGHT) {
+			if (percentage > 99) {
+				led.setMode(LED_RGB_Mode.BLUE);
+			} else if (percentage > 90) {
+				led.setMode(LED_RGB_Mode.GREEN);
+			} else if (percentage > 20) {
+				led.setMode(LED_RGB_Mode.WHITE);
+			} else if (percentage > 10) {
+				led.setMode(LED_RGB_Mode.YELLOW);
+			} else if (percentage > 0) {
+				led.setMode(LED_RGB_Mode.RED);
+			} else if (percentage == 0) {
+				led.setMode(LED_RGB_Mode.VIOLET);
 			} else {
-				this.moduleI.stepperLED_Monopropellant.setMode(LED_RGB_Mode.DIM_WHITE);
+				led.setMode(LED_RGB_Mode.CYAN);
 			}
-			
-//			if (this.percentIntakeAir > 99) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_BLUE);
-//			} else if (this.percentIntakeAir > 90) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_GREEN);
-//			} else if (this.percentIntakeAir > 20) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_WHITE);
-//			} else if (this.percentIntakeAir > 10) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_YELLOW);
-//			} else if (this.percentIntakeAir > 0) {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_RED);
-//			} else {
-//				this.moduleI.stepperLED_IntakeAir.setMode(LED_RGB_Mode.DIM_WHITE);
-//			}
+		} else if (brightness == LED_RGB_Brightness.DIM) {
+			if (percentage > 99) {
+				led.setMode(LED_RGB_Mode.DIM_BLUE);
+			} else if (percentage > 90) {
+				led.setMode(LED_RGB_Mode.DIM_GREEN);
+			} else if (percentage > 20) {
+				led.setMode(LED_RGB_Mode.DIM_WHITE);
+			} else if (percentage > 10) {
+				led.setMode(LED_RGB_Mode.DIM_YELLOW);
+			} else if (percentage > 0) {
+				led.setMode(LED_RGB_Mode.DIM_RED);
+			} else if (percentage == 0) {
+				led.setMode(LED_RGB_Mode.DIM_VIOLET);
+			} else {
+				led.setMode(LED_RGB_Mode.DIM_CYAN);
+			}
 		}
 	}
 	

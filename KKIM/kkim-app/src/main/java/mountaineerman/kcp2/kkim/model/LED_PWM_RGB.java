@@ -50,10 +50,6 @@ public class LED_PWM_RGB extends Part {
 				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				break;
 			case VIOLET:
-				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM()/2);
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-			case MAGENTA:
 				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
 				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
@@ -93,11 +89,21 @@ public class LED_PWM_RGB extends Part {
 				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
 				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
 				break;
+			case DIM_VIOLET:
+				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				break;
 			case DIM_BLUE:
 				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
 				break;
+			case DIM_CYAN:
+				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				break;	
 			case DIM_GREEN:
 				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
 				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
