@@ -94,9 +94,9 @@ public class KRPCCommunicator {
 			this.controlPanel.currentOxygen = this.vesselResources.amount("Oxygen");
 			this.controlPanel.maxOxygen = this.vesselResources.max("Oxygen");
 			this.controlPanel.gforce = this.flight.getGForce();
-//			this.controlPanel.mach = this.flight.getMach();
-//			this.controlPanel.pitch = this.flight.getPitch();
-//			this.controlPanel.heading = this.flight.getHeading();
+			this.controlPanel.mach = this.flight.getMach();
+			this.controlPanel.pitch = this.flight.getPitch();
+			this.controlPanel.heading = this.flight.getHeading();
 			this.controlPanel.currentLiquidFuel = this.currentStageResources.amount("LiquidFuel");
 			this.controlPanel.maxLiquidFuel = this.currentStageResources.max("LiquidFuel");
 			this.controlPanel.currentSolidFuel = this.currentStageResources.amount("SolidFuel");

@@ -84,16 +84,16 @@ public class PacketAssembler {
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Sensitivity50PercentLED.firstByte, OP.Sensitivity50PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity50PercentLED.getPWM());
 		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Sensitivity25PercentLED.firstByte, OP.Sensitivity25PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity25PercentLED.getPWM());
 		
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Red.firstByte, OP.StepperLED_Mach_Red.lastByte, controlPanel.moduleG.stepperLED_Mach.getRedPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Green.firstByte, OP.StepperLED_Mach_Green.lastByte, controlPanel.moduleG.stepperLED_Mach.getGrnPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Blue.firstByte, OP.StepperLED_Mach_Blue.lastByte, controlPanel.moduleG.stepperLED_Mach.getBluPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Red.firstByte, OP.StepperLED_Pitch_Red.lastByte, controlPanel.moduleG.stepperLED_Pitch.getRedPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Green.firstByte, OP.StepperLED_Pitch_Green.lastByte, controlPanel.moduleG.stepperLED_Pitch.getGrnPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Blue.firstByte, OP.StepperLED_Pitch_Blue.lastByte, controlPanel.moduleG.stepperLED_Pitch.getBluPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Red.firstByte, OP.StepperLED_Heading_Red.lastByte, controlPanel.moduleG.stepperLED_Heading.getRedPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Green.firstByte, OP.StepperLED_Heading_Green.lastByte, controlPanel.moduleG.stepperLED_Heading.getGrnPWMValue());
-//		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Blue.firstByte, OP.StepperLED_Heading_Blue.lastByte, controlPanel.moduleG.stepperLED_Heading.getBluPWMValue());
-		//TODO Communications LED (decide if necessary)
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Red.firstByte, OP.StepperLED_Mach_Red.lastByte, controlPanel.moduleG.stepperLED_Mach.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Green.firstByte, OP.StepperLED_Mach_Green.lastByte, controlPanel.moduleG.stepperLED_Mach.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Blue.firstByte, OP.StepperLED_Mach_Blue.lastByte, controlPanel.moduleG.stepperLED_Mach.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Red.firstByte, OP.StepperLED_Pitch_Red.lastByte, controlPanel.moduleG.stepperLED_Pitch.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Green.firstByte, OP.StepperLED_Pitch_Green.lastByte, controlPanel.moduleG.stepperLED_Pitch.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Blue.firstByte, OP.StepperLED_Pitch_Blue.lastByte, controlPanel.moduleG.stepperLED_Pitch.getBluPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Red.firstByte, OP.StepperLED_Heading_Red.lastByte, controlPanel.moduleG.stepperLED_Heading.getRedPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Green.firstByte, OP.StepperLED_Heading_Green.lastByte, controlPanel.moduleG.stepperLED_Heading.getGrnPWMValue());
+		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Blue.firstByte, OP.StepperLED_Heading_Blue.lastByte, controlPanel.moduleG.stepperLED_Heading.getBluPWMValue());
+		//Note: Communications LED intentionally not sent. KMega directly controls it.
 		
 		//TODO Add remaining LEDs: Module H
 		

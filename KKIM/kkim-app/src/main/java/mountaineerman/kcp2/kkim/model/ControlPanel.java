@@ -205,21 +205,95 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Sensitivity Switch: See Modules A, B
 		
 		//Module G (+E) =======================================================
-		//TODO MACH
-		
-		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
-			//blue
-		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
-			//green
-			//TODO Pitch Gauge...
-		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
-			//red
-			//TODO Pitch Gauge...
-		} else {//INVALID
-			//TODO Pitch Gauge...
+		if (this.mach > 28.0) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.VIOLET);
+		} else if (this.mach > 16.0) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.RED);
+		} else if (this.mach > 8.0) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.ORANGE);
+		} else if (this.mach > 4.0) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.YELLOW);
+		} else if (this.mach > 1.0) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.WHITE);
+		} else if (this.mach > 0.001) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.GREEN);
+		} else if (this.mach > -0.001) {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.BLUE);
+		} else {
+			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.CYAN);
 		}
 		
-		//TODO HEADING
+		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
+			if (this.pitch > 60.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
+			} else if (this.pitch > 30.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.CYAN);
+			} else if (this.pitch > 1.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.GREEN);
+			} else if (this.pitch > -1.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.WHITE);
+			} else if (this.pitch > -30.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.YELLOW);
+			} else if (this.pitch > -60.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.ORANGE);
+			} else if (this.pitch >= -90.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.RED);
+			} else {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.OFF);
+			}
+		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
+			if (this.pitch > 30.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
+			} else if (this.pitch > 20.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
+			} else if (this.pitch > 10.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.CYAN);
+			} else if (this.pitch > 0.333) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.GREEN);
+			} else if (this.pitch > -0.333) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.WHITE);
+			} else if (this.pitch > -10.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.YELLOW);
+			} else if (this.pitch > -20.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.ORANGE);
+			} else if (this.pitch >= -30.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.RED);
+			} else {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_RED);
+			}
+		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
+			if (this.pitch > 9.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
+			} else if (this.pitch > 6.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
+			} else if (this.pitch > 3.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.CYAN);
+			} else if (this.pitch > 0.1) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.GREEN);
+			} else if (this.pitch > -0.1) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.WHITE);
+			} else if (this.pitch > -3.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.YELLOW);
+			} else if (this.pitch > -6.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.ORANGE);
+			} else if (this.pitch >= -9.0) {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.RED);
+			} else {
+				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_RED);
+			}
+		} else {//INVALID
+			this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.OFF);
+		}
+		
+		if ( (this.heading < 45.0) || (this.heading > 315.0) ) { //North quadrant
+			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_BLUE);
+		} else if (this.heading > 225.0) { //West quadrant
+			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_ORANGE);
+		} else if (this.heading > 135.0) { //South quadrant
+			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_CYAN);
+		} else { //East quadrant
+			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_YELLOW);
+		}
 		
 		//Module H ============================================================
 		//TODO find Diagnostic Mode and Graceful Shutdown logic elsewhere...
