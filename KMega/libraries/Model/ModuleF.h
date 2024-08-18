@@ -19,8 +19,7 @@ public:
 	ModuleF(MuxShield& mux, Adafruit_TLC5947& ledDriverBoards);
 	void refreshInputStatus();
 	String getInputStatusAsString();
-	void setAllLEDsOff();
-	void setAllLEDsOn();
+	void setAllLEDsTo(int pwm_level);
 	void testLEDsSequentially();
 	
 	//Parts:

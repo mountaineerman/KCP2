@@ -9,8 +9,7 @@
 class Interface_LEDAggregator
 {
 public:
-	virtual void setAllLEDsOff() = 0;
-	virtual void setAllLEDsOn() = 0;
+	virtual void setAllLEDsTo(int pwm_level) = 0;
 	virtual void testLEDsSequentially() = 0;
 };
 

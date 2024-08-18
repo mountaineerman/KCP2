@@ -36,18 +36,11 @@ String ModuleF::getInputStatusAsString() {
 		   "\nanalogInput_MultiPot:" + this->analogInput_MultiPot.getInputStatusAsString() + "\n";
 }
 
-void ModuleF::setAllLEDsOff() {
-	this->ledPWM_twistSwitch25.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_twistSwitch50.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_twistSwitch75.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_twistSwitch100.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleF::setAllLEDsOn() {
-	this->ledPWM_twistSwitch25.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_twistSwitch50.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_twistSwitch75.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_twistSwitch100.setPWM(PWM_LED_MAXIMUM);
+void ModuleF::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_twistSwitch25.setPWM(pwm_level);
+	this->ledPWM_twistSwitch50.setPWM(pwm_level);
+	this->ledPWM_twistSwitch75.setPWM(pwm_level);
+	this->ledPWM_twistSwitch100.setPWM(pwm_level);
 }
 
 void ModuleF::testLEDsSequentially() {

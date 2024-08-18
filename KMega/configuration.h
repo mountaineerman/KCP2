@@ -22,7 +22,8 @@ static const int REFRESH_PERIOD_IN_MILLISECONDS = 1;//TODO replace in program...
 static const int INPUT_REFRESH_PACKET_SEND_RATE_IN_MILLISECONDS = 100;
 static const int OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 195;//Length of Header + Payload. Does not include Packet Start Delimiter bytes.
 static const int INPUT_REFRESH_PACKET_LENGTH_IN_BYTES = 31;  //Length of Delimiter + Header + Payload.
-static const int MAXIMUM_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_IN_MILLISECONDS = 1000; //The length of time before the controlPanel.moduleG.ledPWM_Comms LED will start flashing, indicating no output packet has been received
+static const int MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_ERROR_IN_MILLISECONDS = 1000; //The length of time before the controlPanel.moduleG.ledPWM_Comms LED will start flashing, indicating no output packet has been received
+static const int MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_IDLE_IN_MILLISECONDS = 5000;  //The length of time before all LEDs are dimmed to "idle" state
 static const int MAX_TALLY_TIME_FOR_DIAGNOSTICS_IN_MILLISECONDS = 1000;
 
 //KNano Interface
@@ -94,7 +95,8 @@ static const int PIN_MUX_AUTONAVIGATION_SWITCH = 11;
 //LED Driver Boards
 static const int NUMBER_OF_LED_DRIVER_BOARDS = 4;
 static const int PWM_LED_MINIMUM = 0;
-static const int PWM_LED_MAXIMUM = 4095;
+static const int PWM_LED_DIM = 100;
+static const int PWM_LED_MAXIMUM = 1500; //Actual Maximum: 4095
 
 static const int PIN_LEDDB_BRAKE_LED_MODULE_A = 48;				//	(Pin 0)		[LED Board 1]
 static const int PIN_LEDDB_BRAKE_LED_MODULE_D = 49;				//	(Pin 1)		[LED Board 1]

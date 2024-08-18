@@ -32,31 +32,17 @@ String ModuleG::getInputStatusAsString() {
 		   "\nswitch_HeatLife:" + this->switch_HeatLife.getInputStatusAsString() + "\n";
 }
 
-void ModuleG::setAllLEDsOff() {
-	this->ledPWM_MACH_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_MACH_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_MACH_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_PITCH_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_PITCH_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_PITCH_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_HEADING_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_HEADING_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_HEADING_Blue.setPWM(PWM_LED_MINIMUM);
-
-}
-
-void ModuleG::setAllLEDsOn() {
-	this->ledPWM_MACH_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_MACH_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_MACH_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_PITCH_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_PITCH_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_PITCH_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_Comms.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_HEADING_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_HEADING_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_HEADING_Blue.setPWM(PWM_LED_MAXIMUM);
+void ModuleG::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_MACH_Red.setPWM(pwm_level);
+	this->ledPWM_MACH_Green.setPWM(pwm_level);
+	this->ledPWM_MACH_Blue.setPWM(pwm_level);
+	this->ledPWM_PITCH_Red.setPWM(pwm_level);
+	this->ledPWM_PITCH_Green.setPWM(pwm_level);
+	this->ledPWM_PITCH_Blue.setPWM(pwm_level);
+	//this->ledPWM_Comms.setPWM(pwm_level); //Disabled to avoid conflict with 'communication error' mode
+	this->ledPWM_HEADING_Red.setPWM(pwm_level);
+	this->ledPWM_HEADING_Green.setPWM(pwm_level);
+	this->ledPWM_HEADING_Blue.setPWM(pwm_level);
 }
 
 void ModuleG::testLEDsSequentially() {

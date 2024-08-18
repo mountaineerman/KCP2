@@ -32,7 +32,7 @@ ControlPanel::ControlPanel()
 	pinMode(PIN_LED_DRIVER_BOARDS_OVERRIDE, OUTPUT);
 	this->disableLEDOverride();
 	
-	this->setAllLEDsOff();
+	this->setAllLEDsTo(PWM_LED_MINIMUM);
 }
 
 void ControlPanel::refreshInputStatus() {
@@ -67,29 +67,16 @@ String ControlPanel::getInputStatusAsString() { //TODO: Fix (figure out overflow
 	return(String(""));
 }
 
-void ControlPanel::setAllLEDsOff() {
-	this->moduleA.setAllLEDsOff();
-	this->moduleC.setAllLEDsOff();
-	this->moduleD.setAllLEDsOff();
-	this->moduleE.setAllLEDsOff();
-	this->moduleF.setAllLEDsOff();
-	this->moduleG.setAllLEDsOff();
-	this->moduleH.setAllLEDsOff();
-	this->moduleI.setAllLEDsOff();
-	this->moduleGT.setAllLEDsOff();
-	this->writeLEDStatusToLEDDriverBoards();
-}
-
-void ControlPanel::setAllLEDsOn() {
-	this->moduleA.setAllLEDsOn();
-	this->moduleC.setAllLEDsOn();
-	this->moduleD.setAllLEDsOn();
-	this->moduleE.setAllLEDsOn();
-	this->moduleF.setAllLEDsOn();
-	this->moduleG.setAllLEDsOn();
-	this->moduleH.setAllLEDsOn();
-	this->moduleI.setAllLEDsOn();
-	this->moduleGT.setAllLEDsOn();
+void ControlPanel::setAllLEDsTo(int pwm_level) {
+	this->moduleA.setAllLEDsTo(pwm_level);
+	this->moduleC.setAllLEDsTo(pwm_level);
+	this->moduleD.setAllLEDsTo(pwm_level);
+	this->moduleE.setAllLEDsTo(pwm_level);
+	this->moduleF.setAllLEDsTo(pwm_level);
+	this->moduleG.setAllLEDsTo(pwm_level);
+	this->moduleH.setAllLEDsTo(pwm_level);
+	this->moduleI.setAllLEDsTo(pwm_level);
+	this->moduleGT.setAllLEDsTo(pwm_level);
 	this->writeLEDStatusToLEDDriverBoards();
 }
 
@@ -278,7 +265,7 @@ void ControlPanel::diagnosticMode_testAllLEDs() {
 	
 	clearScreen();
 	Serial.println(F("Testing All LEDs. Enter '0' at any time to return to the main menu."));
-	this->setAllLEDsOn();
+	this->setAllLEDsTo(PWM_LED_MAXIMUM);
 	
 	String userInput;
 	
@@ -289,7 +276,7 @@ void ControlPanel::diagnosticMode_testAllLEDs() {
 		//delay(3000);
 		
 		if(userInput == "0") {
-			this->setAllLEDsOff();
+			this->setAllLEDsTo(PWM_LED_MINIMUM);
 			return;
 		}
 	}

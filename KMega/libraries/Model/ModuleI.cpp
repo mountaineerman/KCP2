@@ -38,40 +38,22 @@ String ModuleI::getInputStatusAsString() {
 		   "\nswitch_MonopropellantIntake:" + this->switch_MonopropellantIntake.getInputStatusAsString() + "\n";
 }
 
-void ModuleI::setAllLEDsOff() {
-	this->ledPWM_FUEL_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_FUEL_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_FUEL_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_DeltaCHARGE_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_DeltaCHARGE_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_DeltaCHARGE_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_CHARGE_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_CHARGE_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_CHARGE_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_MONOPROPELLANT_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_MONOPROPELLANT_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_MONOPROPELLANT_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_INTAKE_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_INTAKE_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_INTAKE_Blue.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleI::setAllLEDsOn() {
-	this->ledPWM_FUEL_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_FUEL_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_FUEL_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_DeltaCHARGE_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_DeltaCHARGE_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_DeltaCHARGE_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_CHARGE_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_CHARGE_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_CHARGE_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_MONOPROPELLANT_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_MONOPROPELLANT_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_MONOPROPELLANT_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_INTAKE_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_INTAKE_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_INTAKE_Blue.setPWM(PWM_LED_MAXIMUM);
+void ModuleI::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_FUEL_Red.setPWM(pwm_level);
+	this->ledPWM_FUEL_Green.setPWM(pwm_level);
+	this->ledPWM_FUEL_Blue.setPWM(pwm_level);
+	this->ledPWM_DeltaCHARGE_Red.setPWM(pwm_level);
+	this->ledPWM_DeltaCHARGE_Green.setPWM(pwm_level);
+	this->ledPWM_DeltaCHARGE_Blue.setPWM(pwm_level);
+	this->ledPWM_CHARGE_Red.setPWM(pwm_level);
+	this->ledPWM_CHARGE_Green.setPWM(pwm_level);
+	this->ledPWM_CHARGE_Blue.setPWM(pwm_level);
+	this->ledPWM_MONOPROPELLANT_Red.setPWM(pwm_level);
+	this->ledPWM_MONOPROPELLANT_Green.setPWM(pwm_level);
+	this->ledPWM_MONOPROPELLANT_Blue.setPWM(pwm_level);
+	this->ledPWM_INTAKE_Red.setPWM(pwm_level);
+	this->ledPWM_INTAKE_Green.setPWM(pwm_level);
+	this->ledPWM_INTAKE_Blue.setPWM(pwm_level);
 }
 
 void ModuleI::testLEDsSequentially() {
