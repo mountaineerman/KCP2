@@ -21,28 +21,16 @@ ModuleC::ModuleC(Adafruit_TLC5947& ledDriverBoards)
 	
 }
 
-void ModuleC::setAllLEDsOff() {
-	this->ledPWM_HEAT_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_HEAT_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_HEAT_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_LIFE_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_LIFE_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_LIFE_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GFORCE_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GFORCE_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GFORCE_Blue.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleC::setAllLEDsOn() {
-	this->ledPWM_HEAT_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_HEAT_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_HEAT_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_LIFE_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_LIFE_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_LIFE_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GFORCE_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GFORCE_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GFORCE_Blue.setPWM(PWM_LED_MAXIMUM);
+void ModuleC::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_HEAT_Red.setPWM(pwm_level);
+	this->ledPWM_HEAT_Green.setPWM(pwm_level);
+	this->ledPWM_HEAT_Blue.setPWM(pwm_level);
+	this->ledPWM_LIFE_Red.setPWM(pwm_level);
+	this->ledPWM_LIFE_Green.setPWM(pwm_level);
+	this->ledPWM_LIFE_Blue.setPWM(pwm_level);
+	this->ledPWM_GFORCE_Red.setPWM(pwm_level);
+	this->ledPWM_GFORCE_Green.setPWM(pwm_level);
+	this->ledPWM_GFORCE_Blue.setPWM(pwm_level);
 }
 
 void ModuleC::testLEDsSequentially() {

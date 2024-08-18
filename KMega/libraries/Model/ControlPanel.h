@@ -50,8 +50,7 @@ public:
 	void refreshInputStatus();
 	String getInputStatusAsString();
 	
-	void setAllLEDsOff();
-	void setAllLEDsOn();
+	void setAllLEDsTo(int pwm_level); //See PWM_LED_MINIMUM / PWM_LED_DIM / PWM_LED_MAXIMUM
 	void writeLEDStatusToLEDDriverBoards();
 	void testLEDsSequentially();
 	void activateLEDOverride();

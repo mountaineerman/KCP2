@@ -33,16 +33,21 @@ Diagnostic Mode:
 6. On Control Panel, select Diagnostic Mode button (center-left).
 
 
-(I) TROUBLESHOOTING
+(I) TROUBLESHOOTING ===================================================================================================================================================================================
 
-(A) DEVELOPMENT
+(A) DEVELOPMENT =======================================================================================================================================================================================
+
+Symptoms:
+When trying to program the Arduino board, get message: "the selected serial port does not exist or your board is not connected"
+Fix:
+In Arduino IDE, select the port to activate it.
 
 Symptoms:
 When trying to find references to a function or do a refactor, get "The resource is not on the build path of a Java project."
 Fix:
 TBD
 
-(B) RUNTIME:
+(B) RUNTIME: ==========================================================================================================================================================================================
 
 Symptoms:
 -COMMS LED is flashing

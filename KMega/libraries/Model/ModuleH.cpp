@@ -41,22 +41,13 @@ String ModuleH::getInputStatusAsString() {
 		   "\nswitch_GlassCockpit_BR:" + this->switch_GlassCockpit_BR.getInputStatusAsString() + "\n";
 }
 
-void ModuleH::setAllLEDsOff() {
-	this->ledPWM_GlassCockpit_TL.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_CL.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_BL.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_TR.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_CR.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_GlassCockpit_BR.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleH::setAllLEDsOn() {
-	this->ledPWM_GlassCockpit_TL.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_CL.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_BL.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_TR.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_CR.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_GlassCockpit_BR.setPWM(PWM_LED_MAXIMUM);
+void ModuleH::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_GlassCockpit_TL.setPWM(pwm_level);
+	this->ledPWM_GlassCockpit_CL.setPWM(pwm_level);
+	this->ledPWM_GlassCockpit_BL.setPWM(pwm_level);
+	this->ledPWM_GlassCockpit_TR.setPWM(pwm_level);
+	this->ledPWM_GlassCockpit_CR.setPWM(pwm_level);
+	this->ledPWM_GlassCockpit_BR.setPWM(pwm_level);
 }
 
 void ModuleH::testLEDsSequentially() {

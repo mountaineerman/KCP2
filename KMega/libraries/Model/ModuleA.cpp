@@ -28,12 +28,8 @@ String ModuleA::getInputStatusAsString() {
 		   "\nswitch_StagingButton:" + this->switch_StagingButton.getInputStatusAsString() + "\n";
 }
 
-void ModuleA::setAllLEDsOff() {
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleA::setAllLEDsOn() {
-	this->ledPWM_BrakeModuleA.setPWM(PWM_LED_MAXIMUM);
+void ModuleA::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_BrakeModuleA.setPWM(pwm_level);
 }
 
 void ModuleA::testLEDsSequentially() {

@@ -35,6 +35,8 @@ private:
 	long inputRefreshPacketLastSendTimeInMilliseconds;
 	long outputRefreshPacketLastReceiveTimeInMilliseconds;
 	long commsLEDErrorStateLastToggleTimeInMilliseconds;
+	
+	bool outputsHaveBeenSetToIdleState;
 };
 
 #endif

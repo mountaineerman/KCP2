@@ -25,34 +25,19 @@ ModuleGT::ModuleGT(Adafruit_TLC5947& ledDriverBoards)
 	this->altitude = STARTING_ALTITUDE;
 }
 
-void ModuleGT::setAllLEDsOff() {	
-	this->ledPWM_DENSITY_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_DENSITY_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_DENSITY_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_SPEED_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_SPEED_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_SPEED_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_VSPEED_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_VSPEED_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_VSPEED_Blue.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_RADARALT_Red.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_RADARALT_Green.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_RADARALT_Blue.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleGT::setAllLEDsOn() {
-	this->ledPWM_DENSITY_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_DENSITY_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_DENSITY_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_SPEED_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_SPEED_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_SPEED_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_VSPEED_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_VSPEED_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_VSPEED_Blue.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_RADARALT_Red.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_RADARALT_Green.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_RADARALT_Blue.setPWM(PWM_LED_MAXIMUM);
+void ModuleGT::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_DENSITY_Red.setPWM(pwm_level);
+	this->ledPWM_DENSITY_Green.setPWM(pwm_level);
+	this->ledPWM_DENSITY_Blue.setPWM(pwm_level);
+	this->ledPWM_SPEED_Red.setPWM(pwm_level);
+	this->ledPWM_SPEED_Green.setPWM(pwm_level);
+	this->ledPWM_SPEED_Blue.setPWM(pwm_level);
+	this->ledPWM_VSPEED_Red.setPWM(pwm_level);
+	this->ledPWM_VSPEED_Green.setPWM(pwm_level);
+	this->ledPWM_VSPEED_Blue.setPWM(pwm_level);
+	this->ledPWM_RADARALT_Red.setPWM(pwm_level);
+	this->ledPWM_RADARALT_Green.setPWM(pwm_level);
+	this->ledPWM_RADARALT_Blue.setPWM(pwm_level);
 }
 
 void ModuleGT::testLEDsSequentially() {

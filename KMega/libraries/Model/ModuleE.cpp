@@ -71,20 +71,12 @@ String ModuleE::getInputStatusAsString() {
 		"\nswitch_AutoNavigation:" + this->switch_AutoNavigation.getInputStatusAsString() + "\n";
 }
 
-void ModuleE::setAllLEDsOff() {
-	this->ledPWM_ORB.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_PLN.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_30deg.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_Fairing.setPWM(PWM_LED_MINIMUM);
-	this->ledPWM_Chute.setPWM(PWM_LED_MINIMUM);
-}
-
-void ModuleE::setAllLEDsOn() {
-	this->ledPWM_ORB.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_PLN.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_30deg.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_Fairing.setPWM(PWM_LED_MAXIMUM);
-	this->ledPWM_Chute.setPWM(PWM_LED_MAXIMUM);
+void ModuleE::setAllLEDsTo(int pwm_level) {
+	this->ledPWM_ORB.setPWM(pwm_level);
+	this->ledPWM_PLN.setPWM(pwm_level);
+	this->ledPWM_30deg.setPWM(pwm_level);
+	this->ledPWM_Fairing.setPWM(pwm_level);
+	this->ledPWM_Chute.setPWM(pwm_level);
 }
 
 void ModuleE::testLEDsSequentially() {

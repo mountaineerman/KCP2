@@ -24,8 +24,7 @@ public:
 	void refreshInputStatus();
 	String getInputStatusAsString();
 	
-	void setAllLEDsOff();
-	void setAllLEDsOn();
+	void setAllLEDsTo(int pwm_level);
 	void testLEDsSequentially();
 	
 	//Check if any stepper in the Module needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.

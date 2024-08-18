@@ -26,6 +26,7 @@ KMegaService::KMegaService()
 	this->outputRefreshPacketLastReceiveTimeInMilliseconds = millis();
 	this->commsLEDErrorStateLastToggleTimeInMilliseconds = millis();
 	
+	this->outputsHaveBeenSetToIdleState = false;
 	
 	this->startupMode(); //TODO move out of constructor
 	
@@ -50,9 +51,9 @@ KMegaService::KMegaService()
 
 void KMegaService::startupMode() {
 
-	this->controlPanel.setAllLEDsOn();
+	this->controlPanel.setAllLEDsTo(PWM_LED_MAXIMUM);
 	delay(1000);
-	this->controlPanel.setAllLEDsOff();
+	this->controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
 	delay(100);
 	
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
@@ -93,8 +94,17 @@ void KMegaService::standardOperatingMode() {
 		this->serialCommunicator.sendAltitudePacket();
 	}
 	
-	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAXIMUM_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_IN_MILLISECONDS ) {
+	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_ERROR_IN_MILLISECONDS ) {
 		this->updateCommsLEDToIndicateError();
+	}
+	
+	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_IDLE_IN_MILLISECONDS ) {
+		if(!this->outputsHaveBeenSetToIdleState) {
+			this->controlPanel.setAllLEDsTo(PWM_LED_DIM);
+			this->outputsHaveBeenSetToIdleState = true;
+		}
+	} else {
+		this->outputsHaveBeenSetToIdleState = false;
 	}
 	
 	//this->serialCommunicator.tallyCommunicationsDiagnosticData();
@@ -118,7 +128,7 @@ void KMegaService::shutdownMode() {
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
 	//controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 	
-	controlPanel.setAllLEDsOff();
+	controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
 }
 
 void KMegaService::updateCommsLEDToIndicateError() {
