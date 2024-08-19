@@ -1,13 +1,13 @@
 package mountaineerman.kcp2.kkim.integration;
 
 import java.io.IOException;
-import java.util.List;
 
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.services.SpaceCenter;
 import krpc.client.services.SpaceCenter.Control;
 import krpc.client.services.SpaceCenter.Flight;
+import krpc.client.services.SpaceCenter.Orbit;
 import krpc.client.services.SpaceCenter.Part;
 import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
@@ -23,6 +23,9 @@ public class KRPCCommunicator {
 	private SpaceCenter spaceCenter = null;
 	private Vessel vessel = null;
 	private Flight flight = null;
+	private Flight flight_OrbitBody_NormalReferenceFrame = null;
+	private Flight flight_OrbitBody_OrbitalReferenceFrame = null;
+	private Orbit orbit = null;
 	private Control control = null;
 	//private Camera camera = null;
 	private Resources currentStageResources = null;
@@ -48,13 +51,15 @@ public class KRPCCommunicator {
 		
 		try {
 			this.vessel = this.spaceCenter.getActiveVessel();
-			//this.flight = this.vessel.flight(this.vessel.getReferenceFrame());
 			this.flight = this.vessel.flight(this.vessel.getSurfaceReferenceFrame());
-			//this.flight = this.vessel.flight(this.vessel.getOrbitalReferenceFrame());
+			this.orbit = this.vessel.getOrbit();
+			this.flight_OrbitBody_NormalReferenceFrame = this.vessel.flight(this.orbit.getBody().getReferenceFrame());
+			this.flight_OrbitBody_OrbitalReferenceFrame = this.vessel.flight(this.orbit.getBody().getOrbitalReferenceFrame());
 			this.control = this.vessel.getControl();
 			//this.camera = this.spaceCenter.getCamera();
 		} catch (RPCException e) {
 			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 
@@ -108,10 +113,13 @@ public class KRPCCommunicator {
 			//FIXME Use Intake part: Flow instead: https://krpc.github.io/krpc/csharp/api/space-center/parts.html#intake
 			//for (Intake intake : this.vessel.getParts().getIntakes()) {	
 			//}
-			
-			//this.controlPanel.airDensity = this.flight.getAtmosphereDensity() / CelestialBody.densityAt(Altitude); + Vessel.getSituation()... OR: getStaticPressure()/getStaticPressureAtMSL();
-//			this.controlPanel.speed = this.flight.getSpeed();//TODO figure out reference frame?
-//			this.controlPanel.verticalSpeed = this.flight.getVerticalSpeed();//TODO figure out reference frame?
+			this.controlPanel.currentAirDensity = this.flight.getAtmosphereDensity();
+			this.controlPanel.maxAirDensity = (float) this.orbit.getBody().densityAt(0.0);
+			this.controlPanel.surfaceReferenceFrame_speed         = flight_OrbitBody_NormalReferenceFrame.getSpeed();
+			this.controlPanel.surfaceReferenceFrame_verticalSpeed = flight_OrbitBody_NormalReferenceFrame.getVerticalSpeed();
+			this.controlPanel.orbitalReferenceFrame_speed         = flight_OrbitBody_OrbitalReferenceFrame.getSpeed();
+			this.controlPanel.orbitalReferenceFrame_verticalSpeed = flight_OrbitBody_OrbitalReferenceFrame.getVerticalSpeed();
+			this.controlPanel.vesselSituation = this.vessel.getSituation();
 			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
 			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude();
 		} catch (RPCException e) {

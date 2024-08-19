@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.model;
 
+import krpc.client.services.SpaceCenter.VesselSituation;
 import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.KKIMProp;
@@ -59,12 +60,17 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	private int percentMonopropellant = 0;//Range: 0 to 100
 	public float currentIntakeAir = 0;
 	
-	public float airDensity = 0;
-	public double speed = 0;//Units: meters/second.
-	public double verticalSpeed = 0;//Units: meters/second.
+	public float currentAirDensity = 0;//Units: kg/m^3
+	public float maxAirDensity = 0;//Units: kg/m^3. The maximum air density for the object around which the vessel is orbiting.
+	private int invertedPercentAirDensity = 0;//Range: 0 to 100. 0 = you are in the thickest part of the atmosphere. 100 = you are in vacuum.
+	public double surfaceReferenceFrame_speed = 0;//Units: meters/second.
+	public double surfaceReferenceFrame_verticalSpeed = 0;//Units: meters/second.
+	public double orbitalReferenceFrame_speed = 0;//Units: meters/second.
+	public double orbitalReferenceFrame_verticalSpeed = 0;//Units: meters/second.
 	public double altitudeAboveSurface = 0;//Units: meters. Measured from the center of mass of the vessel.
 	public double altitudeAboveSeaLevel = 0;//Units: meters. Measured from the center of mass of the vessel.
 	public float altitudeToDisplay = 0;//altitudeAboveSurface or altitudeAboveSeaLevel, depending on the position of the SpeedMode SP3T Switch
+	public VesselSituation vesselSituation;
 	
 	public ControlPanel() {
 		
@@ -332,9 +338,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		this.previousElectricCharge = this.currentElectricCharge;
 		
-		
-		
-		
 		if (this.maxMonopropellant > 0) {
 			this.percentMonopropellant = (int) (this.currentMonopropellant / this.maxMonopropellant * 100);
 		} else {
@@ -354,6 +357,87 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {//Monopropellant selected
 			refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
 			//TODO percentIntakeAir:DIM
+		}
+		
+		//Module GT ===========================================================
+		if (this.maxAirDensity > 0) {
+			this.invertedPercentAirDensity = 100 - (int) (this.currentAirDensity / this.maxAirDensity * 100);
+		} else {
+			this.invertedPercentAirDensity = -1;
+		}
+		refreshPercentRGBLED(this.moduleGT.stepperLED_AirDensity, LED_RGB_Brightness.BRIGHT, this.invertedPercentAirDensity);
+		
+		double speed = -1.0;
+		double verticalSpeed = -1.0;
+		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
+			speed = surfaceReferenceFrame_speed;
+			verticalSpeed = surfaceReferenceFrame_verticalSpeed;
+		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
+			speed = orbitalReferenceFrame_speed;
+			verticalSpeed = orbitalReferenceFrame_verticalSpeed;
+		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
+			//TODO
+			speed = -1.0;
+			verticalSpeed = 0.0;
+		} else {//INVALID
+			speed = -1.0;
+			verticalSpeed = 0.0;
+		}
+		
+		if (speed > 3000.0) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.VIOLET);
+		} else if (speed > 2000.0) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.BLUE);
+		} else if (speed > 1000.0) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.CYAN);
+		} else if (speed > 500.0) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.GREEN);
+		} else if (speed > 100.0) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.ORANGE);
+		} else if (speed > 0.1) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.YELLOW);
+		} else if (speed > -0.1) {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.WHITE);
+		} else {
+			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
+		}
+		
+		if (verticalSpeed > 50.0) {
+			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.GREEN);
+		} else if (verticalSpeed > 1.0) {
+			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.DIM_GREEN);
+		} else if (verticalSpeed > -1.0) {
+			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.WHITE);
+		} else if (verticalSpeed > -50.0) {
+			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.DIM_RED);
+		} else {
+			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.RED);
+		}
+		
+		if (this.altitudeAboveSurface > 5000.0) {
+			if (this.vesselSituation == VesselSituation.FLYING) {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);
+			} else { //Some form of "in space"
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.BLUE);
+			}
+		} else {
+			if (this.vesselSituation == VesselSituation.PRE_LAUNCH ||
+				this.vesselSituation == VesselSituation.LANDED ||
+				this.vesselSituation == VesselSituation.SPLASHED) {
+					this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.WHITE);
+			} else if (this.altitudeAboveSurface > 500.0) {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.GREEN);
+			} else if (this.altitudeAboveSurface > 100.0) {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.WHITE);
+			} else if (this.altitudeAboveSurface > 50.0) {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.YELLOW);
+			} else if (this.altitudeAboveSurface > 20.0) {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.ORANGE);
+			} else if (this.altitudeAboveSurface > 10.0) {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.RED);
+			} else {
+				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.VIOLET);
+			}
 		}
 	}
 	

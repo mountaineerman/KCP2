@@ -73,7 +73,7 @@ public class SerialCommunicator {
         	System.exit(-1);
         }
         
-		System.out.println("  " + KKIMProp.getkMegaPortNumber() + " is open. Updating Baud Rate and flushing buffers...");
+		System.out.print("  " + KKIMProp.getkMegaPortNumber() + " is open. Updating Baud Rate and flushing buffers... ");
 		this.serialPort.closePort();
 		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
 		this.serialPort.openPort();
@@ -90,7 +90,7 @@ public class SerialCommunicator {
  		//System.out.println("Computer Serial Read Buffer Size: " + serialPort.getDeviceReadBufferSize());
  		//System.out.println("Computer Serial Write Buffer Size: " + serialPort.getDeviceWriteBufferSize());
  		
- 		System.out.println("  DONE");
+ 		System.out.println("DONE");
 	}
 		
 	//Ingests data from the Serial Read Buffer until:
