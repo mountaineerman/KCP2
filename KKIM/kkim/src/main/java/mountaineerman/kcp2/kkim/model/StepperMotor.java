@@ -1,6 +1,5 @@
 package mountaineerman.kcp2.kkim.model;
 
-import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.OP;
 
 /** x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.

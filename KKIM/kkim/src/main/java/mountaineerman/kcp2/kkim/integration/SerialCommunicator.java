@@ -134,26 +134,27 @@ public class SerialCommunicator {
 					if (this.packetBufferByteCounter == this.packetLength) { //A full packet is in the packetBuffer
 						switch (this.packetType) {
 							case INPUT_REFRESH_PACKET:
-								if (true /*TODO:packet is valid*/) {
+								//if (/*TODO:packet is valid*/) {
 									this.isValidPacketInPacketBuffer = true;
 									this.numberOfAcceptedInputRefreshPackets++;
 									return;
-								} else { //Packet is invalid
-									this.clearPacketBufferAndFriends();
-									this.numberOfRejectedInputRefreshPackets++;
-								}
-								break;
+								// } else { //Packet is invalid
+								// 	this.clearPacketBufferAndFriends();
+								// 	this.numberOfRejectedInputRefreshPackets++;
+								// }
+								// break;
 							case KKIM_TERMINAL_DISPLAY_PACKET:
-								if (true /*TODO:packet is valid*/) {
+								//if (/*TODO:packet is valid*/) {
 									this.isValidPacketInPacketBuffer = true;
 									this.numberOfAcceptedKKIMTerminalDisplayPackets++;
 									return;
-								} else { //Packet is invalid
-									this.clearPacketBufferAndFriends();
-									this.numberOfRejectedKKIMTerminalDisplayPackets++;
-								}
-								break;
+								// } else { //Packet is invalid
+								// 	this.clearPacketBufferAndFriends();
+								// 	this.numberOfRejectedKKIMTerminalDisplayPackets++;
+								// }
+								// break;
 							default:
+								//TODO Add message saying an unrecognized packet has arrived
 								break;
 						}
 					}

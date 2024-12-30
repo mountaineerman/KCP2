@@ -1,10 +1,8 @@
 package mountaineerman.kcp2.kkim.model;
 
 import krpc.client.services.SpaceCenter.VesselSituation;
-import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.KKIMProp;
-import mountaineerman.kcp2.kkim.OP;
 
 /* MkII Control Panel
  */
@@ -508,6 +506,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private int scaleIntegerToNewRange(int number, int oldRangeMin, int oldRangeMax, int newRangeMin, int newRangeMax) {//TODO remove and use CommonUtilities instead
 		return (number - oldRangeMin) * (newRangeMax - newRangeMin) / (oldRangeMax - oldRangeMin) + newRangeMin;
 	}

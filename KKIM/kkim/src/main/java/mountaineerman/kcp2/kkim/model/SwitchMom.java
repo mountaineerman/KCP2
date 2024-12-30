@@ -5,7 +5,7 @@ import mountaineerman.kcp2.kkim.IP;
 /** Momentarily-ON SP2T Switch (Adds debouncing logic to SP2T Switch) */
 public class SwitchMom {
 
-	static private int IGNORE_TIME_IN_MILLISECONDS = 500; //TODO move to config
+	//static private int IGNORE_TIME_IN_MILLISECONDS = 500; //TODO move to config 
 	
 	private SwitchSP2T sp2t;
 	private boolean previousSP2TStatus = false;

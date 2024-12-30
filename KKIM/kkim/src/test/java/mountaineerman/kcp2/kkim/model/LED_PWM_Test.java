@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
-import mountaineerman.kcp2.kkim.model.LED_PWM;
 //import mountaineerman.kcp2.kkim.model.ModuleID; //FIXME (see below)
 
 class LED_PWM_Test {

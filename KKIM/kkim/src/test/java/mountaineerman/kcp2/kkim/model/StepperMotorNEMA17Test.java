@@ -5,9 +5,6 @@ package mountaineerman.kcp2.kkim.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import mountaineerman.kcp2.kkim.model.ModuleID;
-import mountaineerman.kcp2.kkim.model.StepperMotorNEMA17;
-
 class StepperMotorNEMA17Test {
 
 	@Test
