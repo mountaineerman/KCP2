@@ -362,7 +362,7 @@ public class KRPCCommunicator {
 				this.control.setThrottle(this.controlPanel.throttleLever);
 			} catch (RPCException e) {e.printStackTrace();}
 			try {
-				this.control.setPitch(this.controlPanel.joystick_FwdBck);
+				this.control.setPitch(-this.controlPanel.joystick_FwdBck);
 			} catch (RPCException e) {e.printStackTrace();}
 			try {
 				this.control.setYaw(this.controlPanel.joystick_Twist);

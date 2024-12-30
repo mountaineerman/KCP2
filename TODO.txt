@@ -1,8 +1,6 @@
 SOFTWARE ==================================================================================================================================
 
-Invert Pitch for Plane mode
-
-Send Button info to KSP
+Send Button info to KSP?
 
 Integrate:
 Map
