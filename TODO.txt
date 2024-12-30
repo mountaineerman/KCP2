@@ -5,8 +5,6 @@ Invert Pitch for Plane mode
 Send Button info to KSP
 
 Integrate:
-Time Warp+
-Time Warp-
 Map
 Mute
 Autopilot Modes

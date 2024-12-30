@@ -137,13 +137,16 @@ public class KRPCCommunicator {
 		}
 		
 		//Module B
-//		try {
-//			this.control.setAbort(this.controlPanel.moduleB.abortButton.getDebouncedStatus());
-//		} catch (RPCException e) {e.printStackTrace();}
 		if (this.controlPanel.moduleB.abortButton.getDebouncedStatus()) {
 			try {
 				this.control.activateNextStage();
 			} catch (RPCException e) {e.printStackTrace();}	
+		}
+		if (this.controlPanel.moduleB.timeWarpDownButton.getDebouncedStatus()) {
+			this.requestLowerTimeWarp();
+		}
+		if (this.controlPanel.moduleB.timeWarpUpButton.getDebouncedStatus()) {
+			this.requestHigherTimeWarp();
 		}
 		
 		//Module D
@@ -383,6 +386,57 @@ public class KRPCCommunicator {
 		} else {//INVALID
 			//TODO
 		}
+	}
+
+
+	/* https://wiki.kerbalspaceprogram.com/wiki/Time_warp
+	 * 
+	 * Physics Warp Factor		Time Multiplier
+	 * 			0				1x
+	 * 			1				2x
+	 * 			2				3x
+	 * 			3				4x
+	 * 
+	 * Rails Warp Factor		Time Multiplier
+	 * 			0				1x
+	 * 			1				5x
+	 * 			2				10x
+	 * 			3				50x
+	 * 			4				100x
+	 * 			5				1,000x
+	 * 			6				10,000x
+	 * 			7				100,000x */
+	private void requestLowerTimeWarp() {
+		try {
+			if (spaceCenter.canRailsWarpAt(1)) {// rails warp is possible
+				int currentWarp = spaceCenter.getRailsWarpFactor();
+				if (currentWarp > 0) {
+					spaceCenter.setRailsWarpFactor(currentWarp-1);
+				}
+			} else {// physics warp is possible
+				int currentWarp = spaceCenter.getPhysicsWarpFactor();
+				if (currentWarp > 0) {
+					spaceCenter.setPhysicsWarpFactor(currentWarp-1);
+				}
+			}
+		} catch (RPCException e) {e.printStackTrace();}	
+	}
+
+	private void requestHigherTimeWarp() {
+		try { 
+			if (spaceCenter.canRailsWarpAt(1)) {// rails warp is possible
+				int currentWarp = spaceCenter.getRailsWarpFactor();
+				int maxWarp = spaceCenter.getMaximumRailsWarpFactor();
+				if (currentWarp < maxWarp) {
+					spaceCenter.setRailsWarpFactor(currentWarp+1);
+				}
+			} else {// physics warp is possible
+				int currentWarp = spaceCenter.getPhysicsWarpFactor();
+				if (currentWarp < 3) {
+					spaceCenter.setPhysicsWarpFactor(currentWarp+1);
+				}
+			}
+		} catch (RPCException e) {e.printStackTrace();}	
 	}
 }
 
