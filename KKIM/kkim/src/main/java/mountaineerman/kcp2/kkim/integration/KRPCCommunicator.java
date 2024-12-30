@@ -11,6 +11,8 @@ import krpc.client.services.SpaceCenter.Orbit;
 import krpc.client.services.SpaceCenter.Part;
 import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
+import krpc.client.services.SpaceCenter.Camera;
+import krpc.client.services.SpaceCenter.CameraMode;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 import mountaineerman.kcp2.kkim.model.SP3TPosition;
 
@@ -27,7 +29,7 @@ public class KRPCCommunicator {
 	private Flight flight_OrbitBody_OrbitalReferenceFrame = null;
 	private Orbit orbit = null;
 	private Control control = null;
-	//private Camera camera = null;
+	private Camera camera = null;
 	private Resources currentStageResources = null;
 	private Resources vesselResources = null;
 	
@@ -56,7 +58,7 @@ public class KRPCCommunicator {
 			this.flight_OrbitBody_NormalReferenceFrame = this.vessel.flight(this.orbit.getBody().getReferenceFrame());
 			this.flight_OrbitBody_OrbitalReferenceFrame = this.vessel.flight(this.orbit.getBody().getOrbitalReferenceFrame());
 			this.control = this.vessel.getControl();
-			//this.camera = this.spaceCenter.getCamera();
+			this.camera = this.spaceCenter.getCamera();
 		} catch (RPCException e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -127,7 +129,7 @@ public class KRPCCommunicator {
 		}
 	}
 
-	public void sendInfoFromModelToKSP() {//TODO Rewrite. Only call KSP to status change...
+	public void sendInfoFromModelToKSP() {
 		
 		//Module A
 		if (this.controlPanel.moduleA.stagingButton.getDebouncedStatus()) {
@@ -150,11 +152,11 @@ public class KRPCCommunicator {
 		}
 		
 		//Module D
-		if (this.controlPanel.moduleD.sasSwitch.getStatus()) {
+		if (this.controlPanel.moduleD.sasSwitch.statusChanged()) {
 			try {
-				this.control.setSAS(true);
+				this.control.setSAS(this.controlPanel.moduleD.sasSwitch.getStatus());
 			} catch (RPCException e) {e.printStackTrace();}
-			
+		}
 //			if (this.controlPanel.moduleD.autoHoldButton.getDebouncedStatus()) {//TODO: "Exception in thread "main" java.lang.UnsupportedOperationException: Cannot set SAS mode of vessel"
 //				try {
 //					this.control.setSASMode(SASMode.STABILITY_ASSIST);
@@ -214,39 +216,36 @@ public class KRPCCommunicator {
 //					this.control.setSASMode(SASMode.MANEUVER);
 //				} catch (RPCException e) {e.printStackTrace();}
 //			}
-			
-		} else {
+		
+		if (this.controlPanel.moduleD.rcsSwitch.statusChanged()) {
 			try {
-				this.control.setSAS(false);
+				this.control.setRCS(this.controlPanel.moduleD.rcsSwitch.getStatus());
 			} catch (RPCException e) {e.printStackTrace();}
 		}
 		
-		try {
-			this.control.setRCS(this.controlPanel.moduleD.rcsSwitch.getStatus());
-		} catch (RPCException e) {e.printStackTrace();}
+		if (this.controlPanel.moduleD.lightsSwitch.statusChanged()) {
+			try {
+				this.control.setLights(this.controlPanel.moduleD.lightsSwitch.getStatus());
+			} catch (RPCException e) {e.printStackTrace();}
+		}
 		
-		try {
-			this.control.setLights(this.controlPanel.moduleD.lightsSwitch.getStatus());
-		} catch (RPCException e) {e.printStackTrace();}
+		if (this.controlPanel.moduleD.gearSwitch.statusChanged()) {
+			try {
+				this.control.setGear(this.controlPanel.moduleD.gearSwitch.getStatus());
+				this.control.setLegs(this.controlPanel.moduleD.gearSwitch.getStatus());
+			} catch (RPCException e) {e.printStackTrace();}
+		}
 		
-		try {//TODO more detailed tweaking required?
-			if(this.controlPanel.moduleD.gearSwitch.getStatus()) {
-				this.control.setGear(true);
-				this.control.setLegs(true);
-			} else {
-				this.control.setGear(false);
-				this.control.setLegs(false);
-			}
-		} catch (RPCException e) {e.printStackTrace();}
-		
-//		try { //TODO More detailed tweaking required
-//			if (this.controlPanel.moduleD.mapSwitch.getStatus()) {
-//				this.camera.setMode(CameraMode.MAP);
-//			} else {
-//				this.camera.setMode(CameraMode.AUTOMATIC);
-//			}
-//		} catch (RPCException e) {e.printStackTrace();}
-		
+		if (this.controlPanel.moduleD.mapSwitch.statusChanged()) {
+			try {
+				if (this.controlPanel.moduleD.mapSwitch.getStatus()) {
+					this.camera.setMode(CameraMode.MAP);
+				} else {
+					this.camera.setMode(CameraMode.AUTOMATIC);
+				}
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+
 		//Module E
 //		if (this.controlPanel.moduleE.scienceSwitch.getDebouncedStatus()) {
 //			try {
@@ -325,10 +324,11 @@ public class KRPCCommunicator {
 		
 		
 		//Multi-Module
-		try {
-			this.control.setBrakes(this.controlPanel.brake);
-		} catch (RPCException e) {e.printStackTrace();}
-		
+		if (this.controlPanel.brake.statusChanged()) {
+			try {
+				this.control.setBrakes(this.controlPanel.brake.getStatus());
+			} catch (RPCException e) {e.printStackTrace();}
+		}
 		
 		//TODO Disable other controls when switching between modes...
 		if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.TOP) {//RKT
@@ -439,24 +439,3 @@ public class KRPCCommunicator {
 		} catch (RPCException e) {e.printStackTrace();}	
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

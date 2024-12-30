@@ -1,13 +1,9 @@
 SOFTWARE ==================================================================================================================================
 
-Send Button info to KSP?
-
-Integrate:
-Map
-Mute
-Autopilot Modes
-Science
-Reset
+Add debounce logic to SwitchMom
+Integrate: Autopilot Modes
+Integrate: Science
+Integrate: Reset
 
 Fix:
 Gear/Landing Legs
@@ -20,7 +16,7 @@ Action Group 5: Toggle Solar Panel / Deploy Solar Panel (some cannot be toggled)
 Action Group 6: Deploy parachute
 Action Group 7: Jettison fairing
 
-Add debounce logic to SwitchMom
+Change Camera Mode when switching between RKT/PLN/RVRR
 
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
@@ -44,11 +40,13 @@ Add functionality to KKIM to be able to support switch from Flight Mode to the S
 Phone display...
 
 Maybe:
+Integrate Mute switch
 Rename master > main
 Find a way to stop the kmega COM port from changing periodically
 
 HARDWARE ==================================================================================================================================
 
+Stop SP3T switch guards from turning
 Physically re-do label for air density gauge (red = 100, green = 0)
 Replace LEDs that are too bright or dim them with bigger resistors
 Touch up weak paint areas near backlit icons

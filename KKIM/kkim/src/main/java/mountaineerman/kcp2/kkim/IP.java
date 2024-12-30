@@ -24,6 +24,8 @@ public enum IP {
 	MapSwitch					(11,		-1,			7,			-1,			-1,			-1,				-1,				ModuleID.D,		"Map Switch"),
 	MuteSwitch					(11,		-1,			8,			-1,			-1,			-1,				-1,				ModuleID.D,		"Mute Switch"),
 //								firstByte	lastByte	bitNumber	minCalibLim	maxCalibLim	minRescaleLim	maxRescaleLim	moduleID		partName
+	CombinedBrake				(-1,		-1,			-1,			-1,			-1,			-1,				-1,				ModuleID.MULTIPLE,		"Combined Brake Button/Switch"),
+//								firstByte	lastByte	bitNumber	minCalibLim	maxCalibLim	minRescaleLim	maxRescaleLim	moduleID		partName
 	AutoHoldButton				(12,		-1,			1,			-1,			-1,			-1,				-1,				ModuleID.D,		"Autopilot Hold Button"),
 	AutoProgradeButton			(12,		-1,			2,			-1,			-1,			-1,				-1,				ModuleID.D,		"Autopilot Prograde Button"),
 	AutoRetrogradeButton		(12,		-1,			3,			-1,			-1,			-1,				-1,				ModuleID.D,		"Autopilot Retrograde Button"),

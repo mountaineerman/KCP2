@@ -20,7 +20,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public ModuleGT moduleGT = null;
 	
 	//TODO WRAP IN KMEGA class:
-	public boolean brake = false;
+	public SwitchSP2T brake = null;
 	public float throttleLever = 0;	 //Range: 0(OFF) to 1(Max Thrust)
 	public float joystick_FwdBck = 0;//Range: -1(Back) to 1(Forward)
 	public float joystick_LftRgh = 0;//Range: -1(Right) to 1(Left)
@@ -83,6 +83,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		this.moduleI = new ModuleI();
 		this.moduleGT = new ModuleGT();
 		
+		this.brake = new SwitchSP2T(IP.CombinedBrake);
+
 		this.disableLEDOverride();
 		this.setAllLEDsOff();
 	}
@@ -99,11 +101,11 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		//Module A (+D+F) =====================================================
 		if (this.moduleA.brakeButton.getStatus() ^ this.moduleD.brakeSwitch.getStatus()) {//XOR
-			this.brake = true;
+			this.brake.setStatus(true);
 			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
 		} else {
-			this.brake = false;
+			this.brake.setStatus(false);
 			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
@@ -488,6 +490,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				//this.moduleH.toString();
 				//this.moduleI.toString();
 				//this.moduleGT.toString();
+				//this.brake.toString();
 	}
 	
 	public void setAllLEDsOff() {//TODO
