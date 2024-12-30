@@ -1,7 +1,5 @@
 SOFTWARE ==================================================================================================================================
 
-Migrate from Eclipse to VS Code
-
 Invert Pitch for Plane mode
 
 Send Button info to KSP
@@ -25,6 +23,8 @@ Action Group 4: Toggle Ladder
 Action Group 5: Toggle Solar Panel / Deploy Solar Panel (some cannot be toggled)
 Action Group 6: Deploy parachute
 Action Group 7: Jettison fairing
+
+Add debounce logic to SwitchMom
 
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
