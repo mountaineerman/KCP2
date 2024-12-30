@@ -1,3 +1,3 @@
-start "Eclipse" "C:\Users\anton\eclipse\java-2020-09\eclipse\eclipse.exe"
-echo "To launch KKIM, hit CTRL+F11..."
+start "VS Code" "C:\Users\anton\AppData\Local\Programs\Microsoft VS Code\Code.exe"
+echo "To launch KKIM, hit F5..."
 PAUSE

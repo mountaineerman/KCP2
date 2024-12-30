@@ -1,5 +1,7 @@
 SOFTWARE ==================================================================================================================================
 
+Migrate from Eclipse to VS Code
+
 Invert Pitch for Plane mode
 
 Send Button info to KSP
@@ -25,6 +27,8 @@ Action Group 6: Deploy parachute
 Action Group 7: Jettison fairing
 
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE
+
+Understand how KKIM can be launched via JAR
 
 Solve stepper motor performance
 	Re-enable commented sections (search keyword "TODO: Stepper Logic disabled until performance is fixed (do not modify)"

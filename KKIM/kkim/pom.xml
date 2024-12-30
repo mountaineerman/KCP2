@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>mountaineerman</groupId>
+    <artifactId>kkim</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.11.4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+    <dependencies>
+        <dependency> <!-- https://github.com/junit-team/junit5-samples/tree/main/junit5-jupiter-starter-maven -->
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope> <!-- Necessary for Unit Testing. -->
+        </dependency>
+        <!-- Previously used with gradle (successfully):
+                // Use JUnit Jupiter API for testing.
+                testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+                // Use JUnit Jupiter Engine for testing.
+                testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine' -->
+
+        <dependency> <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.25.5</version> <!-- kRPC Client library dependency. Previously used with gradle (successfully): 3.11.0 -->
+        </dependency>
+        <dependency> <!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>1.2</version> <!-- kRPC Client library dependency. -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency> <!-- kRPC Client library. Added locally, see instructions in OneNote. -->
+            <groupId>djungelorm</groupId>
+            <artifactId>krpc</artifactId>
+            <version>0.5.4</version>
+        </dependency>
+
+        <dependency> <!-- https://mvnrepository.com/artifact/com.fazecast/jSerialComm -->
+            <groupId>com.fazecast</groupId>
+            <artifactId>jSerialComm</artifactId>
+            <version>2.10.4</version> <!-- Necessary for Serial Communication to KMega. See SerialCommunicator. Previously used with gradle (successfully): [2.0.0,3.0.0) -->
+        </dependency>
+    </dependencies>
+
+</project>

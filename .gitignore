@@ -4,12 +4,6 @@ Arduino.lnk
 # Ignore Arduino Library Test
 LibraryExperiment
 
-# Ignore Gradle project-specific cache directory
-.gradle
-
-# Ignore Gradle build output directory
-build
-
 # Ignore Eclipse project configuration files that begin with '.' and subfolders 'bin'
 **/.project
 **/.cproject
