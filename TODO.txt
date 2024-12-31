@@ -1,6 +1,5 @@
 SOFTWARE ==================================================================================================================================
 
-Add debounce logic to SwitchMom
 Integrate: Autopilot Modes
 Integrate: Science
 Integrate: Reset
@@ -43,6 +42,8 @@ Maybe:
 Integrate Mute switch
 Rename master > main
 Find a way to stop the kmega COM port from changing periodically
+
+See KCP2_Lessons_Learned.txt
 
 HARDWARE ==================================================================================================================================
 

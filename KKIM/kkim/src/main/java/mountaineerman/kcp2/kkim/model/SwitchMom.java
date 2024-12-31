@@ -5,17 +5,14 @@ import mountaineerman.kcp2.kkim.IP;
 /** Momentarily-ON SP2T Switch (Adds debouncing logic to SP2T Switch) */
 public class SwitchMom {
 
-	//static private int IGNORE_TIME_IN_MILLISECONDS = 500; //TODO move to config 
-	
-	private SwitchSP2T sp2t;
+	private SwitchSP2T sp2t = null;
+	private DebounceTimer debounceTimer = null;
 	private boolean previousSP2TStatus = false;
 	private boolean debouncedStatus = false;
-	private boolean ignoreTimerIsActive = false;
-	private int ignoreTimer = 0;
 	
 	public SwitchMom(IP ip) {
 		this.sp2t = new SwitchSP2T(ip);
-		this.ignoreTimerIsActive = false;
+		this.debounceTimer = new DebounceTimer();
 	}
 
 	public boolean getRawStatus() {
@@ -30,18 +27,14 @@ public class SwitchMom {
 		
 		this.previousSP2TStatus = this.sp2t.getStatus();
 		this.sp2t.setStatus(status);
-		
+
 		// Debouncing Logic
-		if(this.ignoreTimerIsActive) {
-			debouncedStatus = false;
-			//TODO updateTimer();
-			if(this.ignoreTimer < 0) { //Timer has expired
-				this.ignoreTimerIsActive = false;
-			}
+		if (this.debounceTimer.isActive()) {
+			this.debouncedStatus = false;
 		} else {
-			if( (this.sp2t.getStatus() == true) && (this.previousSP2TStatus == false) ) { //Rising edge
+			if ((this.sp2t.getStatus() == true) && (this.previousSP2TStatus == false)) { // Rising edge
 				debouncedStatus = true;
-				activateIgnoreTimer();
+				this.debounceTimer.activate();
 			} else {
 				debouncedStatus = false;
 			}
@@ -50,7 +43,7 @@ public class SwitchMom {
 	
 	@Override
 	public String toString() {
-		return this.getModuleID() + ": " + this.getName() + ": RAW:[" + this.sp2t.getStatus() + "] DEBOUNCED: [" + this.getDebouncedStatus() + "], ...\n";
+		return this.getModuleID() + ": " + this.getName() + ": RAW_STATUS:[" + this.sp2t.getStatus() + "] DEBOUNCED_STATUS: [" + this.getDebouncedStatus() + "], DEBOUNCED_TIMER: [" + this.debounceTimer.getElapsedTime() + "]\n";
 	}
 	
 	public String getName() {
@@ -59,9 +52,5 @@ public class SwitchMom {
 	
 	public ModuleID getModuleID() {
 		return this.sp2t.getModuleID();
-	}
-	
-	private void activateIgnoreTimer() {
-		//TODO reset timer and begin countdown
 	}	
 }

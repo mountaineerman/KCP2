@@ -26,6 +26,7 @@ public class KKIMProp {
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
 	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
 	private static int kkimJoystickCenterDeadzoneMaxLimit = 0;
+	private static int kkimSwitchMomDebounceTimeInMilliseconds = 0;
 	
 	public static void initializeProperties () {
 		
@@ -52,13 +53,14 @@ public class KKIMProp {
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
 		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
 		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
+		kkimSwitchMomDebounceTimeInMilliseconds = Integer.valueOf(properties.getProperty("kkim.switchMom.debounceTimeInMilliseconds"));
 		
 		System.out.println("DONE");
 	}
 	
 	private static Properties loadPropertiesFromFile() {
 		Properties properties = new Properties();
-		String settingsFilename = "C:/dev/temp4/KCP2/KKIM/kkim/config.properties";
+		String settingsFilename = "C:/dev/KCP2/KKIM/kkim/config.properties"; //FIXME replace absolute path with relative path
 		try ( FileInputStream fileInputStream = new FileInputStream(settingsFilename) ) {
 		    properties.load(fileInputStream);
 		} catch (FileNotFoundException e) {
@@ -143,5 +145,9 @@ public class KKIMProp {
 	
 	public static int getkkimJoystickCenterDeadzoneMaxLimit() {
 		return kkimJoystickCenterDeadzoneMaxLimit;
+	}
+
+	public static int getkkimSwitchMomDebounceTimeInMilliseconds() {
+		return kkimSwitchMomDebounceTimeInMilliseconds;
 	}
 }

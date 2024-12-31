@@ -2,11 +2,14 @@ Lessons learned
 -LED brightness is important (some are too bright, some are too dim).
 
 HARDWARE
-Potential Fixes:
+Fixed/mitigated:
 -USB cable still provides power to the Arduino Mega even when the 12V power switch is turned off.
+
+Potential Fixes:
 -Mach Stepper Motor range slightly less than gauge
 -Heading Gauge Stepper Motor idle high-pitch tone
 -Paint touchups
+-Bluetooth keyboard sometimes disconnects from computer, possibly because of interference from metal casing. Add a cable port and inner-panel extension cable. Consider a 'permanent' keyboard.
 
 "Won't Fix" Design Improvements:
 -Module connector locations are a bit awkward. Shift positions, lengthen cables to make it easier to connect/disconnect.

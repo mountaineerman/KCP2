@@ -42,10 +42,11 @@ When trying to program the Arduino board, get message: "the selected serial port
 Fix:
 In Arduino IDE, select the port to activate it.
 
+(Delete after settingsFilename absolute path is replaced with relative path:)
 Symptoms:
-When trying to find references to a function or do a refactor, get "The resource is not on the build path of a Java project."
+Changes to config.properties are not being seen by the system
 Fix:
-TBD
+Check KKIMProp:settingsFilename is pointing to the correct file.
 
 (B) RUNTIME: ==========================================================================================================================================================================================
 
