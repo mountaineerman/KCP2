@@ -13,6 +13,8 @@ import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter.Camera;
 import krpc.client.services.SpaceCenter.CameraMode;
+import krpc.client.services.SpaceCenter.SASMode;
+import krpc.client.services.SpaceCenter.AutoPilot;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 import mountaineerman.kcp2.kkim.model.SP3TPosition;
 
@@ -32,6 +34,7 @@ public class KRPCCommunicator {
 	private Camera camera = null;
 	private Resources currentStageResources = null;
 	private Resources vesselResources = null;
+	private AutoPilot autoPilot = null;
 	
 	
 	public KRPCCommunicator(ControlPanel controlPanel) {
@@ -55,6 +58,7 @@ public class KRPCCommunicator {
 			this.vessel = this.spaceCenter.getActiveVessel();
 			this.flight = this.vessel.flight(this.vessel.getSurfaceReferenceFrame());
 			this.orbit = this.vessel.getOrbit();
+			this.autoPilot = this.vessel.getAutoPilot();
 			this.flight_OrbitBody_NormalReferenceFrame = this.vessel.flight(this.orbit.getBody().getReferenceFrame());
 			this.flight_OrbitBody_OrbitalReferenceFrame = this.vessel.flight(this.orbit.getBody().getOrbitalReferenceFrame());
 			this.control = this.vessel.getControl();
@@ -124,6 +128,7 @@ public class KRPCCommunicator {
 			this.controlPanel.vesselSituation = this.vessel.getSituation();
 			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
 			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude();
+			this.controlPanel.currentSASMode = this.control.getSASMode();
 		} catch (RPCException e) {
 			e.printStackTrace();
 		}
@@ -157,6 +162,35 @@ public class KRPCCommunicator {
 				this.control.setSAS(this.controlPanel.moduleD.sasSwitch.getStatus());
 			} catch (RPCException e) {e.printStackTrace();}
 		}
+
+		if (this.controlPanel.moduleD.sasSwitch.getStatus()) {
+			try {
+				try {
+					if (this.controlPanel.moduleD.autoHoldButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.STABILITY_ASSIST);
+					} else if (this.controlPanel.moduleD.autoProgradeButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.PROGRADE);
+					} else if (this.controlPanel.moduleD.autoRetrogradeButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.RETROGRADE);
+					} else if (this.controlPanel.moduleD.autoNormalButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.NORMAL);
+					} else if (this.controlPanel.moduleD.autoAntiNormalButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.ANTI_NORMAL);
+					} else if (this.controlPanel.moduleD.autoRadialInButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.ANTI_RADIAL);
+					} else if (this.controlPanel.moduleD.autoRadialOutButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.RADIAL);
+					} else if (this.controlPanel.moduleD.autoTargetButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.TARGET);
+					} else if (this.controlPanel.moduleD.autoAntiTargetButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.ANTI_TARGET);
+					} else if (this.controlPanel.moduleD.autoManeuverButton.getDebouncedStatus()) {
+						this.control.setSASMode(SASMode.MANEUVER);
+					}
+				} catch (UnsupportedOperationException uo_e) {} //If unable to switch to requested SASMode, do nothing
+			} catch (RPCException rpc_e) {rpc_e.printStackTrace();}
+		}
+
 //			if (this.controlPanel.moduleD.autoHoldButton.getDebouncedStatus()) {//TODO: "Exception in thread "main" java.lang.UnsupportedOperationException: Cannot set SAS mode of vessel"
 //				try {
 //					this.control.setSASMode(SASMode.STABILITY_ASSIST);

@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.model;
 
+import krpc.client.services.SpaceCenter.SASMode;
 import krpc.client.services.SpaceCenter.VesselSituation;
 import mountaineerman.kcp2.kkim.IP;
 import mountaineerman.kcp2.kkim.KKIMProp;
@@ -57,7 +58,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float maxMonopropellant = 0;
 	private int percentMonopropellant = 0;//Range: 0 to 100
 	public float currentIntakeAir = 0;
-	
 	public float currentAirDensity = 0;//Units: kg/m^3
 	public float maxAirDensity = 0;//Units: kg/m^3. The maximum air density for the object around which the vessel is orbiting.
 	private int invertedPercentAirDensity = 0;//Range: 0 to 100. 0 = you are in the thickest part of the atmosphere. 100 = you are in vacuum.
@@ -69,6 +69,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public double altitudeAboveSeaLevel = 0;//Units: meters. Measured from the center of mass of the vessel.
 	public float altitudeToDisplay = 0;//altitudeAboveSurface or altitudeAboveSeaLevel, depending on the position of the SpeedMode SP3T Switch
 	public VesselSituation vesselSituation;
+	public SASMode currentSASMode = null;
 	
 	public ControlPanel() {
 		
@@ -90,7 +91,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	}
 	
 	//Re-calculate state of higher-level members based on state of lower-level members
-	public void refresh() {
+	public void refresh() { //TODO make use of SwitchSP2T:statusChanged()
 		//TODO Stepper Motors...
 		
 		//Update inputs that are depended on by other Modules
@@ -165,10 +166,91 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		//Module D ============================================================
-		//TODO Autopilot modes
 		//Brake: see Module A
-		//TODO Map
-		//TODO Mute
+
+		//Autopilot modes:
+		if (this.moduleD.sasSwitch.statusChanged() && !this.moduleD.sasSwitch.getStatus()) {
+			this.moduleD.autoHoldLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoProgradeLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoManeuverLED.setPWM(KKIMProp.getkmegaMinPWM());
+		}
+
+		if (this.moduleD.sasSwitch.getStatus()) {
+			
+			// Dim all autopilot LEDs:
+			this.moduleD.autoHoldLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoProgradeLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoManeuverLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+
+			// Brighten the LED corresponding to the current SASMode:
+			switch (this.currentSASMode) {
+				case STABILITY_ASSIST:
+					this.moduleD.autoHoldLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case PROGRADE:
+					this.moduleD.autoProgradeLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case RETROGRADE:
+					this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case NORMAL:
+					this.moduleD.autoNormalBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoNormalRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case ANTI_NORMAL:
+					this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case RADIAL:
+					this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case ANTI_RADIAL:
+					this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case TARGET:
+					this.moduleD.autoTargetBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoTargetRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case ANTI_TARGET:
+					this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				case MANEUVER:
+					this.moduleD.autoManeuverLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					break;
+				default:
+					break;
+			}
+		}
+		
 		
 		//Module E (+G +GT) ===================================================
 		//TODO Science
