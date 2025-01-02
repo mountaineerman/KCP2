@@ -253,22 +253,13 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		
 		//Module E (+G +GT) ===================================================
-		//TODO Science
-		//TODO Reset
-		//TODO Solar Panels (PV)
-		//TODO Ladder
-		//TODO AutoNavigation (ATNV)
-		//TODO Action Groups 1/2/3 (AG1/AG2/AG3)
-		
-		//TODO Activate Fairing
-		if (this.moduleE.fairingButton.getDebouncedStatus() == true) {
+		if (this.moduleE.fairingButton.getRawStatus() == true) {
 			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMinPWM());
 		} else {
 			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());
 		}
 		
-		//TODO Activate Parachute
-		if (this.moduleE.chuteButton.getDebouncedStatus() == true) {
+		if (this.moduleE.chuteButton.getRawStatus() == true) {
 			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMinPWM());
 		} else {
 			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());

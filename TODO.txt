@@ -1,8 +1,6 @@
 SOFTWARE ==================================================================================================================================
 
-Fix fairing/chute LEDs to use raw status instead of debounced
-
-Fix action groups: duplicate signals sometimes sent? PV and LADR seem ok, but AG1+etc "flaky".
+Add functionality to KKIM to be able to support switch from Flight Mode to the Space Center and ...
 
 Change Camera Mode when switching between RKT/PLN/RVR
 
@@ -21,11 +19,11 @@ Extract all needed information from kRPC. Measure performance.
 	Replace LED brightness (0-4095) with 1 byte (0-255).
 Determine necessary loop interval time to keep things "snappy"
 
-
-
-Add functionality to KKIM to be able to support switch from Flight Mode to the Space Center and ...
-
 Phone display...
+
+Implement TRIM
+
+Fix action groups: duplicate signals sometimes sent? PV and LADR seem ok, but AG1+etc "flaky".
 
 Maybe:
 Integrate Mute switch
