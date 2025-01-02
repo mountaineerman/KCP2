@@ -22,7 +22,7 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 		//TODO Establish connection to phone
 		
 		try {
-			Thread.sleep(KKIMProp.getkkimInitialStartupDelayInMilliseconds());
+			Thread.sleep(KKIMProp.getkkimStartupModeInitialStartupDelayInMilliseconds());
 		} catch (InterruptedException e) {e.printStackTrace();}
 
 		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {

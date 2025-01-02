@@ -16,6 +16,7 @@ import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter.Camera;
 import krpc.client.services.SpaceCenter.CameraMode;
 import krpc.client.services.SpaceCenter.SASMode;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 import mountaineerman.kcp2.kkim.model.SP3TPosition;
 
@@ -42,17 +43,34 @@ public class KRPCCommunicator {
 	}
 
 	public void establishKRPCLink() {
-		try {
-			System.out.print("Establishing connection to kRPC... ");
-			this.connection = Connection.newInstance();
-			System.out.println("DONE");
-			this.kRPC = KRPC.newInstance(connection);
-			//System.out.println("Connected to kRPC version " + kRPC.getStatus().getVersion());
-			this.spaceCenter = SpaceCenter.newInstance(connection);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(-1);
+		
+		int numberOfAttempts = 0;
+		int maxTries = 12;
+		while(true) {
+			numberOfAttempts++;
+			try {
+				System.out.print("Establishing connection to kRPC... ");
+				this.connection = Connection.newInstance();
+				System.out.println("DONE");
+				break;
+			} catch (IOException io_e) {
+				
+				System.out.println("FAILED. Message: \"" + io_e.getMessage() + "\"");
+
+				if (numberOfAttempts >= maxTries) {
+					io_e.printStackTrace();
+					System.out.println("Attempted to establish kRPC connection " + numberOfAttempts + " times. Aborting...");
+					System.exit(-1);
+				}
+
+				System.out.println("Sleeping for " + KKIMProp.getkkimStartupModeSleepIntervalInMilliseconds() + "ms, then trying again.");
+				try {
+					Thread.sleep(KKIMProp.getkkimStartupModeSleepIntervalInMilliseconds());
+				} catch (InterruptedException i_e) {i_e.printStackTrace();}
+			}
 		}
+		this.kRPC = KRPC.newInstance(connection);
+		this.spaceCenter = SpaceCenter.newInstance(connection);
 	}
 
 	/**

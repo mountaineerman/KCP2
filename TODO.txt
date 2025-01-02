@@ -1,7 +1,5 @@
 SOFTWARE ==================================================================================================================================
 
-IN PROGRESS: Understand how KKIM can be launched via JAR
-
 Fix: Turn off SAS autopilot lights during the startup sequence, instead of leaving them Dim.
 
 Solve stepper motor performance

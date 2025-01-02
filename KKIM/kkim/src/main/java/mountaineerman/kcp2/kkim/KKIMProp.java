@@ -22,7 +22,8 @@ public class KKIMProp {
 	private static int kmegaMaxPWM = 0;
 	private static float kmegaAltitudeGaugeErrorAltitude = 999000000000L;
 	
-	private static int kkimInitialStartupDelayInMilliseconds = 0;
+	private static int kkimStartupModeInitialStartupDelayInMilliseconds = 0;
+	private static int kkimStartupModeSleepIntervalInMilliseconds = 0;
 	private static int kkimIdleModeSleepIntervalInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
 	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
@@ -50,8 +51,9 @@ public class KKIMProp {
 		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.maxPWM"));
 		kmegaAltitudeGaugeErrorAltitude = (float) Long.valueOf(properties.getProperty("kmega.AltitudeGauge.ErrorAltitude"));
 		
-		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
-		kkimIdleModeSleepIntervalInMilliseconds = Integer.valueOf(properties.getProperty("kkim.idleModeSleepIntervalInMilliseconds"));
+		kkimStartupModeInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.startupMode.initialStartupDelayInMilliseconds"));
+		kkimStartupModeSleepIntervalInMilliseconds = Integer.valueOf(properties.getProperty("kkim.startupMode.sleepIntervalInMilliseconds"));
+		kkimIdleModeSleepIntervalInMilliseconds = Integer.valueOf(properties.getProperty("kkim.idleMode.sleepIntervalInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
 		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
 		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
@@ -133,8 +135,12 @@ public class KKIMProp {
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public static int getkkimInitialStartupDelayInMilliseconds() {
-		return kkimInitialStartupDelayInMilliseconds;
+	public static int getkkimStartupModeInitialStartupDelayInMilliseconds() {
+		return kkimStartupModeInitialStartupDelayInMilliseconds;
+	}
+
+	public static int getkkimStartupModeSleepIntervalInMilliseconds() {
+		return kkimStartupModeSleepIntervalInMilliseconds;
 	}
 	
 	public static int getkkimIdleModeSleepIntervalInMilliseconds() {
