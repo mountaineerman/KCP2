@@ -1,7 +1,5 @@
 SOFTWARE ==================================================================================================================================
 
-Fix: Turn off SAS autopilot lights during the startup sequence, instead of leaving them Dim.
-
 Solve stepper motor performance
 	Re-enable commented sections (search keyword "TODO: Stepper Logic disabled until performance is fixed (do not modify)"
 	Add interrupt logic for stepper motors (don't let the packet processing slow down the motor movement)

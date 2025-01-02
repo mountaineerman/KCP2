@@ -81,23 +81,6 @@ public class ModuleD implements LEDAggregator {
 		this.autoAntiTargetRedLED = new LED_PWM(OP.AutoAntiTargetRedLED);
 		this.autoAntiTargetBluLED = new LED_PWM(OP.AutoAntiTargetBluLED);
 		this.autoManeuverLED = new LED_PWM(OP.AutoManeuverLED);
-		
-		this.autoHoldLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoProgradeLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoRetrogradeLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoNormalRedLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoNormalBluLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoRadialInBluLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoTargetRedLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoTargetBluLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaDimPWM());
-		this.autoManeuverLED.setPWM(KKIMProp.getkmegaDimPWM());
 	}
 
 	@Override

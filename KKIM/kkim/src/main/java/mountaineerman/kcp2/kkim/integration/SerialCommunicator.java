@@ -46,7 +46,6 @@ public class SerialCommunicator {
  		
  		System.out.println("Establishing serial connection to KMega on " + KKIMProp.getkMegaPortNumber() + "...");
  		
- 		//Start of new way of opening communications:
  		SerialPort[] serialPorts = SerialPort.getCommPorts();
  		boolean desiredPortIsOpen = false;
  		String portName = new String("");
@@ -67,8 +66,6 @@ public class SerialCommunicator {
         }
         
         if (!desiredPortIsOpen) {
-        	//TODO replace print statement with exception:
-        	//throw new RuntimeException("Desired COM port (" KKIMProp.getkMegaPortNumber() + ") is not open");
         	System.out.println("ERROR: Desired COM port (" + KKIMProp.getkMegaPortNumber() + ") is not open. Aborting...");
         	System.exit(-1);
         }
@@ -78,14 +75,6 @@ public class SerialCommunicator {
 		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
 		this.serialPort.openPort();
  		this.serialPort.flushIOBuffers();
- 		//End of new way of opening communications
-
-// 		//Start of original way of opening communications:
-// 		this.serialPort = SerialPort.getCommPort(KKIMProp.getkMegaPortNumber());
-//		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
-//		this.serialPort.openPort();
-// 		this.serialPort.flushIOBuffers();
-// 		//End of original way of opening communications
  		
  		//System.out.println("Computer Serial Read Buffer Size: " + serialPort.getDeviceReadBufferSize());
  		//System.out.println("Computer Serial Write Buffer Size: " + serialPort.getDeviceWriteBufferSize());
