@@ -2,6 +2,7 @@ package mountaineerman.kcp2.kkim.service;
 
 import java.util.Arrays;
 
+import krpc.client.services.KRPC.GameScene;
 //import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.KKIMProp;
 
@@ -17,14 +18,16 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
         if(INSTANCE == null) {
             INSTANCE = new StandardOperatingMode(); 
         }
-        
         return INSTANCE;
     }
 	
-	public void run(KKIMService kkimService) 
-    {
-		//System.out.println("Standard Operating Mode");
+	public void run(KKIMService kkimService) {
 		//TODO Confirm connection to kRPC, KMega, and KPhone
+
+		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() != GameScene.FLIGHT) { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
+			kkimService.setCurrentOperatingMode(IdleMode.getInstance());
+			return;
+		}
 		
 		// long time1 = 0;
 		// long time2 = 0;

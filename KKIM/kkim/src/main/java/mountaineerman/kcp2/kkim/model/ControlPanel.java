@@ -90,7 +90,10 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		this.setAllLEDsOff();
 	}
 	
-	//Re-calculate state of higher-level members based on state of lower-level members
+	/**
+	 * 1) Re-calculate state of higher-level members based on state of lower-level members.
+	 * 2) Update outputs based on Control Panel state (e.g., brake LEDs based on switch/button states).
+	 */
 	public void refresh() { //TODO make use of SwitchSP2T:statusChanged()
 		//TODO Stepper Motors...
 		

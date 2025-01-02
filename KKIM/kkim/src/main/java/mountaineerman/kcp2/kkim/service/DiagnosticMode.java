@@ -10,14 +10,10 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
         if(INSTANCE == null) {
             INSTANCE = new DiagnosticMode();
         }
-        
         return INSTANCE;
     }
 	
-	public void run(KKIMService kkimService) 
-    {
-        //System.out.println("Diagnostic Mode");
-        
+	public void run(KKIMService kkimService) {
 		//Display:
 		kkimService.controlPanel.toString();
 		kkimService.controlPanel.moduleF.analogInput_Current.getRescaledValue();//Current Draw in mA...

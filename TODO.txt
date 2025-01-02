@@ -1,6 +1,6 @@
 SOFTWARE ==================================================================================================================================
 
-Add functionality to KKIM to be able to support switch from Flight Mode to the Space Center and ...
+Fix: Turn off SAS autopilot lights during the startup sequence, instead of leaving them Dim.
 
 Understand how KKIM can be launched via JAR
 
@@ -20,6 +20,8 @@ Change Camera Mode when switching between RKT/PLN/RVR
 Phone display...
 
 Implement TRIM
+
+Enhance StartupMode.java: If a connection cannot be made, block waiting for user confirmation to re-attempt or give up.
 
 Fix action groups: duplicate signals sometimes sent? PV and LADR seem ok, but AG1+etc "flaky".
 

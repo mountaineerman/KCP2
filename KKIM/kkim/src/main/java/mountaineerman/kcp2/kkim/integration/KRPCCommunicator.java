@@ -5,6 +5,8 @@ import java.io.IOException;
 import krpc.client.Connection;
 import krpc.client.RPCException;
 import krpc.client.services.SpaceCenter;
+import krpc.client.services.KRPC;
+import krpc.client.services.KRPC.GameScene;
 import krpc.client.services.SpaceCenter.Control;
 import krpc.client.services.SpaceCenter.Flight;
 import krpc.client.services.SpaceCenter.Orbit;
@@ -14,7 +16,6 @@ import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter.Camera;
 import krpc.client.services.SpaceCenter.CameraMode;
 import krpc.client.services.SpaceCenter.SASMode;
-import krpc.client.services.SpaceCenter.AutoPilot;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 import mountaineerman.kcp2.kkim.model.SP3TPosition;
 
@@ -23,7 +24,7 @@ public class KRPCCommunicator {
 	
 	private ControlPanel controlPanel;
 	private Connection connection = null;
-	//private KRPC kRPC = null;
+	private KRPC kRPC = null;
 	private SpaceCenter spaceCenter = null;
 	private Vessel vessel = null;
 	private Flight flight = null;
@@ -34,7 +35,6 @@ public class KRPCCommunicator {
 	private Camera camera = null;
 	private Resources currentStageResources = null;
 	private Resources vesselResources = null;
-	private AutoPilot autoPilot = null;
 	
 	
 	public KRPCCommunicator(ControlPanel controlPanel) {
@@ -46,7 +46,7 @@ public class KRPCCommunicator {
 		try {
 			System.out.print("Establishing connection to kRPC... ");
 			this.connection = Connection.newInstance();
-			//this.kRPC = KRPC.newInstance(connection);
+			this.kRPC = KRPC.newInstance(connection);
 			System.out.println("DONE");
 			//System.out.println("Connected to kRPC version " + kRPC.getStatus().getVersion());
 			this.spaceCenter = SpaceCenter.newInstance(connection);
@@ -58,7 +58,6 @@ public class KRPCCommunicator {
 			this.vessel = this.spaceCenter.getActiveVessel();
 			this.flight = this.vessel.flight(this.vessel.getSurfaceReferenceFrame());
 			this.orbit = this.vessel.getOrbit();
-			this.autoPilot = this.vessel.getAutoPilot();
 			this.flight_OrbitBody_NormalReferenceFrame = this.vessel.flight(this.orbit.getBody().getReferenceFrame());
 			this.flight_OrbitBody_OrbitalReferenceFrame = this.vessel.flight(this.orbit.getBody().getOrbitalReferenceFrame());
 			this.control = this.vessel.getControl();
@@ -132,6 +131,14 @@ public class KRPCCommunicator {
 		} catch (RPCException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public GameScene fetchCurrentGameSceneInKSP() {
+		GameScene scene = null;
+		try{
+			scene = this.kRPC.getCurrentGameScene();
+		} catch (RPCException e) {e.printStackTrace();}
+		return scene;
 	}
 
 	public void sendInfoFromModelToKSP() {

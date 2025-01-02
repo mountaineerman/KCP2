@@ -23,6 +23,7 @@ public class KKIMProp {
 	private static float kmegaAltitudeGaugeErrorAltitude = 999000000000L;
 	
 	private static int kkimInitialStartupDelayInMilliseconds = 0;
+	private static int kkimIdleModeSleepIntervalInMilliseconds = 0;
 	private static int kkimRefreshFrequencyInMilliseconds = 0;
 	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
 	private static int kkimJoystickCenterDeadzoneMaxLimit = 0;
@@ -50,6 +51,7 @@ public class KKIMProp {
 		kmegaAltitudeGaugeErrorAltitude = (float) Long.valueOf(properties.getProperty("kmega.AltitudeGauge.ErrorAltitude"));
 		
 		kkimInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.initialStartupDelayInMilliseconds"));
+		kkimIdleModeSleepIntervalInMilliseconds = Integer.valueOf(properties.getProperty("kkim.idleModeSleepIntervalInMilliseconds"));
 		kkimRefreshFrequencyInMilliseconds = Integer.valueOf(properties.getProperty("kkim.refreshFrequencyInMilliseconds"));
 		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
 		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
@@ -135,6 +137,10 @@ public class KKIMProp {
 		return kkimInitialStartupDelayInMilliseconds;
 	}
 	
+	public static int getkkimIdleModeSleepIntervalInMilliseconds() {
+		return kkimIdleModeSleepIntervalInMilliseconds;
+	}
+
 	public static int getkkimRefreshFrequencyInMilliseconds() {
 		return kkimRefreshFrequencyInMilliseconds;
 	}
