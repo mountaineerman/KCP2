@@ -2,19 +2,25 @@ Fly:
 1. Connect Control Panel to 12V power.
 2. Power on Control Panel.
 3. Connect Control Panel to computer.
-4. Run uber_launch_KCP2.cmd
-5. Launch Flight
+4. Run uber_launch_KCP2_play.cmd (or uber_launch_KCP2_dev.cmd)
+5. Launch Flight.
 6. Start RPC Server (do once):
 	Open kRPC settings
 	Select "Add server"
 	Keep default settings (TBC)
 	Select "Start"
-7. Launch KKIM (Ctrl+F11)
+7. If doing development, launch KKIM via F5 from VS Code.
 
 If Control Panel (KMega/KNano) is not correctly programmed, run: re-program_control_panel.cmd
 
-
-
+Re-generate KKIM JAR file:
+1. Open KKIM in VS Code.
+2. Check branch is correct in Git Bash.
+3. In the Explorer on the left side, expand JAVA PROJECTS.
+4. Beside JAVA PROJECTS, select "Export Jar..." button.
+	a. Select main class: Main (mountaineerman.kcp2.kkim.main.Main).
+	b. Leave default elements selected.
+5. Move/rename: C:\dev\KCP2\KCP2.jar to C:\dev\KCP2\KKIM\KKIM.jar
 
 Graceful shutdown: (center-right glass cockpit button)
 
@@ -24,7 +30,7 @@ Optional: Open ckan.exe & apply mod updates
 Logging in to GitHub: use Personal Access Token
 
 
-Diagnostic Mode:
+KMega Diagnostic Mode (KKIM not used):
 1. Connect Control Panel to 12V power.
 2. Power on Control Panel.
 3. Connect Control Panel to computer.

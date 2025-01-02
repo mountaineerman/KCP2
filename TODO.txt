@@ -1,8 +1,8 @@
 SOFTWARE ==================================================================================================================================
 
-Fix: Turn off SAS autopilot lights during the startup sequence, instead of leaving them Dim.
+IN PROGRESS: Understand how KKIM can be launched via JAR
 
-Understand how KKIM can be launched via JAR
+Fix: Turn off SAS autopilot lights during the startup sequence, instead of leaving them Dim.
 
 Solve stepper motor performance
 	Re-enable commented sections (search keyword "TODO: Stepper Logic disabled until performance is fixed (do not modify)"
@@ -21,12 +21,13 @@ Phone display...
 
 Implement TRIM
 
-Enhance StartupMode.java: If a connection cannot be made, block waiting for user confirmation to re-attempt or give up.
-
 Fix action groups: duplicate signals sometimes sent? PV and LADR seem ok, but AG1+etc "flaky".
 
+KMega: Integrate MUTE switch. If ON:
+	a) All possible outputs are disabled
+	b) OutputRefreshPackets are ignored
+
 Maybe:
-Integrate Mute switch
 Integrate ATNV (autonavigation) momentary switch
 Rename master > main
 Find a way to stop the kmega COM port from changing periodically

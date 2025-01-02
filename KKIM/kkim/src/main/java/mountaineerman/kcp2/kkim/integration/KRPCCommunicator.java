@@ -42,18 +42,23 @@ public class KRPCCommunicator {
 	}
 
 	public void establishKRPCLink() {
-		 
 		try {
 			System.out.print("Establishing connection to kRPC... ");
 			this.connection = Connection.newInstance();
-			this.kRPC = KRPC.newInstance(connection);
 			System.out.println("DONE");
+			this.kRPC = KRPC.newInstance(connection);
 			//System.out.println("Connected to kRPC version " + kRPC.getStatus().getVersion());
 			this.spaceCenter = SpaceCenter.newInstance(connection);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(-1);
 		}
-		
+	}
+
+	/**
+	 * Set kRPC objects: vessel, flight, orbit, reference frames, control, camera.
+	 */
+	public void establishKRPCFlightHooks() {
 		try {
 			this.vessel = this.spaceCenter.getActiveVessel();
 			this.flight = this.vessel.flight(this.vessel.getSurfaceReferenceFrame());

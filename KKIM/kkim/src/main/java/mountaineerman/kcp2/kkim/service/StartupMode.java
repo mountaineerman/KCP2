@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.service;
 
+import krpc.client.services.KRPC.GameScene;
 import mountaineerman.kcp2.kkim.KKIMProp;
 
 public final class StartupMode implements OperatingMode { //SINGLETON
@@ -23,7 +24,12 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 		try {
 			Thread.sleep(KKIMProp.getkkimInitialStartupDelayInMilliseconds());
 		} catch (InterruptedException e) {e.printStackTrace();}
-		
-        kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
+
+		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {
+			kkimService.kRPCCommunicator.establishKRPCFlightHooks();
+			kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
+		} else { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
+            kkimService.setCurrentOperatingMode(IdleMode.getInstance());
+        }
     }
 }
