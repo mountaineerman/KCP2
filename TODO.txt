@@ -9,12 +9,12 @@ Solar (reset right)
 Ladder (reset right)
 
 Configure auto action groups as follows (in KSP) + test...:
-Action Group 4: Toggle Ladder
-Action Group 5: Toggle Solar Panel / Deploy Solar Panel (some cannot be toggled)
-Action Group 6: Deploy parachute
-Action Group 7: Jettison fairing
+Toggle Ladder
+Toggle Solar Panel / Deploy Solar Panel (some cannot be toggled)
+Deploy parachute
+Jettison fairing
 
-Change Camera Mode when switching between RKT/PLN/RVRR
+Change Camera Mode when switching between RKT/PLN/RVR
 
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
