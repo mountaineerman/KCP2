@@ -1,18 +1,8 @@
 SOFTWARE ==================================================================================================================================
 
-Integrate: Science
-Integrate: Reset
+Fix fairing/chute LEDs to use raw status instead of debounced
 
-Fix:
-Gear/Landing Legs
-Solar (reset right)
-Ladder (reset right)
-
-Configure auto action groups as follows (in KSP) + test...:
-Toggle Ladder
-Toggle Solar Panel / Deploy Solar Panel (some cannot be toggled)
-Deploy parachute
-Jettison fairing
+Fix action groups: duplicate signals sometimes sent? PV and LADR seem ok, but AG1+etc "flaky".
 
 Change Camera Mode when switching between RKT/PLN/RVR
 
@@ -39,6 +29,7 @@ Phone display...
 
 Maybe:
 Integrate Mute switch
+Integrate ATNV (autonavigation) momentary switch
 Rename master > main
 Find a way to stop the kmega COM port from changing periodically
 

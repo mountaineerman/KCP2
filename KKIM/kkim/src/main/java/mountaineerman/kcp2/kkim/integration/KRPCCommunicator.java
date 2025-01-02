@@ -190,66 +190,6 @@ public class KRPCCommunicator {
 				} catch (UnsupportedOperationException uo_e) {} //If unable to switch to requested SASMode, do nothing
 			} catch (RPCException rpc_e) {rpc_e.printStackTrace();}
 		}
-
-//			if (this.controlPanel.moduleD.autoHoldButton.getDebouncedStatus()) {//TODO: "Exception in thread "main" java.lang.UnsupportedOperationException: Cannot set SAS mode of vessel"
-//				try {
-//					this.control.setSASMode(SASMode.STABILITY_ASSIST);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoProgradeButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.PROGRADE);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoRetrogradeButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.RETROGRADE);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoNormalButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.NORMAL);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoAntiNormalButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.ANTI_NORMAL);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoRadialInButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.RADIAL);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoRadialOutButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.ANTI_RADIAL);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoTargetButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.TARGET);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoAntiTargetButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.ANTI_TARGET);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
-//			
-//			if (this.controlPanel.moduleD.autoManeuverButton.getDebouncedStatus()) {
-//				try {
-//					this.control.setSASMode(SASMode.MANEUVER);
-//				} catch (RPCException e) {e.printStackTrace();}
-//			}
 		
 		if (this.controlPanel.moduleD.rcsSwitch.statusChanged()) {
 			try {
@@ -281,81 +221,67 @@ public class KRPCCommunicator {
 		}
 
 		//Module E
-//		if (this.controlPanel.moduleE.scienceSwitch.getDebouncedStatus()) {
-//			try {
-//				//TBD
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
-//		
-//		if (this.controlPanel.moduleE.resetSwitch.getDebouncedStatus()) {
-//			try {
-//				//TBD
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
+		if (this.controlPanel.moduleE.scienceSwitch.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(4);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
 		
+		if (this.controlPanel.moduleE.resetSwitch.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(5);
+			} catch (RPCException e) {e.printStackTrace();}
+		}		
+	
 		if (this.controlPanel.moduleE.solarSwitch.getDebouncedStatus()) {
 			try {
-				this.control.setActionGroup(5, true);//FIXME toggle not working
-			} catch (RPCException e) {e.printStackTrace();}
-		} else {
-			try {
-				this.control.setActionGroup(5, false);//FIXME toggle not working
+				this.control.toggleActionGroup(6);
 			} catch (RPCException e) {e.printStackTrace();}
 		}
 		
-//		if (this.controlPanel.moduleE.ladderSwitch.getDebouncedStatus()) {
-//			try {
-//				this.control.setActionGroup(4, true);//FIXME toggle not working
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
+		if (this.controlPanel.moduleE.ladderSwitch.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(7);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
 		
 //		if (this.controlPanel.moduleE.atnvSwitch.getDebouncedStatus()) {
-//			try {
-//				//TBD
-//			} catch (RPCException e) {e.printStackTrace();}
+//			//TBD
 //		}
 		
-//		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
-//			try {
-//				this.control.setActionGroup(1, true);
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
-//		
-//		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
-//			try {
-//				this.control.setActionGroup(2, true);
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
-//		
-//		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
-//			try {
-//				this.control.setActionGroup(3, true);
-//			} catch (RPCException e) {e.printStackTrace();}
-//		}
-//		
-		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
+		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
 			try {
-				this.control.setActionGroup(7, true);
-			} catch (RPCException e) {e.printStackTrace();}
-		} else {
-			try {
-				this.control.setActionGroup(7, false);
+				this.control.toggleActionGroup(1);
 			} catch (RPCException e) {e.printStackTrace();}
 		}
 		
-		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {//TODO repack parachute?
+		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
 			try {
-				this.control.setActionGroup(6, true);
-				//this.control.setParachutes(true);
+				this.control.toggleActionGroup(2);
 			} catch (RPCException e) {e.printStackTrace();}
-		} else {
+		}
+		
+		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
 			try {
-				this.control.setActionGroup(6, false);
+				this.control.toggleActionGroup(3);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
+		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(8);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
+		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(9);
 			} catch (RPCException e) {e.printStackTrace();}
 		}
 		
 		//Module F
-		
+		//TODO Trim...
+
 		
 		//Multi-Module
 		if (this.controlPanel.brake.statusChanged()) {
