@@ -2,10 +2,6 @@ SOFTWARE =======================================================================
 
 Add functionality to KKIM to be able to support switch from Flight Mode to the Space Center and ...
 
-Change Camera Mode when switching between RKT/PLN/RVR
-
-Consider using PlatformIO (+VS Code?) instead of Arduino IDE
-
 Understand how KKIM can be launched via JAR
 
 Solve stepper motor performance
@@ -19,6 +15,8 @@ Extract all needed information from kRPC. Measure performance.
 	Replace LED brightness (0-4095) with 1 byte (0-255).
 Determine necessary loop interval time to keep things "snappy"
 
+Change Camera Mode when switching between RKT/PLN/RVR
+
 Phone display...
 
 Implement TRIM
@@ -30,6 +28,7 @@ Integrate Mute switch
 Integrate ATNV (autonavigation) momentary switch
 Rename master > main
 Find a way to stop the kmega COM port from changing periodically
+Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
 See KCP2_Lessons_Learned.txt
 
