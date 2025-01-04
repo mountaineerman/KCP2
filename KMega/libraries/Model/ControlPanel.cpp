@@ -98,35 +98,62 @@ void ControlPanel::testLEDsSequentially() {
 
 bool ControlPanel::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
-//	isAMotorStillInMotion = this->moduleC.runStepperIfNecessary() || isAMotorStillInMotion;
-//	isAMotorStillInMotion = this->moduleG.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->moduleI.runStepperIfNecessary() || isAMotorStillInMotion;
-//	isAMotorStillInMotion = this->moduleGT.runStepperIfNecessary() || isAMotorStillInMotion;
+	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
+	isAMotorStillInMotion = this->moduleC.stepper_HeatLife.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleC.stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleG.stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleG.stepper_Pitch.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->moduleG.stepper_Heading.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleI.stepper_Fuel.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleI.stepper_Charge.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleI.stepper_MonopropellantIntake.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleGT.stepper_Density.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleGT.stepper_Speed.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleGT.stepper_VertSpeed.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleGT.stepper_RadarAlt.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;
 }
 
+
 void ControlPanel::blockRunAllSteppersToPosition(int position) {
-	
-//	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
-//	this->moduleC.stepper_Gforce.setDesiredPosition(position);
-//	this->moduleG.stepper_Mach.setDesiredPosition(position);
-//	this->moduleG.stepper_Pitch.setDesiredPosition(position);
-//	//this->moduleG.stepper_Heading...
+	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
+	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
+	this->moduleC.stepper_Gforce.setDesiredPosition(position);
+	this->moduleG.stepper_Mach.setDesiredPosition(position);
+	this->moduleG.stepper_Pitch.setDesiredPosition(position);
+	// // //this->moduleG.stepper_Heading...
 	this->moduleI.stepper_Fuel.setDesiredPosition(position);
-//	this->moduleI.stepper_Charge.setDesiredPosition(position);
-//	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
-//	this->moduleGT.stepper_Density.setDesiredPosition(position);
-//	this->moduleGT.stepper_Speed.setDesiredPosition(position);
-//	this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
-//	this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
+	this->moduleI.stepper_Charge.setDesiredPosition(position);
+	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
+	this->moduleGT.stepper_Density.setDesiredPosition(position);
+	this->moduleGT.stepper_Speed.setDesiredPosition(position);
+	this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
+	this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
 	
-	while(this->runStepperIfNecessary()) {
-		delayMicroseconds(this->moduleC.stepper_Gforce.get_maxTimeBetweenSteps() - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);//TODO Works right for 1 gauge. Fix for all gauges...
+	//New:
+	unsigned long startTime = 0;
+	unsigned long currentTime = 0;
+	unsigned long timeSpentRunningSteppers = 0;
+	while(true) {
+		startTime = micros();
+		if (this->runStepperIfNecessary() == false) {break;}
+		currentTime = micros();	
+		timeSpentRunningSteppers = currentTime - startTime;
+		if (timeSpentRunningSteppers > 250) {//TODO Replace hardcoding with variable
+			continue;
+		} else {
+			delayMicroseconds(250 - timeSpentRunningSteppers);//TODO Replace hardcoding with variable
+		}
 	}
+
+	//Old:
+	// while(this->runStepperIfNecessary()) {
+	// 	delayMicroseconds(this->moduleC.stepper_Gforce.getTimeBetweenSteps() - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);//TODO Works right for 1 gauge. Fix for all gauges...
+	// }
 }
 
 void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
-	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT);//TODO handle Heading gauge...
+	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT);
 	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
 }
 
@@ -351,94 +378,131 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		Serial.println(F("[10] Speed"));
 		Serial.println(F("[11] Vertical Speed"));
 		Serial.println(F("[12] Radar Altitude"));
+		Serial.println(F("--------------------------------------"));
+		Serial.println(F("[21] Sweep & time: Heat/Life"));
+		Serial.println(F("[22] Sweep & time: G-Force"));
+		Serial.println(F("[23] Sweep & time: Mach Number"));
+		Serial.println(F("[24] Sweep & time: Pitch"));
+		Serial.println(F("[25] Sweep & time: Heading [N/A] ---"));
+		Serial.println(F("[26] Sweep & time: Fuel"));
+		Serial.println(F("[27] Sweep & time: Charge"));
+		Serial.println(F("[28] Sweep & time: Monopropellant/Intake Air"));
+		Serial.println(F("[29] Sweep & time: Air Density"));
+		Serial.println(F("[30] Sweep & time: Speed"));
+		Serial.println(F("[31] Sweep & time: Vertical Speed"));
+		Serial.println(F("[32] Sweep & time: Radar Altitude"));
+		Serial.println(F("--------------------------------------"));
+		Serial.println(F("[40] Sweep & time: All Stepper Motors"));
 		
 		userInput = Serial.readStringUntil('\n');
 		
 		if(userInput == "0") {
 			return;
 		} else if(userInput == "1") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_HeatLife);
+			this->diagnosticMode_testStepperMotor2(this->moduleC.stepper_HeatLife);
 		} else if(userInput == "2") {
-			//this->diagnosticMode_testGearedStepperMotor(this->moduleC.stepper_Gforce);
 			this->diagnosticMode_testStepperMotor2(this->moduleC.stepper_Gforce);
 		} else if(userInput == "3") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Mach);
+			this->diagnosticMode_testStepperMotor2(this->moduleG.stepper_Mach);
 		} else if(userInput == "4") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleG.stepper_Pitch);
+			this->diagnosticMode_testStepperMotor2(this->moduleG.stepper_Pitch);
 		} else if(userInput == "5") {
 			this->diagnosticMode_testNEMA17StepperMotor(this->moduleG.stepper_Heading);//TODO: Combine StepperMotor with StepperMotorNEMA17?
 		} else if(userInput == "6") {
-			//this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Fuel);
 			this->diagnosticMode_testStepperMotor2(this->moduleI.stepper_Fuel);
 		} else if(userInput == "7") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_Charge);
+			this->diagnosticMode_testStepperMotor2(this->moduleI.stepper_Charge);
 		} else if(userInput == "8") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleI.stepper_MonopropellantIntake);
+			this->diagnosticMode_testStepperMotor2(this->moduleI.stepper_MonopropellantIntake);
 		} else if(userInput == "9") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_Density);
+			this->diagnosticMode_testStepperMotor2(this->moduleGT.stepper_Density);
 		} else if(userInput == "10") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_Speed);
+			this->diagnosticMode_testStepperMotor2(this->moduleGT.stepper_Speed);
 		} else if(userInput == "11") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_VertSpeed);
+			this->diagnosticMode_testStepperMotor2(this->moduleGT.stepper_VertSpeed);
 		} else if(userInput == "12") {
-			this->diagnosticMode_testGearedStepperMotor(this->moduleGT.stepper_RadarAlt);
+			this->diagnosticMode_testStepperMotor2(this->moduleGT.stepper_RadarAlt);
+		} else if(userInput == "21") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleC.stepper_HeatLife);
+		} else if(userInput == "22") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleC.stepper_Gforce);
+		} else if(userInput == "23") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleG.stepper_Mach);
+		} else if(userInput == "24") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleG.stepper_Pitch);
+		} else if(userInput == "26") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleI.stepper_Fuel);
+		} else if(userInput == "27") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleI.stepper_Charge);
+		} else if(userInput == "28") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleI.stepper_MonopropellantIntake);
+		} else if(userInput == "29") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleGT.stepper_Density);
+		} else if(userInput == "30") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleGT.stepper_Speed);
+		} else if(userInput == "31") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleGT.stepper_VertSpeed);
+		} else if(userInput == "32") {
+			this->diagnosticMode_sweepSingleStepperMotor(this->moduleGT.stepper_RadarAlt);
+		} else if(userInput == "40") {
+			this->diagnosticMode_sweepAllStepperMotors();
 		}
 	}
 }
 
-void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperMotor& stepperMotorUnderTest) { //TODO delete
+// void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperMotor& stepperMotorUnderTest) { //TODO delete
 	
-	String userInput;
+// 	String userInput;
 	
-	while(true) {
-		clearScreen();
-		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(STEPPER_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
-		Serial.println("");
-		Serial.println(F("Select one of the following options:"));
-		Serial.println(F("[0] Return to previous menu"));
-		Serial.println(F("[1] Move to maximum CCW position"));
-		Serial.println(F("[2] Move to maximum CW position"));
-		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
-		Serial.println(F("[4] Move 1000 steps CCW"));
-		Serial.println(F("[5] Move 1000 steps CW"));
-		Serial.println(F("[6] Move 100 steps CCW"));
-		Serial.println(F("[7] Move 100 steps CW"));
-		Serial.println(F("[8] Move 10 steps CCW"));
-		Serial.println(F("[9] Move 10 steps CW"));
+// 	while(true) {
+// 		clearScreen();
+// 		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(STEPPER_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+// 		Serial.println("");
+// 		Serial.println(F("Select one of the following options:"));
+// 		Serial.println(F("[0] Return to previous menu"));
+// 		Serial.println(F("[1] Move to maximum CCW position"));
+// 		Serial.println(F("[2] Move to maximum CW position"));
+// 		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
+// 		Serial.println(F("[4] Move 1000 steps CCW"));
+// 		Serial.println(F("[5] Move 1000 steps CW"));
+// 		Serial.println(F("[6] Move 100 steps CCW"));
+// 		Serial.println(F("[7] Move 100 steps CW"));
+// 		Serial.println(F("[8] Move 10 steps CCW"));
+// 		Serial.println(F("[9] Move 10 steps CW"));
 		
-		userInput = Serial.readStringUntil('\n');
+// 		userInput = Serial.readStringUntil('\n');
 		
-		if(userInput == "0") {
-			return;
-		} else if(userInput == "1") {
-			stepperMotorUnderTest.setDesiredPosition(STEPPER_CCW_LIMIT);
-			stepperMotorUnderTest.runToDesiredPosition();
-		} else if(userInput == "2") {
-			stepperMotorUnderTest.setDesiredPosition(STEPPER_CW_LIMIT);
-			stepperMotorUnderTest.runToDesiredPosition();
-//		} else if(userInput == '3') {
-//			//TODO
-		} else if(userInput == "4") {
-			stepperMotorUnderTest.setDesiredRelativePosition(-1000);
-			stepperMotorUnderTest.runToDesiredPosition();
-		} else if(userInput == "5") {
-			stepperMotorUnderTest.setDesiredRelativePosition(1000);
-			stepperMotorUnderTest.runToDesiredPosition();
-		} else if(userInput == "6") {
-			stepperMotorUnderTest.setDesiredRelativePosition(-100);
-			stepperMotorUnderTest.runToDesiredPosition();
-		} else if(userInput == "7") {
-			stepperMotorUnderTest.setDesiredRelativePosition(100);
-			stepperMotorUnderTest.runToDesiredPosition();
-		} else if(userInput == "8") {
-			stepperMotorUnderTest.setDesiredRelativePosition(-10);
-			stepperMotorUnderTest.runToDesiredPosition();
-		} else if(userInput == "9") {
-			stepperMotorUnderTest.setDesiredRelativePosition(10);
-			stepperMotorUnderTest.runToDesiredPosition();			
-		}
-	}
-}
+// 		if(userInput == "0") {
+// 			return;
+// 		} else if(userInput == "1") {
+// 			stepperMotorUnderTest.setDesiredPosition(STEPPER_CCW_LIMIT);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// 		} else if(userInput == "2") {
+// 			stepperMotorUnderTest.setDesiredPosition(STEPPER_CW_LIMIT);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// //		} else if(userInput == '3') {
+// //			//TODO
+// 		} else if(userInput == "4") {
+// 			stepperMotorUnderTest.setDesiredRelativePosition(-1000);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// 		} else if(userInput == "5") {
+// 			stepperMotorUnderTest.setDesiredRelativePosition(1000);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// 		} else if(userInput == "6") {
+// 			stepperMotorUnderTest.setDesiredRelativePosition(-100);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// 		} else if(userInput == "7") {
+// 			stepperMotorUnderTest.setDesiredRelativePosition(100);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// 		} else if(userInput == "8") {
+// 			stepperMotorUnderTest.setDesiredRelativePosition(-10);
+// 			stepperMotorUnderTest.runToDesiredPosition();
+// 		} else if(userInput == "9") {
+// 			stepperMotorUnderTest.setDesiredRelativePosition(10);
+// 			stepperMotorUnderTest.runToDesiredPosition();			
+// 		}
+// 	}
+// }
 
 void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest) {//TODO rename
 	
@@ -446,8 +510,8 @@ void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorU
 	
 	while(true) {
 		clearScreen();
-		Serial.print(F("Max Speed (steps per second): ")); Serial.println(stepperMotorUnderTest.get_maxSpeed());
-		Serial.print(F("Max time between steps (microseconds): ")); Serial.println(stepperMotorUnderTest.get_maxTimeBetweenSteps());
+		Serial.print(F("Stepper Motor Speed (steps per second): ")); Serial.println(stepperMotorUnderTest.getSpeed());
+		Serial.print(F("Time between steps (microseconds): ")); Serial.println(stepperMotorUnderTest.getTimeBetweenSteps());
 		Serial.print(F("CCW Limit (steps): ")); Serial.println(stepperMotorUnderTest.get_ccwLimit());
 		Serial.print(F("CW Limit (steps): ")); Serial.println(stepperMotorUnderTest.get_cwLimit());
 		Serial.print(F("Stepper Motor Position (steps): ")); Serial.println(stepperMotorUnderTest.getCurrentPosition());
@@ -498,7 +562,7 @@ void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorU
 	}
 }
 
-void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest) { //TODO remove
+void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest) {
 	
 	String userInput;
 	
@@ -562,37 +626,78 @@ void ControlPanel::disableLEDOverride() {
 	digitalWrite(PIN_LED_DRIVER_BOARDS_OVERRIDE, LOW);
 }
 
+void ControlPanel::diagnosticMode_sweepSingleStepperMotor(StepperMotor2& stepperMotorUnderTest) {
+	
+	String userInput;
+	clearScreen();
+	Serial.println(F("Enter Stepper Motor Speed (steps per second) [Default:4000]..."));
+	userInput = Serial.readStringUntil('\n');
+	int speed = atoi(userInput.c_str());
+	stepperMotorUnderTest.setSpeed(speed);
+	
+	//Sweep...
+	long startTime = millis();
+	stepperMotorUnderTest.setDesiredPosition(stepperMotorUnderTest.get_cwLimit());
+	stepperMotorUnderTest.blockRunToDesiredPosition();
+	stepperMotorUnderTest.setDesiredPosition(stepperMotorUnderTest.get_ccwLimit());
+	stepperMotorUnderTest.blockRunToDesiredPosition();
+	long endTime = millis();
+	stepperMotorUnderTest.setSpeed(GEARED_STEPPER_SPEED);
 
+	//Calculations
+	long numberOfTraversedSteps = 3780*2;
+	long expectedSweepTimeInMilliseconds = numberOfTraversedSteps * 1000 / speed;
+	long actualSweepTimeInMilliseconds = endTime - startTime;
 
+	//Print results
+	while(true) {
+		clearScreen();
+		Serial.print(F("Stepper Motor Speed (steps per second): ")); Serial.println(stepperMotorUnderTest.getSpeed());
+		Serial.print(F("Time between steps (microseconds): ")); Serial.println(stepperMotorUnderTest.getTimeBetweenSteps());
+		Serial.print(F("CCW Limit (steps): ")); Serial.println(stepperMotorUnderTest.get_ccwLimit());
+		Serial.print(F("CW Limit (steps): ")); Serial.println(stepperMotorUnderTest.get_cwLimit());
+		Serial.println();
+		Serial.print(F("numberOfTraversedSteps: ")); Serial.println(numberOfTraversedSteps);
+		Serial.print(F("expectedSweepTimeInMilliseconds: ")); Serial.println(expectedSweepTimeInMilliseconds);
+		Serial.print(F("  actualSweepTimeInMilliseconds: ")); Serial.println(actualSweepTimeInMilliseconds);
+		Serial.println();
+		Serial.print(F("Enter '0' to continue..."));
 
+		userInput = Serial.readStringUntil('\n');
+		if(userInput == "0") {
+			return;
+		}
+	}
+}
 
+void ControlPanel::diagnosticMode_sweepAllStepperMotors() {
+	
+	//Sweep...
+	long startTime = millis();
+	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT);
+	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
+	long endTime = millis();
 
+	//Calculations
+	long numberOfTraversedSteps = 3780*2;
+	long expectedSweepTimeInMilliseconds = numberOfTraversedSteps * 1000 / GEARED_STEPPER_SPEED;
+	long actualSweepTimeInMilliseconds = endTime - startTime;
 
+	//Print results
+	while(true) {
+		clearScreen();
+		Serial.println(F("Stepper Motor Speed (steps per second): 4000 (HARDCODED)"));
+		Serial.println(F("Time between steps (microseconds): 250 (HARDCODED)"));
+		Serial.println();
+		Serial.print(F("numberOfTraversedSteps: ")); Serial.println(numberOfTraversedSteps);
+		Serial.print(F("expectedSweepTimeInMilliseconds: ")); Serial.println(expectedSweepTimeInMilliseconds);
+		Serial.print(F("  actualSweepTimeInMilliseconds: ")); Serial.println(actualSweepTimeInMilliseconds);
+		Serial.println();
+		Serial.print(F("Enter '0' to continue..."));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		String userInput = Serial.readStringUntil('\n');
+		if(userInput == "0") {
+			return;
+		}
+	}
+}

@@ -206,11 +206,11 @@ static const int PIN_LEDDB_RADARALT_RGBLED_BLU = 83;			//	(Pin 11)	[LED Board 4]
 
 //Common
 static const int STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS = 1;
-static const int STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS = 16;
+static const int STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS = 19;
 static const int STEPPER_CCW_LIMIT = 0;
 
 //Geared Stepper Motors
-static const int GEARED_STEPPER_MAX_SPEED = 4000; //Maximum Permitted Speed (steps per second).
+static const int GEARED_STEPPER_SPEED = 4000; // (steps per second)
 static const int GEARED_STEPPER_CW_LIMIT = 3779;
 
 //Heading Gauge NEMA17 Stepper Motor

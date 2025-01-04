@@ -5,13 +5,13 @@
 #include <Interface_LEDAggregator.h>
 #include <Interface_StepperMotorAggregator.h>
 #include <LED_PWM.h>
-#include <StepperMotor.h>
-//#include <StepperMotorNEMA17.h>
+#include <StepperMotor2.h>
 
 
 /* Module GT (Gauge Tower)
  *
- * Heat, Life Support, G-Force */
+ * Stepper Motors: Air Density, Speed, Vertical Speed, Radar Altitude
+ * Altitude Gauge */
 class ModuleGT : public Interface_LEDAggregator, public Interface_StepperMotorAggregator
 {
 public:
@@ -37,10 +37,10 @@ public:
 	LED_PWM ledPWM_RADARALT_Green;
 	LED_PWM ledPWM_RADARALT_Blue;
 	
-	StepperMotor stepper_Density;
-	StepperMotor stepper_Speed;
-	StepperMotor stepper_VertSpeed;
-	StepperMotor stepper_RadarAlt;
+	StepperMotor2 stepper_Density;
+	StepperMotor2 stepper_Speed;
+	StepperMotor2 stepper_VertSpeed;
+	StepperMotor2 stepper_RadarAlt;
 	
 	float altitude;
 };

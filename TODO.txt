@@ -1,10 +1,19 @@
 SOFTWARE ==================================================================================================================================
 
 Solve stepper motor performance
+	Get it working "as-is" to assess usability:
+		Try to move the motors up to X number of steps during the KMegaService::standardOperatingMode() loop
+		Selectively send Stepper info from KKIM to KMega
+		Play with inputRefreshPacket send frequency
+		Play with outputRefreshPacket send frequency
+	Clean up StepperMotor class...
 	Re-enable commented sections (search keyword "TODO: Stepper Logic disabled until performance is fixed (do not modify)"
-	Add interrupt logic for stepper motors (don't let the packet processing slow down the motor movement)
-	Convert all other stepper motors from StepperMotor to StepperMotor2.
-	Send Stepper info from KKIM to KMega
+	Add friction to the needle holes so they don't slip?+
+	Adjust needle positions:
+		Mach
+		Speed
+		Vertical Speed
+	CONSIDER: Add interrupt logic for stepper motors (don't let the packet processing slow down the motor movement)
 
 Extract all needed information from kRPC. Measure performance.
 	kRPC: streams?

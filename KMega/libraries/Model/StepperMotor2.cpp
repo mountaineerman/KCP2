@@ -4,7 +4,7 @@
 
 //TODO Remove AccelStepper library after testing this one works
 
-StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int maxSpeed, int ccwLimit, int cwLimit) {
+StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int speed, int ccwLimit, int cwLimit) {
 	
 	this->pinStep = pinStep;
 	pinMode(this->pinStep, OUTPUT);
@@ -14,8 +14,8 @@ StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePins
 	pinMode(this->pinDirection, OUTPUT);
 	
 	this->arePinsInverted = arePinsInverted;
-	this->maxSpeed = maxSpeed;
-	this->maxTimeBetweenSteps = 1000000 / maxSpeed;
+	this->speed = speed;
+	this->timeBetweenSteps = 1000000 / speed;
 	this->ccwLimit = ccwLimit;
 	this->cwLimit = cwLimit;
 	this->setDesiredPosition(0);
@@ -68,7 +68,7 @@ bool StepperMotor2::runStepperIfNecessary() {
 
 void StepperMotor2::blockRunToDesiredPosition() {
 	while(this->runStepperIfNecessary()) {
-		delayMicroseconds(this->maxTimeBetweenSteps - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);
+		delayMicroseconds(this->timeBetweenSteps - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);
 	}
 }
 
@@ -76,12 +76,17 @@ int StepperMotor2::getCurrentPosition() {
 	return this->currentPosition;
 }
 
-int StepperMotor2::get_maxSpeed() {
-	return this->maxSpeed;
+void StepperMotor2::setSpeed(int speed) {
+	this->speed = speed;
+	this->timeBetweenSteps = 1000000 / speed;
 }
 
-long StepperMotor2::get_maxTimeBetweenSteps() {
-	return this->maxTimeBetweenSteps;
+int StepperMotor2::getSpeed() {
+	return this->speed;
+}
+
+long StepperMotor2::getTimeBetweenSteps() {
+	return this->timeBetweenSteps;
 }
 
 int StepperMotor2::get_ccwLimit() {

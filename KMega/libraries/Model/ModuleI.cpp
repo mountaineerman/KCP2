@@ -21,10 +21,9 @@ ModuleI::ModuleI(Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_INTAKE_Red				(PIN_LEDDB_INTAKE_RGBLED_RED, 			ledDriverBoards)
 	, ledPWM_INTAKE_Green			(PIN_LEDDB_INTAKE_RGBLED_GRN, 			ledDriverBoards)
 	, ledPWM_INTAKE_Blue			(PIN_LEDDB_INTAKE_RGBLED_BLU, 			ledDriverBoards)
-	//, stepper_Fuel				(PIN_VID6606_2_FREQUENCY_FUEL,		PIN_VID6606_2_DIRECTION_FUEL,	false)
-	, stepper_Fuel					(PIN_VID6606_2_FREQUENCY_FUEL,		PIN_VID6606_2_DIRECTION_FUEL,	true, GEARED_STEPPER_MAX_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
-	, stepper_Charge				(PIN_VID6606_2_FREQUENCY_CHARGE,	PIN_VID6606_2_DIRECTION_CHARGE,	false)
-	, stepper_MonopropellantIntake	(PIN_VID6606_2_FREQUENCY_MNPINT,	PIN_VID6606_2_DIRECTION_MNPINT,	true)
+	, stepper_Fuel					(PIN_VID6606_2_FREQUENCY_FUEL,		PIN_VID6606_2_DIRECTION_FUEL,	true,	GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+	, stepper_Charge				(PIN_VID6606_2_FREQUENCY_CHARGE,	PIN_VID6606_2_DIRECTION_CHARGE,	true,	GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+	, stepper_MonopropellantIntake	(PIN_VID6606_2_FREQUENCY_MNPINT,	PIN_VID6606_2_DIRECTION_MNPINT,	false,	GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
 {
 	
 }
@@ -58,7 +57,7 @@ void ModuleI::setAllLEDsTo(int pwm_level) {
 
 void ModuleI::testLEDsSequentially() {
 	
-	auto blinkLED = [](const LED_PWM& led) { 
+	auto blinkLED = [](const LED_PWM& led) {
 		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
@@ -85,48 +84,7 @@ void ModuleI::testLEDsSequentially() {
 bool ModuleI::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
 	isAMotorStillInMotion = this->stepper_Fuel.runStepperIfNecessary() || isAMotorStillInMotion;
-	//isAMotorStillInMotion = this->stepper_Charge.runStepperIfNecessary() || isAMotorStillInMotion;
-	//isAMotorStillInMotion = this->stepper_MonopropellantIntake.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->stepper_Charge.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->stepper_MonopropellantIntake.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;
 }
-
-
-
-
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

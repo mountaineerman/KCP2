@@ -18,7 +18,7 @@
 class StepperMotor2 : public Interface_StepperMotorAggregator
 {
 public:
-	StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int maxSpeed, int ccwLimit, int cwLimit);
+	StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int speed, int ccwLimit, int cwLimit);
 	
 	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or blockRunToDesiredPosition()
 	void setDesiredPosition(int desiredPosition);
@@ -35,8 +35,9 @@ public:
 	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	int getCurrentPosition();
 	
-	int get_maxSpeed();
-	long get_maxTimeBetweenSteps();
+	void setSpeed(int speed);
+	int getSpeed();
+	long getTimeBetweenSteps();
 	int get_ccwLimit();
 	int get_cwLimit();
 	
@@ -53,11 +54,11 @@ private:
 	//The configuration of the motor. Some motors are inverted, others are not. I think this depends on the wiring.
 	bool arePinsInverted;
 	
-	//Maximum Permitted Movement Speed (steps per second).
-	int maxSpeed;
+	//Stepper Motor Speed (steps per second).
+	int speed;
 	
-	//Desired time between steps required to achieve maxSpeed, in microseconds.
-	long maxTimeBetweenSteps;
+	//Time (in microseconds) between motor steps. Directly proportional to "speed".
+	long timeBetweenSteps;
 	
 	//The step number associated with the counter-clockwise limit of the stepper motor.
 	int ccwLimit;

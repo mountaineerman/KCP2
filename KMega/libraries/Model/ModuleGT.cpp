@@ -17,10 +17,10 @@ ModuleGT::ModuleGT(Adafruit_TLC5947& ledDriverBoards)
 , ledPWM_RADARALT_Red	(PIN_LEDDB_RADARALT_RGBLED_RED, 	ledDriverBoards)
 , ledPWM_RADARALT_Green	(PIN_LEDDB_RADARALT_RGBLED_GRN, 	ledDriverBoards)
 , ledPWM_RADARALT_Blue	(PIN_LEDDB_RADARALT_RGBLED_BLU, 	ledDriverBoards)
-, stepper_Density	(PIN_VID6606_3_FREQUENCY_DENSITY,		PIN_VID6606_3_DIRECTION_DENSITY,		true)
-, stepper_Speed		(PIN_VID6606_3_FREQUENCY_SPEED,			PIN_VID6606_3_DIRECTION_SPEED,			true)
-, stepper_VertSpeed	(PIN_VID6606_3_FREQUENCY_VERTICALSPEED,	PIN_VID6606_3_DIRECTION_VERTICALSPEED,	true)
-, stepper_RadarAlt	(PIN_VID6606_3_FREQUENCY_RADARALTITUDE,	PIN_VID6606_3_DIRECTION_RADARALTITUDE,	true)
+, stepper_Density	(PIN_VID6606_3_FREQUENCY_DENSITY,		PIN_VID6606_3_DIRECTION_DENSITY,		false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_Speed		(PIN_VID6606_3_FREQUENCY_SPEED,			PIN_VID6606_3_DIRECTION_SPEED,			false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_VertSpeed	(PIN_VID6606_3_FREQUENCY_VERTICALSPEED,	PIN_VID6606_3_DIRECTION_VERTICALSPEED,	false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_RadarAlt	(PIN_VID6606_3_FREQUENCY_RADARALTITUDE,	PIN_VID6606_3_DIRECTION_RADARALTITUDE,	false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
 {
 	this->altitude = STARTING_ALTITUDE;
 }
@@ -42,7 +42,7 @@ void ModuleGT::setAllLEDsTo(int pwm_level) {
 
 void ModuleGT::testLEDsSequentially() {
 	
-	auto blinkLED = [](const LED_PWM& led) { 
+	auto blinkLED = [](const LED_PWM& led) {
 		led.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 		delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 		led.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
@@ -71,44 +71,3 @@ bool ModuleGT::runStepperIfNecessary() {
 	isAMotorStillInMotion = this->stepper_RadarAlt.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

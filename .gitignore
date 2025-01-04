@@ -4,12 +4,8 @@ Arduino.lnk
 # Ignore Arduino Library Test
 LibraryExperiment
 
-# Ignore Eclipse project configuration files that begin with '.' and subfolders 'bin'
-**/.project
-**/.cproject
-**/.settings
-**/.classpath
-**/bin/**
+# VS Code
+.vscode
 
 # Ignore "handy" files
 Kerbal Space Program - Shortcut.lnk

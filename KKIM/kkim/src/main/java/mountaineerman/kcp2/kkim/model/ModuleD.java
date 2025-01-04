@@ -1,7 +1,6 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.IP;
-import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleD implements LEDAggregator {

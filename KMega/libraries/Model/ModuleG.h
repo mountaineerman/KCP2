@@ -7,7 +7,7 @@
 #include <Interface_StepperMotorAggregator.h>
 #include <SwitchSP2T.h>
 #include <LED_PWM.h>
-#include <StepperMotor.h>
+#include <StepperMotor2.h>
 #include <StepperMotorNEMA17.h>
 
 
@@ -42,8 +42,8 @@ public:
 	LED_PWM ledPWM_HEADING_Green;
 	LED_PWM ledPWM_HEADING_Blue;
 	LED_PWM ledPWM_Comms;
-	StepperMotor stepper_Mach;
-	StepperMotor stepper_Pitch;
+	StepperMotor2 stepper_Mach;
+	StepperMotor2 stepper_Pitch;
 	StepperMotorNEMA17 stepper_Heading;
 };
 

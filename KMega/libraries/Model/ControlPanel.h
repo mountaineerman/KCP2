@@ -35,9 +35,11 @@ private:
 	void diagnosticMode_testAllLEDs();
 	void diagnosticMode_testLEDsSequentially();
 	void diagnosticMode_testStepperMotors();
-	void diagnosticMode_testGearedStepperMotor(StepperMotor& stepperMotorUnderTest);
-	void diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest); //TODO remove
+	//void diagnosticMode_testGearedStepperMotor(StepperMotor& stepperMotorUnderTest); //TODO remove
+	void diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest);
 	void diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest);
+	void diagnosticMode_sweepSingleStepperMotor(StepperMotor2& stepperMotorUnderTest);
+	void diagnosticMode_sweepAllStepperMotors();
 	//TODO: Add diagnostic mode for MUX only (see commented code in ControlPanel.cpp)
 
 	MuxShield mux;

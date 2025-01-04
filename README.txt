@@ -35,7 +35,7 @@ KMega Diagnostic Mode (KKIM not used):
 2. Power on Control Panel.
 3. Connect Control Panel to computer.
 4. Open Arduino IDE.
-5. Open Serial Monitor.
+5. Open Tools > Serial Monitor.
 6. On Control Panel, select Diagnostic Mode button (center-left).
 
 
@@ -52,8 +52,13 @@ When trying to program the Arduino board, get message: "the selected serial port
 Fix:
 In Arduino IDE, select the port to activate it.
 
-(Delete after settingsFilename absolute path is replaced with relative path:)
 Symptoms:
+1. When trying to program the Arduino board, get errors: "stk500v2_ReceiveMessage(): timeout"
+2. Inspecting Arduino IDE > Tools > Port only shows COM1, instead of COM3.
+Fix:
+Check USB cable connecting KMega to computer is plugged in and in "ON" position.
+
+Symptoms: (Delete after settingsFilename absolute path is replaced with relative path)
 Changes to config.properties are not being seen by the system
 Fix:
 Check KKIMProp:settingsFilename is pointing to the correct file.
@@ -82,3 +87,10 @@ Symptoms:
 -Programming via Arduino IDE succeeds, but Arduino does not restart.
 Cause:
 A prototyping sketch was loaded. Everything was working as it should have.
+
+Symptoms:
+During "full sweep" of a stepper motor, it "bounces" off an edge and stops in the middle instead of in the CCW position.
+Cause:
+Initial miscalibration combined with "resonant speed".
+Fix:
+Do full sweep of motor at a slower speed (300 steps/second) using KMega diagnostic mode.
