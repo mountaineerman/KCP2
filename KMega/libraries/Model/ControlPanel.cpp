@@ -96,6 +96,62 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleGT.testLEDsSequentially();
 }
 
+//TODO: Stepper Logic disabled until performance is fixed (do not modify)
+void ControlPanel::stepMotorUpTo(StepperMotor2& stepper, int maxNumberOfSteps) {
+	int counter = 0;
+	while (true) {
+		counter++;
+		if(counter > maxNumberOfSteps) {
+			return;
+		}
+		if (!stepper.runStepperIfNecessary()) {
+			return;
+		}
+	}
+}
+
+//TODO: Stepper Logic disabled until performance is fixed (do not modify)
+void ControlPanel::burstRunSteppers() {
+	
+	// int FAST = 300;
+	// int MEDIUM = 200;
+	// int SLOW = 100;
+
+	// //Step "Fast" motors, up to FAST steps
+	// this->stepMotorUpTo(this->moduleC.stepper_Gforce, FAST);
+	// this->stepMotorUpTo(this->moduleG.stepper_Mach, FAST);
+	// this->stepMotorUpTo(this->moduleG.stepper_Pitch, FAST);
+	// // this->moduleG.stepper_Heading
+	// this->stepMotorUpTo(this->moduleGT.stepper_Speed, FAST);
+	// this->stepMotorUpTo(this->moduleGT.stepper_VertSpeed, FAST);
+	// this->stepMotorUpTo(this->moduleGT.stepper_RadarAlt, FAST);
+	
+	// //Step "Medium" motors, up to MEDIUM steps
+	// this->stepMotorUpTo(this->moduleI.stepper_Fuel, MEDIUM);
+	// this->stepMotorUpTo(this->moduleI.stepper_Charge, MEDIUM);
+	// this->stepMotorUpTo(this->moduleI.stepper_MonopropellantIntake, MEDIUM);
+	
+	// //Step "Slow" motors, up to SLOW steps
+	// this->stepMotorUpTo(this->moduleC.stepper_HeatLife, SLOW);
+	// this->stepMotorUpTo(this->moduleGT.stepper_Density, SLOW);
+
+	//New:
+	unsigned long startTime = 0;
+	unsigned long currentTime = 0;
+	unsigned long timeSpentRunningSteppers = 0;
+	for (int i = 0; i < 20; i++) {// TODO parameterize loop amount
+		startTime = micros();
+		if (this->runStepperIfNecessary() == false) {return;}
+		currentTime = micros();
+		timeSpentRunningSteppers = currentTime - startTime;
+		if (timeSpentRunningSteppers > 500) {//TODO Replace hardcoding with variable
+			continue;
+		} else {
+			delayMicroseconds(500 - timeSpentRunningSteppers);//TODO Replace hardcoding with variable
+		}
+	}
+}
+
 bool ControlPanel::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
@@ -114,14 +170,13 @@ bool ControlPanel::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-
-void ControlPanel::blockRunAllSteppersToPosition(int position) {
+void ControlPanel::blockRunAllSteppersToPosition(int position, unsigned long stepTimeInMicroseconds) {
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
 	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
 	this->moduleC.stepper_Gforce.setDesiredPosition(position);
 	this->moduleG.stepper_Mach.setDesiredPosition(position);
 	this->moduleG.stepper_Pitch.setDesiredPosition(position);
-	// // //this->moduleG.stepper_Heading...
+	//this->moduleG.stepper_Heading...
 	this->moduleI.stepper_Fuel.setDesiredPosition(position);
 	this->moduleI.stepper_Charge.setDesiredPosition(position);
 	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
@@ -139,10 +194,10 @@ void ControlPanel::blockRunAllSteppersToPosition(int position) {
 		if (this->runStepperIfNecessary() == false) {break;}
 		currentTime = micros();	
 		timeSpentRunningSteppers = currentTime - startTime;
-		if (timeSpentRunningSteppers > 250) {//TODO Replace hardcoding with variable
+		if (timeSpentRunningSteppers > stepTimeInMicroseconds) {
 			continue;
 		} else {
-			delayMicroseconds(250 - timeSpentRunningSteppers);//TODO Replace hardcoding with variable
+			delayMicroseconds(stepTimeInMicroseconds - timeSpentRunningSteppers);
 		}
 	}
 
@@ -152,9 +207,10 @@ void ControlPanel::blockRunAllSteppersToPosition(int position) {
 	// }
 }
 
-void ControlPanel::sweepStepperMotorsThroughMaxMinToCalibrate() {
-	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT);
-	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
+void ControlPanel::sweepStepperMotorsThroughMaxMin() {
+	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT, 500);
+	delay(200);
+	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
 }
 
 void ControlPanel::runDiagnosticMode() {
@@ -393,6 +449,8 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		Serial.println(F("[32] Sweep & time: Radar Altitude"));
 		Serial.println(F("--------------------------------------"));
 		Serial.println(F("[40] Sweep & time: All Stepper Motors"));
+		Serial.println(F("--------------------------------------"));
+		Serial.println(F("[56] Mock Test of Fuel (in isolation)"));
 		
 		userInput = Serial.readStringUntil('\n');
 		
@@ -446,6 +504,8 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 			this->diagnosticMode_sweepSingleStepperMotor(this->moduleGT.stepper_RadarAlt);
 		} else if(userInput == "40") {
 			this->diagnosticMode_sweepAllStepperMotors();
+		} else if(userInput == "56") {
+			this->diagnosticMode_fuelTest();
 		}
 	}
 }
@@ -639,6 +699,7 @@ void ControlPanel::diagnosticMode_sweepSingleStepperMotor(StepperMotor2& stepper
 	long startTime = millis();
 	stepperMotorUnderTest.setDesiredPosition(stepperMotorUnderTest.get_cwLimit());
 	stepperMotorUnderTest.blockRunToDesiredPosition();
+	delay(200);
 	stepperMotorUnderTest.setDesiredPosition(stepperMotorUnderTest.get_ccwLimit());
 	stepperMotorUnderTest.blockRunToDesiredPosition();
 	long endTime = millis();
@@ -646,7 +707,7 @@ void ControlPanel::diagnosticMode_sweepSingleStepperMotor(StepperMotor2& stepper
 
 	//Calculations
 	long numberOfTraversedSteps = 3780*2;
-	long expectedSweepTimeInMilliseconds = numberOfTraversedSteps * 1000 / speed;
+	long expectedSweepTimeInMilliseconds = (numberOfTraversedSteps * 1000 / speed) + 200;
 	long actualSweepTimeInMilliseconds = endTime - startTime;
 
 	//Print results
@@ -674,13 +735,12 @@ void ControlPanel::diagnosticMode_sweepAllStepperMotors() {
 	
 	//Sweep...
 	long startTime = millis();
-	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT);
-	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT);
+	this->sweepStepperMotorsThroughMaxMin();
 	long endTime = millis();
 
 	//Calculations
 	long numberOfTraversedSteps = 3780*2;
-	long expectedSweepTimeInMilliseconds = numberOfTraversedSteps * 1000 / GEARED_STEPPER_SPEED;
+	long expectedSweepTimeInMilliseconds = (numberOfTraversedSteps * 1000 / GEARED_STEPPER_SPEED) + 200; //200 milliseconds for delay() in sweepStepperMotorsThroughMaxMin()
 	long actualSweepTimeInMilliseconds = endTime - startTime;
 
 	//Print results
@@ -700,4 +760,64 @@ void ControlPanel::diagnosticMode_sweepAllStepperMotors() {
 			return;
 		}
 	}
+}
+
+void ControlPanel::diagnosticMode_fuelTest() {
+	
+	this->moduleI.stepper_Fuel.setDesiredPosition(50);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(2000);
+	this->moduleI.stepper_Fuel.setDesiredPosition(3659);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(2000);
+	this->moduleI.stepper_Fuel.setDesiredPosition(50);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(250);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(500);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(750);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(1000);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(1250);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(1500);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(1750);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(2000);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(2250);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(2500);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(2750);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(3000);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(3250);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(3500);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	delay(100);
+	this->moduleI.stepper_Fuel.setDesiredPosition(3659);
+	this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	
+	// this->moduleI.stepper_Fuel.blockRunToDesiredPosition();
+	// delay();
 }

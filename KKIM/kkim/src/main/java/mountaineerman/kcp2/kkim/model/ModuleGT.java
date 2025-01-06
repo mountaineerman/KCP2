@@ -4,6 +4,7 @@ import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleGT implements LEDAggregator, StepperMotorAggregator {
 
+	//TODO: EnableSteppers (review entire class) - see Module C
 	public LED_PWM_RGB stepperLED_AirDensity = null;
 	public LED_PWM_RGB stepperLED_Speed = null;
 	public LED_PWM_RGB stepperLED_VerticalSpeed = null;

@@ -29,8 +29,13 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	
 	//TODO WRAP IN KSP class:
 	//TODO double-check variable types in kRPC...
-	//heat: loop through all parts?: getTemperature()/getMaxTemperature(), getSkinTemperature()/getMaxSkinTemperature()
-	public int percentTemperatureHealth = 0; //Health of the hottest part on the vessel. Range: 0 to 100. 0=bad, 100=good.
+	
+	//TODO: EnableSteppers //TODO change comments below to Javadoc format like percentTemperatureHealth
+	//TODO: EnableSteppers //TODO convert int percentages to float like percentFuel
+	
+	/** Health of the hottest part on the vessel. Range: 0 to 100. 0=bad, 100=good. */
+	public int percentTemperatureHealth = 0;
+
 	public float currentFood = 0;
 	public float maxFood = 0;
 	public int percentFood = 0;//Range: 0 to 100
@@ -45,11 +50,18 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public float mach = 0;
 	public float pitch = 0;	 //Units: degrees. Range: -90.0 to +90.0
 	public float heading = 0;//Units: degrees. Range: 0.0 to 360.0
+
 	public float currentLiquidFuel = 0;
 	public float maxLiquidFuel = 0;
 	public float currentSolidFuel = 0;
 	public float maxSolidFuel = 0;
-	private int percentFuel = 0;//Range: 0 to 100
+	/** a) If there is any capacity for Solid Fuel, based on Solid Fuel. Otherwise:
+	 *  b) If there is any capacity for Liquid Fuel, based on Liquid Fuel. Otherwise:
+	 *  c) Zero. 
+	 * 
+	 * Range: 0.0 to 100.0 */
+	private float percentFuel = 0;
+
 	public float currentElectricCharge = 0;
 	private float previousElectricCharge = 0;
 	public float maxElectricCharge = 0;
@@ -92,10 +104,12 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	
 	/**
 	 * 1) Re-calculate state of higher-level members based on state of lower-level members.
-	 * 2) Update outputs based on Control Panel state (e.g., brake LEDs based on switch/button states).
+	 * 2) Update outputs based on Control Panel state
+	 * 		e.g., brake LEDs based on switch/button states.
+	 * 		e.g., life support stepper gauge position based on food/water/oxygen reserves.
 	 */
-	public void refresh() { //TODO make use of SwitchSP2T:statusChanged()
-		//TODO Stepper Motors...
+	public void refresh() {
+		//TODO make use of SwitchSP2T:statusChanged()
 		
 		//Update inputs that are depended on by other Modules
 		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
@@ -130,6 +144,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//TODO Trim Logic (+Module F potentiometer)
 		
 		//Module C (+G) =======================================================
+		// ----- Heat/Life Support ----------------------
 		if (this.maxFood > 0) {
 			this.percentFood = (int) (this.currentFood / this.maxFood * 100);
 		} else {
@@ -148,6 +163,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		this.percentLifeSupport = Math.min(this.percentFood, this.percentWater);
 		this.percentLifeSupport = Math.min(this.percentLifeSupport, this.percentOxygen);
 		
+		//TODO: EnableSteppers - Heat/Life
 		if (this.moduleG.heatLifeSwitch.getStatus()) {//Life Support selected
 			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
 			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
@@ -156,6 +172,9 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
 		}
 		
+		// ----- G-Force ----------------------
+		//this.moduleC.stepper_Gforce. //JUMPTO
+		//TODO: EnableSteppers - GForce
 		if (this.gforce > 10.0) {
 			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.RED);
 		} else if (this.gforce > 8.0) {
@@ -287,6 +306,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Sensitivity Switch: See Modules A, B
 		
 		//Module G (+E) =======================================================
+		// ----- Mach ----------------------
+		//TODO: EnableSteppers - Mach
 		if (this.mach > 28.0) {
 			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.VIOLET);
 		} else if (this.mach > 16.0) {
@@ -305,6 +326,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.CYAN);
 		}
 		
+		// ----- Pitch ----------------------
+		//TODO: EnableSteppers - Pitch
 		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
 			if (this.pitch > 60.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
@@ -367,6 +390,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.OFF);
 		}
 		
+		// ----- Heading ----------------------
+		//TODO: EnableSteppers - Heading
 		if ( (this.heading < 45.0) || (this.heading > 315.0) ) { //North quadrant
 			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_BLUE);
 		} else if (this.heading > 225.0) { //West quadrant
@@ -381,28 +406,28 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//TODO find Diagnostic Mode and Graceful Shutdown logic elsewhere...
 		
 		//Module I ============================================================
+		// ----- Fuel ----------------------
 		if (this.maxSolidFuel > 0) {
-			this.percentFuel = (int) (this.currentSolidFuel / this.maxSolidFuel * 100);
+			this.percentFuel = this.currentSolidFuel / this.maxSolidFuel * (float) 100;
 		} else if (this.maxLiquidFuel > 0) {
-			this.percentFuel = (int) (this.currentLiquidFuel / this.maxLiquidFuel * 100);
+			this.percentFuel = this.currentLiquidFuel / this.maxLiquidFuel * (float) 100;
 		} else {
-			this.percentFuel = -1;
+			this.percentFuel = 0;
 		}
+		// System.out.println("Solid Fuel: " + this.currentSolidFuel + "/" + this.maxSolidFuel);
+		// System.out.println("Liquid Fuel: " + this.currentLiquidFuel + "/" + this.maxLiquidFuel);
+		// System.out.println("Percent Fuel: " + this.percentFuel);
+		// System.out.println();
+		this.moduleI.stepper_Fuel.setDesiredPosition(this.percentFuel, (float) 0, (float) 100);//JUMPTO
 		refreshPercentRGBLED(this.moduleI.stepperLED_Fuel, LED_RGB_Brightness.BRIGHT, this.percentFuel);
 		
-		//int temp = this.scaleIntegerToNewRange(this.percentFuel, 0, 100, OP.Stepper_Fuel.calibrationCCWLimit, OP.Stepper_Fuel.calibrationCWLimit);
-		//System.out.println();
-		//System.out.println(" Solid Fuel: " + this.currentSolidFuel + " / " + this.maxSolidFuel);
-		//System.out.println("Liquid Fuel: " + this.currentLiquidFuel + " / " + this.maxLiquidFuel);
-		//System.out.println("percentFuel: " + this.percentFuel);
-		//System.out.println("percentFuel (scaled): " + temp);
-		//this.moduleI.stepper_Fuel.setDesiredPosition(temp);
-		
+		// ----- Charge ----------------------
 		if (this.maxElectricCharge > 0) {
 			this.percentElectricCharge = (int) (this.currentElectricCharge / this.maxElectricCharge * 100);
 		} else {
 			this.percentElectricCharge = -1;
 		}
+		//TODO: EnableSteppers - Charge
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
 		if (this.currentElectricCharge > this.previousElectricCharge) {
@@ -414,6 +439,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		this.previousElectricCharge = this.currentElectricCharge;
 		
+		// ----- Monopropellant/Intake Air ----------------------
 		if (this.maxMonopropellant > 0) {
 			this.percentMonopropellant = (int) (this.currentMonopropellant / this.maxMonopropellant * 100);
 		} else {
@@ -427,6 +453,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 //			this.percentIntakeAir = 0;
 //		}
 		
+		//TODO: EnableSteppers - Monopropellant/Intake Air
 		if (this.moduleI.monopropIntakeSwitch.getStatus()) {//Intake Air selected
 			refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.DIM, this.percentMonopropellant);
 			//TODO percentIntakeAir:BRIGHT
@@ -436,13 +463,16 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		//Module GT ===========================================================
+		// ----- Air Density ----------------------
 		if (this.maxAirDensity > 0) {
 			this.invertedPercentAirDensity = 100 - (int) (this.currentAirDensity / this.maxAirDensity * 100);
 		} else {
 			this.invertedPercentAirDensity = -1;
 		}
+		//TODO: EnableSteppers - Air Density
 		refreshPercentRGBLED(this.moduleGT.stepperLED_AirDensity, LED_RGB_Brightness.BRIGHT, this.invertedPercentAirDensity);
 		
+		// ----- Speed/Vertical Speed ----------------------
 		double speed = -1.0;
 		double verticalSpeed = -1.0;
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
@@ -460,6 +490,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			verticalSpeed = 0.0;
 		}
 		
+		//TODO: EnableSteppers - Speed
 		if (speed > 3000.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.VIOLET);
 		} else if (speed > 2000.0) {
@@ -478,6 +509,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
 		}
 		
+		//TODO: EnableSteppers - Vertical Speed
 		if (verticalSpeed > 50.0) {
 			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.GREEN);
 		} else if (verticalSpeed > 1.0) {
@@ -490,6 +522,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.RED);
 		}
 		
+		// ----- Radar Altitude ----------------------
+		//TODO: EnableSteppers - Radar Altitude
 		if (this.altitudeAboveSurface > 5000.0) {
 			if (this.vesselSituation == VesselSituation.FLYING) {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);
@@ -517,7 +551,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 	}
 	
-	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, int percentage) {
+	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, int percentage) { //TODO REMOVE (see below) //TODO: EnableSteppers
 		if (brightness == LED_RGB_Brightness.BRIGHT) {
 			if (percentage > 99) {
 				led.setMode(LED_RGB_Mode.BLUE);
@@ -553,6 +587,42 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 	}
 	
+	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, float percentage) {
+		if (brightness == LED_RGB_Brightness.BRIGHT) {
+			if (percentage > 99.0) {
+				led.setMode(LED_RGB_Mode.BLUE);
+			} else if (percentage > 90.0) {
+				led.setMode(LED_RGB_Mode.GREEN);
+			} else if (percentage > 20.0) {
+				led.setMode(LED_RGB_Mode.WHITE);
+			} else if (percentage > 10.0) {
+				led.setMode(LED_RGB_Mode.YELLOW);
+			} else if (percentage > 0.0) {
+				led.setMode(LED_RGB_Mode.RED);
+			} else if (percentage == 0.0) {
+				led.setMode(LED_RGB_Mode.VIOLET);
+			} else {
+				led.setMode(LED_RGB_Mode.CYAN);
+			}
+		} else if (brightness == LED_RGB_Brightness.DIM) {
+			if (percentage > 99.0) {
+				led.setMode(LED_RGB_Mode.DIM_BLUE);
+			} else if (percentage > 90.0) {
+				led.setMode(LED_RGB_Mode.DIM_GREEN);
+			} else if (percentage > 20.0) {
+				led.setMode(LED_RGB_Mode.DIM_WHITE);
+			} else if (percentage > 10.0) {
+				led.setMode(LED_RGB_Mode.DIM_YELLOW);
+			} else if (percentage > 0.0) {
+				led.setMode(LED_RGB_Mode.DIM_RED);
+			} else if (percentage == 0.0) {
+				led.setMode(LED_RGB_Mode.DIM_VIOLET);
+			} else {
+				led.setMode(LED_RGB_Mode.DIM_CYAN);
+			}
+		}
+	}
+
 	@Override
 	public String toString() {
 		
@@ -583,11 +653,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	
 	public void disableLEDOverride() {//TODO
 		
-	}
-	
-	@SuppressWarnings("unused")
-	private int scaleIntegerToNewRange(int number, int oldRangeMin, int oldRangeMax, int newRangeMin, int newRangeMax) {//TODO remove and use CommonUtilities instead
-		return (number - oldRangeMin) * (newRangeMax - newRangeMin) / (oldRangeMax - oldRangeMin) + newRangeMin;
 	}
 }
 

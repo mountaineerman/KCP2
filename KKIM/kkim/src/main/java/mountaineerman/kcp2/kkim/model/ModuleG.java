@@ -6,6 +6,7 @@ import mountaineerman.kcp2.kkim.OP;
 public class ModuleG implements LEDAggregator, StepperMotorAggregator {
 
 	public SwitchSP2T heatLifeSwitch = null;
+	//TODO: EnableSteppers (review entire class) - see Module C
 	public LED_PWM_RGB stepperLED_Mach = null;
 	public LED_PWM_RGB stepperLED_Pitch = null;
 	public LED_PWM_RGB stepperLED_Heading = null;

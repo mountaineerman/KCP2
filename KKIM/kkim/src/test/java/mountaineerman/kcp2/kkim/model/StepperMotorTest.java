@@ -10,26 +10,65 @@ class StepperMotorTest {
 	@Test
 	void testSetDesiredPosition() {
 
-		StepperMotor fakeMotor = new StepperMotor("fakeMotor", ModuleID.GT);
+		// (GROUP 1: fakeMotor1)  No calibration limits
+		StepperMotor fakeMotor1 = new StepperMotor("fakeMotor", ModuleID.GT, 0, 3779);
 
-		// VALID
-		fakeMotor.setDesiredPosition(0); // Minimum boundary
-		Assertions.assertTrue(fakeMotor.getDesiredPosition() == 0);
+		//Minimum
+		fakeMotor1.setDesiredPosition(5);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
+		fakeMotor1.setDesiredPosition((float) 0.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 0);
 
-		fakeMotor.setDesiredPosition(3779); // Maximum boundary
-		Assertions.assertTrue(fakeMotor.getDesiredPosition() == 3779);
+		//Maximum
+		fakeMotor1.setDesiredPosition(5);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
+		fakeMotor1.setDesiredPosition((float) 100.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 3779);
 
-		fakeMotor.setDesiredPosition(1890); // Midpoint
-		Assertions.assertTrue(fakeMotor.getDesiredPosition() == 1890);
+		//valueInRange less than rangeMin
+		fakeMotor1.setDesiredPosition(5);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
+		fakeMotor1.setDesiredPosition((float) -20.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 0);
 
-		// INVALID
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			fakeMotor.setDesiredPosition(-1); // Too low
-		});
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			fakeMotor.setDesiredPosition(3880); // Too high
-		});
+		//valueInRange greater than rangeMax
+		fakeMotor1.setDesiredPosition(5);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
+		fakeMotor1.setDesiredPosition((float) 135.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 3779);
 
+
+		// (GROUP 2: fakeMotor2) With calibration limits
+		StepperMotor fakeMotor2 = new StepperMotor("fakeMotor", ModuleID.GT, 100, 3000);
+
+		//Minimum
+		fakeMotor2.setDesiredPosition(200);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 200);
+		fakeMotor2.setDesiredPosition((float) 0.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 100);
+
+		//Maximum
+		fakeMotor2.setDesiredPosition(200);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 200);
+		fakeMotor2.setDesiredPosition((float) 100.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 3000);
+
+		//valueInRange less than rangeMin
+		fakeMotor2.setDesiredPosition(200);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 200);
+		fakeMotor2.setDesiredPosition((float) -20.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 100);
+
+		//valueInRange greater than rangeMax
+		fakeMotor2.setDesiredPosition(200);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 200);
+		fakeMotor2.setDesiredPosition((float) 135.0, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 3000);
+		
+		//Somewhere in range
+		fakeMotor2.setDesiredPosition(200);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 200);
+		fakeMotor2.setDesiredPosition((float) 52.7932, (float) 0.0, (float) 100.0);
+		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 1631);
 	}
-
 }

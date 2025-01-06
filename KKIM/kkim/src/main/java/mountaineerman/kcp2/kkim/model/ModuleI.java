@@ -6,7 +6,8 @@ import mountaineerman.kcp2.kkim.OP;
 public class ModuleI implements LEDAggregator, StepperMotorAggregator {
 	
 	public SwitchSP2T monopropIntakeSwitch = null;
-	//public StepperMotor stepper_Fuel = null;
+	//TODO: EnableSteppers (review entire class) - see Module C
+	public StepperMotor stepper_Fuel = null;
 	public LED_PWM_RGB stepperLED_Fuel = null;
 	public LED_PWM_RGB stepperLED_deltaCharge = null;
 	public LED_PWM_RGB stepperLED_Charge = null;
@@ -17,7 +18,7 @@ public class ModuleI implements LEDAggregator, StepperMotorAggregator {
 		
 		this.monopropIntakeSwitch = new SwitchSP2T(IP.MonopropIntakeSwitch);
 		
-		//this.stepper_Fuel = new StepperMotor(OP.Stepper_Fuel);
+		this.stepper_Fuel = new StepperMotor(OP.Stepper_Fuel);
 		this.stepperLED_Fuel = 
 				new LED_PWM_RGB(OP.StepperRGBLED_Fuel,
 								OP.StepperLED_Fuel_Red,
@@ -59,9 +60,8 @@ public class ModuleI implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
-//		return  this.stepper_Fuel.toString() +
 		return  this.monopropIntakeSwitch.toString() +
-				
+				this.stepper_Fuel.toString() +
 				this.stepperLED_Fuel.toString() +		
 				this.stepperLED_deltaCharge.toString() +
 				this.stepperLED_Charge.toString() +
