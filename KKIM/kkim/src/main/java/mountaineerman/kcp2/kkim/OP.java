@@ -121,36 +121,27 @@ public enum OP {
 	StepperLED_RadarAltitude_Green	(164,		165,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Green"),
 	StepperLED_RadarAltitude_Blue	(166,		167,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Blue"),
 
-	Altitude						(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)"),
-
-//TODO: EnableSteppers
 //Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
+	Stepper_HeatLife				(168,		169,		ModuleID.C,		90,			3695,		"Heat/Life Support Stepper Motor"),
 	Stepper_Gforce					(170,		171,		ModuleID.C,		160,		3400,		"G-Force Stepper Motor"),
-	Stepper_Fuel					(178,		179,		ModuleID.I,		90,			3709,		"Fuel Stepper Motor");
-//	TODO Add remaining Stepper Motors
-	
-	
 
-	/*
-	// =================================================================================================================
-	// PARTS - Outputs
-	// =================================================================================================================
+	Stepper_Mach					(172,		173,		ModuleID.G,		0,			3779,		"Mach Number Stepper Motor"), //Note: calibCWLim is for Mach 24
+	Stepper_Pitch					(174,		175,		ModuleID.G,		0,			3779,		"Pitch Stepper Motor"),
+	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),
 
-	// ========================================== StepperMotor =========================================================
-	StepperMotor heatLifeStepper = new StepperMotor("heatLifeStepper", ModuleID.C);
-	StepperMotor machStepper = new StepperMotor("machStepper", ModuleID.G);
-	StepperMotor pitchStepper = new StepperMotor("pitchStepper", ModuleID.G);
-	StepperMotor fuelStepper = new StepperMotor("fuelStepper", ModuleID.I);
-	StepperMotor chargeStepper = new StepperMotor("chargeStepper", ModuleID.I);
-	StepperMotor mnprpIntakeStepper = new StepperMotor("mnprpIntakeStepper", ModuleID.I);
-	StepperMotor densityStepper = new StepperMotor("densityStepper", ModuleID.GT);
-	StepperMotor speedStepper = new StepperMotor("speedStepper", ModuleID.GT);
-	StepperMotor vertSpeedStepper = new StepperMotor("vertSpeedStepper", ModuleID.GT);
-	StepperMotor radAltStepper = new StepperMotor("radAltStepper", ModuleID.GT);
-	
-	// ========================================== NEMA17StepperMotor ===================================================
-	StepperMotorNEMA17 headingStepper = new StepperMotorNEMA17("headingStepper", ModuleID.G);
-	*/
+	Stepper_Fuel					(178,		179,		ModuleID.I,		90,			3709,		"Fuel Stepper Motor"),
+	Stepper_Charge					(180,		181,		ModuleID.I,		0,			3779,		"Charge Stepper Motor"),
+	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		0,			3779,		"Monopropellant/Intake Air Stepper Motor"),
+
+	Stepper_AirDensity				(184,		185,		ModuleID.GT,	0,			3779,		"AirDensity Stepper Motor"),
+	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),
+	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),
+	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),
+
+//Altitude
+	Altitude						(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");
+
+
 	
 	
 	public final int firstByte;//See Onenote:ICD

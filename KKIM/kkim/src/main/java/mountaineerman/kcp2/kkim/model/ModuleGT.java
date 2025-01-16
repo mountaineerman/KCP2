@@ -4,13 +4,22 @@ import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleGT implements LEDAggregator, StepperMotorAggregator {
 
-	//TODO: EnableSteppers (review entire class) - see Module C
+	public StepperMotor stepper_AirDensity = null;
+	public StepperMotor stepper_Speed = null;
+	public StepperMotor stepper_VerticalSpeed = null;
+	public StepperMotor stepper_RadarAltitude = null;
 	public LED_PWM_RGB stepperLED_AirDensity = null;
 	public LED_PWM_RGB stepperLED_Speed = null;
 	public LED_PWM_RGB stepperLED_VerticalSpeed = null;
 	public LED_PWM_RGB stepperLED_RadarAltitude = null;
 	
 	public ModuleGT() {
+
+		this.stepper_AirDensity = new StepperMotor(OP.Stepper_AirDensity);
+		this.stepper_Speed = new StepperMotor(OP.Stepper_Speed);
+		this.stepper_VerticalSpeed = new StepperMotor(OP.Stepper_VerticalSpeed);
+		this.stepper_RadarAltitude = new StepperMotor(OP.Stepper_RadarAltitude);
+
 		this.stepperLED_AirDensity = 
 				new LED_PWM_RGB(OP.StepperRGBLED_AirDensity,
 								OP.StepperLED_AirDensity_Red,
@@ -47,9 +56,13 @@ public class ModuleGT implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
-		return this.stepperLED_AirDensity.toString() +
-			   this.stepperLED_Speed.toString() +
-			   this.stepperLED_VerticalSpeed.toString() +
-			   this.stepperLED_RadarAltitude.toString();
+		return 	this.stepper_AirDensity.toString() +
+				this.stepper_Speed.toString() +
+				this.stepper_VerticalSpeed.toString() +
+				this.stepper_RadarAltitude.toString() +
+				this.stepperLED_AirDensity.toString() +
+				this.stepperLED_Speed.toString() +
+				this.stepperLED_VerticalSpeed.toString() +
+				this.stepperLED_RadarAltitude.toString();
 	}
 }

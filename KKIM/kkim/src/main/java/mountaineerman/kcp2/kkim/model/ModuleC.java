@@ -4,14 +4,15 @@ import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleC implements LEDAggregator, StepperMotorAggregator {
 
-	//TODO: EnableSteppers (review entire class)
-	public StepperMotor stepper_Gforce = null;                    //NEW
+	public StepperMotor stepper_HeatLife = null;
+	public StepperMotor stepper_Gforce = null;
 	public LED_PWM_RGB stepperLED_Heat = null;
 	public LED_PWM_RGB stepperLED_LifeSupport = null;
 	public LED_PWM_RGB stepperLED_GForce = null;
 	
 	public ModuleC() {
-		this.stepper_Gforce = new StepperMotor(OP.Stepper_Gforce); //NEW
+		this.stepper_HeatLife = new StepperMotor(OP.Stepper_HeatLife);
+		this.stepper_Gforce = new StepperMotor(OP.Stepper_Gforce);
 		this.stepperLED_Heat = 
 				new LED_PWM_RGB(OP.StepperRGBLED_Heat,
 								OP.StepperLED_Heat_Red,
@@ -45,7 +46,8 @@ public class ModuleC implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public String toString() {
-		return  this.stepper_Gforce.toString() +          //NEW
+		return  this.stepper_HeatLife.toString() +
+				this.stepper_Gforce.toString() +
 				this.stepperLED_Heat.toString() +
 				this.stepperLED_LifeSupport.toString() +
 				this.stepperLED_GForce.toString();
