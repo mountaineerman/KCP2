@@ -1,6 +1,11 @@
 SOFTWARE ==================================================================================================================================
 
 Solve stepper motor performance
+	Prototype timing based on additional microprocessors responsible for stepping motors
+		NanoGaugeHelper
+		KMega new responsibilities
+	Resolve de-calibration by ...?
+	
 	Investigate burst mode and strange buffer bug
 		Add checksums to packets?
 

@@ -193,15 +193,23 @@ public class SerialCommunicator {
 		this.isValidPacketInPacketBuffer = false;
 	}
 
-	//Sends an outputRefreshPacket to KMega
-	public void sendOutputRefreshPacket(byte[] packet) {
+	/** Sends the relevant packet to KMega
+	 */
+	public void sendPacket(byte[] packet) {
 		
-		int numberOfBytesWritten = this.serialPort.writeBytes(packet, KKIMProp.getkMegaOutputRefreshPacketLengthInBytes());
-		
-		if (numberOfBytesWritten == KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()) {
-			this.numberOfSentOutputRefreshPackets++;
+		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+			int numberOfBytesWritten = this.serialPort.writeBytes(packet, KKIMProp.getkMegaOutputRefreshPacketLengthInBytes());
+			if (numberOfBytesWritten == KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()) {
+				this.numberOfSentOutputRefreshPackets++;
+			} else {
+				this.numberOfOutputRefreshPacketsNotSent++;
+			}
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
+			this.serialPort.writeBytes(packet, KKIMProp.getkMegaGaugePacket6LengthInBytes());
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+			this.serialPort.writeBytes(packet, KKIMProp.getkMegaGaugePacket5LengthInBytes());
 		} else {
-			this.numberOfOutputRefreshPacketsNotSent++;
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}
 	}
 		

@@ -82,16 +82,27 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 			}
 		}
 		
-		//Send outputRefreshPacket
-		if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaOutputRefreshPacketSendRateInMilliseconds()) {
-			// sentOutputRefreshPacket = true;
-			// time10 = System.currentTimeMillis();
-			byte[] outputRefreshPacket = kkimService.packetAssembler.assembleOutputRefreshPacket();
-			// time11 = System.currentTimeMillis();
-			kkimService.serialCommunicator.sendOutputRefreshPacket(outputRefreshPacket);
+		//Send packet to KMega
+		if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaAllPacketsSendRateInMilliseconds()) {
+
+			byte[] packet = null;
+			if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+				// sentOutputRefreshPacket = true;
+				// time10 = System.currentTimeMillis();
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				// time11 = System.currentTimeMillis();
+			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
+				packet = kkimService.packetAssembler.assembleGaugePacket6();
+			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+				//FIXME
+			} else {
+				throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+			}
+
+			kkimService.serialCommunicator.sendPacket(packet);
 			// time12 = System.currentTimeMillis();
-//			CommonUtilities.clearScreen();
-//			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
+			// CommonUtilities.clearScreen();
+			// kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
 			this.outputRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 		}
 		

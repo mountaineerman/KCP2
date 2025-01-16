@@ -14,10 +14,14 @@ public class PacketAssembler {
 
 	private ControlPanel controlPanel;
 	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()];
+	private byte[] gaugePacket6Buffer = new byte[KKIMProp.getkMegaGaugePacket6LengthInBytes()];
+	private byte[] gaugePacket5Buffer = new byte[KKIMProp.getkMegaGaugePacket5LengthInBytes()];
 	
 	public PacketAssembler(ControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
 		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.gaugePacket6Buffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.gaugePacket5Buffer, KKIMProp.getallPacketsNullByte());
 	}
 	
 	//Assembles the status of the KKIM Model into an OutputRefreshPacket
@@ -31,105 +35,105 @@ public class PacketAssembler {
 		}
 		
 		// (2) Populate Header:
-		/* Originator */		this.saveByteToOutputRefreshPacketBuffer(2, 1);
-		/* Packet Type */		this.saveByteToOutputRefreshPacketBuffer(2, 2);
-		/* Packet Length */		this.saveByteToOutputRefreshPacketBuffer((KKIMProp.getkMegaOutputRefreshPacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
-		/* Requested Mode */	this.saveByteToOutputRefreshPacketBuffer(0, 4);//TODO
-		/* Command */			this.saveByteToOutputRefreshPacketBuffer(0, 5);//TODO
-		/* Parity Byte */		this.saveByteToOutputRefreshPacketBuffer(0, 6);//TODO
-		/* Empty */				this.saveByteToOutputRefreshPacketBuffer(0, 7);
-		/* Empty */				this.saveByteToOutputRefreshPacketBuffer(0, 8);
-		/* Empty */				this.saveByteToOutputRefreshPacketBuffer(0, 9);
+		/* Originator */		this.saveByteToPacketBuffer(2, 1);
+		/* Packet Type */		this.saveByteToPacketBuffer(2, 2);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaOutputRefreshPacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
+		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
+		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
+		/* Empty */				this.saveByteToPacketBuffer(0, 7);
+		/* Empty */				this.saveByteToPacketBuffer(0, 8);
+		/* Empty */				this.saveByteToPacketBuffer(0, 9);
 		
 		// (3) Populate Payload:
 		//LEDs
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.ModuleABrakeLED.firstByte, OP.ModuleABrakeLED.lastByte, controlPanel.moduleA.brakeLED.getPWM());
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Red.firstByte, OP.StepperLED_Heat_Red.lastByte, controlPanel.moduleC.stepperLED_Heat.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Green.firstByte, OP.StepperLED_Heat_Green.lastByte, controlPanel.moduleC.stepperLED_Heat.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heat_Blue.firstByte, OP.StepperLED_Heat_Blue.lastByte, controlPanel.moduleC.stepperLED_Heat.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Red.firstByte, OP.StepperLED_LifeSupport_Red.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Green.firstByte, OP.StepperLED_LifeSupport_Green.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Blue.firstByte, OP.StepperLED_LifeSupport_Blue.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Red.firstByte, OP.StepperLED_GForce_Red.lastByte, controlPanel.moduleC.stepperLED_GForce.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Green.firstByte, OP.StepperLED_GForce_Green.lastByte, controlPanel.moduleC.stepperLED_GForce.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_GForce_Blue.firstByte, OP.StepperLED_GForce_Blue.lastByte, controlPanel.moduleC.stepperLED_GForce.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heat_Red.firstByte, OP.StepperLED_Heat_Red.lastByte, controlPanel.moduleC.stepperLED_Heat.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heat_Green.firstByte, OP.StepperLED_Heat_Green.lastByte, controlPanel.moduleC.stepperLED_Heat.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heat_Blue.firstByte, OP.StepperLED_Heat_Blue.lastByte, controlPanel.moduleC.stepperLED_Heat.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Red.firstByte, OP.StepperLED_LifeSupport_Red.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Green.firstByte, OP.StepperLED_LifeSupport_Green.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_LifeSupport_Blue.firstByte, OP.StepperLED_LifeSupport_Blue.lastByte, controlPanel.moduleC.stepperLED_LifeSupport.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_GForce_Red.firstByte, OP.StepperLED_GForce_Red.lastByte, controlPanel.moduleC.stepperLED_GForce.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_GForce_Green.firstByte, OP.StepperLED_GForce_Green.lastByte, controlPanel.moduleC.stepperLED_GForce.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_GForce_Blue.firstByte, OP.StepperLED_GForce_Blue.lastByte, controlPanel.moduleC.stepperLED_GForce.getBluPWMValue());
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoHoldLED.firstByte, OP.AutoHoldLED.lastByte, controlPanel.moduleD.autoHoldLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoProgradeLED.firstByte, OP.AutoProgradeLED.lastByte, controlPanel.moduleD.autoProgradeLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoRetrogradeLED.firstByte, OP.AutoRetrogradeLED.lastByte, controlPanel.moduleD.autoRetrogradeLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoNormalRedLED.firstByte, OP.AutoNormalRedLED.lastByte, controlPanel.moduleD.autoNormalRedLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoNormalBluLED.firstByte, OP.AutoNormalBluLED.lastByte, controlPanel.moduleD.autoNormalBluLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoAntiNormalRedLED.firstByte, OP.AutoAntiNormalRedLED.lastByte, controlPanel.moduleD.autoAntiNormalRedLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoAntiNormalBluLED.firstByte, OP.AutoAntiNormalBluLED.lastByte, controlPanel.moduleD.autoAntiNormalBluLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoRadialInGrnLED.firstByte, OP.AutoRadialInGrnLED.lastByte, controlPanel.moduleD.autoRadialInGrnLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoRadialInBluLED.firstByte, OP.AutoRadialInBluLED.lastByte, controlPanel.moduleD.autoRadialInBluLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoRadialOutGrnLED.firstByte, OP.AutoRadialOutGrnLED.lastByte, controlPanel.moduleD.autoRadialOutGrnLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoRadialOutBluLED.firstByte, OP.AutoRadialOutBluLED.lastByte, controlPanel.moduleD.autoRadialOutBluLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoTargetRedLED.firstByte, OP.AutoTargetRedLED.lastByte, controlPanel.moduleD.autoTargetRedLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoTargetBluLED.firstByte, OP.AutoTargetBluLED.lastByte, controlPanel.moduleD.autoTargetBluLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoAntiTargetRedLED.firstByte, OP.AutoAntiTargetRedLED.lastByte, controlPanel.moduleD.autoAntiTargetRedLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoAntiTargetBluLED.firstByte, OP.AutoAntiTargetBluLED.lastByte, controlPanel.moduleD.autoAntiTargetBluLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.AutoManeuverLED.firstByte, OP.AutoManeuverLED.lastByte, controlPanel.moduleD.autoManeuverLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.ModuleDBrakeLED.firstByte, OP.ModuleDBrakeLED.lastByte, controlPanel.moduleD.brakeLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoHoldLED.firstByte, OP.AutoHoldLED.lastByte, controlPanel.moduleD.autoHoldLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoProgradeLED.firstByte, OP.AutoProgradeLED.lastByte, controlPanel.moduleD.autoProgradeLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoRetrogradeLED.firstByte, OP.AutoRetrogradeLED.lastByte, controlPanel.moduleD.autoRetrogradeLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoNormalRedLED.firstByte, OP.AutoNormalRedLED.lastByte, controlPanel.moduleD.autoNormalRedLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoNormalBluLED.firstByte, OP.AutoNormalBluLED.lastByte, controlPanel.moduleD.autoNormalBluLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoAntiNormalRedLED.firstByte, OP.AutoAntiNormalRedLED.lastByte, controlPanel.moduleD.autoAntiNormalRedLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoAntiNormalBluLED.firstByte, OP.AutoAntiNormalBluLED.lastByte, controlPanel.moduleD.autoAntiNormalBluLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoRadialInGrnLED.firstByte, OP.AutoRadialInGrnLED.lastByte, controlPanel.moduleD.autoRadialInGrnLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoRadialInBluLED.firstByte, OP.AutoRadialInBluLED.lastByte, controlPanel.moduleD.autoRadialInBluLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoRadialOutGrnLED.firstByte, OP.AutoRadialOutGrnLED.lastByte, controlPanel.moduleD.autoRadialOutGrnLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoRadialOutBluLED.firstByte, OP.AutoRadialOutBluLED.lastByte, controlPanel.moduleD.autoRadialOutBluLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoTargetRedLED.firstByte, OP.AutoTargetRedLED.lastByte, controlPanel.moduleD.autoTargetRedLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoTargetBluLED.firstByte, OP.AutoTargetBluLED.lastByte, controlPanel.moduleD.autoTargetBluLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoAntiTargetRedLED.firstByte, OP.AutoAntiTargetRedLED.lastByte, controlPanel.moduleD.autoAntiTargetRedLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoAntiTargetBluLED.firstByte, OP.AutoAntiTargetBluLED.lastByte, controlPanel.moduleD.autoAntiTargetBluLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.AutoManeuverLED.firstByte, OP.AutoManeuverLED.lastByte, controlPanel.moduleD.autoManeuverLED.getPWM());
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.FairingLED.firstByte, OP.FairingLED.lastByte, controlPanel.moduleE.fairingLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.ParachuteLED.firstByte, OP.ParachuteLED.lastByte, controlPanel.moduleE.parachuteLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.SP3T_SpeedMode_ORB_LED.firstByte, OP.SP3T_SpeedMode_ORB_LED.lastByte, controlPanel.moduleE.sp3tSpeedModeSwitch.centerPositionLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.SP3T_VehicleMode_PLN_LED.firstByte, OP.SP3T_VehicleMode_PLN_LED.lastByte, controlPanel.moduleE.sp3tVehicleModeSwitch.centerPositionLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.SP3T_Pitch_30degLED.firstByte, OP.SP3T_Pitch_30degLED.lastByte, controlPanel.moduleE.sp3tPitchSwitch.centerPositionLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.FairingLED.firstByte, OP.FairingLED.lastByte, controlPanel.moduleE.fairingLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.ParachuteLED.firstByte, OP.ParachuteLED.lastByte, controlPanel.moduleE.parachuteLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.SP3T_SpeedMode_ORB_LED.firstByte, OP.SP3T_SpeedMode_ORB_LED.lastByte, controlPanel.moduleE.sp3tSpeedModeSwitch.centerPositionLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.SP3T_VehicleMode_PLN_LED.firstByte, OP.SP3T_VehicleMode_PLN_LED.lastByte, controlPanel.moduleE.sp3tVehicleModeSwitch.centerPositionLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.SP3T_Pitch_30degLED.firstByte, OP.SP3T_Pitch_30degLED.lastByte, controlPanel.moduleE.sp3tPitchSwitch.centerPositionLED.getPWM());
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Sensitivity100PercentLED.firstByte, OP.Sensitivity100PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity100PercentLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Sensitivity75PercentLED.firstByte, OP.Sensitivity75PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity75PercentLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Sensitivity50PercentLED.firstByte, OP.Sensitivity50PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity50PercentLED.getPWM());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Sensitivity25PercentLED.firstByte, OP.Sensitivity25PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity25PercentLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Sensitivity100PercentLED.firstByte, OP.Sensitivity100PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity100PercentLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Sensitivity75PercentLED.firstByte, OP.Sensitivity75PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity75PercentLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Sensitivity50PercentLED.firstByte, OP.Sensitivity50PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity50PercentLED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Sensitivity25PercentLED.firstByte, OP.Sensitivity25PercentLED.lastByte, controlPanel.moduleF.sensitivitySwitch.sensitivity25PercentLED.getPWM());
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Red.firstByte, OP.StepperLED_Mach_Red.lastByte, controlPanel.moduleG.stepperLED_Mach.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Green.firstByte, OP.StepperLED_Mach_Green.lastByte, controlPanel.moduleG.stepperLED_Mach.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Mach_Blue.firstByte, OP.StepperLED_Mach_Blue.lastByte, controlPanel.moduleG.stepperLED_Mach.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Red.firstByte, OP.StepperLED_Pitch_Red.lastByte, controlPanel.moduleG.stepperLED_Pitch.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Green.firstByte, OP.StepperLED_Pitch_Green.lastByte, controlPanel.moduleG.stepperLED_Pitch.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Blue.firstByte, OP.StepperLED_Pitch_Blue.lastByte, controlPanel.moduleG.stepperLED_Pitch.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Red.firstByte, OP.StepperLED_Heading_Red.lastByte, controlPanel.moduleG.stepperLED_Heading.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Green.firstByte, OP.StepperLED_Heading_Green.lastByte, controlPanel.moduleG.stepperLED_Heading.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Heading_Blue.firstByte, OP.StepperLED_Heading_Blue.lastByte, controlPanel.moduleG.stepperLED_Heading.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Mach_Red.firstByte, OP.StepperLED_Mach_Red.lastByte, controlPanel.moduleG.stepperLED_Mach.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Mach_Green.firstByte, OP.StepperLED_Mach_Green.lastByte, controlPanel.moduleG.stepperLED_Mach.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Mach_Blue.firstByte, OP.StepperLED_Mach_Blue.lastByte, controlPanel.moduleG.stepperLED_Mach.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Red.firstByte, OP.StepperLED_Pitch_Red.lastByte, controlPanel.moduleG.stepperLED_Pitch.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Green.firstByte, OP.StepperLED_Pitch_Green.lastByte, controlPanel.moduleG.stepperLED_Pitch.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Pitch_Blue.firstByte, OP.StepperLED_Pitch_Blue.lastByte, controlPanel.moduleG.stepperLED_Pitch.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heading_Red.firstByte, OP.StepperLED_Heading_Red.lastByte, controlPanel.moduleG.stepperLED_Heading.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heading_Green.firstByte, OP.StepperLED_Heading_Green.lastByte, controlPanel.moduleG.stepperLED_Heading.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heading_Blue.firstByte, OP.StepperLED_Heading_Blue.lastByte, controlPanel.moduleG.stepperLED_Heading.getBluPWMValue());
 		//Note: Communications LED intentionally not sent. KMega directly controls it.
 		
 		//TODO Add remaining LEDs: Module H
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Red.firstByte, OP.StepperLED_Fuel_Red.lastByte, controlPanel.moduleI.stepperLED_Fuel.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Blue.firstByte, OP.StepperLED_Fuel_Blue.lastByte, controlPanel.moduleI.stepperLED_Fuel.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.DeltaChargeLED_Red.firstByte, OP.DeltaChargeLED_Red.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.DeltaChargeLED_Green.firstByte, OP.DeltaChargeLED_Green.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.DeltaChargeLED_Blue.firstByte, OP.DeltaChargeLED_Blue.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Charge_Red.firstByte, OP.StepperLED_Charge_Red.lastByte, controlPanel.moduleI.stepperLED_Charge.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Charge_Green.firstByte, OP.StepperLED_Charge_Green.lastByte, controlPanel.moduleI.stepperLED_Charge.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Charge_Blue.firstByte, OP.StepperLED_Charge_Blue.lastByte, controlPanel.moduleI.stepperLED_Charge.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Red.firstByte, OP.StepperLED_Monopropellant_Red.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Green.firstByte, OP.StepperLED_Monopropellant_Green.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Blue.firstByte, OP.StepperLED_Monopropellant_Blue.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Red.firstByte, OP.StepperLED_IntakeAir_Red.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Green.firstByte, OP.StepperLED_IntakeAir_Green.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Blue.firstByte, OP.StepperLED_IntakeAir_Blue.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Red.firstByte, OP.StepperLED_Fuel_Red.lastByte, controlPanel.moduleI.stepperLED_Fuel.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Blue.firstByte, OP.StepperLED_Fuel_Blue.lastByte, controlPanel.moduleI.stepperLED_Fuel.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.DeltaChargeLED_Red.firstByte, OP.DeltaChargeLED_Red.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.DeltaChargeLED_Green.firstByte, OP.DeltaChargeLED_Green.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.DeltaChargeLED_Blue.firstByte, OP.DeltaChargeLED_Blue.lastByte, controlPanel.moduleI.stepperLED_deltaCharge.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Charge_Red.firstByte, OP.StepperLED_Charge_Red.lastByte, controlPanel.moduleI.stepperLED_Charge.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Charge_Green.firstByte, OP.StepperLED_Charge_Green.lastByte, controlPanel.moduleI.stepperLED_Charge.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Charge_Blue.firstByte, OP.StepperLED_Charge_Blue.lastByte, controlPanel.moduleI.stepperLED_Charge.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Red.firstByte, OP.StepperLED_Monopropellant_Red.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Green.firstByte, OP.StepperLED_Monopropellant_Green.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Monopropellant_Blue.firstByte, OP.StepperLED_Monopropellant_Blue.lastByte, controlPanel.moduleI.stepperLED_Monopropellant.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Red.firstByte, OP.StepperLED_IntakeAir_Red.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Green.firstByte, OP.StepperLED_IntakeAir_Green.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_IntakeAir_Blue.firstByte, OP.StepperLED_IntakeAir_Blue.lastByte, controlPanel.moduleI.stepperLED_IntakeAir.getBluPWMValue());
 		
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_AirDensity_Red.firstByte, OP.StepperLED_AirDensity_Red.lastByte, controlPanel.moduleGT.stepperLED_AirDensity.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_AirDensity_Green.firstByte, OP.StepperLED_AirDensity_Green.lastByte, controlPanel.moduleGT.stepperLED_AirDensity.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_AirDensity_Blue.firstByte, OP.StepperLED_AirDensity_Blue.lastByte, controlPanel.moduleGT.stepperLED_AirDensity.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Speed_Red.firstByte, OP.StepperLED_Speed_Red.lastByte, controlPanel.moduleGT.stepperLED_Speed.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Speed_Green.firstByte, OP.StepperLED_Speed_Green.lastByte, controlPanel.moduleGT.stepperLED_Speed.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_Speed_Blue.firstByte, OP.StepperLED_Speed_Blue.lastByte, controlPanel.moduleGT.stepperLED_Speed.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_VerticalSpeed_Red.firstByte, OP.StepperLED_VerticalSpeed_Red.lastByte, controlPanel.moduleGT.stepperLED_VerticalSpeed.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_VerticalSpeed_Green.firstByte, OP.StepperLED_VerticalSpeed_Green.lastByte, controlPanel.moduleGT.stepperLED_VerticalSpeed.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_VerticalSpeed_Blue.firstByte, OP.StepperLED_VerticalSpeed_Blue.lastByte, controlPanel.moduleGT.stepperLED_VerticalSpeed.getBluPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_RadarAltitude_Red.firstByte, OP.StepperLED_RadarAltitude_Red.lastByte, controlPanel.moduleGT.stepperLED_RadarAltitude.getRedPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_RadarAltitude_Green.firstByte, OP.StepperLED_RadarAltitude_Green.lastByte, controlPanel.moduleGT.stepperLED_RadarAltitude.getGrnPWMValue());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.StepperLED_RadarAltitude_Blue.firstByte, OP.StepperLED_RadarAltitude_Blue.lastByte, controlPanel.moduleGT.stepperLED_RadarAltitude.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_AirDensity_Red.firstByte, OP.StepperLED_AirDensity_Red.lastByte, controlPanel.moduleGT.stepperLED_AirDensity.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_AirDensity_Green.firstByte, OP.StepperLED_AirDensity_Green.lastByte, controlPanel.moduleGT.stepperLED_AirDensity.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_AirDensity_Blue.firstByte, OP.StepperLED_AirDensity_Blue.lastByte, controlPanel.moduleGT.stepperLED_AirDensity.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Speed_Red.firstByte, OP.StepperLED_Speed_Red.lastByte, controlPanel.moduleGT.stepperLED_Speed.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Speed_Green.firstByte, OP.StepperLED_Speed_Green.lastByte, controlPanel.moduleGT.stepperLED_Speed.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Speed_Blue.firstByte, OP.StepperLED_Speed_Blue.lastByte, controlPanel.moduleGT.stepperLED_Speed.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_VerticalSpeed_Red.firstByte, OP.StepperLED_VerticalSpeed_Red.lastByte, controlPanel.moduleGT.stepperLED_VerticalSpeed.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_VerticalSpeed_Green.firstByte, OP.StepperLED_VerticalSpeed_Green.lastByte, controlPanel.moduleGT.stepperLED_VerticalSpeed.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_VerticalSpeed_Blue.firstByte, OP.StepperLED_VerticalSpeed_Blue.lastByte, controlPanel.moduleGT.stepperLED_VerticalSpeed.getBluPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_RadarAltitude_Red.firstByte, OP.StepperLED_RadarAltitude_Red.lastByte, controlPanel.moduleGT.stepperLED_RadarAltitude.getRedPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_RadarAltitude_Green.firstByte, OP.StepperLED_RadarAltitude_Green.lastByte, controlPanel.moduleGT.stepperLED_RadarAltitude.getGrnPWMValue());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_RadarAltitude_Blue.firstByte, OP.StepperLED_RadarAltitude_Blue.lastByte, controlPanel.moduleGT.stepperLED_RadarAltitude.getBluPWMValue());
 		
 		//TODO: EnableSteppers
 		//Stepper Motors
 		//this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
-		this.saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(OP.Stepper_Fuel.firstByte, OP.Stepper_Fuel.lastByte, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Fuel.firstByte, OP.Stepper_Fuel.lastByte, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
 		
 		//Altitude
 		this.saveFloatToOutputRefreshPacketBufferAtByteNumbers(OP.Altitude.firstByte, OP.Altitude.lastByte, controlPanel.altitudeToDisplay);
@@ -137,6 +141,37 @@ public class PacketAssembler {
 		//this.displayOutputRefreshPacketBufferInDecimal();
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
 	}
+
+	public byte[] assembleGaugePacket6() {
+        
+		Arrays.fill(this.gaugePacket6Buffer, KKIMProp.getallPacketsNullByte());
+		
+		// (1) Populate Delimiter:
+		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
+			this.gaugePacket6Buffer[i] = KKIMProp.getallPacketsDelimiterByte();
+		}
+		
+		// (2) Populate Header:
+		/* Originator */		this.saveByteToPacketBuffer(2, 1);
+		/* Packet Type */		this.saveByteToPacketBuffer(6, 2);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacket6LengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
+		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
+		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
+		/* Empty */				this.saveByteToPacketBuffer(0, 7);
+		/* Empty */				this.saveByteToPacketBuffer(0, 8);
+		/* Empty */				this.saveByteToPacketBuffer(0, 9);
+		
+		// (3) Populate Payload:
+		//this.saveTwoByteIntToPacketBufferAtByteNumbers(10, 11, controlPanel.moduleC.stepper_); HEAT/LIFE
+		//this.saveTwoByteIntToPacketBufferAtByteNumbers(12, 13, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
+		//this.saveTwoByteIntToPacketBufferAtByteNumbers(14, 15, controlPanel.moduleG.stepper_); MACH
+		//this.saveTwoByteIntToPacketBufferAtByteNumbers(16, 17, controlPanel.moduleG.stepper_); PITCH
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(18, 19, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
+		//this.saveTwoByteIntToPacketBufferAtByteNumbers(20, 21, controlPanel.moduleI.stepper_); CHARGE
+
+		return this.gaugePacket6Buffer;//TODO return copy instead of original
+    }
 	
 	@SuppressWarnings("unused")
 	private void displayOutputRefreshPacketBufferInDecimal() {
@@ -144,14 +179,29 @@ public class PacketAssembler {
 		System.out.println(Arrays.toString(this.outputRefreshPacketBuffer));
 	}
 	
-	//Saves theByte to the specified byteNumber in the outputRefreshPacketBuffer. See "ICD" in OneNote.
-	private void saveByteToOutputRefreshPacketBuffer(int theByte, int byteNumber) {
-		this.outputRefreshPacketBuffer[byteNumber - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes()] = (byte) theByte;
+	/** Saves theByte to the specified byteNumber in the relevant packet. See "ICD" in OneNote.
+	 * @param theByte number from 0-255
+	 * @param byteNumber 1-indexed position in Header or Payload
+	 */
+	private void saveByteToPacketBuffer(int theByte, int byteNumber) {
+		
+		int position = byteNumber - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
+		
+		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+			this.outputRefreshPacketBuffer[position] = (byte) theByte;
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
+			this.gaugePacket6Buffer[position] = (byte) theByte;
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+			this.gaugePacket5Buffer[position] = (byte) theByte;
+		} else {
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+		}
 	}
 	
-	//Saves number value at the specified byte numbers (see ICD).
-	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
-	private void saveTwoByteIntToOutputRefreshPacketBufferAtByteNumbers(int byteNum1, int byteNum2, int twoByteInteger) {
+	/** Saves number value at the specified byte numbers (see ICD) to the relevant packet.
+	 * byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	 */
+	private void saveTwoByteIntToPacketBufferAtByteNumbers(int byteNum1, int byteNum2, int twoByteInteger) {
 		
 		int largeByteNum = 0;
 		int smallByteNum = 0;
@@ -164,8 +214,18 @@ public class PacketAssembler {
 			smallByteNum = byteNum1 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
 		}
 		
-		this.outputRefreshPacketBuffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
-		this.outputRefreshPacketBuffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
+		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+			this.outputRefreshPacketBuffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
+			this.outputRefreshPacketBuffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
+			this.gaugePacket6Buffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
+			this.gaugePacket6Buffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+			this.gaugePacket5Buffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
+			this.gaugePacket5Buffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
+		} else {
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+		}
 	}
 	
 	//Saves float at the specified byte numbers (see ICD).
@@ -190,20 +250,3 @@ public class PacketAssembler {
 		this.outputRefreshPacketBuffer[largeByteNum]   = (byte) (intBits);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

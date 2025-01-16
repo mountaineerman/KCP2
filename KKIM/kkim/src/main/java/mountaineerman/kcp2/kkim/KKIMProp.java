@@ -14,7 +14,10 @@ public class KKIMProp {
 	private static int allPacketsNumberOfDelimiterBytes = 0;
 	private static int allPacketsHeaderLengthInBytes = 0;
 	private static int kMegaOutputRefreshPacketLengthInBytes = 0;
-	private static int kMegaOutputRefreshPacketSendRateInMilliseconds = 0;
+	private static int kMegaGaugePacket6LengthInBytes = 0;
+	private static int kMegaGaugePacket5LengthInBytes = 0;
+	private static int kMegaAllPacketsSendRateInMilliseconds = 0;
+	private static String kMegaSendPacketType = "";
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
 	private static int kMegaInputRefreshPacketReadRateInMilliseconds = 0;
 	private static int kmegaMinPWM = 0;
@@ -43,7 +46,11 @@ public class KKIMProp {
 		allPacketsNumberOfDelimiterBytes = Integer.valueOf(properties.getProperty("allPackets.numberOfDelimiterBytes"));
 		allPacketsHeaderLengthInBytes = Integer.valueOf(properties.getProperty("allPackets.headerLengthInBytes"));
 		kMegaOutputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.lengthInBytes"));
-		kMegaOutputRefreshPacketSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.sendRateInMilliseconds"));
+		kMegaGaugePacket6LengthInBytes = Integer.valueOf(properties.getProperty("kmega.gaugePacket6.lengthInBytes"));
+		kMegaGaugePacket5LengthInBytes = Integer.valueOf(properties.getProperty("kmega.gaugePacket5.lengthInBytes"));
+		kMegaAllPacketsSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.allPackets.sendRateInMilliseconds"));
+		kMegaAllPacketsSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.allPackets.sendRateInMilliseconds"));
+		kMegaSendPacketType = String.valueOf(properties.getProperty("kmega.sendPacketType"));
 		kMegaInputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.lengthInBytes"));
 		kMegaInputRefreshPacketReadRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.inputRefreshPacket.readRateInMilliseconds"));
 		kmegaMinPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.minPWM"));
@@ -104,11 +111,23 @@ public class KKIMProp {
 	public static int getkMegaOutputRefreshPacketLengthInBytes() {
 		return kMegaOutputRefreshPacketLengthInBytes;
 	}
-	
-	public static int getkMegaOutputRefreshPacketSendRateInMilliseconds() {
-		return kMegaOutputRefreshPacketSendRateInMilliseconds;
+
+	public static int getkMegaGaugePacket6LengthInBytes() {
+		return kMegaGaugePacket6LengthInBytes;
+	}
+
+	public static int getkMegaGaugePacket5LengthInBytes() {
+		return kMegaGaugePacket5LengthInBytes;
 	}
 	
+	public static int getkMegaAllPacketsSendRateInMilliseconds() {
+		return kMegaAllPacketsSendRateInMilliseconds;
+	}
+	
+	public static String getkMegaSendPacketType() {
+		return kMegaSendPacketType;
+	}
+
 	public static int getkMegaInputRefreshPacketLengthInBytes() {
 		return kMegaInputRefreshPacketLengthInBytes;
 	}
