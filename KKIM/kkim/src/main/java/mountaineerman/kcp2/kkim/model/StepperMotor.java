@@ -12,10 +12,10 @@ import mountaineerman.kcp2.kkim.CommonUtilities;
  *    -Driver: https://www.tindie.com/products/propwashsim/vid6606-sti6606-4x-stepper-driver-board-kit/ */
 public class StepperMotor extends Part {
 
+	//TODO: Move to configs
 	private static int STEPPER_CCW_LIMIT = 0;
 	private static int STEPPER_CW_LIMIT = 3779;
 	private static int NUMBER_OF_NEEDLE_POSITIONS = 1000;
-	//TODO: EnableSteppers - Move to configs
 
 	private int calibrationCCWLimit;
 	private int calibrationCWLimit;
@@ -43,7 +43,7 @@ public class StepperMotor extends Part {
 		this.desiredPosition = 0;
 	}
 
-	// /* //TODO: EnableSteppers - Decide if necessary, or if only float version is useful.
+	// /* //Decide if necessary, or if only float version is useful.
 	//  * Sets the desired position of the stepper motor, based on:
 	//  * 		a) valueInRange, and the limits of the associated range
 	//  * 		b) The calibration limits of the gauge, calibrationCCWLimit and calibrationCWLimit, which are pulled from OP.java during instantiation.

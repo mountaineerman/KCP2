@@ -58,6 +58,14 @@ Symptoms:
 Fix:
 Check USB cable connecting KMega to computer is plugged in and in "ON" position.
 
+Symptoms:
+1. When trying to program the Arduino board, get errors: "stk500v2_ReceiveMessage(): timeout"
+2. Inspecting Arduino IDE > Tools > Port shows "COM3 (Arduino Mega or Mega 2560)".
+Cause:
+The code is caught in a tight loop, which is preventing the bootloader from connecting.
+Fix:
+Select the "Upload" button. Right before bootloader gets to orange text, hit the RST (reset) mom switch.
+
 Symptoms: (Delete after settingsFilename absolute path is replaced with relative path)
 Changes to config.properties are not being seen by the system
 Fix:

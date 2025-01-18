@@ -33,19 +33,10 @@ bool ControlPanel::runStepperIfNecessary() {
 	// isAMotorStillInMotion = this->moduleGT.stepper_VertSpeed.runStepperIfNecessary() || isAMotorStillInMotion;
 	// isAMotorStillInMotion = this->moduleGT.stepper_RadarAlt.runStepperIfNecessary() || isAMotorStillInMotion;
 
-	// [GaugePacket6] TODO remove
-	// isAMotorStillInMotion = this->moduleC.stepper_HeatLife.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->moduleC.stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->moduleG.stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->moduleG.stepper_Pitch.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->moduleI.stepper_Fuel.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->moduleI.stepper_Charge.runStepperIfNecessary() || isAMotorStillInMotion;
-
 	return isAMotorStillInMotion;
 }
 
 void ControlPanel::blockRunAllGearedSteppersToPosition(int position, unsigned long stepTimeInMicroseconds) {
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
 
 	// [GaugePacketA]
 	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
@@ -60,14 +51,6 @@ void ControlPanel::blockRunAllGearedSteppersToPosition(int position, unsigned lo
 	// this->moduleGT.stepper_Speed.setDesiredPosition(position);
 	// this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
 	// this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
-
-	// [GaugePacket6] TODO remove
-	// this->moduleC.stepper_HeatLife.setDesiredPosition(position);
-	// this->moduleC.stepper_Gforce.setDesiredPosition(position);
-	// this->moduleG.stepper_Mach.setDesiredPosition(position);
-	// this->moduleG.stepper_Pitch.setDesiredPosition(position);
-	// this->moduleI.stepper_Fuel.setDesiredPosition(position);
-	// this->moduleI.stepper_Charge.setDesiredPosition(position);
 	
 	unsigned long startTime = 0;
 	unsigned long currentTime = 0;

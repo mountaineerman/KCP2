@@ -98,7 +98,6 @@ void ControlPanel::testLEDsSequentially() {
 
 bool ControlPanel::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
 	isAMotorStillInMotion = this->moduleC.stepper_HeatLife.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleC.stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleG.stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;

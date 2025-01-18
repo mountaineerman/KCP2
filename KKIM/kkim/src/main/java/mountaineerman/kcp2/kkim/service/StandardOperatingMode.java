@@ -83,9 +83,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 				}
 			}
 		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
 			kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
 			kkimService.controlPanel.refresh();
 		} else {
@@ -105,10 +103,6 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 				packet = kkimService.packetAssembler.assembleGaugePacketA();
 			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
 				packet = kkimService.packetAssembler.assembleGaugePacketB();
-			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
-				packet = kkimService.packetAssembler.assembleGaugePacket6();
-			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
-				//FIXME
 			} else {
 				throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 			}

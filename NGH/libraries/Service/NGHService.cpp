@@ -14,35 +14,19 @@ NGHService::NGHService()
 	this->gaugePacketLastReceiveTimeInMilliseconds = millis();
 	this->gaugesHaveBeenSetCCW = false;
 	this->startupMode();
-	//FIXME
-	// while (true) {
-	// 	this->standardOperatingMode();
-	// }
+	
+	while (true) {
+		this->standardOperatingMode();
+	}
 }
 
 void NGHService::startupMode() {
 
-	//FIXME
-	// this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CW_LIMIT, 500);
-	this->controlPanel.blockRunAllGearedSteppersToPosition(100, 500);
+	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CW_LIMIT, 500);
 	delay(200);
 	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
-	//FIXME
-	//this->serialCommunicator.establishKMegaSerialLink();
-	// FIXME
-	// this->controlPanel.moduleG.stepper_Heading.runStepperIfNecessary();
-	delay(5000);
-	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(798);
-	this->controlPanel.moduleG.stepper_Heading.runToDesiredPosition();
-	delay(5000);
-	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
-	this->controlPanel.moduleG.stepper_Heading.runToDesiredPosition();
-	delay(5000);
-	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(802);
-	this->controlPanel.moduleG.stepper_Heading.runToDesiredPosition();
-	delay(5000);
-	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
-	this->controlPanel.moduleG.stepper_Heading.runToDesiredPosition();
+	
+	this->serialCommunicator.establishKMegaSerialLink();
 }
 
 void NGHService::standardOperatingMode() {
@@ -62,7 +46,7 @@ void NGHService::standardOperatingMode() {
 			this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CCW_LIMIT);
 			this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CCW_LIMIT);
 			this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(STEPPER_CCW_LIMIT);
-			this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(STEPPER_CCW_LIMIT);
+			this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(NEMA17_STEPPER_MIN_POSITION);
 			this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(STEPPER_CCW_LIMIT);
 			this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(STEPPER_CCW_LIMIT);
 			// [GaugePacketB]

@@ -31,8 +31,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	//TODO WRAP IN KSP class:
 	//TODO double-check variable types in kRPC...
 	
-	//TODO: EnableSteppers //TODO change comments below to Javadoc format like percentTemperatureHealth
-	//TODO: EnableSteppers //TODO convert int percentages to float like percentFuel
+	//TODO change comments below to Javadoc format like percentTemperatureHealth
+	//TODO convert int percentages to float like percentFuel
 	
 	/** Health of the hottest part on the vessel. Range: 0 to 100. 0=bad, 100=good. */
 	public int percentTemperatureHealth = 0;
@@ -131,13 +131,11 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
-		//FIXME temporarily disabled while testing gaugePackets
-		// if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
-		// 	throttleLever = (float) 0;
-		// } else {
-		// 	throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
-		// }
-		throttleLever = 1;
+		if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
+			throttleLever = (float) 0;
+		} else {
+			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
+		}
 
 		//Module B (+F) =======================================================
 		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_FwdBck.maxRescaleLim;
@@ -440,7 +438,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.percentElectricCharge = -1;
 		}
 		//System.out.println("percentElectricCharge: " + this.percentElectricCharge);
-		//this.moduleI.stepper_Charge.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
+		this.moduleI.stepper_Charge.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
 		if (this.currentElectricCharge > this.previousElectricCharge) {
@@ -475,7 +473,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		// 	TODO percentIntakeAir:DIM
 		// 	this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
 		// }
-		System.out.println("percentMonopropellant: " + this.percentMonopropellant);
+		//System.out.println("percentMonopropellant: " + this.percentMonopropellant);
 		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(this.percentMonopropellant, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
 		
@@ -571,7 +569,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 	}
 	
-	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, int percentage) { //TODO REMOVE (see below) //TODO: EnableSteppers
+	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, int percentage) { //TODO REMOVE (see below)
 		if (brightness == LED_RGB_Brightness.BRIGHT) {
 			if (percentage > 99) {
 				led.setMode(LED_RGB_Mode.BLUE);
