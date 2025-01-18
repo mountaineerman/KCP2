@@ -131,7 +131,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
 		
-		//FIXME temporarily disabled while testing gaugePacket6
+		//FIXME temporarily disabled while testing gaugePackets
 		// if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
 		// 	throttleLever = (float) 0;
 		// } else {
@@ -405,7 +405,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		// ----- Heading ----------------------
-		//TODO: EnableSteppers - Heading
+		System.out.println("heading: " + this.heading);
+		this.moduleG.stepper_Heading.setDesiredPosition(this.heading, (float) 0, (float) 360);
 		if ( (this.heading < 45.0) || (this.heading > 315.0) ) { //North quadrant
 			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_BLUE);
 		} else if (this.heading > 225.0) { //West quadrant
@@ -438,8 +439,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.percentElectricCharge = -1;
 		}
-		System.out.println("percentElectricCharge: " + this.percentElectricCharge);
-		this.moduleI.stepper_Charge.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
+		//System.out.println("percentElectricCharge: " + this.percentElectricCharge);
+		//this.moduleI.stepper_Charge.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
 		if (this.currentElectricCharge > this.previousElectricCharge) {

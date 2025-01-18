@@ -204,10 +204,11 @@ public class SerialCommunicator {
 			} else {
 				this.numberOfOutputRefreshPacketsNotSent++;
 			}
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
-			this.serialPort.writeBytes(packet, KKIMProp.getkMegaGaugePacket6LengthInBytes());
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
-			this.serialPort.writeBytes(packet, KKIMProp.getkMegaGaugePacket5LengthInBytes());
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) { 
+			this.serialPort.writeBytes(packet, KKIMProp.getkMegaGaugePacketLengthInBytes());
 		} else {
 			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}

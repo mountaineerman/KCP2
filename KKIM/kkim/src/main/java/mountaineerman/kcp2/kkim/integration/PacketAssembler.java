@@ -14,14 +14,12 @@ public class PacketAssembler {
 
 	private ControlPanel controlPanel;
 	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()];
-	private byte[] gaugePacket6Buffer = new byte[KKIMProp.getkMegaGaugePacket6LengthInBytes()];
-	private byte[] gaugePacket5Buffer = new byte[KKIMProp.getkMegaGaugePacket5LengthInBytes()];
+	private byte[] gaugePacketBuffer = new byte[KKIMProp.getkMegaGaugePacketLengthInBytes()];
 	
 	public PacketAssembler(ControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
 		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
-		Arrays.fill(this.gaugePacket6Buffer, KKIMProp.getallPacketsNullByte());
-		Arrays.fill(this.gaugePacket5Buffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
 	}
 	
 	//Assembles the status of the KKIM Model into an OutputRefreshPacket
@@ -136,6 +134,7 @@ public class PacketAssembler {
 		// this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Gforce.firstByte, OP.Stepper_Gforce.lastByte, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
 		// this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Mach.firstByte, OP.Stepper_Mach.lastByte, controlPanel.moduleG.stepper_Mach.getDesiredPosition());
 		// this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Pitch.firstByte, OP.Stepper_Pitch.lastByte, controlPanel.moduleG.stepper_Pitch.getDesiredPosition());
+		// this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Heading.firstByte, OP.Stepper_Heading.lastByte, controlPanel.moduleG.stepper_Heading.getDesiredPosition());
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Fuel.firstByte, OP.Stepper_Fuel.lastByte, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
 		// this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_Charge.firstByte, OP.Stepper_Charge.lastByte, controlPanel.moduleI.stepper_Charge.getDesiredPosition());
 		
@@ -146,19 +145,19 @@ public class PacketAssembler {
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
 	}
 
-	public byte[] assembleGaugePacket6() {
+	public byte[] assembleGaugePacket6() {//TODO Remove
         
-		Arrays.fill(this.gaugePacket6Buffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
 		
 		// (1) Populate Delimiter:
 		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
-			this.gaugePacket6Buffer[i] = KKIMProp.getallPacketsDelimiterByte();
+			this.gaugePacketBuffer[i] = KKIMProp.getallPacketsDelimiterByte();
 		}
 		
 		// (2) Populate Header:
 		/* Originator */		this.saveByteToPacketBuffer(2, 1);
 		/* Packet Type */		this.saveByteToPacketBuffer(6, 2);
-		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacket6LengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
 		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
 		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
 		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
@@ -174,9 +173,71 @@ public class PacketAssembler {
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(18, 19, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(20, 21, controlPanel.moduleI.stepper_Charge.getDesiredPosition());
 
-		return this.gaugePacket6Buffer;//TODO return copy instead of original
+		return this.gaugePacketBuffer;//TODO return copy instead of original
     }
 	
+	public byte[] assembleGaugePacketA() {
+        
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
+		
+		// (1) Populate Delimiter:
+		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
+			this.gaugePacketBuffer[i] = KKIMProp.getallPacketsDelimiterByte();
+		}
+		
+		// (2) Populate Header:
+		/* Originator */		this.saveByteToPacketBuffer(2, 1);
+		/* Packet Type */		this.saveByteToPacketBuffer(6, 2);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
+		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
+		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
+		/* Empty */				this.saveByteToPacketBuffer(0, 7);
+		/* Empty */				this.saveByteToPacketBuffer(0, 8);
+		/* Empty */				this.saveByteToPacketBuffer(0, 9);
+		
+		// (3) Populate Payload:
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(10, 11, controlPanel.moduleC.stepper_HeatLife.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(12, 13, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(14, 15, controlPanel.moduleG.stepper_Mach.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(16, 17, controlPanel.moduleG.stepper_Pitch.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(18, 19, controlPanel.moduleG.stepper_Heading.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(20, 21, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
+
+		return this.gaugePacketBuffer;
+    }
+
+	public byte[] assembleGaugePacketB() {
+        
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
+		
+		// (1) Populate Delimiter:
+		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
+			this.gaugePacketBuffer[i] = KKIMProp.getallPacketsDelimiterByte();
+		}
+		
+		// (2) Populate Header:
+		/* Originator */		this.saveByteToPacketBuffer(2, 1);
+		/* Packet Type */		this.saveByteToPacketBuffer(6, 2);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
+		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
+		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
+		/* Empty */				this.saveByteToPacketBuffer(0, 7);
+		/* Empty */				this.saveByteToPacketBuffer(0, 8);
+		/* Empty */				this.saveByteToPacketBuffer(0, 9);
+		
+		// (3) Populate Payload:
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(10, 11, controlPanel.moduleI.stepper_Charge.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(12, 13, controlPanel.moduleI.stepper_MonopropellantIntake.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(14, 15, controlPanel.moduleGT.stepper_AirDensity.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(16, 17, controlPanel.moduleGT.stepper_Speed.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(18, 19, controlPanel.moduleGT.stepper_VerticalSpeed.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(20, 21, controlPanel.moduleGT.stepper_RadarAltitude.getDesiredPosition());
+
+		return this.gaugePacketBuffer;
+    }
+
 	@SuppressWarnings("unused")
 	private void displayOutputRefreshPacketBufferInDecimal() {
 		System.out.println("PacketAssembler: Displaying outputRefreshPacketBuffer in decimal format:");
@@ -193,10 +254,11 @@ public class PacketAssembler {
 		
 		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
 			this.outputRefreshPacketBuffer[position] = (byte) theByte;
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
-			this.gaugePacket6Buffer[position] = (byte) theByte;
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
-			this.gaugePacket5Buffer[position] = (byte) theByte;
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+			this.gaugePacketBuffer[position] = (byte) theByte;
 		} else {
 			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}
@@ -221,12 +283,12 @@ public class PacketAssembler {
 		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
 			this.outputRefreshPacketBuffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
 			this.outputRefreshPacketBuffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ) {
-			this.gaugePacket6Buffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
-			this.gaugePacket6Buffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
-			this.gaugePacket5Buffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
-			this.gaugePacket5Buffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+			this.gaugePacketBuffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
+			this.gaugePacketBuffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
 		} else {
 			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}

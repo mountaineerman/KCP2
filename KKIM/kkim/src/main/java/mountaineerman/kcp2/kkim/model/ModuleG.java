@@ -8,7 +8,7 @@ public class ModuleG implements LEDAggregator, StepperMotorAggregator {
 	public SwitchSP2T heatLifeSwitch = null;
 	public StepperMotor stepper_Mach = null;
 	public StepperMotor stepper_Pitch = null;
-	//TODO Heading
+	public NEMA17Stepper stepper_Heading = null;
 	public LED_PWM_RGB stepperLED_Mach = null;
 	public LED_PWM_RGB stepperLED_Pitch = null;
 	public LED_PWM_RGB stepperLED_Heading = null;
@@ -19,6 +19,7 @@ public class ModuleG implements LEDAggregator, StepperMotorAggregator {
 		
 		this.stepper_Mach = new StepperMotor(OP.Stepper_Mach);
 		this.stepper_Pitch = new StepperMotor(OP.Stepper_Pitch);
+		this.stepper_Heading = new NEMA17Stepper(OP.Stepper_Heading);
 
 		this.stepperLED_Mach = 
 				new LED_PWM_RGB(OP.StepperRGBLED_Mach,
@@ -54,6 +55,7 @@ public class ModuleG implements LEDAggregator, StepperMotorAggregator {
 		return  this.heatLifeSwitch.toString() +
 				this.stepper_Mach.toString() +
 				this.stepper_Pitch.toString() +
+				this.stepper_Heading.toString() +
 				this.stepperLED_Mach.toString() +
 				this.stepperLED_Pitch.toString() +
 				this.stepperLED_Heading.toString();

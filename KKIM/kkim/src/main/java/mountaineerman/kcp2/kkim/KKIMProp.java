@@ -14,8 +14,7 @@ public class KKIMProp {
 	private static int allPacketsNumberOfDelimiterBytes = 0;
 	private static int allPacketsHeaderLengthInBytes = 0;
 	private static int kMegaOutputRefreshPacketLengthInBytes = 0;
-	private static int kMegaGaugePacket6LengthInBytes = 0;
-	private static int kMegaGaugePacket5LengthInBytes = 0;
+	private static int kMegaGaugePacketLengthInBytes = 0;
 	private static int kMegaAllPacketsSendRateInMilliseconds = 0;
 	private static String kMegaSendPacketType = "";
 	private static int kMegaInputRefreshPacketLengthInBytes = 0;
@@ -46,8 +45,7 @@ public class KKIMProp {
 		allPacketsNumberOfDelimiterBytes = Integer.valueOf(properties.getProperty("allPackets.numberOfDelimiterBytes"));
 		allPacketsHeaderLengthInBytes = Integer.valueOf(properties.getProperty("allPackets.headerLengthInBytes"));
 		kMegaOutputRefreshPacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.outputRefreshPacket.lengthInBytes"));
-		kMegaGaugePacket6LengthInBytes = Integer.valueOf(properties.getProperty("kmega.gaugePacket6.lengthInBytes"));
-		kMegaGaugePacket5LengthInBytes = Integer.valueOf(properties.getProperty("kmega.gaugePacket5.lengthInBytes"));
+		kMegaGaugePacketLengthInBytes = Integer.valueOf(properties.getProperty("kmega.gaugePacket.lengthInBytes"));
 		kMegaAllPacketsSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.allPackets.sendRateInMilliseconds"));
 		kMegaAllPacketsSendRateInMilliseconds = Integer.valueOf(properties.getProperty("kmega.allPackets.sendRateInMilliseconds"));
 		kMegaSendPacketType = String.valueOf(properties.getProperty("kmega.sendPacketType"));
@@ -112,12 +110,8 @@ public class KKIMProp {
 		return kMegaOutputRefreshPacketLengthInBytes;
 	}
 
-	public static int getkMegaGaugePacket6LengthInBytes() {
-		return kMegaGaugePacket6LengthInBytes;
-	}
-
-	public static int getkMegaGaugePacket5LengthInBytes() {
-		return kMegaGaugePacket5LengthInBytes;
+	public static int getkMegaGaugePacketLengthInBytes() {
+		return kMegaGaugePacketLengthInBytes;
 	}
 	
 	public static int getkMegaAllPacketsSendRateInMilliseconds() {
