@@ -45,41 +45,48 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		// boolean sentOutputRefreshPacket = false;
 		
 		//Pull Information
-		if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
-			// time1 = System.currentTimeMillis();
-			kkimService.serialCommunicator.ingestDataFromSerialPortToPacketBuffer();
-			this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
-			// time2 = System.currentTimeMillis();
-			if (kkimService.serialCommunicator.getisValidPacketInPacketBuffer()) {
-				switch (kkimService.serialCommunicator.getPacketTypeInPacketBuffer()) {
-					case INPUT_REFRESH_PACKET:
-						// pulledData = true;
-						//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
-						// time3 = System.currentTimeMillis();
-						kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getPacketBuffer());
-						// time4 = System.currentTimeMillis();
-						kkimService.serialCommunicator.clearPacketBufferAndFriends();
-						// time5 = System.currentTimeMillis();
-						
-						// time6 = System.currentTimeMillis();
-						kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
-						// time7 = System.currentTimeMillis();
-						
-						// time8 = System.currentTimeMillis();
-						kkimService.controlPanel.refresh();
-						// time9 = System.currentTimeMillis();
-						//CommonUtilities.clearScreen(); System.out.println(kkimService.controlPanel.toString());
-						break;
-					case KKIM_TERMINAL_DISPLAY_PACKET:
-						byte[] kkimTerminalDisplayPacket = kkimService.serialCommunicator.getPacketBuffer();
-						String payload = new String(Arrays.copyOfRange(kkimTerminalDisplayPacket, KKIMProp.getallPacketsHeaderLengthInBytes(), kkimTerminalDisplayPacket.length));
-						System.out.println("KMEGA: " + payload);
-						kkimService.serialCommunicator.clearPacketBufferAndFriends();
-						break;
-					default:
-						break;
+		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+			if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
+				// time1 = System.currentTimeMillis();
+				kkimService.serialCommunicator.ingestDataFromSerialPortToPacketBuffer();
+				this.serialPortLastReadTimeInMilliseconds = System.currentTimeMillis();
+				// time2 = System.currentTimeMillis();
+				if (kkimService.serialCommunicator.getisValidPacketInPacketBuffer()) {
+					switch (kkimService.serialCommunicator.getPacketTypeInPacketBuffer()) {
+						case INPUT_REFRESH_PACKET:
+							// pulledData = true;
+							//kkimService.packetUnpacker.displayPacketInDecimal(kkimService.serialCommunicator.getinputRefreshPacketBuffer());
+							// time3 = System.currentTimeMillis();
+							kkimService.packetUnpacker.unpackInputRefreshPacketIntoModel(kkimService.serialCommunicator.getPacketBuffer());
+							// time4 = System.currentTimeMillis();
+							kkimService.serialCommunicator.clearPacketBufferAndFriends();
+							// time5 = System.currentTimeMillis();
+							
+							// time6 = System.currentTimeMillis();
+							kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
+							// time7 = System.currentTimeMillis();
+							
+							// time8 = System.currentTimeMillis();
+							kkimService.controlPanel.refresh();
+							// time9 = System.currentTimeMillis();
+							//CommonUtilities.clearScreen(); System.out.println(kkimService.controlPanel.toString());
+							break;
+						case KKIM_TERMINAL_DISPLAY_PACKET:
+							byte[] kkimTerminalDisplayPacket = kkimService.serialCommunicator.getPacketBuffer();
+							String payload = new String(Arrays.copyOfRange(kkimTerminalDisplayPacket, KKIMProp.getallPacketsHeaderLengthInBytes(), kkimTerminalDisplayPacket.length));
+							System.out.println("KMEGA: " + payload);
+							kkimService.serialCommunicator.clearPacketBufferAndFriends();
+							break;
+						default:
+							break;
+					}
 				}
 			}
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacket6") || KKIMProp.getkMegaSendPacketType().equals("gaugePacket5") ) {
+			kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
+			kkimService.controlPanel.refresh();
+		} else {
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}
 		
 		//Send packet to KMega

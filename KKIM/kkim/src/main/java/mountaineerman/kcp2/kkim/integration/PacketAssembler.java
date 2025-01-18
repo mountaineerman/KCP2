@@ -167,12 +167,12 @@ public class PacketAssembler {
 		/* Empty */				this.saveByteToPacketBuffer(0, 9);
 		
 		// (3) Populate Payload:
-		// this.saveTwoByteIntToPacketBufferAtByteNumbers(10, 11, controlPanel.moduleC.stepper_HeatLife.getDesiredPosition());
-		// this.saveTwoByteIntToPacketBufferAtByteNumbers(12, 13, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
-		// this.saveTwoByteIntToPacketBufferAtByteNumbers(14, 15, controlPanel.moduleG.stepper_Mach.getDesiredPosition());
-		// this.saveTwoByteIntToPacketBufferAtByteNumbers(16, 17, controlPanel.moduleG.stepper_Pitch.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(10, 11, controlPanel.moduleC.stepper_HeatLife.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(12, 13, controlPanel.moduleC.stepper_Gforce.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(14, 15, controlPanel.moduleG.stepper_Mach.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(16, 17, controlPanel.moduleG.stepper_Pitch.getDesiredPosition());
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(18, 19, controlPanel.moduleI.stepper_Fuel.getDesiredPosition());
-		// this.saveTwoByteIntToPacketBufferAtByteNumbers(20, 21, controlPanel.moduleI.stepper_Charge.getDesiredPosition());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(20, 21, controlPanel.moduleI.stepper_Charge.getDesiredPosition());
 
 		return this.gaugePacket6Buffer;//TODO return copy instead of original
     }

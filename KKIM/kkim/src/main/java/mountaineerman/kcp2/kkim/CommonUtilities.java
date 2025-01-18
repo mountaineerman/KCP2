@@ -4,23 +4,9 @@ public class CommonUtilities {
 	
 	public static void clearScreen() {
 		
-		System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-		
-		//Does not work in Eclipse:
-//		System.out.print("\033[H\033[2J");  
-//		System.out.flush();
-		
-		//Does not work in Eclipse:
-//		Runtime.getRuntime().exec("cls");
-		
-		//Does not work in Eclipse:
-//		try {
-//			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		//Note: works in VS Code, does not work in Eclipse:
+		System.out.print("\033[H\033[2J");  
+		System.out.flush();
 	}
 	
 	/**

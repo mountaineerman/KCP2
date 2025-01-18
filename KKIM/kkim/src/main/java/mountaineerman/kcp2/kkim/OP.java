@@ -122,16 +122,16 @@ public enum OP {
 	StepperLED_RadarAltitude_Blue	(166,		167,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Blue"),
 
 //Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Stepper_HeatLife				(168,		169,		ModuleID.C,		90,			3695,		"Heat/Life Support Stepper Motor"),
-	Stepper_Gforce					(170,		171,		ModuleID.C,		160,		3400,		"G-Force Stepper Motor"),
+	Stepper_HeatLife				(168,		169,		ModuleID.C,		90,			3689,		"Heat/Life Support Stepper Motor"),
+	Stepper_Gforce					(170,		171,		ModuleID.C,		170,		3419,		"G-Force Stepper Motor"),
 
-	Stepper_Mach					(172,		173,		ModuleID.G,		0,			3779,		"Mach Number Stepper Motor"), //Note: calibCWLim is for Mach 24
-	Stepper_Pitch					(174,		175,		ModuleID.G,		0,			3779,		"Pitch Stepper Motor"),
+	Stepper_Mach					(172,		173,		ModuleID.G,		0,			3219,		"Mach Number Stepper Motor"), //Note: calibCWLim is for Mach 24
+	Stepper_Pitch					(174,		175,		ModuleID.G,		1160,		3329,		"Pitch Stepper Motor"),
 	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),
 
-	Stepper_Fuel					(178,		179,		ModuleID.I,		90,			3709,		"Fuel Stepper Motor"),
-	Stepper_Charge					(180,		181,		ModuleID.I,		0,			3779,		"Charge Stepper Motor"),
-	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		0,			3779,		"Monopropellant/Intake Air Stepper Motor"),
+	Stepper_Fuel					(178,		179,		ModuleID.I,		50,			3659,		"Fuel Stepper Motor"),
+	Stepper_Charge					(180,		181,		ModuleID.I,		45,			3649,		"Charge Stepper Motor"),
+	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		105,		3709,		"Monopropellant/Intake Air Stepper Motor"),
 
 	Stepper_AirDensity				(184,		185,		ModuleID.GT,	0,			3779,		"AirDensity Stepper Motor"),
 	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),
