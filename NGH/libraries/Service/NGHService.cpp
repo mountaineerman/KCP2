@@ -1,4 +1,4 @@
-#include <KMegaService.h>
+#include <NGHService.h>
 #include <SerialCommunicator.h>
 
 NGHService::NGHService()
@@ -26,7 +26,7 @@ void NGHService::startupMode() {
 	delay(200);
 	this->controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
 	
-	this->serialCommunicator.establishKKIMSerialLink();
+	this->serialCommunicator.establishKMegaSerialLink();
 }
 
 void NGHService::standardOperatingMode() {
@@ -43,10 +43,15 @@ void NGHService::standardOperatingMode() {
 		
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
 	this->controlPanel.runStepperIfNecessary();//TODO remove
+	this->controlPanel.runStepperIfNecessary();//TODO remove
+	this->controlPanel.runStepperIfNecessary();//TODO remove
+	this->controlPanel.runStepperIfNecessary();//TODO remove
+	this->controlPanel.runStepperIfNecessary();//TODO remove
 	//this->controlPanel.burstRunSteppers();
 	
 	//TODO Idle if necessary
-	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
+	//delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
+	delay(1);
 }
 
 void NGHService::shutdownMode() {

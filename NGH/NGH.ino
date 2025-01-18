@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #include "configuration.h"
-#include <KNanoService.h>
+#include <NGHService.h>
 
 /* REMINDER: 
 When programming KNano, set:
@@ -12,6 +12,6 @@ When programming KNano, set:
 */
 
 void setup() {
-	KNanoService kNanoService;
+	NGHService nghService;
 	exit(EXIT_SUCCESS);
 }

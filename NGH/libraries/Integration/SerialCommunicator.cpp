@@ -30,7 +30,6 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 				this->delimiterByteCounter++;
 			} else {
 				this->delimiterByteCounter = 0;
-				this->running_numberOfRejectedIncomingBytes++;
 			}
 		
 		} else if (this->delimiterByteCounter == NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet read in progress
