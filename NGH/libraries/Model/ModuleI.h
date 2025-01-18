@@ -18,7 +18,7 @@ public:
 	bool runStepperIfNecessary();
 	
 	//Parts:
-	StepperMotor2 stepper_Fuel;	
+	StepperMotor2 stepper_Fuel;
 	StepperMotor2 stepper_Charge;
 	StepperMotor2 stepper_MonopropellantIntake;
 };

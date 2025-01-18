@@ -15,7 +15,6 @@ public:
 private:
 	void startupMode();
 	void standardOperatingMode();
-	void shutdownMode();
 	void clearPacket(byte * packet, int packetLength);
 	void displayPacket(const byte * packet, int packetLength, String packetName);
 	
@@ -26,6 +25,8 @@ private:
 	byte gaugePacket[GAUGE_PACKET_LENGTH_IN_BYTES];//READ-ONLY by NGHService after initialization
 	
 	long gaugePacketLastReceiveTimeInMilliseconds;
+
+	bool gaugesHaveBeenSetCCW;
 };
 
 #endif

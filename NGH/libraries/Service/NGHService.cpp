@@ -12,16 +12,16 @@ NGHService::NGHService()
 	this->packetUnpacker.setGaugePacket(gaugePacket);
 	
 	this->gaugePacketLastReceiveTimeInMilliseconds = millis();
-	this->startupMode(); //TODO move out of constructor
+	this->gaugesHaveBeenSetCCW = false;
+	this->startupMode();
 	
-	while (true) {//TODO move out of constructor
+	while (true) {
 		this->standardOperatingMode();
 	}
 }
 
 void NGHService::startupMode() {
 
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
 	this->controlPanel.blockRunAllSteppersToPosition(STEPPER_CW_LIMIT, 500);
 	delay(200);
 	this->controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
@@ -37,51 +37,44 @@ void NGHService::standardOperatingMode() {
 	if ( this->serialCommunicator.getGaugePacket() ) {
 		gotGaugePacket = true;
 		this->gaugePacketLastReceiveTimeInMilliseconds = millis();
-		//this->displayPacket(gaugePacket, GAUGE_PACKET_LENGTH_IN_BYTES, "gaugePacket");//TODO verify. Old: //this->displayOutputRefreshPacket();
 		this->packetUnpacker.unpackGaugePacketIntoModel();
 	}
+
+	if ( (millis() - this->gaugePacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_PACKET_BEFORE_GAUGE_RESET_IN_MILLISECONDS ) {
+		if(!this->gaugesHaveBeenSetCCW) {
+			// [GaugePacketA]
+			this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CCW_LIMIT);
+			this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CCW_LIMIT);
+			this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(STEPPER_CCW_LIMIT);
+			//this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(STEPPER_CCW_LIMIT);
+			this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(STEPPER_CCW_LIMIT);
+			this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(STEPPER_CCW_LIMIT);
+			// [GaugePacketB]
+			// this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(STEPPER_CCW_LIMIT);
+			// this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(STEPPER_CCW_LIMIT);
+			// this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(STEPPER_CCW_LIMIT);
+			// this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(STEPPER_CCW_LIMIT);
+			// this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(STEPPER_CCW_LIMIT);
+			// this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(STEPPER_CCW_LIMIT);
+			this->gaugesHaveBeenSetCCW = true;
+		}
+	} else {
+		this->gaugesHaveBeenSetCCW = false;
+	}
 		
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
-	this->controlPanel.runStepperIfNecessary();//TODO remove
-	this->controlPanel.runStepperIfNecessary();//TODO remove
-	this->controlPanel.runStepperIfNecessary();//TODO remove
-	this->controlPanel.runStepperIfNecessary();//TODO remove
-	this->controlPanel.runStepperIfNecessary();//TODO remove
-	//this->controlPanel.burstRunSteppers();
+	this->controlPanel.runStepperIfNecessary();
+	this->controlPanel.runStepperIfNecessary();
+	this->controlPanel.runStepperIfNecessary();
+	this->controlPanel.runStepperIfNecessary();
+	this->controlPanel.runStepperIfNecessary();
+	//this->controlPanel.burstRunSteppers(); //TODO
 	
 	//TODO Idle if necessary
-	//delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
 	delay(1);
-}
-
-void NGHService::shutdownMode() {
-	
-	serialCommunicator.teardownKMegaSerialLink();
-
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
-	controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
 }
 
 void NGHService::clearPacket(byte * packet, int packetLength) {
 	for (int i = 0; i < packetLength; i++) {
 		packet[i] = 0x00;
 	}
-}
-
-void NGHService::displayPacket(const byte * packet, int packetLength, String packetName) {//TODO verify
-	Serial.println(F("NGHService.displayPacket(): (decimal format)"));
-	Serial.print("Packet: "); Serial.println(packetName);
-	Serial.print("Byte Num: ");
-	for (int i = 0; i < packetLength; i++) {
-		Serial.print(i+1);
-		Serial.print("\t");
-	}
-	Serial.println();
-	
-	Serial.print("Value:    ");
-	for (int i = 0; i < packetLength; i++) {
-		Serial.print(packet[i]);
-		Serial.print("\t");
-	}
-	Serial.println();
 }
