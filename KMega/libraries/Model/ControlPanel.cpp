@@ -96,62 +96,6 @@ void ControlPanel::testLEDsSequentially() {
 	this->moduleGT.testLEDsSequentially();
 }
 
-//TODO: Stepper Logic disabled until performance is fixed (do not modify)
-void ControlPanel::stepMotorUpTo(StepperMotor2& stepper, int maxNumberOfSteps) {
-	int counter = 0;
-	while (true) {
-		counter++;
-		if(counter > maxNumberOfSteps) {
-			return;
-		}
-		if (!stepper.runStepperIfNecessary()) {
-			return;
-		}
-	}
-}
-
-//TODO: Stepper Logic disabled until performance is fixed (do not modify)
-void ControlPanel::burstRunSteppers() {
-	
-	// int FAST = 300;
-	// int MEDIUM = 200;
-	// int SLOW = 100;
-
-	// //Step "Fast" motors, up to FAST steps
-	// this->stepMotorUpTo(this->moduleC.stepper_Gforce, FAST);
-	// this->stepMotorUpTo(this->moduleG.stepper_Mach, FAST);
-	// this->stepMotorUpTo(this->moduleG.stepper_Pitch, FAST);
-	// // this->moduleG.stepper_Heading
-	// this->stepMotorUpTo(this->moduleGT.stepper_Speed, FAST);
-	// this->stepMotorUpTo(this->moduleGT.stepper_VertSpeed, FAST);
-	// this->stepMotorUpTo(this->moduleGT.stepper_RadarAlt, FAST);
-	
-	// //Step "Medium" motors, up to MEDIUM steps
-	// this->stepMotorUpTo(this->moduleI.stepper_Fuel, MEDIUM);
-	// this->stepMotorUpTo(this->moduleI.stepper_Charge, MEDIUM);
-	// this->stepMotorUpTo(this->moduleI.stepper_MonopropellantIntake, MEDIUM);
-	
-	// //Step "Slow" motors, up to SLOW steps
-	// this->stepMotorUpTo(this->moduleC.stepper_HeatLife, SLOW);
-	// this->stepMotorUpTo(this->moduleGT.stepper_Density, SLOW);
-
-	//New:
-	unsigned long startTime = 0;
-	unsigned long currentTime = 0;
-	unsigned long timeSpentRunningSteppers = 0;
-	for (int i = 0; i < 20; i++) {// TODO parameterize loop amount
-		startTime = micros();
-		if (this->runStepperIfNecessary() == false) {return;}
-		currentTime = micros();
-		timeSpentRunningSteppers = currentTime - startTime;
-		if (timeSpentRunningSteppers > 500) {//TODO Replace hardcoding with variable
-			continue;
-		} else {
-			delayMicroseconds(500 - timeSpentRunningSteppers);//TODO Replace hardcoding with variable
-		}
-	}
-}
-
 bool ControlPanel::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
@@ -159,7 +103,7 @@ bool ControlPanel::runStepperIfNecessary() {
 	isAMotorStillInMotion = this->moduleC.stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleG.stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleG.stepper_Pitch.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->moduleG.stepper_Heading.runStepperIfNecessary() || isAMotorStillInMotion;
+	isAMotorStillInMotion = this->moduleG.stepper_Heading.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleI.stepper_Fuel.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleI.stepper_Charge.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->moduleI.stepper_MonopropellantIntake.runStepperIfNecessary() || isAMotorStillInMotion;
@@ -170,13 +114,11 @@ bool ControlPanel::runStepperIfNecessary() {
 	return isAMotorStillInMotion;
 }
 
-void ControlPanel::blockRunAllSteppersToPosition(int position, unsigned long stepTimeInMicroseconds) {
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify)
+void ControlPanel::blockRunAllGearedSteppersToPosition(int position, unsigned long stepTimeInMicroseconds) {
 	this->moduleC.stepper_HeatLife.setDesiredPosition(position);
 	this->moduleC.stepper_Gforce.setDesiredPosition(position);
 	this->moduleG.stepper_Mach.setDesiredPosition(position);
 	this->moduleG.stepper_Pitch.setDesiredPosition(position);
-	//this->moduleG.stepper_Heading...
 	this->moduleI.stepper_Fuel.setDesiredPosition(position);
 	this->moduleI.stepper_Charge.setDesiredPosition(position);
 	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
@@ -185,7 +127,6 @@ void ControlPanel::blockRunAllSteppersToPosition(int position, unsigned long ste
 	this->moduleGT.stepper_VertSpeed.setDesiredPosition(position);
 	this->moduleGT.stepper_RadarAlt.setDesiredPosition(position);
 	
-	//New:
 	unsigned long startTime = 0;
 	unsigned long currentTime = 0;
 	unsigned long timeSpentRunningSteppers = 0;
@@ -200,17 +141,12 @@ void ControlPanel::blockRunAllSteppersToPosition(int position, unsigned long ste
 			delayMicroseconds(stepTimeInMicroseconds - timeSpentRunningSteppers);
 		}
 	}
-
-	//Old:
-	// while(this->runStepperIfNecessary()) {
-	// 	delayMicroseconds(this->moduleC.stepper_Gforce.getTimeBetweenSteps() - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);//TODO Works right for 1 gauge. Fix for all gauges...
-	// }
 }
 
-void ControlPanel::sweepStepperMotorsThroughMaxMin() {
-	this->blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT, 500);
+void ControlPanel::sweepGearedStepperMotorsThroughMaxMin() {
+	this->blockRunAllGearedSteppersToPosition(GEARED_STEPPER_CW_LIMIT, 500);
 	delay(200);
-	this->blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
+	this->blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
 }
 
 void ControlPanel::runDiagnosticMode() {
@@ -448,7 +384,7 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		Serial.println(F("[31] Sweep & time: Vertical Speed"));
 		Serial.println(F("[32] Sweep & time: Radar Altitude"));
 		Serial.println(F("--------------------------------------"));
-		Serial.println(F("[40] Sweep & time: All Stepper Motors"));
+		Serial.println(F("[40] Sweep & time: All geared stepper Motors"));
 		Serial.println(F("--------------------------------------"));
 		Serial.println(F("[56] Mock Test of Fuel (in isolation)"));
 		
@@ -465,7 +401,7 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		} else if(userInput == "4") {
 			this->diagnosticMode_testStepperMotor2(this->moduleG.stepper_Pitch);
 		} else if(userInput == "5") {
-			this->diagnosticMode_testNEMA17StepperMotor(this->moduleG.stepper_Heading);//TODO: Combine StepperMotor with StepperMotorNEMA17?
+			this->diagnosticMode_testNEMA17StepperMotor(this->moduleG.stepper_Heading);
 		} else if(userInput == "6") {
 			this->diagnosticMode_testStepperMotor2(this->moduleI.stepper_Fuel);
 		} else if(userInput == "7") {
@@ -503,68 +439,14 @@ void ControlPanel::diagnosticMode_testStepperMotors() {
 		} else if(userInput == "32") {
 			this->diagnosticMode_sweepSingleStepperMotor(this->moduleGT.stepper_RadarAlt);
 		} else if(userInput == "40") {
-			this->diagnosticMode_sweepAllStepperMotors();
+			this->diagnosticMode_sweepAllGearedStepperMotors();
 		} else if(userInput == "56") {
 			this->diagnosticMode_fuelTest();
 		}
 	}
 }
 
-// void ControlPanel::diagnosticMode_testGearedStepperMotor(/*TODO const?*/StepperMotor& stepperMotorUnderTest) { //TODO delete
-	
-// 	String userInput;
-	
-// 	while(true) {
-// 		clearScreen();
-// 		Serial.print("Stepper Motor Position ["); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(STEPPER_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
-// 		Serial.println("");
-// 		Serial.println(F("Select one of the following options:"));
-// 		Serial.println(F("[0] Return to previous menu"));
-// 		Serial.println(F("[1] Move to maximum CCW position"));
-// 		Serial.println(F("[2] Move to maximum CW position"));
-// 		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
-// 		Serial.println(F("[4] Move 1000 steps CCW"));
-// 		Serial.println(F("[5] Move 1000 steps CW"));
-// 		Serial.println(F("[6] Move 100 steps CCW"));
-// 		Serial.println(F("[7] Move 100 steps CW"));
-// 		Serial.println(F("[8] Move 10 steps CCW"));
-// 		Serial.println(F("[9] Move 10 steps CW"));
-		
-// 		userInput = Serial.readStringUntil('\n');
-		
-// 		if(userInput == "0") {
-// 			return;
-// 		} else if(userInput == "1") {
-// 			stepperMotorUnderTest.setDesiredPosition(STEPPER_CCW_LIMIT);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// 		} else if(userInput == "2") {
-// 			stepperMotorUnderTest.setDesiredPosition(STEPPER_CW_LIMIT);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// //		} else if(userInput == '3') {
-// //			//TODO
-// 		} else if(userInput == "4") {
-// 			stepperMotorUnderTest.setDesiredRelativePosition(-1000);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// 		} else if(userInput == "5") {
-// 			stepperMotorUnderTest.setDesiredRelativePosition(1000);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// 		} else if(userInput == "6") {
-// 			stepperMotorUnderTest.setDesiredRelativePosition(-100);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// 		} else if(userInput == "7") {
-// 			stepperMotorUnderTest.setDesiredRelativePosition(100);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// 		} else if(userInput == "8") {
-// 			stepperMotorUnderTest.setDesiredRelativePosition(-10);
-// 			stepperMotorUnderTest.runToDesiredPosition();
-// 		} else if(userInput == "9") {
-// 			stepperMotorUnderTest.setDesiredRelativePosition(10);
-// 			stepperMotorUnderTest.runToDesiredPosition();			
-// 		}
-// 	}
-// }
-
-void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest) {//TODO rename
+void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest) {
 	
 	String userInput;
 	
@@ -622,35 +504,37 @@ void ControlPanel::diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorU
 	}
 }
 
-void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& stepperMotorUnderTest) {
+void ControlPanel::diagnosticMode_testNEMA17StepperMotor(NEMA17StepperMotor& stepperMotorUnderTest) {
 	
 	String userInput;
 	
 	while(true) {
 		clearScreen();
-		Serial.print(F("Stepper Motor Position [")); Serial.print(STEPPER_CCW_LIMIT); Serial.print("-"); Serial.print(NEMA17_CW_LIMIT); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
+		Serial.print(F("Stepper Motor Position [")); Serial.print(NEMA17_STEPPER_MIN_POSITION); Serial.print("-"); Serial.print(NEMA17_STEPPER_MAX_POSITION); Serial.print("]: "); Serial.println(stepperMotorUnderTest.getCurrentPosition());
 		Serial.println();
 		Serial.println(F("Select one of the following options:"));
 		Serial.println(F("[0] Return to previous menu"));
-		Serial.println(F("[1] Move to maximum CCW position"));
-		Serial.println(F("[2] Move to maximum CW position"));
+		Serial.println(F("[1] Move disc to NEMA17_STEPPER_MIN_POSITION position"));
+		Serial.println(F("[2] Move disc to NEMA17_STEPPER_MAX_POSITION position"));
 		Serial.println(F("[3] Manual Control Mode (via Joystick) [TODO]"));
-		Serial.println(F("[4] Move 1000 steps CCW"));
-		Serial.println(F("[5] Move 1000 steps CW"));
-		Serial.println(F("[6] Move 100 steps CCW"));
-		Serial.println(F("[7] Move 100 steps CW"));
-		Serial.println(F("[8] Move 10 steps CCW"));
-		Serial.println(F("[9] Move 10 steps CW"));
-		
+		Serial.println(F("[4] Move disc 1000 steps CW"));
+		Serial.println(F("[5] Move disc 1000 steps CCW"));
+		Serial.println(F("[6] Move disc 100 steps CW"));
+		Serial.println(F("[7] Move disc 100 steps CCW"));
+		Serial.println(F("[8] Move disc 10 steps CW"));
+		Serial.println(F("[9] Move disc 10 steps CCW"));
+		Serial.println(F("[10] Move disc 1 step CW"));
+		Serial.println(F("[11] Move disc 1 step CCW"));
+
 		userInput = Serial.readStringUntil('\n');
 		
 		if(userInput == "0") {
 			return;
 		} else if(userInput == "1") {
-			stepperMotorUnderTest.setDesiredPosition(STEPPER_CCW_LIMIT);
+			stepperMotorUnderTest.setDesiredPosition(NEMA17_STEPPER_MIN_POSITION);
 			stepperMotorUnderTest.runToDesiredPosition();
 		} else if(userInput == "2") {
-			stepperMotorUnderTest.setDesiredPosition(NEMA17_CW_LIMIT);
+			stepperMotorUnderTest.setDesiredPosition(NEMA17_STEPPER_MAX_POSITION);
 			stepperMotorUnderTest.runToDesiredPosition();
 //		} else if(userInput == '3') {
 //			//TODO
@@ -671,6 +555,12 @@ void ControlPanel::diagnosticMode_testNEMA17StepperMotor(StepperMotorNEMA17& ste
 			stepperMotorUnderTest.runToDesiredPosition();
 		} else if(userInput == "9") {
 			stepperMotorUnderTest.setDesiredRelativePosition(10);
+			stepperMotorUnderTest.runToDesiredPosition();			
+		} else if(userInput == "10") {
+			stepperMotorUnderTest.setDesiredRelativePosition(-1);
+			stepperMotorUnderTest.runToDesiredPosition();			
+		} else if(userInput == "11") {
+			stepperMotorUnderTest.setDesiredRelativePosition(1);
 			stepperMotorUnderTest.runToDesiredPosition();			
 		}
 	}
@@ -731,16 +621,16 @@ void ControlPanel::diagnosticMode_sweepSingleStepperMotor(StepperMotor2& stepper
 	}
 }
 
-void ControlPanel::diagnosticMode_sweepAllStepperMotors() {
+void ControlPanel::diagnosticMode_sweepAllGearedStepperMotors() {
 	
 	//Sweep...
 	long startTime = millis();
-	this->sweepStepperMotorsThroughMaxMin();
+	this->sweepGearedStepperMotorsThroughMaxMin();
 	long endTime = millis();
 
 	//Calculations
 	long numberOfTraversedSteps = 3780*2;
-	long expectedSweepTimeInMilliseconds = (numberOfTraversedSteps * 1000 / GEARED_STEPPER_SPEED) + 200; //200 milliseconds for delay() in sweepStepperMotorsThroughMaxMin()
+	long expectedSweepTimeInMilliseconds = (numberOfTraversedSteps * 1000 / GEARED_STEPPER_SPEED) + 200; //200 milliseconds for delay() in sweepGearedStepperMotorsThroughMaxMin()
 	long actualSweepTimeInMilliseconds = endTime - startTime;
 
 	//Print results

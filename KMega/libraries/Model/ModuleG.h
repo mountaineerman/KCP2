@@ -8,7 +8,7 @@
 #include <SwitchSP2T.h>
 #include <LED_PWM.h>
 #include <StepperMotor2.h>
-#include <StepperMotorNEMA17.h>
+#include <NEMA17StepperMotor.h>
 
 
 /* Module G
@@ -44,7 +44,7 @@ public:
 	LED_PWM ledPWM_Comms;
 	StepperMotor2 stepper_Mach;
 	StepperMotor2 stepper_Pitch;
-	StepperMotorNEMA17 stepper_Heading;
+	NEMA17StepperMotor stepper_Heading;
 };
 
 #endif

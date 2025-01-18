@@ -2,7 +2,6 @@
 #include <StepperMotor2.h>
 #include "..\..\configuration.h"
 
-//TODO Remove AccelStepper library after testing this one works
 
 StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int speed, int ccwLimit, int cwLimit) {
 	

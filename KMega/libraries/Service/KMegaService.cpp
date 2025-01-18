@@ -57,9 +57,9 @@ void KMegaService::startupMode() {
 	delay(100);
 	
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
-	this->controlPanel.blockRunAllSteppersToPosition(GEARED_STEPPER_CW_LIMIT, 500);
+	this->controlPanel.blockRunAllGearedSteppersToPosition(GEARED_STEPPER_CW_LIMIT, 500);
 	delay(200);
-	this->controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
+	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
 	
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
@@ -113,8 +113,7 @@ void KMegaService::standardOperatingMode() {
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
 	
 	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
-	this->controlPanel.runStepperIfNecessary();//TODO remove
-	//this->controlPanel.burstRunSteppers();
+	this->controlPanel.runStepperIfNecessary();
 	
 	//TODO Idle if necessary
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
@@ -128,8 +127,21 @@ void KMegaService::shutdownMode() {
 	
 	serialCommunicator.teardownSerialLinks();
 
-	//TODO: Stepper Logic disabled until performance is fixed (do not modify):
-	controlPanel.blockRunAllSteppersToPosition(STEPPER_CCW_LIMIT, 500);
+	this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(NEMA17_STEPPER_MIN_POSITION);
+	this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(STEPPER_CCW_LIMIT);
+	this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(STEPPER_CCW_LIMIT);
+	while (this->controlPanel.runStepperIfNecessary()) {
+		delayMicroseconds(50);
+	}
 	
 	controlPanel.moduleG.ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
 	controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);

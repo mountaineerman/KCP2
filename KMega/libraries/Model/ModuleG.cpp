@@ -70,6 +70,6 @@ bool ModuleG::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
 	isAMotorStillInMotion = this->stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;
 	isAMotorStillInMotion = this->stepper_Pitch.runStepperIfNecessary() || isAMotorStillInMotion;
-	//this->stepper_Heading.runStepperIfNecessary();
+	isAMotorStillInMotion = this->stepper_Heading.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;
 }
