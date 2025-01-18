@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Interface_StepperMotorAggregator.h>
 #include <StepperMotor2.h>
+#include <NEMA17StepperMotor.h>
 
 /* Module G
  * Stepper motors: Mach, Pitch, Heading 
@@ -19,6 +20,7 @@ public:
 	//Parts:
 	StepperMotor2 stepper_Mach;
 	StepperMotor2 stepper_Pitch;
+	NEMA17StepperMotor stepper_Heading;
 };
 
 #endif

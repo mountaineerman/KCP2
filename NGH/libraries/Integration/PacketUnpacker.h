@@ -17,7 +17,7 @@ public:
 	void unpackGaugePacketIntoModel();
 
 private:
-	//Returns the integer stored in OutputRefreshPacket located at the specified byte numbers (see ICD in OneNote). Byte numbers can be provided in any order.
+	//Returns the integer stored in GaugePacket located at the specified byte numbers (see ICD in OneNote). Byte numbers can be provided in any order.
 	int convertTwoBytesInGaugePacketIntoInteger(int byteNum1, int byteNum2);
 	
 	void clearGaugePacket();

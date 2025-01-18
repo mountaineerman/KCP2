@@ -17,20 +17,14 @@
 class ControlPanel : public Interface_StepperMotorAggregator //TODO rename to: Interface_StepperMotor
 {
 private:
-	//Step "stepper", up to the "maxNumberOfSteps"
-	void stepMotorUpTo(StepperMotor2& stepper, int maxNumberOfSteps);
 
 public:
 	ControlPanel();
 	
-	//Run stepper motors to their desiredPosition, up to a configurable number of steps.
-	void burstRunSteppers();
 	//Check if any stepper in the Panel needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
 	bool runStepperIfNecessary();
-	//Run all steppers to position. Blocks until all steppers have arrived at the position.
-	void blockRunAllSteppersToPosition(int position, unsigned long stepTimeInMicroseconds);
-	//Run all geared steppers to STEPPER_CW_LIMIT, then STEPPER_CCW_LIMIT. TODO Heading Gauge... Blocks until all steppers have arrived at the position.
-	void sweepStepperMotorsThroughMaxMin();
+	//Run all steppers to position. Blocks until all steppers have arrived at the position. Does not affect the Heading gauge.
+	void blockRunAllGearedSteppersToPosition(int position, unsigned long stepTimeInMicroseconds);
 	
 	ModuleC moduleC;
 	ModuleG moduleG;
