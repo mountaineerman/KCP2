@@ -1,6 +1,7 @@
 HARDWARE ==================================================================================================================================
 
-Adjust needle positions:
+Add friction to the needle holes so they don't slip?+
+Adjust needle positions (+re-calibrate motors (KKIM: OP.java)):
 	Mach
 	Speed
 	Vertical Speed
@@ -21,12 +22,10 @@ Solve stepper motor performance
 			Speed
 			Vertical Speed
 			Radar Altitude
-	
+
+Tie button to gauge calibration
+
 Enable Intake Air...
-
-Add friction to the needle holes so they don't slip?+
-
-Re-calibrate motors (KKIM: OP.java)
 
 Change Camera Mode when switching between RKT/PLN/RVR
 

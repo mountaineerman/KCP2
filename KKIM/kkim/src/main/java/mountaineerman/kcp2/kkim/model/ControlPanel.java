@@ -130,11 +130,18 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 		}
-		
-		if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
-			throttleLever = (float) 0;
+
+		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+			if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
+				throttleLever = (float) 0;
+			} else {
+				throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
+			}
+		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
+					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
+			throttleLever = 1;
 		} else {
-			throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}
 
 		//Module B (+F) =======================================================
