@@ -315,6 +315,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Pitch: see Module G
 		
 		//Module F ============================================================
+		System.out.println("Current draw (mA): " + this.moduleF.analogInput_Current.getRescaledValue());
 		//Trim: see Module B
 		//Sensitivity Switch: See Modules A, B
 		
