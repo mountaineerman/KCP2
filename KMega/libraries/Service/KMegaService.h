@@ -6,6 +6,8 @@
 #include <PacketUnpacker.h>
 #include <PacketAssembler.h>
 
+enum KMegaOperatingMode {STARTUP, STANDARD, SHUTDOWN, DIAGNOSTIC};
+
 /* KMega Service
  * Responsible for orchestrating KMega
  */
@@ -13,11 +15,14 @@ class KMegaService
 {
 public:
 	KMegaService();
+
+	//Run through the KMega Operating Modes until termination
+	void run();
 private:
 	void startupMode();
 	void standardOperatingMode();
-	//void diagnosticMode();
 	void shutdownMode();
+	
 	void updateCommsLEDToIndicateError();
 	void clearPacket(byte * packet, int packetLength);
 	void displayPacket(const byte * packet, int packetLength, String packetName);
@@ -37,6 +42,7 @@ private:
 	long commsLEDErrorStateLastToggleTimeInMilliseconds;
 	
 	bool outputsHaveBeenSetToIdleState;
+	KMegaOperatingMode nextMode;
 };
 
 #endif

@@ -15,5 +15,6 @@ When programming KMega, set:
 
 void setup() {
 	KMegaService kMegaService;
+	kMegaService.run();
 	exit(EXIT_SUCCESS);
 }

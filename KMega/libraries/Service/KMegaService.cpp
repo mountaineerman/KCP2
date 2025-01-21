@@ -28,23 +28,37 @@ KMegaService::KMegaService()
 	
 	this->outputsHaveBeenSetToIdleState = false;
 	
-	this->startupMode(); //TODO move out of constructor
-	
 	//this->testAltitudeGauge();
 	
 	this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for DiagnosticMode
 	this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); //Indicate Button for graceful shutdown of Control Panel
-	while (true) {//TODO move out of constructor
-		
-		if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
-			this->controlPanel.runDiagnosticMode();
-			this->shutdownMode();
-			break;
-		} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
-			this->shutdownMode();
-			break;
-		} else {
-			this->standardOperatingMode();
+
+	this->nextMode = KMegaOperatingMode::STARTUP;
+}
+
+void KMegaService::run() {
+
+	while (true) {
+		switch (this->nextMode) {
+			case KMegaOperatingMode::STARTUP:
+				this->startupMode();
+				break;
+
+			case KMegaOperatingMode::STANDARD:
+				this->standardOperatingMode();
+				break;
+
+			case KMegaOperatingMode::DIAGNOSTIC:
+				this->controlPanel.runDiagnosticMode();
+				this->nextMode = KMegaOperatingMode::SHUTDOWN;
+				break;
+
+			case KMegaOperatingMode::SHUTDOWN:
+				this->shutdownMode();
+				return;
+
+			default:
+				return;
 		}
 	}
 }
@@ -67,6 +81,8 @@ void KMegaService::startupMode() {
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKNanoSerialLink();
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
+
+	this->nextMode = KMegaOperatingMode::STANDARD;
 }
 
 void KMegaService::standardOperatingMode() {
@@ -93,6 +109,7 @@ void KMegaService::standardOperatingMode() {
 		this->controlPanel.writeLEDStatusToLEDDriverBoards();
 		this->packetAssembler.assembleAltitudePacket();
 		this->serialCommunicator.sendAltitudePacket();
+		//TODO Assemble and send gauge packets
 	}
 	
 	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_ERROR_IN_MILLISECONDS ) {
@@ -116,16 +133,19 @@ void KMegaService::standardOperatingMode() {
 	
 	//TODO Idle if necessary
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
-}
 
-//void KMegaService::diagnosticMode() {
-//	//controlPanel.runDiagnosticMode();
-//}
+	if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
+		this->nextMode = KMegaOperatingMode::DIAGNOSTIC;
+	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
+		this->nextMode = KMegaOperatingMode::SHUTDOWN;
+	} else {
+		this->nextMode = KMegaOperatingMode::STANDARD;
+	}
+}
 
 void KMegaService::shutdownMode() {
 	
-	serialCommunicator.teardownSerialLinks();
-
+	//TODO NGH...
 	this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CCW_LIMIT);
 	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CCW_LIMIT);
 	this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(STEPPER_CCW_LIMIT);
@@ -142,6 +162,8 @@ void KMegaService::shutdownMode() {
 		delayMicroseconds(50);
 	}
 	
+	serialCommunicator.teardownSerialLinks();
+
 	controlPanel.moduleG.ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
 	controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
 }
