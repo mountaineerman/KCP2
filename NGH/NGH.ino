@@ -15,5 +15,6 @@ To switch between GaugePacketA and GaugePacketB search for: "[GaugePacketA]" / "
 
 void setup() {
 	NGHService nghService;
+	nghService.run();
 	exit(EXIT_SUCCESS);
 }

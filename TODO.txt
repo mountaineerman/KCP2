@@ -4,7 +4,6 @@ Add friction to the needle holes so they don't slip?+
 Adjust needle positions (+re-calibrate motors (KKIM: OP.java)):
 	Mach
 	Speed
-	Vertical Speed
 Stop SP3T switch guards from turning
 Physically re-do label for air density gauge (red = 100, green = 0)
 Replace LEDs that are too bright or dim them with bigger resistors
@@ -16,6 +15,18 @@ SOFTWARE =======================================================================
 Solve stepper motor performance
 	Prototype timing based on additional microprocessors responsible for stepping motors
 		KMega new responsibilities
+			KMegaService::startupMode()
+				serialCommunicator.establishNGHASerialLink()
+				serialCommunicator.establishNGHBSerialLink()
+				refactor blockRunAllGearedSteppersToPosition (guess travel time)
+				refactor sweepGearedStepperMotorsThroughMaxMin
+			KMegaService::standardOperatingMode()
+				packetAssembler.assembleGaugePacketA()
+				packetAssembler.assembleGaugePacketB()
+				packetAssembler.assembleNGHACalibrationRequest()
+				packetAssembler.assembleNGHBCalibrationRequest()
+				serialCommunicator.sendGaugePacketA()
+				serialCommunicator.sendGaugePacketB()
 
 	Test sending gaugePacketB:
 		Calculate desired stepper positions (ControlPanel.refresh):

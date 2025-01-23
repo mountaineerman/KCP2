@@ -13,10 +13,25 @@ NGHService::NGHService()
 	
 	this->gaugePacketLastReceiveTimeInMilliseconds = millis();
 	this->gaugesHaveBeenSetCCW = false;
-	this->startupMode();
 	
+	this->nextMode = NGHOperatingMode::STARTUP;
+}
+
+void NGHService::run() {
+
 	while (true) {
-		this->standardOperatingMode();
+		switch (this->nextMode) {
+			case NGHOperatingMode::STARTUP:
+				this->startupMode();
+				break;
+
+			case NGHOperatingMode::STANDARD:
+				this->standardOperatingMode();
+				break;
+
+			default:
+				return;
+		}
 	}
 }
 
@@ -27,6 +42,8 @@ void NGHService::startupMode() {
 	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
 	
 	this->serialCommunicator.establishKMegaSerialLink();
+
+	this->nextMode = NGHOperatingMode::STANDARD;
 }
 
 void NGHService::standardOperatingMode() {
@@ -70,6 +87,8 @@ void NGHService::standardOperatingMode() {
 	
 	//TODO Idle if necessary
 	delay(1);
+
+	this->nextMode = NGHOperatingMode::STANDARD;
 }
 
 void NGHService::clearPacket(byte * packet, int packetLength) {
