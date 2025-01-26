@@ -1,3 +1,4 @@
+//[GaugePacketB] (does not apply to [GaugePacketA])
 #ifndef MODULE_GT_h
 #define MODULE_GT_h
 

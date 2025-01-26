@@ -26,8 +26,12 @@ public:
 	//Run all steppers to position. Blocks until all steppers have arrived at the position. Does not affect the Heading gauge.
 	void blockRunAllGearedSteppersToPosition(int position, unsigned long stepTimeInMicroseconds);
 	
-	ModuleC moduleC;
-	ModuleG moduleG;
+	// //[GaugePacketA]
+	// ModuleC moduleC;
+	// ModuleG moduleG;
+	// ModuleI moduleI;
+
+	//[GaugePacketB]
 	ModuleI moduleI;
 	ModuleGT moduleGT;
 };

@@ -8,7 +8,7 @@
 
 //===========================================================================================================================================================================
 //KMega Interface
-static const String COMMUNICATION_PORT = "COM6";
+static const String COMMUNICATION_PORT = "COM6"; //TODO unused - remove?
 static const int BAUD_RATE = 9600;//Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
 static const int CYCLICAL_SLEEP_TIME_IN_MILLISECONDS = 5;
 static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time kNano will wait before timing out during a serial read operation
