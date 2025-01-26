@@ -28,11 +28,10 @@ Solve stepper motor performance
 				serialCommunicator.sendGaugePacketA()
 				serialCommunicator.sendGaugePacketB()
 
-	Test sending gaugePacketB:
-		Calculate desired stepper positions (ControlPanel.refresh):
-			Speed
-			Vertical Speed
-			Radar Altitude
+	Remove KMega stepper logic: "//STEPPER CLEANUP"
+			
+	Tweak NUMBER_OF_NEEDLE_POSITIONS
+	Tweak packet send rate to reduce jitter
 
 Tie button to gauge calibration
 

@@ -177,17 +177,17 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
 			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
 			System.out.println("percentLifeSupport: " + this.percentLifeSupport);
-			this.moduleC.stepper_HeatLife.setDesiredPosition(this.percentLifeSupport, (float) 0, (float) 100);
+			this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
 		} else {//Heat selected
 			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.BRIGHT, this.percentTemperatureHealth);
 			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
 			System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);
-			this.moduleC.stepper_HeatLife.setDesiredPosition(this.percentTemperatureHealth, (float) 0, (float) 100);
+			this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentTemperatureHealth, (float) 0, (float) 100);
 		}
 		
 		// ----- G-Force ----------------------
 		System.out.println("gforce: " + this.gforce);
-		this.moduleC.stepper_Gforce.setDesiredPosition(this.gforce, (float) 0, (float) 15);
+		this.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits(this.gforce, (float) 0, (float) 15);
 		if (this.gforce > 10.0) {
 			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.RED);
 		} else if (this.gforce > 8.0) {
@@ -322,7 +322,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Module G (+E) =======================================================
 		// ----- Mach ----------------------
 		System.out.println("mach: " + this.mach);
-		this.moduleG.stepper_Mach.setDesiredPosition(this.mach, (float) 0, (float) 24);
+		this.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits(this.mach, (float) 0, (float) 24);
 		if (this.mach > 28.0) {
 			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.VIOLET);
 		} else if (this.mach > 16.0) {
@@ -344,7 +344,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		// ----- Pitch ----------------------
 		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
 			System.out.println("pitch (90 degree mode): " + this.pitch);
-			this.moduleG.stepper_Pitch.setDesiredPosition(this.pitch, (float) -90, (float) 90);
+			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -90, (float) 90);
 			if (this.pitch > 60.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
 			} else if (this.pitch > 30.0) {
@@ -364,7 +364,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			}
 		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
 			System.out.println("pitch (30 degree mode): " + this.pitch);
-			this.moduleG.stepper_Pitch.setDesiredPosition(this.pitch, (float) -30, (float) 30);
+			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -30, (float) 30);
 			if (this.pitch > 30.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
 			} else if (this.pitch > 20.0) {
@@ -386,7 +386,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			}
 		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
 			System.out.println("pitch (9 degree mode): " + this.pitch);
-			this.moduleG.stepper_Pitch.setDesiredPosition(this.pitch, (float) -9, (float) 9);
+			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -9, (float) 9);
 			if (this.pitch > 9.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
 			} else if (this.pitch > 6.0) {
@@ -436,7 +436,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.percentFuel = 0;
 		}
 		System.out.println("percentFuel: " + this.percentFuel);
-		this.moduleI.stepper_Fuel.setDesiredPosition(this.percentFuel, (float) 0, (float) 100);//JUMPTO
+		this.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits(this.percentFuel, (float) 0, (float) 100);//JUMPTO
 		refreshPercentRGBLED(this.moduleI.stepperLED_Fuel, LED_RGB_Brightness.BRIGHT, this.percentFuel);
 		
 		// ----- Charge ----------------------
@@ -445,8 +445,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.percentElectricCharge = -1;
 		}
-		//System.out.println("percentElectricCharge: " + this.percentElectricCharge);
-		this.moduleI.stepper_Charge.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
+		System.out.println("percentElectricCharge: " + this.percentElectricCharge);
+		this.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits(this.percentElectricCharge, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
 		if (this.currentElectricCharge > this.previousElectricCharge) {
@@ -479,10 +479,10 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		// } else {//Monopropellant selected
 		// 	refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
 		// 	TODO percentIntakeAir:DIM
-		// 	this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(this.percentElectricCharge, (float) 0, (float) 100);
+		// 	this.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits(this.percentElectricCharge, (float) 0, (float) 100);
 		// }
-		//System.out.println("percentMonopropellant: " + this.percentMonopropellant);
-		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(this.percentMonopropellant, (float) 0, (float) 100);
+		System.out.println("percentMonopropellant: " + this.percentMonopropellant);
+		this.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits(this.percentMonopropellant, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
 		
 		//Module GT ===========================================================
@@ -492,29 +492,50 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.invertedPercentAirDensity = -1;
 		}
-		this.moduleGT.stepper_AirDensity.setDesiredPosition(this.invertedPercentAirDensity, (float) 0, (float) 100);
+		System.out.println("invertedPercentAirDensity: " + this.invertedPercentAirDensity);
+		this.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits(this.invertedPercentAirDensity, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleGT.stepperLED_AirDensity, LED_RGB_Brightness.BRIGHT, this.invertedPercentAirDensity);
 		
 		// ----- Speed/Vertical Speed ----------------------
-		double speed = -1.0;
-		double verticalSpeed = -1.0;
+		float speed = (float) -1.0;
+		float verticalSpeed = (float) -1.0;
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
-			speed = surfaceReferenceFrame_speed;
-			verticalSpeed = surfaceReferenceFrame_verticalSpeed;
+			speed = (float) Math.abs((double) surfaceReferenceFrame_speed);
+			verticalSpeed = (float) surfaceReferenceFrame_verticalSpeed;
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
-			speed = orbitalReferenceFrame_speed;
-			verticalSpeed = orbitalReferenceFrame_verticalSpeed;
+			speed = (float) Math.abs((double) orbitalReferenceFrame_speed);
+			verticalSpeed = (float) orbitalReferenceFrame_verticalSpeed;
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
 			//TODO
-			speed = -1.0;
-			verticalSpeed = 0.0;
+			speed = (float) 0.0;
+			verticalSpeed = (float) 0.0;
 		} else {//INVALID
-			speed = -1.0;
-			verticalSpeed = 0.0;
+			speed = (float) 0.0;
+			verticalSpeed = (float) 0.0;
 		}
 		
-		//TODO: EnableSteppers - Speed
-		//3 zones + TRB
+		/* Speed calibration settings:
+		 * 		Speed (m/s)	| Stepper Position
+		 *     =============|==================
+		 * 			  0		|		0
+		 * 			100		|	1,060
+		 * 			500		|	2,130
+		 * 		  3,000		|	3,540
+		 * 			TRB		|	3,779
+		 */
+		System.out.println("speed: " + speed);
+		if (speed > 3000.0) {
+			this.moduleGT.stepper_Speed.setDesiredPosition(3779);//TRB
+		} else if (speed > 500.0) {
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 500.0, (float) 3000.0, 2130, 3540);
+		} else if (speed > 100.0) {
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 100.0, (float) 500.0, 1060, 2130);
+		} else if (speed > 0.0) {
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 0.0, (float) 100.0, 0, 1060);
+		} else {
+			this.moduleGT.stepper_Speed.setDesiredPosition(0);//0
+		}
+
 		if (speed > 3000.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.VIOLET);
 		} else if (speed > 2000.0) {
@@ -533,8 +554,23 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
 		}
 		
-		//TODO: EnableSteppers - Vertical Speed
-		// 2 +/- zones
+		/* Vertical Speed calibration settings:
+		 * 	  V.Speed (m/s)	| Stepper Position
+		 *   ===============|==================
+		 * 		   -200		|		0
+		 * 			-50		|	  815
+		 * 			 50		|	2,950
+		 * 		  	200		|	3,770
+		 */
+		System.out.println("verticalSpeed: " + verticalSpeed);
+		if (verticalSpeed > 50.0) {
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, 2950, 3770);
+		} else if (verticalSpeed > -50.0) {
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(speed, (float) -50.0, (float) 50.0, 815, 2950);
+		} else {
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(speed, (float) -200.0, (float) -50.0, 0, 815);
+		}
+
 		if (verticalSpeed > 50.0) {
 			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.GREEN);
 		} else if (verticalSpeed > 1.0) {
@@ -548,15 +584,33 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		// ----- Radar Altitude ----------------------
-		//TODO: EnableSteppers - Radar Altitude
-		// 3 zones + SPC + ATM
+		/* Radar Altitude calibration settings:
+		 * 		  R.Alt (m)	| Stepper Position
+		 *       ===========|==================
+		 * 		   		0	|		110
+		 * 			  100	|	  1,210
+		 * 			  500	|	  2,300
+		 * 		  	5,000	|	  3,365
+		 * 			  ATM	|	  3,570
+		 * 			  SPC	|	  3,720
+		 */
 		if (this.altitudeAboveSurface > 5000.0) {
 			if (this.vesselSituation == VesselSituation.FLYING) {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(3570);//ATM
 			} else { //Some form of "in space"
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.BLUE);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(3720);//SPC
 			}
 		} else {
+			if (this.altitudeAboveSurface > 500.0) {
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 500.0, (float) 5000.0, 2300, 3365);
+			} else if (this.altitudeAboveSurface > 100.0) {
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 100.0, (float) 500.0, 1210, 2300);
+			} else {
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 0.0, (float) 100.0, 110, 1210);
+			}
+
 			if (this.vesselSituation == VesselSituation.PRE_LAUNCH ||
 				this.vesselSituation == VesselSituation.LANDED ||
 				this.vesselSituation == VesselSituation.SPLASHED) {

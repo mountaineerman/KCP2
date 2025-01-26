@@ -133,7 +133,7 @@ public enum OP {
 	Stepper_Charge					(180,		181,		ModuleID.I,		45,			3649,		"Charge Stepper Motor"),
 	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		105,		3709,		"Monopropellant/Intake Air Stepper Motor"),
 
-	Stepper_AirDensity				(184,		185,		ModuleID.GT,	0,			3779,		"AirDensity Stepper Motor"),
+	Stepper_AirDensity				(184,		185,		ModuleID.GT,	90,			3699,		"AirDensity Stepper Motor"),
 	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),
 	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),
 	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),

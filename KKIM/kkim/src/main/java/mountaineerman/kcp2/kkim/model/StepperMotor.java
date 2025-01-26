@@ -61,9 +61,14 @@ public class StepperMotor extends Part {
 	// 	this.desiredPosition = requestedPosition;
 	// }
 
+	public void setDesiredPosition(int requestedPosition) {
+		validatePosition(requestedPosition);
+		this.desiredPosition = requestedPosition;
+	}
+
 	/**
 	 * Sets the desired position of the stepper motor, based on:
-	 * 		a) valueInRange, and the limits of the associated range
+	 * 		a) valueInRange, and the limits of the associated range: [rangeMin,rangeMax]
 	 * 		b) NUMBER_OF_NEEDLE_POSITIONS
 	 * 		c) The calibration limits of the gauge, calibrationCCWLimit and calibrationCWLimit, which are pulled from OP.java during instantiation.
 	 * 	If valueInRange is outside of [rangeMin,rangeMax], it is set to the applicable valid limit.
@@ -73,7 +78,19 @@ public class StepperMotor extends Part {
 	 * 		rangeMin = 0        (0.0 G's)
 	 *		rangeMax = 150     (15.0 G's)
 	 */
-	public void setDesiredPosition(float valueInRange, float rangeMin, float rangeMax) {
+	public void setDesiredPositionUsingCalibrationLimits(float valueInRange, float rangeMin, float rangeMax) {
+		setDesiredPositionUsingCustomLimits(valueInRange, rangeMin, rangeMax, this.calibrationCCWLimit, this.calibrationCWLimit);
+	}
+
+	/**
+	 * Sets the desired position of the stepper motor, based on:
+	 * 		a) valueInRange, and the limits of the associated range: [rangeMin,rangeMax]
+	 * 		b) rangeMinPosition: the stepper motor position associated with rangeMin
+	 * 		c) rangeMaxPosition: the stepper motor position associated with rangeMax
+	 * 
+	 * If valueInRange is outside of [rangeMin,rangeMax], it is set to the applicable valid limit.
+	 */
+	public void setDesiredPositionUsingCustomLimits(float valueInRange, float rangeMin, float rangeMax, int rangeMinPosition, int rangeMaxPosition) {
 
 		// (STEP 1) Force valueInRange into range [rangeMin,rangeMax]
 		if (valueInRange < rangeMin) {
@@ -102,23 +119,15 @@ public class StepperMotor extends Part {
 		// System.out.println("floatValueInNeedlePositions: " + floatValueInNeedlePositions);
 		// System.out.println("integerValueInNeedlePositions: " + integerValueInNeedlePositions);
 
-		// (STEP 5) Scale up from [0,NUMBER_OF_NEEDLE_POSITIONS] range to [this.calibrationCCWLimit,this.calibrationCWLimit]:
+		// (STEP 5) Scale up from [0,NUMBER_OF_NEEDLE_POSITIONS] range to [rangeMinPosition,rangeMaxPosition]:
 		int requestedPosition = CommonUtilities.rescaleValue(
 			integerValueInNeedlePositions,
 			0, NUMBER_OF_NEEDLE_POSITIONS,
-			this.calibrationCCWLimit, this.calibrationCWLimit);
+			rangeMinPosition, rangeMaxPosition);
 		// System.out.println("requestedPosition: " + requestedPosition);
 		// System.out.println();
 		this.setDesiredPosition(requestedPosition);
-	}
-
-	/**
-	 * This method should only be used directly for unit testing
-	 */
-	public void setDesiredPosition(int requestedPosition) {
-		validatePosition(requestedPosition);
-		this.desiredPosition = requestedPosition;
-	}
+    }
 	
 	//TODO Ensure this triggers WARNING flag, not a hard crash
 	private void validatePosition(int position) {
