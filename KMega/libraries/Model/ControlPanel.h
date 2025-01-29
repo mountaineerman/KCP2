@@ -8,7 +8,6 @@
 
 #include <Interface_Input.h>
 #include <Interface_LEDAggregator.h>
-#include <Interface_StepperMotorAggregator.h>
 
 #include <ModuleA.h>
 #include <ModuleB.h>
@@ -28,7 +27,6 @@
 class ControlPanel
 	: public Interface_Input
 	, public Interface_LEDAggregator
-	, public Interface_StepperMotorAggregator
 {
 private:
 	void diagnosticMode_testAllInputs();

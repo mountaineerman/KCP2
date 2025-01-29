@@ -61,10 +61,17 @@ Check USB cable connecting KMega to computer is plugged in and in "ON" position.
 Symptoms:
 1. When trying to program the Arduino board, get errors: "stk500v2_ReceiveMessage(): timeout"
 2. Inspecting Arduino IDE > Tools > Port shows "COM3 (Arduino Mega or Mega 2560)".
-Cause:
+Cause 1:
 The code is caught in a tight loop, which is preventing the bootloader from connecting.
-Fix:
+Fix 1:
 Select the "Upload" button. Right before bootloader gets to orange text, hit the RST (reset) mom switch.
+Cause 2:
+https://forum.arduino.cc/t/avrdude-stk500v2_receivemessage-timeout-sometimes-random/586515
+It is necessary to reset the ATmega2560 microcontroller on the Arduino Mega in order to activate the bootloader, which handles the upload. The bootloader only runs for a short time waiting for the computer to start the upload. Since the Arduino IDE spends some time compiling the sketch before actually starting the upload, you have to get the timing right, otherwise the bootloader will have already timed out and exited to the sketch previously loaded on the board before the computer even starts the upload. There is a circuit on the Mega that causes this reset to happen automatically at just the right time. What is connected to the Reset pin can disrupt the automatic circuit.
+Fix 2a (temporary):
+Disconnected the reset wire to Arduino Mega. The Mega started being programmable reliably.
+Fix 2b (TBC):
+Remove the 5V and Blue LED from the Reset circuit.
 
 Symptoms: (Delete after settingsFilename absolute path is replaced with relative path)
 Changes to config.properties are not being seen by the system

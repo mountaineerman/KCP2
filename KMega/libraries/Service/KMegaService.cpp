@@ -8,14 +8,24 @@ KMegaService::KMegaService()
 	, packetAssembler(controlPanel)
 {	
 	this->outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES] = {};
-	this->clearPacket(outputRefreshPacket, OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES);
+	this->clearPacket(this->outputRefreshPacket, OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES);
 	this->serialCommunicator.setOutputRefreshPacket(outputRefreshPacket);
 	this->packetUnpacker.setOutputRefreshPacket(outputRefreshPacket);
 	
 	this->altitudePacket[ALTITUDE_PACKET_LENGTH_IN_BYTES] = {};
-	this->clearPacket(altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES);
+	this->clearPacket(this->altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES);
 	this->serialCommunicator.setAltitudePacket(altitudePacket);
 	this->packetAssembler.setAltitudePacket(altitudePacket);
+
+	this->gaugePacketA[GAUGE_PACKET_LENGTH_IN_BYTES] = {};
+	this->clearPacket(this->gaugePacketA, GAUGE_PACKET_LENGTH_IN_BYTES);
+	this->serialCommunicator.setGaugePacketA(this->gaugePacketA);
+	this->packetAssembler.setGaugePacketA(this->gaugePacketA);
+
+	this->gaugePacketB[GAUGE_PACKET_LENGTH_IN_BYTES] = {};
+	this->clearPacket(this->gaugePacketB, GAUGE_PACKET_LENGTH_IN_BYTES);
+	this->serialCommunicator.setGaugePacketB(this->gaugePacketB);
+	this->packetAssembler.setGaugePacketB(this->gaugePacketB);
 	
 	this->inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES] = {};
 	this->clearPacket(inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES);
@@ -70,16 +80,20 @@ void KMegaService::startupMode() {
 	this->controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
 	delay(100);
 	
-	this->controlPanel.blockRunAllGearedSteppersToPosition(GEARED_STEPPER_CW_LIMIT, 500);
-	delay(200);
-	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
-	
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKKIMSerialLink();
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
 	
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
 	this->serialCommunicator.establishKNanoSerialLink();
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
+
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
+	this->serialCommunicator.establishNGHASerialLink();
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM); delay(100);
+	
+	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MAXIMUM); delay(100);
+	this->serialCommunicator.establishNGHBSerialLink();
 	this->controlPanel.moduleG.ledPWM_Comms.setPWMAndWriteImmediately(PWM_LED_MINIMUM);
 
 	this->nextMode = KMegaOperatingMode::STANDARD;
@@ -109,7 +123,10 @@ void KMegaService::standardOperatingMode() {
 		this->controlPanel.writeLEDStatusToLEDDriverBoards();
 		this->packetAssembler.assembleAltitudePacket();
 		this->serialCommunicator.sendAltitudePacket();
-		//TODO Assemble and send gauge packets
+		this->packetAssembler.assembleGaugePacketA();
+		this->serialCommunicator.sendGaugePacketA();
+		this->packetAssembler.assembleGaugePacketB();
+		this->serialCommunicator.sendGaugePacketB();
 	}
 	
 	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_ERROR_IN_MILLISECONDS ) {
@@ -119,6 +136,29 @@ void KMegaService::standardOperatingMode() {
 	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_IDLE_IN_MILLISECONDS ) {
 		if(!this->outputsHaveBeenSetToIdleState) {
 			this->controlPanel.setAllLEDsTo(PWM_LED_DIM);
+			
+			//this->packetAssembler.assembleNGHACalibrationRequest();
+			//TODO Replace the following with the calibration request on the previous line. START...
+			this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(0);
+			this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
+			this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(0);
+			this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(0);
+			this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
+			this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(0);
+			//TODO END...
+			this->serialCommunicator.sendGaugePacketA();
+			
+			//this->packetAssembler.assembleNGHBCalibrationRequest();
+			//TODO Replace the following with the calibration request on the previous line. START...
+			this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(0);
+			this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(0);
+			this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(0);
+			this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(0);
+			this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(0);
+			this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(0);
+			//TODO END...
+			this->serialCommunicator.sendGaugePacketB();
+			
 			this->outputsHaveBeenSetToIdleState = true;
 		}
 	} else {
@@ -127,9 +167,6 @@ void KMegaService::standardOperatingMode() {
 	
 	//this->serialCommunicator.tallyCommunicationsDiagnosticData();
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
-	
-	//TODO: Remove
-	this->controlPanel.runStepperIfNecessary();
 	
 	//TODO Idle if necessary
 	delay(REFRESH_PERIOD_IN_MILLISECONDS); //TODO remove
@@ -145,22 +182,27 @@ void KMegaService::standardOperatingMode() {
 
 void KMegaService::shutdownMode() {
 	
-	//TODO NGH...
-	this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(NEMA17_STEPPER_MIN_POSITION);
-	this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(STEPPER_CCW_LIMIT);
-	this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(STEPPER_CCW_LIMIT);
-	while (this->controlPanel.runStepperIfNecessary()) {
-		delayMicroseconds(50);
-	}
+	//this->packetAssembler.assembleNGHACalibrationRequest();
+	//TODO Replace the following with the calibration request on the previous line. START...
+	this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(0);
+	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
+	this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(0);
+	this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(0);
+	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
+	this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(0);
+	//TODO END...
+	this->serialCommunicator.sendGaugePacketA();
+
+	//this->packetAssembler.assembleNGHBCalibrationRequest();
+	//TODO Replace the following with the calibration request on the previous line. START...
+	this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(0);
+	this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(0);
+	this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(0);
+	this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(0);
+	this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(0);
+	this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(0);
+	//TODO END...
+	this->serialCommunicator.sendGaugePacketB();
 	
 	serialCommunicator.teardownSerialLinks();
 

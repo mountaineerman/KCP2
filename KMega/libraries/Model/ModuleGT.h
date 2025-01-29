@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <Interface_LEDAggregator.h>
-#include <Interface_StepperMotorAggregator.h>
 #include <LED_PWM.h>
 #include <StepperMotor2.h>
 
@@ -12,7 +11,7 @@
  *
  * Stepper Motors: Air Density, Speed, Vertical Speed, Radar Altitude
  * Altitude Gauge */
-class ModuleGT : public Interface_LEDAggregator, public Interface_StepperMotorAggregator
+class ModuleGT : public Interface_LEDAggregator
 {
 public:
 	ModuleGT(Adafruit_TLC5947& ledDriverBoards);

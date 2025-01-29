@@ -9,6 +9,7 @@ Physically re-do label for air density gauge (red = 100, green = 0)
 Replace LEDs that are too bright or dim them with bigger resistors
 Touch up weak paint areas near backlit icons
 Paint panel behind modules to keep the gaps from looking silvery
+Fix Reset circuit (see README: Fix 2b), update schematic.
 
 SOFTWARE ==================================================================================================================================
 
@@ -16,19 +17,42 @@ Solve stepper motor performance
 	Prototype timing based on additional microprocessors responsible for stepping motors
 		KMega new responsibilities
 			KMegaService::startupMode()
-				serialCommunicator.establishNGHASerialLink()
-				serialCommunicator.establishNGHBSerialLink()
-				refactor blockRunAllGearedSteppersToPosition (guess travel time)
-				refactor sweepGearedStepperMotorsThroughMaxMin
+				refactor blockRunAllGearedSteppersToPosition (guess travel time) - CURRENTLY DISABLED
+				refactor sweepGearedStepperMotorsThroughMaxMin - CURRENTLY DISABLED
 			KMegaService::standardOperatingMode()
-				packetAssembler.assembleGaugePacketA()
-				packetAssembler.assembleGaugePacketB()
 				packetAssembler.assembleNGHACalibrationRequest()
 				packetAssembler.assembleNGHBCalibrationRequest()
-				serialCommunicator.sendGaugePacketA()
-				serialCommunicator.sendGaugePacketB()
-
-	Remove KMega stepper logic: "//STEPPER CLEANUP"
+	Refactor StepperMotor2 (+...) given that KMega no longer directly controls the gauges
+		runStepperIfNecessary
+		ControlPanel: diagnostic modes...
+	
+	Test Complete System:
+		Symptoms:
+			NGH A/B sweep gauges, indicating they do at least startup.
+			KMega LEDs update as per KKIM, indicating it's receiving outputRefreshPackets from KKIM
+			Altitude gauge shows ~70m, indicating it's receiving altitudePackets from KMega
+				KMega is "hitting" the code that should be assembling and sending the gauge packets.
+		
+			NGH B is NOT getting gauge packets on the serial port...
+			NGH B is getting bytes on the serial port.
+			
+			When NGH B starts (KKIM off, KMega on), it sees 24 bytes in the serial buffer.
+			When NGH B starts (KKIM on, KMega on), it sees lots of bytes in the serial buffer.
+			KKIM on, KMega on:
+				NGH B is seeing 3 delimiter bytes in a row.
+				NGH B is seeing a packetBufferCursor at full size.
+				NGH B is getting a gauge packet
+				NGH B is getting a gauge packet with the expected first 3 bytes in the header
+				Discovered KMega  was sending the current position (always 0), not the desired position...
+				It's alive!!! (Tested NGH B w/ monoprop and charge only)
+			
+			
+		Troubleshooting ideas:
+			Understand what data NGH B is getting.
+			Redirect GaugePacketB to KKIM instead of NGH B and inspect the packet contents.
+			
+			Re-inspect added code...
+		
 			
 	Tweak NUMBER_OF_NEEDLE_POSITIONS
 	Tweak packet send rate to reduce jitter

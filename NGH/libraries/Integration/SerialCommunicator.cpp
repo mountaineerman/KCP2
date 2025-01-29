@@ -15,15 +15,15 @@ void SerialCommunicator::setGaugePacket(const byte * gaugePacket) {
 }
 
 void SerialCommunicator::establishKMegaSerialLink() {
-	Serial.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
-	Serial.begin(BAUD_RATE);
+	Serial1.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
+	Serial1.begin(BAUD_RATE);
 }
 
 void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
-	
-	while (Serial.available()) { // There are bytes available in the Arduino Serial Buffer
-		
-		this->receivedByte = Serial.read();
+
+	while (Serial1.available()) { // There are bytes available in the Arduino Serial Buffer
+
+		this->receivedByte = Serial1.read();
 		
 		if (0 <= this->delimiterByteCounter && this->delimiterByteCounter < NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet has not started yet
 			if (this->receivedByte == PACKET_DELIMITER_BYTE) {
@@ -31,19 +31,17 @@ void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
 			} else {
 				this->delimiterByteCounter = 0;
 			}
-		
 		} else if (this->delimiterByteCounter == NUMBER_OF_PACKET_DELIMITER_BYTES) { //Packet read in progress
 			this->packetBuffer[this->packetBufferCursor] = this->receivedByte;
 			this->packetBufferCursor++;
 		} else {
-			//Serial.println(F("Exception: SerialCommunicator.ingestDataFromSerialBufferToPacketBuffer(): delimiterByteCounter is out of range"));
+			//Serial1.println(F("Exception: SerialCommunicator.ingestDataFromSerialBufferToPacketBuffer(): delimiterByteCounter is out of range"));
 		}
-		
 		
 		if (this->packetBufferCursor == GAUGE_PACKET_LENGTH_IN_BYTES) { //A full packet is in the Packet Buffer
 			if (true /*TODO:packet is valid*/) {
 				this->isValidPacketInPacketBuffer = true;
-				return;				
+				return;
 			} else { //Packet is invalid
 				this->clearPacketBuffer();
 			}
@@ -67,7 +65,7 @@ bool SerialCommunicator::getGaugePacket() {
 
 
 void SerialCommunicator::teardownKMegaSerialLink() {
-	Serial.end();
+	Serial1.end();
 }
 
 void SerialCommunicator::clearPacketBuffer() {

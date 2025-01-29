@@ -50,6 +50,7 @@ void ControlPanel::blockRunAllGearedSteppersToPosition(int position, unsigned lo
 	// this->moduleI.stepper_Fuel.setDesiredPosition(position);
 
 	// [GaugePacketB]
+	this->moduleI.stepper_Charge.setDesiredPosition(position);
 	this->moduleI.stepper_MonopropellantIntake.setDesiredPosition(position);
 	this->moduleGT.stepper_Density.setDesiredPosition(position);
 	this->moduleGT.stepper_Speed.setDesiredPosition(position);

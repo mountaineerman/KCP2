@@ -2,7 +2,6 @@
 #define NEMA17StepperMotor_h
 
 #include <Arduino.h>
-#include <Interface_StepperMotorAggregator.h>
 
 /* NEMA17 Stepper Motor controlled via the Sparkfun EasyDriver.
  *
@@ -14,11 +13,11 @@
  *     -Driver: https://www.sparkfun.com/products/12779
  *
  * PRE-REQUISITE: Motor begins in STEPPER_CCW_LIMIT position (pointing "North") */
-class NEMA17StepperMotor : public Interface_StepperMotorAggregator
+class NEMA17StepperMotor
 {
 public:
 	//Define a stepper motor and set its maximum speed/acceleration
-	NEMA17StepperMotor(uint8_t pinStep, uint8_t pinDirection, uint8_t pinSleep, uint8_t pinMS1, uint8_t pinMS2);
+	NEMA17StepperMotor();
 	
 	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary()
 	void setDesiredPosition(int desiredPosition);
@@ -26,21 +25,13 @@ public:
 	//Set the desired position, relative to the current position
 	void setDesiredRelativePosition(int desiredRelativePosition);
 	
-	//Check if the stepper needs to move. Move it one step if it does. Returns true if the motor is still running to the desired position.
-	bool runStepperIfNecessary();
-
-	//Block until the stepper has reached its desired position
-	void runToDesiredPosition();
-	
 	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	int getCurrentPosition();
 	
+	//Returns the desired position of the motor (not equal to currentPosition)
+	int getDesiredPosition();
+
 private:
-	uint8_t pinStep;	 //The Step input to the driver. Low to High transition means to step.
-	uint8_t pinDirection;//The Direction input the driver. HIGH means CCW, LOW means CW.
-	uint8_t pinSleep;	 //Sleep override. Bring LOW to disable outputs and minimize power consumption.
-	uint8_t pinMS1;		 //MicroStep Input 1 (see constructor)
-	uint8_t pinMS2;		 //MicroStep Input 2 (see constructor)
 
 	/* A number describing KKIM's desired stepper motor position, in steps.
 	 * Range: [0-1599] [STEPPER_CCW_LIMIT-NEMA17_CW_LIMIT]
@@ -55,12 +46,6 @@ private:
 
 	//The time the motor was last stepped, in microseconds
 	unsigned long motorLastStepped;
-
-	//Move the stepper motor one step (unless the stepper's currentPosition is at the desiredPosition)
-	void takeStep();
-	
-	void setDirectionCCWAndUpdateCurrentPosition();
-	void setDirectionCWAndUpdateCurrentPosition();
 };
 
 #endif

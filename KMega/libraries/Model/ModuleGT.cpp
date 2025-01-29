@@ -17,10 +17,10 @@ ModuleGT::ModuleGT(Adafruit_TLC5947& ledDriverBoards)
 , ledPWM_RADARALT_Red	(PIN_LEDDB_RADARALT_RGBLED_RED, 	ledDriverBoards)
 , ledPWM_RADARALT_Green	(PIN_LEDDB_RADARALT_RGBLED_GRN, 	ledDriverBoards)
 , ledPWM_RADARALT_Blue	(PIN_LEDDB_RADARALT_RGBLED_BLU, 	ledDriverBoards)
-, stepper_Density	(PIN_VID6606_3_FREQUENCY_DENSITY,		PIN_VID6606_3_DIRECTION_DENSITY,		false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
-, stepper_Speed		(PIN_VID6606_3_FREQUENCY_SPEED,			PIN_VID6606_3_DIRECTION_SPEED,			false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
-, stepper_VertSpeed	(PIN_VID6606_3_FREQUENCY_VERTICALSPEED,	PIN_VID6606_3_DIRECTION_VERTICALSPEED,	false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
-, stepper_RadarAlt	(PIN_VID6606_3_FREQUENCY_RADARALTITUDE,	PIN_VID6606_3_DIRECTION_RADARALTITUDE,	false, GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_Density	(GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_Speed		(GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_VertSpeed	(GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+, stepper_RadarAlt	(GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
 {
 	this->altitude = STARTING_ALTITUDE;
 }
@@ -65,9 +65,9 @@ void ModuleGT::testLEDsSequentially() {
 
 bool ModuleGT::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
-	isAMotorStillInMotion = this->stepper_Density.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_Speed.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_VertSpeed.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_RadarAlt.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->stepper_Density.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->stepper_Speed.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->stepper_VertSpeed.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->stepper_RadarAlt.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;	
 }

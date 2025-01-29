@@ -2,7 +2,6 @@
 #define StepperMotor2_h
 
 #include <Arduino.h>
-#include <Interface_StepperMotorAggregator.h>
 
 /* x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.
  *
@@ -15,10 +14,10 @@
  *
  * PRE-REQUISITE: Motor begins in ..._CCW_LIMIT position
  */
-class StepperMotor2 : public Interface_StepperMotorAggregator
+class StepperMotor2
 {
 public:
-	StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int speed, int ccwLimit, int cwLimit);
+	StepperMotor2(int speed, int ccwLimit, int cwLimit);
 	
 	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary() or blockRunToDesiredPosition()
 	void setDesiredPosition(int desiredPosition);
@@ -34,6 +33,9 @@ public:
 	
 	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	int getCurrentPosition();
+
+	//Returns the desired position of the motor (not equal to currentPosition)
+	int getDesiredPosition();
 	
 	void setSpeed(int speed);
 	int getSpeed();
@@ -45,14 +47,6 @@ private:
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//CONFIGURATION PARAMETERS
-	//The Step input to the driver. Low to High transition means to step.
-	uint8_t pinStep;
-
-	//The Direction input to the driver. High means forward, Low means reverse.
-	uint8_t pinDirection;
-	
-	//The configuration of the motor. Some motors are inverted, others are not. I think this depends on the wiring.
-	bool arePinsInverted;
 	
 	//Stepper Motor Speed (steps per second).
 	int speed;

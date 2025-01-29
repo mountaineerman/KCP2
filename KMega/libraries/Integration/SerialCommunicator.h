@@ -12,10 +12,14 @@ public:
 	SerialCommunicator();
 	void setOutputRefreshPacket(const byte * outputRefreshPacket);
 	void setAltitudePacket(const byte * altitudePacket);
+	void setGaugePacketA(const byte * gaugePacketA);
+	void setGaugePacketB(const byte * gaugePacketB);
 	void setInputRefreshPacket(const byte * inputRefreshPacket);
 	
 	void establishKKIMSerialLink();
 	void establishKNanoSerialLink();
+	void establishNGHASerialLink();
+	void establishNGHBSerialLink();
 	
 	//Ingests data from the Arduino Serial Buffer until:
 	// a) A complete and valid OutputRefreshPacket has been stored in the Packet Buffer, OR
@@ -27,6 +31,10 @@ public:
 	
 	//Attempts to send an altitudePacket to KNano.
 	void sendAltitudePacket();
+	//Attempts to send a gaugePacketA to NGH A.
+	void sendGaugePacketA();
+	//Attempts to send a gaugePacketB to NGH B.
+	void sendGaugePacketB();
 	//Attempts to send an inputRefreshPacket to KKIM.
 	void sendInputRefreshPacket();
 	//Attempts to send a KKIMTerminalDisplayPacket to KKIM.
@@ -48,9 +56,10 @@ private:
 	byte receivedByte;
 	byte packetBuffer[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];
 	byte * outputRefreshPacket; //See KMegaService
-	
 	byte * altitudePacket; 		//See KMegaService
-	
+	byte * gaugePacketA;		//See KMegaService
+	byte * gaugePacketB;		//See KMegaService
+
 	int numberOfBytesWritten;
 	byte * inputRefreshPacket;  //See KMegaService
 	

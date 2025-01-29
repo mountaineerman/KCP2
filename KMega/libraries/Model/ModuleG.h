@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <Interface_Input.h>
 #include <Interface_LEDAggregator.h>
-#include <Interface_StepperMotorAggregator.h>
 #include <SwitchSP2T.h>
 #include <LED_PWM.h>
 #include <StepperMotor2.h>
@@ -16,7 +15,7 @@
  * Stepper motors: Mach, Pitch, Heading 
  * Communications LED
  * Heat/Life Support Switch */
-class ModuleG : public Interface_Input, public Interface_LEDAggregator, public Interface_StepperMotorAggregator
+class ModuleG : public Interface_Input, public Interface_LEDAggregator
 {
 public:
 	ModuleG(Adafruit_TLC5947& ledDriverBoards);

@@ -35,6 +35,14 @@ void SerialCommunicator::setAltitudePacket(const byte * altitudePacket) {
 	this->altitudePacket = altitudePacket;
 }
 
+void SerialCommunicator::setGaugePacketA(const byte * gaugePacketA) {
+	this->gaugePacketA = gaugePacketA;
+}
+
+void SerialCommunicator::setGaugePacketB(const byte * gaugePacketB) {
+	this->gaugePacketB = gaugePacketB;
+}
+
 void SerialCommunicator::setInputRefreshPacket(const byte * inputRefreshPacket) {
 	this->inputRefreshPacket = inputRefreshPacket;
 }
@@ -45,8 +53,18 @@ void SerialCommunicator::establishKKIMSerialLink() {
 }
 
 void SerialCommunicator::establishKNanoSerialLink() {
-	Serial1.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);//TODO Confirm Serial1
+	Serial1.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
 	Serial1.begin(KNANO_BAUD_RATE);
+}
+
+void SerialCommunicator::establishNGHASerialLink() {
+	Serial2.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
+	Serial2.begin(NGH_BAUD_RATE);
+}
+
+void SerialCommunicator::establishNGHBSerialLink() {
+	Serial3.setTimeout(SERIAL_READ_TIMEOUT_IN_MILLISECONDS);
+	Serial3.begin(NGH_BAUD_RATE);
 }
 
 void SerialCommunicator::ingestDataFromSerialBufferToPacketBuffer() {
@@ -116,6 +134,18 @@ void SerialCommunicator::sendAltitudePacket() {
 	
 	if ( Serial1.availableForWrite() >= ALTITUDE_PACKET_LENGTH_IN_BYTES) {
 		Serial1.write(altitudePacket, ALTITUDE_PACKET_LENGTH_IN_BYTES);
+	}
+}
+
+void SerialCommunicator::sendGaugePacketA() {
+	if ( Serial2.availableForWrite() >= GAUGE_PACKET_LENGTH_IN_BYTES) {
+		Serial2.write(this->gaugePacketA, GAUGE_PACKET_LENGTH_IN_BYTES);
+	}
+}
+
+void SerialCommunicator::sendGaugePacketB() {
+	if ( Serial3.availableForWrite() >= GAUGE_PACKET_LENGTH_IN_BYTES) {
+		Serial3.write(this->gaugePacketB, GAUGE_PACKET_LENGTH_IN_BYTES);
 	}
 }
 

@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <Interface_LEDAggregator.h>
-#include <Interface_StepperMotorAggregator.h>
 #include <LED_PWM.h>
 #include <StepperMotor2.h>
 
@@ -11,7 +10,7 @@
 /* Module C
  *
  * Heat, Life Support, G-Force */
-class ModuleC : public Interface_LEDAggregator, public Interface_StepperMotorAggregator
+class ModuleC : public Interface_LEDAggregator
 {
 public:
 	ModuleC(Adafruit_TLC5947& ledDriverBoards);

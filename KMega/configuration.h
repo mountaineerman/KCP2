@@ -31,6 +31,10 @@ static const unsigned long KNANO_BAUD_RATE = 9600;
 static const int ALTITUDE_PACKET_LENGTH_IN_BYTES = 16;  //Length of Delimiter + Header + Payload.
 static const float STARTING_ALTITUDE = -1.0e1;
 
+//NGH A and B Interfaces
+static const unsigned long NGH_BAUD_RATE = 9600; //BAUD rate used for communicating with NGH A and B
+static const int GAUGE_PACKET_LENGTH_IN_BYTES = 24;  //Length of Gauge Packet A and Gauge Packet B, including Delimiter + Header + Payload.
+
 //===========================================================================================================================================================================
 //Multiplexer
 static const int MULTIPLEXER_IO_ROW_1 = 1;
@@ -255,41 +259,42 @@ static const int PIN_LED_DRIVER_BOARDS_CLOCK = 10;	//"CLK"
 static const int PIN_LED_DRIVER_BOARDS_DATA_IN = 11;//"DIN"
 //12 UNASSIGNED. Appears faulty...
 static const int PIN_GLASS_COCKPIT_CL_SWITCH = 13;
-static const int PIN_GLASS_COCKPIT_BL_SWITCH = 14;
-static const int PIN_GLASS_COCKPIT_TR_SWITCH = 15;
-static const int PIN_GLASS_COCKPIT_CR_SWITCH = 16;
-static const int PIN_GLASS_COCKPIT_BR_SWITCH = 17;
+static const int PIN_NANO_GAUGE_HELPER_B_RX = 14;//Mega TX3
+static const int PIN_NANO_GAUGE_HELPER_B_TX = 15;//Mega RX3
+static const int PIN_NANO_GAUGE_HELPER_A_RX = 16;//Mega TX2
+static const int PIN_NANO_GAUGE_HELPER_A_TX = 17;//Mega RX2
 static const int PIN_ARDUINO_NANO_RX = 18;
 static const int PIN_ARDUINO_NANO_TX = 19;
 static const int PIN_TIME_WARP_DOWN = 20;
 static const int PIN_TIME_WARP_UP = 21;
-static const int PIN_VID6606_1_FREQUENCY_HEATLIFE = 22;
-static const int PIN_VID6606_1_DIRECTION_HEATLIFE = 23;
-static const int PIN_VID6606_1_FREQUENCY_GFORCE = 24;
-static const int PIN_VID6606_1_DIRECTION_GFORCE = 25;
-static const int PIN_VID6606_1_FREQUENCY_MACH = 26;
-static const int PIN_VID6606_1_DIRECTION_MACH = 27;
-static const int PIN_VID6606_1_FREQUENCY_PITCH = 28;
-static const int PIN_VID6606_1_DIRECTION_PITCH = 29;
-static const int PIN_VID6606_2_FREQUENCY_FUEL = 30;
-static const int PIN_VID6606_2_DIRECTION_FUEL = 31;
-static const int PIN_VID6606_2_FREQUENCY_CHARGE = 32;
-static const int PIN_VID6606_2_DIRECTION_CHARGE = 33;
-static const int PIN_VID6606_2_FREQUENCY_MNPINT = 34;
-static const int PIN_VID6606_2_DIRECTION_MNPINT = 35;
-static const int PIN_VID6606_3_FREQUENCY_DENSITY = 36;
-static const int PIN_VID6606_3_DIRECTION_DENSITY = 37;
-static const int PIN_VID6606_3_FREQUENCY_SPEED = 38;
-static const int PIN_VID6606_3_DIRECTION_SPEED = 39;
-static const int PIN_VID6606_3_FREQUENCY_VERTICALSPEED = 40;
-static const int PIN_VID6606_3_DIRECTION_VERTICALSPEED = 41;
-static const int PIN_VID6606_3_FREQUENCY_RADARALTITUDE = 42;
-static const int PIN_VID6606_3_DIRECTION_RADARALTITUDE = 43;
-static const int PIN_EASYDRIVER_SLP = 44;
-static const int PIN_EASYDRIVER_MS1 = 45;
-static const int PIN_EASYDRIVER_MS2 = 46;
-static const int PIN_EASYDRIVER_STEP = 47;
-static const int PIN_EASYDRIVER_DIR = 48;
+//Note: Stepper Motors moved to NGH A and NGH B:
+static const int PIN_GLASS_COCKPIT_BL_SWITCH = 22;	//static const int PIN_VID6606_1_FREQUENCY_HEATLIFE = 22;
+static const int PIN_GLASS_COCKPIT_TR_SWITCH = 23;	//static const int PIN_VID6606_1_DIRECTION_HEATLIFE = 23;
+static const int PIN_GLASS_COCKPIT_CR_SWITCH = 24;	//static const int PIN_VID6606_1_FREQUENCY_GFORCE = 24;
+static const int PIN_GLASS_COCKPIT_BR_SWITCH = 25;	//static const int PIN_VID6606_1_DIRECTION_GFORCE = 25;
+//26 UNASSIGNED										//static const int PIN_VID6606_1_FREQUENCY_MACH = 26;
+//27 UNASSIGNED										//static const int PIN_VID6606_1_DIRECTION_MACH = 27;
+//28 UNASSIGNED										//static const int PIN_VID6606_1_FREQUENCY_PITCH = 28;
+//29 UNASSIGNED										//static const int PIN_VID6606_1_DIRECTION_PITCH = 29;
+//30 UNASSIGNED										//static const int PIN_VID6606_2_FREQUENCY_FUEL = 30;
+//31 UNASSIGNED										//static const int PIN_VID6606_2_DIRECTION_FUEL = 31;
+//32 UNASSIGNED										//static const int PIN_VID6606_2_FREQUENCY_CHARGE = 32;
+//33 UNASSIGNED										//static const int PIN_VID6606_2_DIRECTION_CHARGE = 33;
+//34 UNASSIGNED										//static const int PIN_VID6606_2_FREQUENCY_MNPINT = 34;
+//35 UNASSIGNED										//static const int PIN_VID6606_2_DIRECTION_MNPINT = 35;
+//36 UNASSIGNED										//static const int PIN_VID6606_3_FREQUENCY_DENSITY = 36;
+//37 UNASSIGNED										//static const int PIN_VID6606_3_DIRECTION_DENSITY = 37;
+//38 UNASSIGNED										//static const int PIN_VID6606_3_FREQUENCY_SPEED = 38;
+//39 UNASSIGNED										//static const int PIN_VID6606_3_DIRECTION_SPEED = 39;
+//40 UNASSIGNED										//static const int PIN_VID6606_3_FREQUENCY_VERTICALSPEED = 40;
+//41 UNASSIGNED										//static const int PIN_VID6606_3_DIRECTION_VERTICALSPEED = 41;
+//42 UNASSIGNED										//static const int PIN_VID6606_3_FREQUENCY_RADARALTITUDE = 42;
+//43 UNASSIGNED										//static const int PIN_VID6606_3_DIRECTION_RADARALTITUDE = 43;
+//44 UNASSIGNED										//static const int PIN_EASYDRIVER_SLP = 44;
+//45 UNASSIGNED										//static const int PIN_EASYDRIVER_MS1 = 45;
+//46 UNASSIGNED										//static const int PIN_EASYDRIVER_MS2 = 46;
+//47 UNASSIGNED										//static const int PIN_EASYDRIVER_STEP = 47;
+//48 UNASSIGNED										//static const int PIN_EASYDRIVER_DIR = 48;
 static const int PIN_4POS_SWITCH_AB = 49;
 static const int PIN_4POS_SWITCH_CD = 50;
 //51 UNASSIGNED

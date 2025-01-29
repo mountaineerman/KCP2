@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <Interface_Input.h>
 #include <Interface_LEDAggregator.h>
-#include <Interface_StepperMotorAggregator.h>
 #include <SwitchSP2T.h>
 #include <LED_PWM.h>
 #include <StepperMotor2.h>
@@ -15,7 +14,7 @@
  * Stepper motors: Fuel, Charge, Monopropellant/Intake Air
  * Delta Fuel LED
  * Monopropellant/Intake Air Switch */
-class ModuleI : public Interface_Input, public Interface_LEDAggregator, public Interface_StepperMotorAggregator
+class ModuleI : public Interface_Input, public Interface_LEDAggregator
 {
 public:
 	ModuleI(Adafruit_TLC5947& ledDriverBoards);

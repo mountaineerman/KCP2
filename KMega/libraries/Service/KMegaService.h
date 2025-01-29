@@ -35,6 +35,8 @@ private:
 	
 	byte outputRefreshPacket[OUTPUT_REFRESH_PACKET_LENGTH_IN_BYTES];//READ-ONLY by KMegaService after initialization
 	byte altitudePacket[ALTITUDE_PACKET_LENGTH_IN_BYTES];			//READ-ONLY by KMegaService after initialization
+	byte gaugePacketA[GAUGE_PACKET_LENGTH_IN_BYTES];				//READ-ONLY by KMegaService after initialization
+	byte gaugePacketB[GAUGE_PACKET_LENGTH_IN_BYTES];				//READ-ONLY by KMegaService after initialization
 	byte inputRefreshPacket[INPUT_REFRESH_PACKET_LENGTH_IN_BYTES];	//READ-ONLY by KMegaService after initialization
 	
 	long inputRefreshPacketLastSendTimeInMilliseconds;

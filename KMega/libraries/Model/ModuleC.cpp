@@ -14,8 +14,8 @@ ModuleC::ModuleC(Adafruit_TLC5947& ledDriverBoards)
 	, ledPWM_GFORCE_Red		(PIN_LEDDB_GFORCE_RGBLED_RED, 		ledDriverBoards)
 	, ledPWM_GFORCE_Green	(PIN_LEDDB_GFORCE_RGBLED_GRN, 		ledDriverBoards)
 	, ledPWM_GFORCE_Blue	(PIN_LEDDB_GFORCE_RGBLED_BLU, 		ledDriverBoards)
-	, stepper_HeatLife		(PIN_VID6606_1_FREQUENCY_HEATLIFE,	PIN_VID6606_1_DIRECTION_HEATLIFE,	false,	GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
-	, stepper_Gforce		(PIN_VID6606_1_FREQUENCY_GFORCE,	PIN_VID6606_1_DIRECTION_GFORCE, 	false,	GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+	, stepper_HeatLife		(GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
+	, stepper_Gforce		(GEARED_STEPPER_SPEED, STEPPER_CCW_LIMIT, GEARED_STEPPER_CW_LIMIT)
 {
 	
 }
@@ -54,7 +54,7 @@ void ModuleC::testLEDsSequentially() {
 
 bool ModuleC::runStepperIfNecessary() {
 	bool isAMotorStillInMotion = false;
-	isAMotorStillInMotion = this->stepper_HeatLife.runStepperIfNecessary() || isAMotorStillInMotion;
-	isAMotorStillInMotion = this->stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->stepper_HeatLife.runStepperIfNecessary() || isAMotorStillInMotion;
+	// isAMotorStillInMotion = this->stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
 	return isAMotorStillInMotion;
 }
