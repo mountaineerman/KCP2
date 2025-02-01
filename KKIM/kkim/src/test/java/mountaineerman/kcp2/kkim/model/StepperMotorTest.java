@@ -71,4 +71,19 @@ class StepperMotorTest {
 		fakeMotor2.setDesiredPositionUsingCalibrationLimits((float) 52.7932, (float) 0.0, (float) 100.0);
 		Assertions.assertEquals(fakeMotor2.getDesiredPosition(), 1631);
 	}
+
+    @Test
+    void testSetDesiredPositionUsingCustomLimits() {
+        
+		// No calibration limits
+		StepperMotor motor = new StepperMotor("fakeMotor", ModuleID.GT, 0, 3779);
+
+		// Vertical Speed > 200.0 m/s
+		motor.setDesiredPositionUsingCustomLimits((float) 201.0, (float) 50.0, (float) 200.0, 2950, 3770);
+		Assertions.assertEquals(3770, motor.getDesiredPosition());
+
+		// 50.0 < Vertical Speed < 200.0 m/s
+		motor.setDesiredPositionUsingCustomLimits((float) 99.0, (float) 50.0, (float) 200.0, 2950, 3770);
+		Assertions.assertEquals(3218, motor.getDesiredPosition());
+    }
 }

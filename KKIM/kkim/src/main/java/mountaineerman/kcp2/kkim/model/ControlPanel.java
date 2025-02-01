@@ -566,9 +566,9 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		if (verticalSpeed > 50.0) {
 			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, 2950, 3770);
 		} else if (verticalSpeed > -50.0) {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(speed, (float) -50.0, (float) 50.0, 815, 2950);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -50.0, (float) 50.0, 815, 2950);
 		} else {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(speed, (float) -200.0, (float) -50.0, 0, 815);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -200.0, (float) -50.0, 0, 815);
 		}
 
 		if (verticalSpeed > 50.0) {

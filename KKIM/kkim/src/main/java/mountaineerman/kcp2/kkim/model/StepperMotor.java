@@ -79,6 +79,15 @@ public class StepperMotor extends Part {
 	 *		rangeMax = 150     (15.0 G's)
 	 */
 	public void setDesiredPositionUsingCalibrationLimits(float valueInRange, float rangeMin, float rangeMax) {
+
+		if (this.calibrationCCWLimit < 0) {
+			throw new RuntimeException("calibrationCCWLimit (" + this.calibrationCCWLimit + ") has not been defined for " + this.getName());
+		}
+
+		if (this.calibrationCWLimit < 0) {
+			throw new RuntimeException("calibrationCWLimit (" + this.calibrationCWLimit + ") has not been defined for " + this.getName());
+		}
+
 		setDesiredPositionUsingCustomLimits(valueInRange, rangeMin, rangeMax, this.calibrationCCWLimit, this.calibrationCWLimit);
 	}
 
