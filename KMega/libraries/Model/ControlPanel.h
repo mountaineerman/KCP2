@@ -56,13 +56,6 @@ public:
 	void activateLEDOverride();
 	void disableLEDOverride();
 	
-	//Check if any stepper in the Panel needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
-	bool runStepperIfNecessary();
-	//Run all steppers to position. Blocks until all steppers have arrived at the position. Does not affect Heading Gauge.
-	void blockRunAllGearedSteppersToPosition(int position, unsigned long stepTimeInMicroseconds);
-	//Run all geared steppers to GEARED_STEPPER_CW_LIMIT, then STEPPER_CCW_LIMIT. Blocks until all steppers have arrived at the position. Does not affect Heading Gauge.
-	void sweepGearedStepperMotorsThroughMaxMin();
-	
 	void runDiagnosticMode();
 	
 	ModuleA moduleA;

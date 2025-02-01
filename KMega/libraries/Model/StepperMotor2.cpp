@@ -10,7 +10,6 @@ StepperMotor2::StepperMotor2(int speed, int ccwLimit, int cwLimit) {
 	this->ccwLimit = ccwLimit;
 	this->cwLimit = cwLimit;
 	this->setDesiredPosition(0);
-	this->currentPosition = 0;
 }
 
 void StepperMotor2::setDesiredPosition(int desiredPosition) {
@@ -22,21 +21,6 @@ void StepperMotor2::setDesiredPosition(int desiredPosition) {
 	} else {
 		this->desiredPosition = desiredPosition;
 	}
-}
-
-void StepperMotor2::setDesiredRelativePosition(int desiredRelativePosition) {
-
-	this->setDesiredPosition(this->currentPosition + desiredRelativePosition);
-}
-
-void StepperMotor2::blockRunToDesiredPosition() {
-	while(this->runStepperIfNecessary()) {
-		delayMicroseconds(this->timeBetweenSteps - STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS);
-	}
-}
-
-int StepperMotor2::getCurrentPosition() {
-	return this->currentPosition;
 }
 
 int StepperMotor2::getDesiredPosition() {

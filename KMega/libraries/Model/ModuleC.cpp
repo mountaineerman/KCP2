@@ -51,10 +51,3 @@ void ModuleC::testLEDsSequentially() {
 	blinkLED(this->ledPWM_GFORCE_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
-
-bool ModuleC::runStepperIfNecessary() {
-	bool isAMotorStillInMotion = false;
-	// isAMotorStillInMotion = this->stepper_HeatLife.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->stepper_Gforce.runStepperIfNecessary() || isAMotorStillInMotion;
-	return isAMotorStillInMotion;
-}

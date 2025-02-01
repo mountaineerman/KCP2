@@ -19,16 +19,10 @@ public:
 	//Define a stepper motor and set its maximum speed/acceleration
 	NEMA17StepperMotor();
 	
-	//Set the desired position. Does not move the stepper, for that you must call runStepperIfNecessary()
+	//Set the absolute desired position
 	void setDesiredPosition(int desiredPosition);
 	
-	//Set the desired position, relative to the current position
-	void setDesiredRelativePosition(int desiredRelativePosition);
-	
-	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
-	int getCurrentPosition();
-	
-	//Returns the desired position of the motor (not equal to currentPosition)
+	//Returns the desired position of the motor
 	int getDesiredPosition();
 
 private:
@@ -40,12 +34,6 @@ private:
 	 * e.g., desiredPosition of 799 means the heading gauge is pointing South.
 	 * e.g., desiredPosition of 1199 means the heading gauge is pointing West. */
 	int desiredPosition;
-
-	//A number describing the current stepper motor position, in steps.
-	int currentPosition;
-
-	//The time the motor was last stepped, in microseconds
-	unsigned long motorLastStepped;
 };
 
 #endif

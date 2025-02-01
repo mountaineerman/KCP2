@@ -65,11 +65,3 @@ void ModuleG::testLEDsSequentially() {
 	blinkLED(this->ledPWM_HEADING_Blue);
 	delay(DIAGNOSTIC_MODE_SEQUENTIAL_LED_TIME_IN_MILLISECONDS);
 }
-
-bool ModuleG::runStepperIfNecessary() {
-	bool isAMotorStillInMotion = false;
-	// isAMotorStillInMotion = this->stepper_Mach.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->stepper_Pitch.runStepperIfNecessary() || isAMotorStillInMotion;
-	// isAMotorStillInMotion = this->stepper_Heading.runStepperIfNecessary() || isAMotorStillInMotion;
-	return isAMotorStillInMotion;
-}
