@@ -175,14 +175,8 @@ void KMegaService::standardOperatingMode() {
 
 	if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::DIAGNOSTIC;
-	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
-		if (this->allowOutputsToEnterIdleState) {//User has requested KKIM Diagnostic Mode. Do not allow outputs to go to Idle.
-			delay(1000);//debounce
-			this->allowOutputsToEnterIdleState = false;
-		} else {//User has requested to exit KKIM Diagnostic Mode. Allow outputs to go to Idle.
-			delay(1000);//debounce
-			this->allowOutputsToEnterIdleState = true;
-		}
+	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {//User has requested KKIM Diagnostic Mode. Do not allow outputs to go to Idle.
+		this->allowOutputsToEnterIdleState = false;
 	} else if (this->controlPanel.moduleH.switch_GlassCockpit_TR.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::SHUTDOWN;
 	} else {

@@ -212,8 +212,10 @@ public class SerialCommunicator {
 		}
 	}
 		
-	public void teardownSerialLink() {//TODO
-		
+	public void teardownSerialLinkToKMega() {
+		System.out.println("Closing serial connection to KMega... ");
+		this.serialPort.closePort();
+		System.out.println("DONE"); 		
 	}
 	
 	public void ingestDataFromSerialPortAndDisplay() {//TODO scrap

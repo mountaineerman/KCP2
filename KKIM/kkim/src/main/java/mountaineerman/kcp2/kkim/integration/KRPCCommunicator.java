@@ -91,6 +91,17 @@ public class KRPCCommunicator {
 		}
 	}
 
+	public void closeKRPCLink() {
+		
+		System.out.print("Closing connection to kRPC... ");
+		try {
+			this.connection.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.print("DONE");
+	}
+
 	public void pullInfoFromKSPIntoModel() {//TODO Rewrite
 
 		/*
