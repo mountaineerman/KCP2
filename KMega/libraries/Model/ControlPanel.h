@@ -32,13 +32,6 @@ private:
 	void diagnosticMode_testAllInputs();
 	void diagnosticMode_testAllLEDs();
 	void diagnosticMode_testLEDsSequentially();
-	void diagnosticMode_testStepperMotors();
-	void diagnosticMode_testNEMA17StepperMotor(NEMA17StepperMotor& stepperMotorUnderTest);
-	void diagnosticMode_testStepperMotor2(StepperMotor2& stepperMotorUnderTest);
-	void diagnosticMode_sweepSingleStepperMotor(StepperMotor2& stepperMotorUnderTest);
-	void diagnosticMode_sweepAllGearedStepperMotors();
-	void diagnosticMode_fuelTest();
-	//TODO: Add diagnostic mode for MUX only (see commented code in ControlPanel.cpp)
 
 	MuxShield mux;
 	Adafruit_TLC5947 ledDriverBoards;
