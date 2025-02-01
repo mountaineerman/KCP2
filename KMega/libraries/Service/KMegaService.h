@@ -43,6 +43,7 @@ private:
 	long outputRefreshPacketLastReceiveTimeInMilliseconds;
 	long commsLEDErrorStateLastToggleTimeInMilliseconds;
 	
+	bool allowOutputsToEnterIdleState;
 	bool outputsHaveBeenSetToIdleState;
 	KMegaOperatingMode nextMode;
 };

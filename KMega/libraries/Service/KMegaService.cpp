@@ -36,6 +36,7 @@ KMegaService::KMegaService()
 	this->outputRefreshPacketLastReceiveTimeInMilliseconds = millis();
 	this->commsLEDErrorStateLastToggleTimeInMilliseconds = millis();
 	
+	this->allowOutputsToEnterIdleState = true;
 	this->outputsHaveBeenSetToIdleState = false;
 	
 	//this->testAltitudeGauge();
@@ -129,42 +130,43 @@ void KMegaService::standardOperatingMode() {
 		this->serialCommunicator.sendGaugePacketB();
 	}
 	
-	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_ERROR_IN_MILLISECONDS ) {
-		this->updateCommsLEDToIndicateError();
-	}
-	
-	if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_IDLE_IN_MILLISECONDS ) {
-		if(!this->outputsHaveBeenSetToIdleState) {
-			this->controlPanel.setAllLEDsTo(PWM_LED_DIM);
-			
-			//this->packetAssembler.assembleNGHACalibrationRequest();
-			//TODO Replace the following with the calibration request on the previous line. START...
-			this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(0);
-			this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
-			this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(0);
-			this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(0);
-			this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
-			this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(0);
-			//TODO END...
-			this->serialCommunicator.sendGaugePacketA();
-			
-			//this->packetAssembler.assembleNGHBCalibrationRequest();
-			//TODO Replace the following with the calibration request on the previous line. START...
-			this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(0);
-			this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(0);
-			this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(0);
-			this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(0);
-			this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(0);
-			this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(0);
-			//TODO END...
-			this->serialCommunicator.sendGaugePacketB();
-			
-			this->outputsHaveBeenSetToIdleState = true;
+	if (this->allowOutputsToEnterIdleState) {
+		if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_ERROR_IN_MILLISECONDS ) {
+			this->updateCommsLEDToIndicateError();
 		}
-	} else {
-		this->outputsHaveBeenSetToIdleState = false;
+		
+		if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_IDLE_IN_MILLISECONDS ) {
+			if(!this->outputsHaveBeenSetToIdleState) {
+				this->controlPanel.setAllLEDsTo(PWM_LED_DIM);
+				
+				//this->packetAssembler.assembleNGHACalibrationRequest();
+				//TODO Replace the following with the calibration request on the previous line. START...
+				this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(0);
+				this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
+				this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(0);
+				this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(0);
+				this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
+				this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(0);
+				//TODO END...
+				this->serialCommunicator.sendGaugePacketA();
+				
+				//this->packetAssembler.assembleNGHBCalibrationRequest();
+				//TODO Replace the following with the calibration request on the previous line. START...
+				this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(0);
+				this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(0);
+				this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(0);
+				this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(0);
+				this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(0);
+				this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(0);
+				//TODO END...
+				this->serialCommunicator.sendGaugePacketB();
+				
+				this->outputsHaveBeenSetToIdleState = true;
+			}
+		} else {
+			this->outputsHaveBeenSetToIdleState = false;
+		}
 	}
-	
 	//this->serialCommunicator.tallyCommunicationsDiagnosticData();
 	//this->serialCommunicator.displayCommunicationsDiagnosticData();
 	
@@ -174,6 +176,14 @@ void KMegaService::standardOperatingMode() {
 	if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::DIAGNOSTIC;
 	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {
+		if (this->allowOutputsToEnterIdleState) {//User has requested KKIM Diagnostic Mode. Do not allow outputs to go to Idle.
+			delay(1000);//debounce
+			this->allowOutputsToEnterIdleState = false;
+		} else {//User has requested to exit KKIM Diagnostic Mode. Allow outputs to go to Idle.
+			delay(1000);//debounce
+			this->allowOutputsToEnterIdleState = true;
+		}
+	} else if (this->controlPanel.moduleH.switch_GlassCockpit_TR.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::SHUTDOWN;
 	} else {
 		this->nextMode = KMegaOperatingMode::STANDARD;

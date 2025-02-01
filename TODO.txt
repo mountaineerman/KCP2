@@ -20,12 +20,11 @@ Solve stepper motor performance
 				refactor blockRunAllGearedSteppersToPosition (guess travel time) - CURRENTLY DISABLED
 				refactor sweepGearedStepperMotorsThroughMaxMin - CURRENTLY DISABLED
 			KMegaService::standardOperatingMode()
-				packetAssembler.assembleNGHACalibrationRequest()
-				packetAssembler.assembleNGHBCalibrationRequest()
+				packetAssembler.assembleNGHACalibrationRequest() (using Command)
+				packetAssembler.assembleNGHBCalibrationRequest() (using Command)
 	Refactor StepperMotor2 (+...) given that KMega no longer directly controls the gauges
 		runStepperIfNecessary
 		ControlPanel: diagnostic modes...
-			
 
 	Tweak NUMBER_OF_NEEDLE_POSITIONS
 	Tweak packet send rate to reduce jitter
