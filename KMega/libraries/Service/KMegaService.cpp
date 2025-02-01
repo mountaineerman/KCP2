@@ -176,7 +176,12 @@ void KMegaService::standardOperatingMode() {
 	if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::DIAGNOSTIC;
 	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {//User has requested KKIM Diagnostic Mode. Do not allow outputs to go to Idle.
+		delay(2000);//simple debounce
 		this->allowOutputsToEnterIdleState = false;
+		this->packetAssembler.assembleNGHACoffeeCommand();
+		this->serialCommunicator.sendGaugePacketA();
+		this->packetAssembler.assembleNGHBCoffeeCommand();
+		this->serialCommunicator.sendGaugePacketB();
 	} else if (this->controlPanel.moduleH.switch_GlassCockpit_TR.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::SHUTDOWN;
 	} else {
@@ -186,26 +191,10 @@ void KMegaService::standardOperatingMode() {
 
 void KMegaService::shutdownMode() {
 	
-	//this->packetAssembler.assembleNGHACalibrationRequest();
-	//TODO Replace the following with the calibration request on the previous line. START...
-	this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(0);
-	this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
-	this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(0);
-	this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(0);
-	this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
-	this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(0);
-	//TODO END...
+	this->packetAssembler.assembleNGHACalibrationCommand();
 	this->serialCommunicator.sendGaugePacketA();
 
-	//this->packetAssembler.assembleNGHBCalibrationRequest();
-	//TODO Replace the following with the calibration request on the previous line. START...
-	this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(0);
-	this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(0);
-	this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(0);
-	this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(0);
-	this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(0);
-	this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(0);
-	//TODO END...
+	this->packetAssembler.assembleNGHBCalibrationCommand();
 	this->serialCommunicator.sendGaugePacketB();
 	
 	serialCommunicator.teardownSerialLinks();

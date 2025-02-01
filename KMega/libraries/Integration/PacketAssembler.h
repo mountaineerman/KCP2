@@ -23,6 +23,12 @@ public:
 	void assembleAltitudePacket();
 	void assembleGaugePacketA();
 	void assembleGaugePacketB();
+	//Prevents the NGH from idling. Used during KKIM Diagnostic mode.
+	void assembleNGHACoffeeCommand();
+	void assembleNGHBCoffeeCommand();
+	//Request the NGH to calibrate its stepper motors by sweeping them to maximum CW, then maximum CCW position.
+	void assembleNGHACalibrationCommand();
+	void assembleNGHBCalibrationCommand();
 	//Assembles the status of inputs in the KMega (ControlPanel) Model into an InputRefreshPacket
 	void assembleInputRefreshPacket();
 

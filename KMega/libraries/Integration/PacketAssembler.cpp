@@ -133,6 +133,102 @@ void PacketAssembler::assembleGaugePacketB() {
 	this->saveNumberToPacketAtByteNumbers(controlPanel.moduleGT.stepper_RadarAlt.getDesiredPosition(), PacketType::GAUGE_PACKET_B, 20, 21);
 }
 
+void PacketAssembler::assembleNGHACoffeeCommand() {
+	
+	// (1) Clear packet
+	for (int i = 0; i < GAUGE_PACKET_LENGTH_IN_BYTES; i++) {
+		this->gaugePacketA[i] = 0x00;
+	}
+
+	// (2) Populate Delimiter:
+	for (int i = 0; i < NUMBER_OF_PACKET_DELIMITER_BYTES; i++) {
+		this->gaugePacketA[i] = PACKET_DELIMITER_BYTE;
+	}
+
+	// (3) Populate Header:
+	/* Originator */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x01, 1);
+	/* Packet Type */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x06, 2);
+	/* Packet Length */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, (GAUGE_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES), 3);
+	/* Current Mode */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 4);//TODO
+	/* Command */		this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x01, 5);//Coffee Command
+	/* Parity Byte */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 6);//TODO
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 7);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 8);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 9);
+}
+
+void PacketAssembler::assembleNGHBCoffeeCommand() {
+
+	// (1) Clear packet
+	for (int i = 0; i < GAUGE_PACKET_LENGTH_IN_BYTES; i++) {
+		this->gaugePacketB[i] = 0x00;
+	}
+
+	// (2) Populate Delimiter:
+	for (int i = 0; i < NUMBER_OF_PACKET_DELIMITER_BYTES; i++) {
+		this->gaugePacketB[i] = PACKET_DELIMITER_BYTE;
+	}
+
+	// (3) Populate Header:
+	/* Originator */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x01, 1);
+	/* Packet Type */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x07, 2);
+	/* Packet Length */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, (GAUGE_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES), 3);
+	/* Current Mode */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 4);//TODO
+	/* Command */		this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x01, 5);//Coffee Command
+	/* Parity Byte */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 6);//TODO
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 7);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 8);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 9);
+}
+
+void PacketAssembler::assembleNGHACalibrationCommand() {
+
+	// (1) Clear packet
+	for (int i = 0; i < GAUGE_PACKET_LENGTH_IN_BYTES; i++) {
+		this->gaugePacketA[i] = 0x00;
+	}
+
+	// (2) Populate Delimiter:
+	for (int i = 0; i < NUMBER_OF_PACKET_DELIMITER_BYTES; i++) {
+		this->gaugePacketA[i] = PACKET_DELIMITER_BYTE;
+	}
+
+	// (3) Populate Header:
+	/* Originator */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x01, 1);
+	/* Packet Type */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x06, 2);
+	/* Packet Length */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, (GAUGE_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES), 3);
+	/* Current Mode */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 4);//TODO
+	/* Command */		this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x02, 5);//Calibration Command
+	/* Parity Byte */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 6);//TODO
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 7);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 8);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_A, 0x00, 9);
+}
+
+void PacketAssembler::assembleNGHBCalibrationCommand() {
+
+	// (1) Clear packet
+	for (int i = 0; i < GAUGE_PACKET_LENGTH_IN_BYTES; i++) {
+		this->gaugePacketB[i] = 0x00;
+	}
+
+	// (2) Populate Delimiter:
+	for (int i = 0; i < NUMBER_OF_PACKET_DELIMITER_BYTES; i++) {
+		this->gaugePacketB[i] = PACKET_DELIMITER_BYTE;
+	}
+
+	// (3) Populate Header:
+	/* Originator */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x01, 1);
+	/* Packet Type */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x07, 2);
+	/* Packet Length */	this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, (GAUGE_PACKET_LENGTH_IN_BYTES - NUMBER_OF_PACKET_DELIMITER_BYTES), 3);
+	/* Current Mode */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 4);//TODO
+	/* Command */		this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x02, 5);//Calibration Command
+	/* Parity Byte */	//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 6);//TODO
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 7);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 8);
+	/* Empty */			//this->saveByteToPacketAtByteNumber(PacketType::GAUGE_PACKET_B, 0x00, 9);
+}
+
 void PacketAssembler::assembleInputRefreshPacket() {
 	
 	//this->displayPacket(this->inputRefreshPacket, INPUT_REFRESH_PACKET_LENGTH_IN_BYTES, "inputRefreshPacket");
