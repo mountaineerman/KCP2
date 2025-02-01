@@ -112,7 +112,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public void refresh() {
 		//TODO make use of SwitchSP2T:statusChanged()
 		
-		CommonUtilities.clearScreen();
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {CommonUtilities.clearScreen();}
 
 		//Update inputs that are depended on by other Modules
 		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
@@ -143,6 +143,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
 		}
+		//System.out.println("throttleLever: " + throttleLever);
 
 		//Module B (+F) =======================================================
 		joystick_FwdBck = ((this.moduleB.analogInput_Joystick_FwdBck.getCenterDeadzonedValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Joystick_FwdBck.maxRescaleLim;
@@ -176,17 +177,17 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		if (this.moduleG.heatLifeSwitch.getStatus()) {//Life Support selected
 			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
 			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
-			System.out.println("percentLifeSupport: " + this.percentLifeSupport);
+			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
 			this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
 		} else {//Heat selected
 			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.BRIGHT, this.percentTemperatureHealth);
 			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
-			System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);
+			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);}
 			this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentTemperatureHealth, (float) 0, (float) 100);
 		}
 		
 		// ----- G-Force ----------------------
-		System.out.println("gforce: " + this.gforce);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("gforce: " + this.gforce);}
 		this.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits(this.gforce, (float) 0, (float) 15);
 		if (this.gforce > 10.0) {
 			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.RED);
@@ -315,13 +316,13 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Pitch: see Module G
 		
 		//Module F ============================================================
-		System.out.println("Current draw (mA): " + this.moduleF.analogInput_Current.getRescaledValue());
+		//System.out.println("Current draw (mA): " + this.moduleF.analogInput_Current.getRescaledValue());
 		//Trim: see Module B
 		//Sensitivity Switch: See Modules A, B
 		
 		//Module G (+E) =======================================================
 		// ----- Mach ----------------------
-		System.out.println("mach: " + this.mach);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("mach: " + this.mach);}
 		this.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits(this.mach, (float) 0, (float) 24);
 		if (this.mach > 28.0) {
 			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.VIOLET);
@@ -343,7 +344,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		// ----- Pitch ----------------------
 		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
-			System.out.println("pitch (90 degree mode): " + this.pitch);
+			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("pitch (90 degree mode): " + this.pitch);}
 			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -90, (float) 90);
 			if (this.pitch > 60.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
@@ -363,7 +364,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.OFF);
 			}
 		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
-			System.out.println("pitch (30 degree mode): " + this.pitch);
+			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("pitch (30 degree mode): " + this.pitch);}
 			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -30, (float) 30);
 			if (this.pitch > 30.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
@@ -385,7 +386,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_RED);
 			}
 		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
-			System.out.println("pitch (9 degree mode): " + this.pitch);
+			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("pitch (9 degree mode): " + this.pitch);}
 			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -9, (float) 9);
 			if (this.pitch > 9.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
@@ -411,7 +412,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		// ----- Heading ----------------------
-		System.out.println("heading: " + this.heading);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("heading: " + this.heading);}
 		this.moduleG.stepper_Heading.setDesiredPosition(this.heading, (float) 0, (float) 360);
 		if ( (this.heading < 45.0) || (this.heading > 315.0) ) { //North quadrant
 			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_BLUE);
@@ -435,8 +436,8 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.percentFuel = 0;
 		}
-		System.out.println("percentFuel: " + this.percentFuel);
-		this.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits(this.percentFuel, (float) 0, (float) 100);//JUMPTO
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentFuel: " + this.percentFuel);}
+		this.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits(this.percentFuel, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Fuel, LED_RGB_Brightness.BRIGHT, this.percentFuel);
 		
 		// ----- Charge ----------------------
@@ -445,7 +446,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.percentElectricCharge = -1;
 		}
-		System.out.println("percentElectricCharge: " + this.percentElectricCharge);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentElectricCharge: " + this.percentElectricCharge);}
 		this.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits(this.percentElectricCharge, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
@@ -481,7 +482,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		// 	TODO percentIntakeAir:DIM
 		// 	this.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits(this.percentElectricCharge, (float) 0, (float) 100);
 		// }
-		System.out.println("percentMonopropellant: " + this.percentMonopropellant);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentMonopropellant: " + this.percentMonopropellant);}
 		this.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits(this.percentMonopropellant, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
 		
@@ -492,7 +493,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.invertedPercentAirDensity = -1;
 		}
-		System.out.println("invertedPercentAirDensity: " + this.invertedPercentAirDensity);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("invertedPercentAirDensity: " + this.invertedPercentAirDensity);}
 		this.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits(this.invertedPercentAirDensity, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleGT.stepperLED_AirDensity, LED_RGB_Brightness.BRIGHT, this.invertedPercentAirDensity);
 		
@@ -523,7 +524,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		 * 		  3,000		|	3,540
 		 * 			TRB		|	3,779
 		 */
-		System.out.println("speed: " + speed);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("speed: " + speed);}
 		if (speed > 3000.0) {
 			this.moduleGT.stepper_Speed.setDesiredPosition(3779);//TRB
 		} else if (speed > 500.0) {
@@ -562,7 +563,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		 * 			 50		|	2,950
 		 * 		  	200		|	3,770
 		 */
-		System.out.println("verticalSpeed: " + verticalSpeed);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("verticalSpeed: " + verticalSpeed);}
 		if (verticalSpeed > 50.0) {
 			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, 2950, 3770);
 		} else if (verticalSpeed > -50.0) {
@@ -594,6 +595,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		 * 			  ATM	|	  3,570
 		 * 			  SPC	|	  3,720
 		 */
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("altitudeAboveSurface: " + this.altitudeAboveSurface);}
 		if (this.altitudeAboveSurface > 5000.0) {
 			if (this.vesselSituation == VesselSituation.FLYING) {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);

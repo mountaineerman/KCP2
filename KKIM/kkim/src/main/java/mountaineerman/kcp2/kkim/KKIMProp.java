@@ -31,6 +31,7 @@ public class KKIMProp {
 	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
 	private static int kkimJoystickCenterDeadzoneMaxLimit = 0;
 	private static int kkimSwitchMomDebounceTimeInMilliseconds = 0;
+	private static boolean kkimDisplayStepperMotorDigitalValues = false;	
 	
 	public static void initializeProperties () {
 		
@@ -63,6 +64,7 @@ public class KKIMProp {
 		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
 		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
 		kkimSwitchMomDebounceTimeInMilliseconds = Integer.valueOf(properties.getProperty("kkim.switchMom.debounceTimeInMilliseconds"));
+		kkimDisplayStepperMotorDigitalValues = Boolean.valueOf(properties.getProperty("kkim.displayStepperMotorDigitalValues"));
 		
 		System.out.println("DONE");
 	}
@@ -174,5 +176,9 @@ public class KKIMProp {
 
 	public static int getkkimSwitchMomDebounceTimeInMilliseconds() {
 		return kkimSwitchMomDebounceTimeInMilliseconds;
+	}
+
+	public static boolean getkkimDisplayStepperMotorDigitalValues() {
+		return kkimDisplayStepperMotorDigitalValues;
 	}
 }
