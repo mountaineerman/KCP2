@@ -60,6 +60,8 @@ void KMegaService::run() {
 				break;
 
 			case KMegaOperatingMode::DIAGNOSTIC:
+				this->controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
+				this->controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
 				this->controlPanel.runDiagnosticMode();
 				this->nextMode = KMegaOperatingMode::SHUTDOWN;
 				break;
@@ -176,13 +178,16 @@ void KMegaService::standardOperatingMode() {
 	if (this->controlPanel.moduleH.switch_GlassCockpit_CL.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::DIAGNOSTIC;
 	} else if (this->controlPanel.moduleH.switch_GlassCockpit_CR.getInputStatus()) {//User has requested KKIM Diagnostic Mode. Do not allow outputs to go to Idle.
-		delay(2000);//simple debounce
+		this->controlPanel.moduleG.ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
+		this->controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
+		this->controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWMAndWriteImmediately(PWM_LED_DIM);
 		this->allowOutputsToEnterIdleState = false;
-		this->packetAssembler.assembleNGHACoffeeCommand();
-		this->serialCommunicator.sendGaugePacketA();
-		this->packetAssembler.assembleNGHBCoffeeCommand();
-		this->serialCommunicator.sendGaugePacketB();
-	} else if (this->controlPanel.moduleH.switch_GlassCockpit_TR.getInputStatus()) {
+		this->packetAssembler.assembleNGHACoffeeCommand(); this->serialCommunicator.sendGaugePacketA();
+		this->packetAssembler.assembleNGHBCoffeeCommand(); this->serialCommunicator.sendGaugePacketB();
+		this->packetAssembler.assembleNGHACalibrationCommand(); this->serialCommunicator.sendGaugePacketA();
+		this->packetAssembler.assembleNGHBCalibrationCommand(); this->serialCommunicator.sendGaugePacketB();
+		delay(2000);//simple debounce
+	} else if (this->controlPanel.moduleH.switch_GlassCockpit_BR.getInputStatus()) {
 		this->nextMode = KMegaOperatingMode::SHUTDOWN;
 	} else {
 		this->nextMode = KMegaOperatingMode::STANDARD;
@@ -191,16 +196,19 @@ void KMegaService::standardOperatingMode() {
 
 void KMegaService::shutdownMode() {
 	
+	this->controlPanel.moduleH.ledPWM_GlassCockpit_BR.setPWMAndWriteImmediately(PWM_LED_MAXIMUM);
+
 	this->packetAssembler.assembleNGHACalibrationCommand();
 	this->serialCommunicator.sendGaugePacketA();
 
 	this->packetAssembler.assembleNGHBCalibrationCommand();
 	this->serialCommunicator.sendGaugePacketB();
 	
-	serialCommunicator.teardownSerialLinks();
+	this->serialCommunicator.teardownSerialLinks();
 
-	controlPanel.moduleG.ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
-	controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
+	delay(3500);
+	this->controlPanel.moduleG.ledPWM_Comms.setPWM(PWM_LED_MINIMUM);
+	this->controlPanel.setAllLEDsTo(PWM_LED_MINIMUM);
 }
 
 void KMegaService::updateCommsLEDToIndicateError() {
