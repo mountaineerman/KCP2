@@ -43,15 +43,12 @@ public class ModuleE implements LEDAggregator{
 		
 		this.fairingLED = new LED_PWM(OP.FairingLED);
 		this.parachuteLED = new LED_PWM(OP.ParachuteLED);
-		
-		this.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());//TODO
-		this.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());//TODO
 	}
 	
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.fairingLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.parachuteLED.setPWM(KKIMProp.getkmegaMinPWM());
 	}
 
 	@Override

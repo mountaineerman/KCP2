@@ -52,8 +52,11 @@ public class ModuleI implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.stepperLED_Fuel.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_deltaCharge.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_Charge.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_Monopropellant.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_IntakeAir.setMode(LED_RGB_Mode.OFF);
 	}
 
 	@Override

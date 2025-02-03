@@ -5,11 +5,8 @@ Adjust needle positions (+re-calibrate motors (KKIM: OP.java)):
 	Mach
 	Speed
 Stop SP3T switch guards from turning
-Physically re-do label for air density gauge (red = 100, green = 0)
-Replace LEDs that are too bright or dim them with bigger resistors
-Touch up weak paint areas near backlit icons
-Paint panel behind modules to keep the gaps from looking silvery
 Fix Reset circuit (see README: Fix 2b), update schematic.
+Glass Cockpit top-right button stopped working. Check wiring.
 
 SOFTWARE ==================================================================================================================================
 
@@ -57,3 +54,10 @@ Find a way to stop the kmega COM port from changing periodically
 Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
 See KCP2_Lessons_Learned.txt
+
+HARDWARE "nice-to-haves" (won't do)=================================================================================================================================
+
+Physically re-do label for air density gauge (red = 100, green = 0)
+Replace LEDs that are too bright or dim them with bigger resistors
+Touch up weak paint areas near backlit icons
+Paint panel behind modules to keep the gaps from looking silvery

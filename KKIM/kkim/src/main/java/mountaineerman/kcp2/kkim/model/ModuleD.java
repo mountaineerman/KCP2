@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleD implements LEDAggregator {
@@ -84,8 +85,23 @@ public class ModuleD implements LEDAggregator {
 
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoHoldLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoProgradeLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoRetrogradeLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoManeuverLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoRadialInBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
 	}
 
 	@Override

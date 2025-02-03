@@ -44,8 +44,10 @@ public class ModuleGT implements LEDAggregator, StepperMotorAggregator {
 	
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.stepperLED_AirDensity.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_Speed.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.OFF);
 	}
 
 	@Override

@@ -97,7 +97,12 @@ public class PacketAssembler {
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Heading_Blue.firstByte, OP.StepperLED_Heading_Blue.lastByte, controlPanel.moduleG.stepperLED_Heading.getBluPWMValue());
 		//Note: Communications LED intentionally not sent. KMega directly controls it.
 		
-		//TODO Add remaining LEDs: Module H
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.GlassCockpitLED_TL.firstByte, OP.GlassCockpitLED_TL.lastByte, controlPanel.moduleH.glassTL_LED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.GlassCockpitLED_CL.firstByte, OP.GlassCockpitLED_CL.lastByte, controlPanel.moduleH.glassCL_LED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.GlassCockpitLED_BL.firstByte, OP.GlassCockpitLED_BL.lastByte, controlPanel.moduleH.glassBL_LED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.GlassCockpitLED_TR.firstByte, OP.GlassCockpitLED_TR.lastByte, controlPanel.moduleH.glassTR_LED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.GlassCockpitLED_CR.firstByte, OP.GlassCockpitLED_CR.lastByte, controlPanel.moduleH.glassCR_LED.getPWM());
+		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.GlassCockpitLED_BR.firstByte, OP.GlassCockpitLED_BR.lastByte, controlPanel.moduleH.glassBR_LED.getPWM());
 		
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Red.firstByte, OP.StepperLED_Fuel_Red.lastByte, controlPanel.moduleI.stepperLED_Fuel.getRedPWMValue());
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.StepperLED_Fuel_Green.firstByte, OP.StepperLED_Fuel_Green.lastByte, controlPanel.moduleI.stepperLED_Fuel.getGrnPWMValue());

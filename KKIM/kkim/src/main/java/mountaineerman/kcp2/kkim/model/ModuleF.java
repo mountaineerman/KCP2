@@ -18,16 +18,14 @@ public class ModuleF implements LEDAggregator {
 	
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.sensitivitySwitch.setAllLEDsOff();
 	}
 
 	@Override
 	public void setAllLEDsOn() {
 		// TODO Auto-generated method stub
-		
 	}
-	
+
 	@Override
 	public String toString() {
 		return  this.trimPrimarySwitch.toString() +

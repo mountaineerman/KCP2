@@ -1,6 +1,7 @@
 package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 
 public class ModuleA implements LEDAggregator {
@@ -19,8 +20,7 @@ public class ModuleA implements LEDAggregator {
 
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
 	}
 
 	@Override

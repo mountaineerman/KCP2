@@ -69,9 +69,11 @@ public class SensitivitySwitch extends Part implements LEDAggregator {
 	}
 
 	@Override
-	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+	public void setAllLEDsOff() { 
+		this.sensitivity25PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.sensitivity50PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.sensitivity75PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.sensitivity100PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
 	}
 
 	@Override

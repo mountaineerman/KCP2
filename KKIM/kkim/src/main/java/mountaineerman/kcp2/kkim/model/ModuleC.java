@@ -34,8 +34,9 @@ public class ModuleC implements LEDAggregator, StepperMotorAggregator {
 
 	@Override
 	public void setAllLEDsOff() {
-		// TODO Auto-generated method stub
-		
+		this.stepperLED_Heat.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_LifeSupport.setMode(LED_RGB_Mode.OFF);
+		this.stepperLED_GForce.setMode(LED_RGB_Mode.OFF);
 	}
 
 	@Override

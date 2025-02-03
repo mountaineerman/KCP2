@@ -721,8 +721,17 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				//this.brake.toString();
 	}
 	
-	public void setAllLEDsOff() {//TODO
-		
+	public void setAllLEDsOff() {
+		this.moduleA.setAllLEDsOff();
+		//Module B: N/A
+		this.moduleC.setAllLEDsOff();
+		this.moduleD.setAllLEDsOff();
+		this.moduleE.setAllLEDsOff();
+		this.moduleF.setAllLEDsOff();
+		this.moduleG.setAllLEDsOff();
+		this.moduleH.setAllLEDsOff();
+		this.moduleI.setAllLEDsOff();
+		this.moduleGT.setAllLEDsOff();
 	}
 	
 	public void setAllLEDsOn() {//TODO
