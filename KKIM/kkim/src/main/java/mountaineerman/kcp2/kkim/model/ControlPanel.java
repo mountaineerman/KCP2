@@ -559,17 +559,17 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		 * 	  V.Speed (m/s)	| Stepper Position
 		 *   ===============|==================
 		 * 		   -200		|		0
-		 * 			-50		|	  815
-		 * 			 50		|	2,950
+		 * 			-50		|	  835
+		 * 			 50		|	2,965
 		 * 		  	200		|	3,770
 		 */
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("verticalSpeed: " + verticalSpeed);}
 		if (verticalSpeed > 50.0) {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, 2950, 3770);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, 2965, 3770);
 		} else if (verticalSpeed > -50.0) {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -50.0, (float) 50.0, 815, 2950);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -50.0, (float) 50.0, 835, 2965);
 		} else {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -200.0, (float) -50.0, 0, 815);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -200.0, (float) -50.0, 0, 835);
 		}
 
 		if (verticalSpeed > 50.0) {
@@ -738,6 +738,24 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 	}
 	
+	public void setAllSteppersCCW() {
+		this.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		
+		this.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleG.stepper_Heading.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+
+		this.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+
+		this.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+	}
+
 	public void activateLEDOverride() {//TODO
 		
 	}

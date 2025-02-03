@@ -2,6 +2,7 @@ package mountaineerman.kcp2.kkim.service;
 
 import java.util.Scanner;
 import mountaineerman.kcp2.kkim.CommonUtilities;
+import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.model.NEMA17Stepper;
 import mountaineerman.kcp2.kkim.model.StepperMotor;
 
@@ -23,10 +24,25 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) {
 		
+		//Sleep while waiting for KMega and NGHes to prepare for diagnostic mode
+		this.sleepForMilliseconds(5000);
+		kkimService.controlPanel.setAllLEDsOff();
+		kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaMaxPWM());//KKIM Diagnostic Mode
+		kkimService.controlPanel.setAllSteppersCCW();
+		byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+		kkimService.serialCommunicator.flushInputOutputBuffers();
+		kkimService.serialCommunicator.sendPacket(packet);
+
 		this.mainMenu(kkimService);
 		this.scanner.close();
         kkimService.setCurrentOperatingMode(ShutdownMode.getInstance());
     }
+
+	private void sleepForMilliseconds(long milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException i_e) {i_e.printStackTrace();}
+	}
 
 	private void mainMenu(KKIMService kkimService) {
 
@@ -34,10 +50,18 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		while (userInput != 0) {
 			CommonUtilities.clearScreen();
 			System.out.println("Diagnostic Mode activated. Select one of the following:");
-			System.out.println("[0] Shut down");
+			System.out.println("[0] Shut down (KKIM only)");
 			System.out.println("[1] Test Stepper Motors");
 			userInput = this.scanner.nextInt();
 			switch (userInput) {
+				case 0:
+					System.out.println("!!! REMINDER: Power cycle the Nano Gauge Helpers to clear their \"Coffee Mode\" !!!");
+					kkimService.controlPanel.setAllLEDsOff();
+					kkimService.controlPanel.setAllSteppersCCW();
+					byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
 				case 1:
 					testStepperMotors(kkimService);
 					break;
@@ -69,36 +93,36 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			userInput = this.scanner.nextInt();
 			switch (userInput) {
 				case 1:
-					controlStepperMotor(kkimService.controlPanel.moduleC.stepper_HeatLife); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_HeatLife); break;
 				case 2:
-					controlStepperMotor(kkimService.controlPanel.moduleC.stepper_Gforce); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_Gforce); break;
 				case 3:
-					controlStepperMotor(kkimService.controlPanel.moduleG.stepper_Mach); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Mach); break;
 				case 4:
-					controlStepperMotor(kkimService.controlPanel.moduleG.stepper_Pitch); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Pitch); break;
 				case 5:
-					controlStepperMotor(kkimService.controlPanel.moduleG.stepper_Heading); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Heading); break;
 				case 6:
-					controlStepperMotor(kkimService.controlPanel.moduleI.stepper_Fuel); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_Fuel); break;
 				case 7:
-					controlStepperMotor(kkimService.controlPanel.moduleI.stepper_Charge); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_Charge); break;
 				case 8:
-					controlStepperMotor(kkimService.controlPanel.moduleI.stepper_MonopropellantIntake); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_MonopropellantIntake); break;
 				case 9:
-					controlStepperMotor(kkimService.controlPanel.moduleGT.stepper_AirDensity); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_AirDensity); break;
 				case 10:
-					controlStepperMotor(kkimService.controlPanel.moduleGT.stepper_Speed); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_Speed); break;
 				case 11:
-					controlStepperMotor(kkimService.controlPanel.moduleGT.stepper_VerticalSpeed); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_VerticalSpeed); break;
 				case 12:
-					controlStepperMotor(kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
+					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
 				default:
 					break;
 			}
 		}
 	}
 
-	private void controlStepperMotor(StepperMotor motor) {
+	private void controlStepperMotor(KKIMService kkimService, StepperMotor motor) {
 
 		int userInput = 0;
 		while (userInput != -1) {
@@ -108,16 +132,86 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println();
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
+			System.out.println("[-2] Perform \"decalibration\" test (cycle through 90% > 10% > 90% > ... several times)");
 			System.out.println("[0-3779] Select desired position of the motor");
 			userInput = this.scanner.nextInt();
 			
 			if (userInput >= 0 && userInput <= 3779) {
 				motor.setDesiredPosition(userInput);
+				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+			} else if (userInput == -2) {
+				byte[] packet = null;
+				motor.setDesiredPositionUsingCalibrationLimits((float) 0.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(3000);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+				
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+				
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+				
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
 			}
 		}
 	}
 
-	private void controlStepperMotor(NEMA17Stepper motor) {
+	private void controlStepperMotor(KKIMService kkimService, NEMA17Stepper motor) {
 
 		int userInput = 0;
 		while (userInput != -1) {
@@ -132,6 +226,9 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			
 			if (userInput >= 0 && userInput <= 1599) {
 				motor.setDesiredPosition(userInput);
+				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
 			}
 		}
 	}

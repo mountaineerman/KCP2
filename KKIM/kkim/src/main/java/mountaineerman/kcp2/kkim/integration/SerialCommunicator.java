@@ -81,12 +81,15 @@ public class SerialCommunicator {
  		
  		System.out.println("DONE");
 	}
+
+	public void flushInputOutputBuffers() {
+		this.serialPort.flushIOBuffers();
+	}
 		
 	//Ingests data from the Serial Read Buffer until:
 	// a) A complete and valid InputRefreshPacket has been stored in the packetBuffer, OR
  	// b) A complete and valid KKIMTerminalDisplayPacket has been stored in the packetBuffer, OR
  	// c) There is no data left in the Serial Buffer
- 	
 	public void ingestDataFromSerialPortToPacketBuffer() throws RuntimeException {
 		
 		//		if (this.serialPort.bytesAvailable() > 0) {
@@ -213,7 +216,7 @@ public class SerialCommunicator {
 	}
 		
 	public void teardownSerialLinkToKMega() {
-		System.out.println("Closing serial connection to KMega... ");
+		System.out.print("Closing serial connection to KMega... ");
 		this.serialPort.closePort();
 		System.out.println("DONE"); 		
 	}
