@@ -65,11 +65,11 @@ void PacketUnpacker::unpackOutputRefreshPacketIntoModel() {
 	
 	//controlPanel.moduleG.ledPWM_Comms.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(40,41) ); //Note: KMega evaluates serial channels to decide COMMS LED status.
 	controlPanel.moduleH.ledPWM_GlassCockpit_TL.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(42,43) );
-	//controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(44,45) );//TODO
+	controlPanel.moduleH.ledPWM_GlassCockpit_CL.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(44,45) );
 	controlPanel.moduleH.ledPWM_GlassCockpit_BL.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(46,47) );
 	controlPanel.moduleH.ledPWM_GlassCockpit_TR.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(48,49) );
 	
-	//controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(50,51) );//TODO
+	controlPanel.moduleH.ledPWM_GlassCockpit_CR.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(50,51) );
 	controlPanel.moduleH.ledPWM_GlassCockpit_BR.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(52,53) );
 	controlPanel.moduleC.ledPWM_HEAT_Red.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(54,55) );
 	controlPanel.moduleC.ledPWM_HEAT_Green.setPWM( this->convertTwoBytesInOutputRefreshPacketIntoInteger(56,57) );

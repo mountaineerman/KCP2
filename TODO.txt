@@ -1,6 +1,5 @@
 HARDWARE ==================================================================================================================================
 
-Add friction to the needle holes so they don't slip?+
 Adjust needle positions (+re-calibrate motors (KKIM: OP.java)):
 	Mach
 	Speed
@@ -10,15 +9,8 @@ Glass Cockpit top-right button stopped working. Check wiring.
 
 SOFTWARE ==================================================================================================================================
 
-Solve stepper motor performance
-	Prototype timing based on additional microprocessors responsible for stepping motors
-		KMega new responsibilities
-			KMegaService::startupMode()
-				refactor blockRunAllGearedSteppersToPosition (guess travel time) - CURRENTLY DISABLED
-				refactor sweepGearedStepperMotorsThroughMaxMin - CURRENTLY DISABLED
-			KMegaService::standardOperatingMode()
-				packetAssembler.assembleNGHACalibrationRequest() (using Command)
-				packetAssembler.assembleNGHBCalibrationRequest() (using Command)
+!!! Update NEMA17 runStepperIfNecessary
+
 
 	Tweak NUMBER_OF_NEEDLE_POSITIONS
 	Tweak packet send rate to reduce jitter

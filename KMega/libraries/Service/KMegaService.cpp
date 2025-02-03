@@ -140,29 +140,8 @@ void KMegaService::standardOperatingMode() {
 		if ( (millis() - this->outputRefreshPacketLastReceiveTimeInMilliseconds) > MAX_TIME_WITHOUT_OUTPUT_REFRESH_PACKET_BEFORE_IDLE_IN_MILLISECONDS ) {
 			if(!this->outputsHaveBeenSetToIdleState) {
 				this->controlPanel.setAllLEDsTo(PWM_LED_DIM);
-				
-				//this->packetAssembler.assembleNGHACalibrationRequest();
-				//TODO Replace the following with the calibration request on the previous line. START...
-				this->controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(0);
-				this->controlPanel.moduleC.stepper_Gforce.setDesiredPosition(0);
-				this->controlPanel.moduleG.stepper_Mach.setDesiredPosition(0);
-				this->controlPanel.moduleG.stepper_Pitch.setDesiredPosition(0);
-				this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(0);
-				this->controlPanel.moduleI.stepper_Fuel.setDesiredPosition(0);
-				//TODO END...
-				this->serialCommunicator.sendGaugePacketA();
-				
-				//this->packetAssembler.assembleNGHBCalibrationRequest();
-				//TODO Replace the following with the calibration request on the previous line. START...
-				this->controlPanel.moduleI.stepper_Charge.setDesiredPosition(0);
-				this->controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(0);
-				this->controlPanel.moduleGT.stepper_Density.setDesiredPosition(0);
-				this->controlPanel.moduleGT.stepper_Speed.setDesiredPosition(0);
-				this->controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition(0);
-				this->controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition(0);
-				//TODO END...
-				this->serialCommunicator.sendGaugePacketB();
-				
+				this->packetAssembler.assembleNGHACalibrationCommand(); this->serialCommunicator.sendGaugePacketA();
+				this->packetAssembler.assembleNGHBCalibrationCommand(); this->serialCommunicator.sendGaugePacketB();
 				this->outputsHaveBeenSetToIdleState = true;
 			}
 		} else {
