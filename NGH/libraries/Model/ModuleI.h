@@ -19,12 +19,12 @@ public:
 	
 	//Parts:
 
-	// //[GaugePacketA]
-	// StepperMotor2 stepper_Fuel;
+	//[GaugePacketA]
+	StepperMotor2 stepper_Fuel;
 
-	//[GaugePacketB]
-	StepperMotor2 stepper_Charge;
-	StepperMotor2 stepper_MonopropellantIntake;
+	// //[GaugePacketB]
+	// StepperMotor2 stepper_Charge;
+	// StepperMotor2 stepper_MonopropellantIntake;
 };
 
 #endif

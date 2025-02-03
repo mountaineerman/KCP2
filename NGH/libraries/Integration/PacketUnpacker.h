@@ -13,8 +13,9 @@ public:
 	PacketUnpacker(ControlPanel& controlPanel);
 	void setGaugePacket(const byte * gaugePacket);
 	
-	//Unpacks the OutputRefreshPacket into the KMega (ControlPanel) Model. If successful, clears the OutputRefreshPacket.
-	void unpackGaugePacketIntoModel();
+	//Unpacks the GaugePacket into the NGH (ControlPanel) Model and clears the GaugePacket.
+	//If a command was sent, returns the command without unpacking the other contents.
+	byte unpackGaugePacketIntoModel();
 
 private:
 	//Returns the integer stored in GaugePacket located at the specified byte numbers (see ICD in OneNote). Byte numbers can be provided in any order.

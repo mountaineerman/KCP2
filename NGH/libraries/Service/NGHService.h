@@ -30,6 +30,7 @@ private:
 	
 	long gaugePacketLastReceiveTimeInMilliseconds;
 
+	bool coffeeMode;
 	bool gaugesHaveBeenSetCCW;
 	NGHOperatingMode nextMode;
 };

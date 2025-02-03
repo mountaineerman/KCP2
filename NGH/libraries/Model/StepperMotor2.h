@@ -76,6 +76,8 @@ private:
 	
 	// A number describing the current stepper motor position, in steps.
 	int currentPosition;
+
+	bool isDirectionPinInCWMode;
 };
 
 #endif

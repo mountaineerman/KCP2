@@ -6,14 +6,21 @@
 
 StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int speed, int ccwLimit, int cwLimit) {
 	
+	this->arePinsInverted = arePinsInverted;
+	
 	this->pinStep = pinStep;
 	pinMode(this->pinStep, OUTPUT);
 	digitalWrite(this->pinStep, LOW);
 	
 	this->pinDirection = pinDirection;
 	pinMode(this->pinDirection, OUTPUT);
+	this->isDirectionPinInCWMode = true;
+	if (this->arePinsInverted) {
+		digitalWrite(this->pinDirection, HIGH);
+	} else {
+		digitalWrite(this->pinDirection, LOW);
+	}
 	
-	this->arePinsInverted = arePinsInverted;
 	this->speed = speed;
 	this->timeBetweenSteps = 1000000 / speed;
 	this->ccwLimit = ccwLimit;
@@ -43,25 +50,37 @@ bool StepperMotor2::runStepperIfNecessary() {
 	if (this->currentPosition == this->desiredPosition) {
 		return false;
 	} else {
-		if (this->currentPosition < this->desiredPosition) {//Set direction: Clockwise
-			if (this->arePinsInverted) {
-				digitalWrite(this->pinDirection, HIGH);
-			} else {
-				digitalWrite(this->pinDirection, LOW);
+		//Update current position; Set direction if it needs to change
+		if (this->currentPosition < this->desiredPosition) {//Direction must be CW
+			if (!this->isDirectionPinInCWMode) {//Only update direction pin if the current mode is CCW
+				this->isDirectionPinInCWMode = true;
+				if (this->arePinsInverted) {
+					digitalWrite(this->pinDirection, HIGH);
+				} else {
+					digitalWrite(this->pinDirection, LOW);
+				}
+				delayMicroseconds(STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS);
 			}
 			this->currentPosition++;
-		} else {//Set direction: Counter-Clockwise
-			if (this->arePinsInverted) {
-				digitalWrite(this->pinDirection, LOW);
-			} else {
-				digitalWrite(this->pinDirection, HIGH);
+
+		} else {//Direction must be CCW
+			if (this->isDirectionPinInCWMode) {//Only update direction pin if the current mode is CW
+				this->isDirectionPinInCWMode = false;
+				if (this->arePinsInverted) {
+					digitalWrite(this->pinDirection, LOW);
+				} else {
+					digitalWrite(this->pinDirection, HIGH);
+				}
+				delayMicroseconds(STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS);
 			}
 			this->currentPosition--;
 		}
+
 		//Step:
 		digitalWrite(this->pinStep, HIGH); //Note: transition from LOW to HIGH causes step
 		delayMicroseconds(STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS);
 		digitalWrite(this->pinStep, LOW); //Reset for future steps
+		delayMicroseconds(STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS);
 		return true;
 	}
 }
