@@ -23,6 +23,24 @@ public class KKIMProp {
 	private static int kmegaDimPWM = 0;
 	private static int kmegaMaxPWM = 0;
 	private static int kmegaSteppersCCWLimit = 0;
+	private static int kmegaGearedStepperNumberOfNeedlePositions = 0;
+	private static int kmegaGearedStepperCWLimit = 0;
+	private static int kmegaNEMA17StepperMaxLimit = 0;
+	private static int kmegaStepperSpeedPositionZero = 0;
+	private static int kmegaStepperSpeedPositionOneHundred = 0;
+	private static int kmegaStepperSpeedPositionFiveHundred = 0;
+	private static int kmegaStepperSpeedPositionThreeThousand = 0;
+	private static int kmegaStepperSpeedPositionTRB = 0;
+	private static int kmegaStepperVerticalSpeedPositionNegTwoHundred = 0;
+	private static int kmegaStepperVerticalSpeedPositionNegFifty = 0;
+	private static int kmegaStepperVerticalSpeedPositionPosFifty = 0;
+	private static int kmegaStepperVerticalSpeedPositionPosTwoHundred = 0;
+	private static int kmegaStepperRadarAltitudePositionZero = 0;
+	private static int kmegaStepperRadarAltitudePositionOneHundred = 0;
+	private static int kmegaStepperRadarAltitudePositionFiveHundred = 0;
+	private static int kmegaStepperRadarAltitudePositionFiveThousand = 0;
+	private static int kmegaStepperRadarAltitudePositionATM = 0;
+	private static int kmegaStepperRadarAltitudePositionSPC = 0;
 	private static float kmegaAltitudeGaugeErrorAltitude = 999000000000L;
 	
 	private static int kkimStartupModeInitialStartupDelayInMilliseconds = 0;
@@ -57,7 +75,24 @@ public class KKIMProp {
 		kmegaDimPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.dimPWM"));
 		kmegaMaxPWM = Integer.valueOf(properties.getProperty("kmega.LEDs.maxPWM"));
 		kmegaSteppersCCWLimit = Integer.valueOf(properties.getProperty("kmega.steppers.ccwLimit"));
-		
+		kmegaGearedStepperNumberOfNeedlePositions = Integer.valueOf(properties.getProperty("kmega.gearedStepper.numberOfNeedlePositions"));
+		kmegaGearedStepperCWLimit = Integer.valueOf(properties.getProperty("kmega.gearedStepper.cwLimit"));
+		kmegaNEMA17StepperMaxLimit = Integer.valueOf(properties.getProperty("kmega.NEMA17Stepper.maxLimit"));
+		kmegaStepperSpeedPositionZero = Integer.valueOf(properties.getProperty("kmega.stepper_Speed_position.zero"));
+		kmegaStepperSpeedPositionOneHundred = Integer.valueOf(properties.getProperty("kmega.stepper_Speed_position.oneHundred"));
+		kmegaStepperSpeedPositionFiveHundred = Integer.valueOf(properties.getProperty("kmega.stepper_Speed_position.fiveHundred"));
+		kmegaStepperSpeedPositionThreeThousand = Integer.valueOf(properties.getProperty("kmega.stepper_Speed_position.threeThousand"));
+		kmegaStepperSpeedPositionTRB = Integer.valueOf(properties.getProperty("kmega.stepper_Speed_position.TRB"));
+		kmegaStepperVerticalSpeedPositionNegTwoHundred = Integer.valueOf(properties.getProperty("kmega.stepper_VerticalSpeed_position.negTwoHundred"));
+		kmegaStepperVerticalSpeedPositionNegFifty = Integer.valueOf(properties.getProperty("kmega.stepper_VerticalSpeed_position.negFifty"));
+		kmegaStepperVerticalSpeedPositionPosFifty = Integer.valueOf(properties.getProperty("kmega.stepper_VerticalSpeed_position.posFifty"));
+		kmegaStepperVerticalSpeedPositionPosTwoHundred = Integer.valueOf(properties.getProperty("kmega.stepper_VerticalSpeed_position.posTwoHundred"));
+		kmegaStepperRadarAltitudePositionZero = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.zero"));
+		kmegaStepperRadarAltitudePositionOneHundred = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.oneHundred"));
+		kmegaStepperRadarAltitudePositionFiveHundred = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.fiveHundred"));
+		kmegaStepperRadarAltitudePositionFiveThousand = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.fiveThousand"));
+		kmegaStepperRadarAltitudePositionATM = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.ATM"));
+		kmegaStepperRadarAltitudePositionSPC = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.SPC"));
 		kmegaAltitudeGaugeErrorAltitude = (float) Long.valueOf(properties.getProperty("kmega.AltitudeGauge.ErrorAltitude"));
 		
 		kkimStartupModeInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.startupMode.initialStartupDelayInMilliseconds"));
@@ -149,6 +184,78 @@ public class KKIMProp {
 	
 	public static int getkmegaSteppersCCWLimit() {
 		return kmegaSteppersCCWLimit;
+	}
+
+	public static int getkmegaGearedStepperNumberOfNeedlePositions() {
+		return kmegaGearedStepperNumberOfNeedlePositions;
+	}
+
+	public static int getkmegaGearedStepperCWLimit() {
+		return kmegaGearedStepperCWLimit;
+	}
+
+	public static int getkmegaNEMA17StepperMaxLimit() {
+		return kmegaNEMA17StepperMaxLimit;
+	}
+
+	public static int getkmegaStepperSpeedPositionZero() {
+		return kmegaStepperSpeedPositionZero;
+	}
+
+	public static int getkmegaStepperSpeedPositionOneHundred() {
+		return kmegaStepperSpeedPositionOneHundred;
+	}
+
+	public static int getkmegaStepperSpeedPositionFiveHundred() {
+		return kmegaStepperSpeedPositionFiveHundred;
+	}
+
+	public static int getkmegaStepperSpeedPositionThreeThousand() {
+		return kmegaStepperSpeedPositionThreeThousand;
+	}
+
+	public static int getkmegaStepperSpeedPositionTRB() {
+		return kmegaStepperSpeedPositionTRB;
+	}
+
+	public static int getkmegaStepperVerticalSpeedPositionNegTwoHundred() {
+		return kmegaStepperVerticalSpeedPositionNegTwoHundred;
+	}
+
+	public static int getkmegaStepperVerticalSpeedPositionNegFifty() {
+		return kmegaStepperVerticalSpeedPositionNegFifty;
+	}
+
+	public static int getkmegaStepperVerticalSpeedPositionPosFifty() {
+		return kmegaStepperVerticalSpeedPositionPosFifty;
+	}
+
+	public static int getkmegaStepperVerticalSpeedPositionPosTwoHundred() {
+		return kmegaStepperVerticalSpeedPositionPosTwoHundred;
+	}
+
+	public static int getkmegaStepperRadarAltitudePositionZero() {
+		return kmegaStepperRadarAltitudePositionZero;
+	}
+
+	public static int getkmegaStepperRadarAltitudePositionOneHundred() {
+		return kmegaStepperRadarAltitudePositionOneHundred;
+	}
+
+	public static int getkmegaStepperRadarAltitudePositionFiveHundred() {
+		return kmegaStepperRadarAltitudePositionFiveHundred;
+	}
+
+	public static int getkmegaStepperRadarAltitudePositionFiveThousand() {
+		return kmegaStepperRadarAltitudePositionFiveThousand;
+	}
+
+	public static int getkmegaStepperRadarAltitudePositionATM() {
+		return kmegaStepperRadarAltitudePositionATM;
+	}
+
+	public static int getkmegaStepperRadarAltitudePositionSPC() {
+		return kmegaStepperRadarAltitudePositionSPC;
 	}
 
 	public static float getkmegaAltitudeGaugeErrorAltitude() {

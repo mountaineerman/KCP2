@@ -5,37 +5,41 @@ package mountaineerman.kcp2.kkim.model;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 class StepperMotorTest {
 
 	@Test
 	void testSetDesiredPosition() {
 
+		KKIMProp.initializeProperties();
+
 		// (GROUP 1: fakeMotor1)  No calibration limits
-		StepperMotor fakeMotor1 = new StepperMotor("fakeMotor", ModuleID.GT, 0, 3779);
+		StepperMotor fakeMotor1 = new StepperMotor("fakeMotor", ModuleID.GT, KKIMProp.getkmegaSteppersCCWLimit(), KKIMProp.getkmegaGearedStepperCWLimit());
 
 		//Minimum
 		fakeMotor1.setDesiredPosition(5);
 		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
 		fakeMotor1.setDesiredPositionUsingCalibrationLimits((float) 0.0, (float) 0.0, (float) 100.0);
-		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 0);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), KKIMProp.getkmegaSteppersCCWLimit());
 
 		//Maximum
 		fakeMotor1.setDesiredPosition(5);
 		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
 		fakeMotor1.setDesiredPositionUsingCalibrationLimits((float) 100.0, (float) 0.0, (float) 100.0);
-		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 3779);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), KKIMProp.getkmegaGearedStepperCWLimit());
 
 		//valueInRange less than rangeMin
 		fakeMotor1.setDesiredPosition(5);
 		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
 		fakeMotor1.setDesiredPositionUsingCalibrationLimits((float) -20.0, (float) 0.0, (float) 100.0);
-		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 0);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), KKIMProp.getkmegaSteppersCCWLimit());
 
 		//valueInRange greater than rangeMax
 		fakeMotor1.setDesiredPosition(5);
 		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 5);
 		fakeMotor1.setDesiredPositionUsingCalibrationLimits((float) 135.0, (float) 0.0, (float) 100.0);
-		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), 3779);
+		Assertions.assertEquals(fakeMotor1.getDesiredPosition(), KKIMProp.getkmegaGearedStepperCWLimit());
 
 
 		// (GROUP 2: fakeMotor2) With calibration limits
@@ -75,8 +79,10 @@ class StepperMotorTest {
     @Test
     void testSetDesiredPositionUsingCustomLimits() {
         
+		KKIMProp.initializeProperties();
+
 		// No calibration limits
-		StepperMotor motor = new StepperMotor("fakeMotor", ModuleID.GT, 0, 3779);
+		StepperMotor motor = new StepperMotor("fakeMotor", ModuleID.GT, KKIMProp.getkmegaSteppersCCWLimit(), KKIMProp.getkmegaGearedStepperCWLimit());
 
 		// Vertical Speed > 200.0 m/s
 		motor.setDesiredPositionUsingCustomLimits((float) 201.0, (float) 50.0, (float) 200.0, 2950, 3770);

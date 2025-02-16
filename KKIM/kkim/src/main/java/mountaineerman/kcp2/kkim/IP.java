@@ -94,16 +94,6 @@ public enum IP {
 	public final ModuleID moduleID;
 	public final String partName;
 	
-	//TODO public static final IP[] SWITCHES = {IP.StagingButton, IP.BrakeSwitch}; 
-
-	/*
-	 * 					PermittedRange	MinBitSize
-	 * 	Switch: 		0-1				1
-	 * 	AnalogInput: 	0-1023			10
-	 * 
-	 * 	MinBitSize = The minimum number of bits required to transfer the data for the part.
-	 */
-	
 	private IP(int firstByte, int lastByte, int bitNumber, int minCalibLim, int maxCalibLim, int minRescaleLim, int maxRescaleLim, ModuleID moduleID, String partName) {
 		this.firstByte = firstByte;
 		this.lastByte = lastByte;

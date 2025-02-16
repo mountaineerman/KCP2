@@ -1,16 +1,10 @@
 HARDWARE ==================================================================================================================================
 
-Adjust needle positions (+re-calibrate motors (KKIM: OP.java)):
-	Mach
-	Speed
 Stop SP3T switch guards from turning
 Fix Reset circuit (see README: Fix 2b), update schematic.
 Glass Cockpit top-right button stopped working. Check wiring.
 
 SOFTWARE ==================================================================================================================================
-
-!!! Update NEMA17 runStepperIfNecessary
-
 
 	Tweak NUMBER_OF_NEEDLE_POSITIONS
 	Tweak packet send rate to reduce jitter
@@ -30,7 +24,7 @@ Phone display...
 		Speed (m/s) + (speed type)
 		Current draw (mA)
 		
-
+Implement TGT (Target)
 Implement TRIM
 
 Fix action groups: duplicate signals sometimes sent? PV and LADR seem ok, but AG1+etc "flaky".

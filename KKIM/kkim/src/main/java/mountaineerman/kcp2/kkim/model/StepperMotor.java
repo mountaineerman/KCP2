@@ -2,6 +2,7 @@ package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.OP;
 import mountaineerman.kcp2.kkim.CommonUtilities;
+import mountaineerman.kcp2.kkim.KKIMProp;
 
 /** x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.
  * Maximum Rotation Angle = 315 degrees.
@@ -12,18 +13,13 @@ import mountaineerman.kcp2.kkim.CommonUtilities;
  *    -Driver: https://www.tindie.com/products/propwashsim/vid6606-sti6606-4x-stepper-driver-board-kit/ */
 public class StepperMotor extends Part {
 
-	//TODO: Move to configs
-	private static int STEPPER_CCW_LIMIT = 0;
-	private static int STEPPER_CW_LIMIT = 3779;
-	private static int NUMBER_OF_NEEDLE_POSITIONS = 1000;
-
 	private int calibrationCCWLimit;
 	private int calibrationCWLimit;
 
 	/** A number describing the desired stepper motor position, in steps.
-	 * Range: [0-3779] [STEPPER_CCW_LIMIT-STEPPER_CW_LIMIT] 
-	 * e.g., desiredPosition of 0 is the farthest CCW position possible.
-	 * e.g., desiredPosition of 3779 is the farthest CW position possible. */
+	 * Range: [ KKIMProp.getkmegaSteppersCCWLimit() - KKIMProp.getkmegaGearedStepperCWLimit() ]
+	 * e.g., desiredPosition of KKIMProp.getkmegaSteppersCCWLimit() is the farthest CCW position possible.
+	 * e.g., desiredPosition of KKIMProp.getkmegaGearedStepperCWLimit() is the farthest CW position possible. */
 	private int desiredPosition;
 	
 	public StepperMotor(OP op) {
@@ -69,7 +65,7 @@ public class StepperMotor extends Part {
 	/**
 	 * Sets the desired position of the stepper motor, based on:
 	 * 		a) valueInRange, and the limits of the associated range: [rangeMin,rangeMax]
-	 * 		b) NUMBER_OF_NEEDLE_POSITIONS
+	 * 		b) KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions()
 	 * 		c) The calibration limits of the gauge, calibrationCCWLimit and calibrationCWLimit, which are pulled from OP.java during instantiation.
 	 * 	If valueInRange is outside of [rangeMin,rangeMax], it is set to the applicable valid limit.
 	 * 
@@ -122,16 +118,16 @@ public class StepperMotor extends Part {
 		float percent = valueInRange/rangeMax;
 		// System.out.println("percent: " + percent);
 
-		// (STEP 4) Scale up to range [0,NUMBER_OF_NEEDLE_POSITIONS], lowering the "resolution" of the measurement:
-		float floatValueInNeedlePositions = percent * ((float) NUMBER_OF_NEEDLE_POSITIONS);
+		// (STEP 4) Scale up to range [0,KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions()], lowering the "resolution" of the measurement:
+		float floatValueInNeedlePositions = percent * ((float) KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions());
 		int integerValueInNeedlePositions = Math.round(floatValueInNeedlePositions);
 		// System.out.println("floatValueInNeedlePositions: " + floatValueInNeedlePositions);
 		// System.out.println("integerValueInNeedlePositions: " + integerValueInNeedlePositions);
 
-		// (STEP 5) Scale up from [0,NUMBER_OF_NEEDLE_POSITIONS] range to [rangeMinPosition,rangeMaxPosition]:
+		// (STEP 5) Scale up from [0,KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions()] range to [rangeMinPosition,rangeMaxPosition]:
 		int requestedPosition = CommonUtilities.rescaleValue(
 			integerValueInNeedlePositions,
-			0, NUMBER_OF_NEEDLE_POSITIONS,
+			0, KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions(),
 			rangeMinPosition, rangeMaxPosition);
 		// System.out.println("requestedPosition: " + requestedPosition);
 		// System.out.println();
@@ -140,8 +136,8 @@ public class StepperMotor extends Part {
 	
 	//TODO Ensure this triggers WARNING flag, not a hard crash
 	private void validatePosition(int position) {
-		if(position < STEPPER_CCW_LIMIT || position > STEPPER_CW_LIMIT) {
-			String message = String.format("%s desiredPosition (%d) is outside of allowed range [%d-%d].", this.name, position, STEPPER_CCW_LIMIT, STEPPER_CW_LIMIT);
+		if(position < KKIMProp.getkmegaSteppersCCWLimit() || position > KKIMProp.getkmegaGearedStepperCWLimit()) {
+			String message = String.format("%s desiredPosition (%d) is outside of allowed range [%d-%d].", this.name, position, KKIMProp.getkmegaSteppersCCWLimit(), KKIMProp.getkmegaGearedStepperCWLimit());
 			throw new IllegalArgumentException(message);
 		}
 	}

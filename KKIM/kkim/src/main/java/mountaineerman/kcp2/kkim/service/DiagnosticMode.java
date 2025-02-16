@@ -90,7 +90,14 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("[10] Speed");
 			System.out.println("[11] Vertical Speed");
 			System.out.println("[12] Radar Altitude");
+			System.out.println("====================================================================");
+			System.out.println("[21] Set all geared stepper motors to " + KKIMProp.getkmegaSteppersCCWLimit());
+			System.out.println("[22] Set all geared stepper motors to CCW edge mark");
+			System.out.println("[23] Set all geared stepper motors to CW edge mark");
+			System.out.println("[24] Set all geared stepper motors to " + KKIMProp.getkmegaGearedStepperCWLimit());
+			
 			userInput = this.scanner.nextInt();
+			byte[] packet = null;
 			switch (userInput) {
 				case 1:
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_HeatLife); break;
@@ -116,6 +123,70 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_VerticalSpeed); break;
 				case 12:
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
+				case 21:
+					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
+				case 22:
+					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 15);
+					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 24);
+					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits((float) -90, (float) -90, (float) 90);
+					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaStepperSpeedPositionZero());
+					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaStepperVerticalSpeedPositionNegTwoHundred());
+					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaStepperRadarAltitudePositionZero());
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
+				case 23:
+					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits((float) 15,  (float) 0, (float) 15);
+					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits((float) 24,  (float) 0, (float) 24);
+					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits((float) 90, (float) -90, (float) 90);
+					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
+					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaStepperSpeedPositionThreeThousand());
+					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaStepperVerticalSpeedPositionPosTwoHundred());
+					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaStepperRadarAltitudePositionFiveThousand());
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
+				case 24:
+					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
 				default:
 					break;
 			}
@@ -133,10 +204,10 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
 			System.out.println("[-2] Perform \"decalibration\" test (cycle through 90% > 10% > 90% > ... several times)");
-			System.out.println("[0-3779] Select desired position of the motor");
+			System.out.println("[" + KKIMProp.getkmegaSteppersCCWLimit() + "-" + KKIMProp.getkmegaGearedStepperCWLimit() + "] Select desired position of the motor");
 			userInput = this.scanner.nextInt();
 			
-			if (userInput >= 0 && userInput <= 3779) {
+			if (userInput >= KKIMProp.getkmegaSteppersCCWLimit() && userInput <= KKIMProp.getkmegaGearedStepperCWLimit()) {
 				motor.setDesiredPosition(userInput);
 				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 				kkimService.serialCommunicator.flushInputOutputBuffers();
@@ -221,10 +292,10 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println();
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
-			System.out.println("[0-1599] Select desired position of the motor");
+			System.out.println("[" + KKIMProp.getkmegaSteppersCCWLimit() + "-" + KKIMProp.getkmegaNEMA17StepperMaxLimit() + "] Select desired position of the motor");
 			userInput = this.scanner.nextInt();
 			
-			if (userInput >= 0 && userInput <= 1599) {
+			if (userInput >= KKIMProp.getkmegaSteppersCCWLimit() && userInput <= KKIMProp.getkmegaNEMA17StepperMaxLimit()) {
 				motor.setDesiredPosition(userInput);
 				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 				kkimService.serialCommunicator.flushInputOutputBuffers();

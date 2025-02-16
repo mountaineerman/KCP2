@@ -125,18 +125,18 @@ public enum OP {
 	Stepper_HeatLife				(168,		169,		ModuleID.C,		120,		3722,		"Heat/Life Support Stepper Motor"),
 	Stepper_Gforce					(170,		171,		ModuleID.C,		224,		3470,		"G-Force Stepper Motor"),
 
-	Stepper_Mach					(172,		173,		ModuleID.G,		0,			3219,		"Mach Number Stepper Motor"), //Note: calibCWLim is for Mach 24
+	Stepper_Mach					(172,		173,		ModuleID.G,		134,		3408,		"Mach Number Stepper Motor"), // Previous calibLims: 162,3426
 	Stepper_Pitch					(174,		175,		ModuleID.G,		1210,		3364,		"Pitch Stepper Motor"),
 	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),
 
-	Stepper_Fuel					(178,		179,		ModuleID.I,		80,			3760,		"Fuel Stepper Motor"),
+	Stepper_Fuel					(178,		179,		ModuleID.I,		126,		3740,		"Fuel Stepper Motor"),
 	Stepper_Charge					(180,		181,		ModuleID.I,		55,			3660,		"Charge Stepper Motor"),
 	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		80,			3680,		"Monopropellant/Intake Air Stepper Motor"),
 
 	Stepper_AirDensity				(184,		185,		ModuleID.GT,	55,			3660,		"AirDensity Stepper Motor"),
-	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),//See ControlPanel for "Speed calibration settings"
-	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),//See ControlPanel for "Vertical Speed calibration settings"
-	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),//See ControlPanel for "Radar Altitude calibration settings"
+	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),//See config.properties for Speed calibration settings
+	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),//See config.properties for Vertical Speed calibration settings
+	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),//See config.properties for Radar Altitude calibration settings
 
 //Altitude
 	Altitude						(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");
@@ -150,17 +150,7 @@ public enum OP {
 	public final int calibrationCCWLimit;
 	public final int calibrationCWLimit;
 	public final String partName;
-	
-	//TODO public static final OP[] LEDS = {IP.ModuleABrakeLED, ModuleDBrakeLED, StepperLED_Fuel_Green};
 
-	/*
-	 * 				PermittedRange	MinBitSize
-	 * 	LED_PWM:	0-4095			12
-	 * 	Stepper:	0-3779			10			Note: NEMA Stepper Range: 0-1599
-	 * 	
-	 * 	MinBitSize = The minimum number of bits required to transfer the data for the part.
-	 */
-	
 	private OP(int firstByte, int lastByte, ModuleID moduleID, int calibrationCCWLimit, int calibrationCWLimit, String partName) {
 		this.firstByte = firstByte;
 		this.lastByte = lastByte;
