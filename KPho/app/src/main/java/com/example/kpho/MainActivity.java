@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    KPhoService kPhoService = new KPhoService();
     Button startServerButton;
 
     @Override
@@ -27,17 +28,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-//        // Hide the status+navigation bars
-//        View decorView = getWindow().getDecorView();
-//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-//
-//        // Hide the action bar
-//        ActionBar actionBar = getActionBar();
-//        if (actionBar != null) {
-//            actionBar.hide();
-//        }
-
         startServerButton = (Button) findViewById(R.id.StartServerButton);
         // When the button is pressed
         startServerButton.setOnClickListener(new View.OnClickListener() {
@@ -45,16 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO: prevent tap on screen from exiting fullscreen mode
 
-                // Hide the status+navigation bars
-                View decorView = getWindow().getDecorView();
-                int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
-                decorView.setSystemUiVisibility(uiOptions);
+                kPhoService.hideStatusAndActionBars(getWindow().getDecorView(), getActionBar());
 
-                // Hide the action bar
-                ActionBar actionBar = getActionBar();
-                if (actionBar != null) {
-                    actionBar.hide();
-                }
+
 
                 Log.i("KPho", "User tapped the Start Server Button...");
 
@@ -66,17 +49,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-
-        // Hide the status bar
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
-        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-
-        // Hide the action bar
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
+        kPhoService.hideStatusAndActionBars(getWindow().getDecorView(), getActionBar());
     }
 }
