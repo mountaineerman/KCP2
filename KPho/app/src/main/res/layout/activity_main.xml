@@ -8,57 +8,92 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="74dp"
-        android:layout_height="57dp"
-        android:text="Graceful\nShutdown"
+        android:id="@+id/glassCockpit_CL5"
+        android:layout_width="200dp"
+        android:layout_height="34dp"
+        android:text="TBD"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.926" />
+        app:layout_constraintVertical_bias="0.257" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/glassCockpit_CL2"
+        android:layout_width="64dp"
+        android:layout_height="34dp"
+        android:text="APO:"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.304"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="107dp"
         android:layout_height="76dp"
-        android:text="KKIM\nDiagnostic\nMode"
-        android:textSize="20sp"
+        android:text="KPho"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.451" />
-        <!--android:textColor -->
-        <!--android:textSize="35sp" -->
+        app:layout_constraintVertical_bias="0.056" />
+
+    <!--android:textColor -->
 
     <TextView
-        android:layout_width="74dp"
-        android:layout_height="57dp"
-        android:text="KMega\nDiagnostic\nMode"
+        android:id="@+id/GlassCockpit_BR"
+        android:layout_width="118dp"
+        android:layout_height="71dp"
+        android:text="Graceful\nShutdown"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.024"
+        app:layout_constraintHorizontal_bias="0.986"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.452" />
+        app:layout_constraintVertical_bias="0.93" />
+
+    <TextView
+        android:id="@+id/GlassCockpit_CR"
+        android:layout_width="126dp"
+        android:layout_height="94dp"
+        android:text="KKIM\nDiagnostic\nMode"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.986"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.507" />
+
+    <TextView
+        android:id="@+id/GlassCockpit_CL"
+        android:layout_width="134dp"
+        android:layout_height="90dp"
+        android:text="KMega\nDiagnostic\nMode"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/StartServerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connect"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="347dp" />
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Start Server"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="183dp"
-        android:layout_height="107dp"
-        app:srcCompat="@drawable/ksplogo"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="5dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,9 @@
 		}
 	],
 	"settings": {
-		"editor.inlayHints.enabled": "off"
+		"editor.inlayHints.enabled": "off",
+		"files.exclude": {
+			"KPho": true
+		}
 	}
 }
