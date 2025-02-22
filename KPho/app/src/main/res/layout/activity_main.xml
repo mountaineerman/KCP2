@@ -8,20 +8,33 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/glassCockpit_CL5"
+        android:id="@+id/KPhoStatus"
+        android:layout_width="410dp"
+        android:layout_height="36dp"
+        android:text="KPho Status: Idle"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/StartServerButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toEndOf="@+id/StartServerButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/centerBody1_APO"
         android:layout_width="200dp"
         android:layout_height="34dp"
-        android:text="TBD"
+        android:text="---"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintStart_toEndOf="@+id/centerHeader1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.257" />
 
     <TextView
-        android:id="@+id/glassCockpit_CL2"
+        android:id="@+id/centerHeader1"
         android:layout_width="64dp"
         android:layout_height="34dp"
         android:text="APO:"

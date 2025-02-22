@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.kpho"
-    compileSdk = 35
+    compileSdk = 35 //29
 
     defaultConfig {
         applicationId = "com.example.kpho"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 35 //29
         versionCode = 1
         versionName = "1.0"
 
@@ -26,7 +26,9 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
+        //sourceCompatibility = JavaVersion.VERSION_1_8 //Required for SDK 29
+        //targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11 //Default on setup. Required for SDK 30+
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
