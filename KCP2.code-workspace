@@ -8,6 +8,7 @@
 		"editor.inlayHints.enabled": "off",
 		"files.exclude": {
 			"KPho": true
-		}
+		},
+		"java.configuration.updateBuildConfiguration": "interactive"
 	}
 }

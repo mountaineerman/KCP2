@@ -17,9 +17,19 @@ public final class StartupMode implements OperatingMode { //SINGLETON
     }
 	
 	public void run(KKIMService kkimService) {
-		kkimService.serialCommunicator.establishSerialLinkToKMega();
+		
+		if (KKIMProp.getkMegaIsOn()) {
+			kkimService.serialCommunicator.establishSerialLinkToKMega();
+		}
+		if (KKIMProp.getkPhoIsOn()) {
+			kkimService.kPhoCommunicator.establishBluetoothLinkToKPho();
+			while (true) {//FIXME
+				// try {
+				// 	Thread.sleep(1000);
+				// } catch (InterruptedException e) {e.printStackTrace();}
+			}
+		}
 		kkimService.kRPCCommunicator.establishKRPCLink();        
-		//TODO Establish connection to phone
 		
 		try {
 			Thread.sleep(KKIMProp.getkkimStartupModeInitialStartupDelayInMilliseconds());

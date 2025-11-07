@@ -150,7 +150,8 @@ public class KPhoService {
 
         try {
             String name = "KPho"; //Name for Service Discovery Protocol (SDP) record
-            UUID kPhoUUID = UUID.randomUUID(); //Note: changes every time. For example: 4c3f6479-c724-418b-a319-702cbf43fe51
+            //TODO delete: UUID kPhoUUID = UUID.randomUUID(); //Note: changes every time. For example: 4c3f6479-c724-418b-a319-702cbf43fe51
+            UUID kPhoUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // SPP UUID
             Log.d("KPho", "UUID: " + kPhoUUID.toString());
             socket = bluetoothAdapter.listenUsingRfcommWithServiceRecord(name, kPhoUUID);
         } catch (IOException e) {

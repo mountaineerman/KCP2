@@ -7,6 +7,7 @@ import java.util.Properties;
 
 public class KKIMProp {
 
+	private static boolean kMegaIsOn = false;
 	private static int kMegaPortBaudrate = 0;
 	private static String kMegaPortNumber = "";
 	private static byte allPacketsDelimiterByte = 0x00;
@@ -43,6 +44,8 @@ public class KKIMProp {
 	private static int kmegaStepperRadarAltitudePositionSPC = 0;
 	private static float kmegaAltitudeGaugeErrorAltitude = 999000000000L;
 	
+	private static boolean kPhoIsOn = false;
+
 	private static int kkimStartupModeInitialStartupDelayInMilliseconds = 0;
 	private static int kkimStartupModeSleepIntervalInMilliseconds = 0;
 	private static int kkimIdleModeSleepIntervalInMilliseconds = 0;
@@ -58,6 +61,7 @@ public class KKIMProp {
 		
 		Properties properties = loadPropertiesFromFile();
 		
+		kMegaIsOn = Boolean.valueOf(properties.getProperty("kmega.isOn"));
 		kMegaPortBaudrate = Integer.valueOf(properties.getProperty("kmega.port.baudrate"));
 		kMegaPortNumber = properties.getProperty("kmega.port.number");
 		allPacketsDelimiterByte = Byte.valueOf(properties.getProperty("allPackets.delimiter.byte"));
@@ -95,6 +99,8 @@ public class KKIMProp {
 		kmegaStepperRadarAltitudePositionSPC = Integer.valueOf(properties.getProperty("kmega.stepper_RadarAltitude_position.SPC"));
 		kmegaAltitudeGaugeErrorAltitude = (float) Long.valueOf(properties.getProperty("kmega.AltitudeGauge.ErrorAltitude"));
 		
+		kPhoIsOn = Boolean.valueOf(properties.getProperty("kpho.isOn"));
+
 		kkimStartupModeInitialStartupDelayInMilliseconds = Integer.valueOf(properties.getProperty("kkim.startupMode.initialStartupDelayInMilliseconds"));
 		kkimStartupModeSleepIntervalInMilliseconds = Integer.valueOf(properties.getProperty("kkim.startupMode.sleepIntervalInMilliseconds"));
 		kkimIdleModeSleepIntervalInMilliseconds = Integer.valueOf(properties.getProperty("kkim.idleMode.sleepIntervalInMilliseconds"));
@@ -122,6 +128,10 @@ public class KKIMProp {
 	    return properties;
 	}
 	
+	public static boolean getkMegaIsOn() {
+		return kMegaIsOn;
+	}
+
 	public static int getkMegaPortBaudrate() {
 		return kMegaPortBaudrate;
 	}
@@ -262,6 +272,12 @@ public class KKIMProp {
 		return kmegaAltitudeGaugeErrorAltitude;
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public static boolean getkPhoIsOn() {
+		return kPhoIsOn;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public static int getkkimStartupModeInitialStartupDelayInMilliseconds() {

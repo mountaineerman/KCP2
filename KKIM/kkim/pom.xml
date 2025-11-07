@@ -53,11 +53,15 @@
             <artifactId>krpc</artifactId>
             <version>0.5.4</version>
         </dependency>
-
         <dependency> <!-- https://mvnrepository.com/artifact/com.fazecast/jSerialComm -->
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
             <version>2.10.4</version> <!-- Necessary for Serial Communication to KMega. See SerialCommunicator. Previously used with gradle (successfully): [2.0.0,3.0.0) -->
+        </dependency>
+        <dependency> <!-- https://mvnrepository.com/artifact/io.ultreia/bluecove -->
+            <groupId>io.ultreia</groupId>
+            <artifactId>bluecove</artifactId>
+            <version>2.1.1</version> <!-- Necessary for Bluetooth Communication to KPho. See KPhoCommunicator. -->
         </dependency>
     </dependencies>
 
