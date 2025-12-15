@@ -1,4 +1,4 @@
-HARDWARE ==================================================================================================================================
+HARDWARE =============================================================================================================
 
 Adjust needle positions (+re-calibrate motors (KKIM: OP.java)):
 	Mach
@@ -7,7 +7,19 @@ Stop SP3T switch guards from turning
 Fix Reset circuit (see README: Fix 2b), update schematic.
 Glass Cockpit top-right button stopped working. Check wiring.
 
-SOFTWARE ==================================================================================================================================
+SOFTWARE =============================================================================================================
+
+Get kRPC + KKIM + KMega working on linux
+Get KKIM + KPho working on linux
+
+Phone display...
+	Essentials:
+		APO: (Apoapsis)
+		ALT: (Altitude)
+		PER: (Periapsis)
+		ttA/P (time to Apoapsis/Periapsis)
+		Speed (m/s) + (speed type)
+		Current draw (mA)
 
 !!! Update NEMA17 runStepperIfNecessary
 
@@ -20,16 +32,6 @@ Tie button to gauge calibration
 Enable Intake Air...
 
 Change Camera Mode when switching between RKT/PLN/RVR
-
-Phone display...
-	Essentials:
-		APO: (Apoapsis)
-		ALT: (Altitude)
-		PER: (Periapsis)
-		ttA/P (time to Apoapsis/Periapsis)
-		Speed (m/s) + (speed type)
-		Current draw (mA)
-		
 
 Implement TRIM
 
@@ -47,7 +49,7 @@ Consider using PlatformIO (+VS Code?) instead of Arduino IDE
 
 See KCP2_Lessons_Learned.txt
 
-HARDWARE "nice-to-haves" (won't do)=================================================================================================================================
+HARDWARE "nice-to-haves" (won't do)===================================================================================
 
 Physically re-do label for air density gauge (red = 100, green = 0)
 Replace LEDs that are too bright or dim them with bigger resistors

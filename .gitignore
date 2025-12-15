@@ -1,5 +1,6 @@
 # Ignore Symlink to Arduino directory
-Arduino.lnk
+#TODO
+#Arduino.lnk
 
 # Ignore Arduino Library Test
 LibraryExperiment
@@ -8,4 +9,4 @@ LibraryExperiment
 .vscode
 
 # Ignore "handy" files
-Kerbal Space Program - Shortcut.lnk
+ksp
