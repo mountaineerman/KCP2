@@ -94,7 +94,7 @@ public class PacketUnpacker {
 	}
 	
 	//Returns the integer stored in packet located at the specified byte numbers (see ICD).
-	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	private int convertTwoBytesInPacketIntoInteger(byte[] packet, int byteNum1, int byteNum2) {
 		
 		int largestByteNum = 0;
@@ -117,7 +117,7 @@ public class PacketUnpacker {
 		//return (*((int *)tempTwoByteArray)); //TODO remove
 	}
 
-	//Extracts the byte at byteNumber (See Onenote: "ICD:KMega>KKIM"). Returns the bit located at bitNumber in the byte.
+	//Extracts the byte at byteNumber (See Joplin: "ICD:KMega>KKIM"). Returns the bit located at bitNumber in the byte.
 	private boolean fetchBitInByteInPacket(byte[] packet, int byteNumber, int bitNumber) {
 		byte tempByte = packet[byteNumber-1];
 		int temp = 8 - bitNumber;
@@ -127,7 +127,7 @@ public class PacketUnpacker {
 	
 	
 	//Returns the float stored in packet located at the specified byte numbers (see ICD).
-	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	@SuppressWarnings("unused")
 	private float retrieveFloatInPacketAtByteNumbers (byte[] packet, int byteNum1, int byteNum2) {
 		

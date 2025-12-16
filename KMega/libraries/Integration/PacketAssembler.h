@@ -33,16 +33,16 @@ public:
 	void assembleInputRefreshPacket();
 
 private:
-	//See description in "ICD:KMega>KKIM" (Onenote)
+	//See description in "ICD:KMega>KKIM" (Joplin)
 	byte compressBoolsIntoByte(bool bool1, bool bool2, bool bool3, bool bool4,
 							   bool bool5, bool bool6, bool bool7, bool bool8);
 	
 	void saveByteToPacketAtByteNumber(PacketType packetType, byte theByte, int byteNumber);
 	
-	//Saves integer Number value to the Packet at the specified Byte Numbers. byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	//Saves integer Number value to the Packet at the specified Byte Numbers. byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	void saveNumberToPacketAtByteNumbers(int number, PacketType packetType, int byteNum1, int byteNum2);
 	
-	//Saves float number value at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Onenote).
+	//Saves float number value at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Joplin).
 	void saveFloatToAltitudePacketAtByteNumbers(float number, int firstByteNum, int lastByteNum);
 	
 	//void saveFloatToInputRefreshPacketAtByteNumbers(float number, int firstByteNum, int lastByteNum); //(For Debugging)

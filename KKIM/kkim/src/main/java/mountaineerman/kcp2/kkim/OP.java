@@ -144,8 +144,8 @@ public enum OP {
 
 	
 	
-	public final int firstByte;//See Onenote:ICD
-	public final int lastByte; //See Onenote:ICD
+	public final int firstByte;//See Joplin:ICD
+	public final int lastByte; //See Joplin:ICD
 	public final ModuleID moduleID;
 	public final int calibrationCCWLimit;
 	public final int calibrationCWLimit;

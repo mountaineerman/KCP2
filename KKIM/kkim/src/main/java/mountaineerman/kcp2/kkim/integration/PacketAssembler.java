@@ -223,7 +223,7 @@ public class PacketAssembler {
 		System.out.println(Arrays.toString(this.outputRefreshPacketBuffer));
 	}
 	
-	/** Saves theByte to the specified byteNumber in the relevant packet. See "ICD" in OneNote.
+	/** Saves theByte to the specified byteNumber in the relevant packet. See "ICD" in Joplin.
 	 * @param theByte number from 0-255
 	 * @param byteNumber 1-indexed position in Header or Payload
 	 */
@@ -242,7 +242,7 @@ public class PacketAssembler {
 	}
 	
 	/** Saves number value at the specified byte numbers (see ICD) to the relevant packet.
-	 * byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	 * byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	 */
 	private void saveTwoByteIntToPacketBufferAtByteNumbers(int byteNum1, int byteNum2, int twoByteInteger) {
 		
@@ -270,7 +270,7 @@ public class PacketAssembler {
 	}
 	
 	//Saves float at the specified byte numbers (see ICD).
-	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	private void saveFloatToOutputRefreshPacketBufferAtByteNumbers(int byteNum1, int byteNum2, float theFloat) {
 		
 		int largeByteNum = 0;

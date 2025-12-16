@@ -84,9 +84,9 @@ public enum IP {
 
 	
 	
-	public final int firstByte;//See Onenote:ICD 
-	public final int lastByte; //See Onenote:ICD. Not applicable for Switches.
-	public final int bitNumber;//See Onenote:ICD. Only applicable for Switches.
+	public final int firstByte;//See Joplin:ICD 
+	public final int lastByte; //See Joplin:ICD. Not applicable for Switches.
+	public final int bitNumber;//See Joplin:ICD. Only applicable for Switches.
 	public final int minCalibLim;//Lower physical calibration offset for raw value. Only applicable for AnalogInputs. Minimum: 0
 	public final int maxCalibLim;//Upper physical calibration offset for raw value. Only applicable for AnalogInputs. Maximum: 1023
 	public final int minRescaleLim;//Lower limit of re-scaled boundValue. Only applicable for AnalogInputs.
