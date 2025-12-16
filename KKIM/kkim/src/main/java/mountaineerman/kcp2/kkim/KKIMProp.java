@@ -74,7 +74,7 @@ public class KKIMProp {
 	
 	private static Properties loadPropertiesFromFile() {
 		Properties properties = new Properties();
-		String settingsFilename = "C:/dev/KCP2/KKIM/kkim/config.properties"; //FIXME replace absolute path with relative path
+		String settingsFilename = "/home/anton/kcp2/KKIM/kkim/config.properties"; //FIXME replace absolute path with relative path
 		try ( FileInputStream fileInputStream = new FileInputStream(settingsFilename) ) {
 		    properties.load(fileInputStream);
 		} catch (FileNotFoundException e) {
