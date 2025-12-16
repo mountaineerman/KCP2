@@ -40,24 +40,23 @@
         <dependency> <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.25.5</version> <!-- kRPC Client library dependency. Previously used with gradle (successfully): 3.11.0 -->
+            <version>3.25.5</version> <!-- kRPC Client library dependency -->
         </dependency>
         <dependency> <!-- https://mvnrepository.com/artifact/org.javatuples/javatuples -->
             <groupId>org.javatuples</groupId>
             <artifactId>javatuples</artifactId>
-            <version>1.2</version> <!-- kRPC Client library dependency. -->
+            <version>1.2</version> <!-- kRPC Client library dependency -->
             <scope>compile</scope>
         </dependency>
-        <dependency> <!-- kRPC Client library. Added locally, see instructions in OneNote. -->
+        <dependency> <!-- kRPC Client library. Added locally, see instructions in Joplin -->
             <groupId>djungelorm</groupId>
             <artifactId>krpc</artifactId>
             <version>0.5.4</version>
         </dependency>
-
         <dependency> <!-- https://mvnrepository.com/artifact/com.fazecast/jSerialComm -->
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
-            <version>2.10.4</version> <!-- Necessary for Serial Communication to KMega. See SerialCommunicator. Previously used with gradle (successfully): [2.0.0,3.0.0) -->
+            <version>2.10.4</version> <!-- Necessary for Serial Communication to KMega. See SerialCommunicator. -->
         </dependency>
     </dependencies>
 

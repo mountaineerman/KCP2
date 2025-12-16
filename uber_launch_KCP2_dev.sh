@@ -1,25 +1,30 @@
 clear
 
 echo "==============================================================================================================="
-echo "OneNote"
-echo "-------------------------------------"
-echo "(!) Reminder: Open OneNote"
-
-echo "==============================================================================================================="
 echo "git"
-echo "-------------------------------------"
+echo "---------------------------------------------------------------------------------------------------------------"
 git status
+sleep 6s
+echo " "
 
 echo "==============================================================================================================="
 echo "KSP"
-echo "-------------------------------------"
+echo "---------------------------------------------------------------------------------------------------------------"
 cd /home/anton/KerbalSpaceProgram/KSP_GameArchive/KSP_linux
-echo "Overwriting settings.cfg file and launching KSP..."
-cp -p /home/anton/KerbalSpaceProgram/KCP2/LaunchScripts/settings.cfg.dev settings.cfg
-./KSP.x86_64 > ksp_script_launch_output.txt &
+#echo "Overwriting settings.cfg file and launching KSP..."
+#cp -p /home/anton/KerbalSpaceProgram/KCP2/LaunchScripts/settings.cfg.dev settings.cfg
+TERM=xterm ./KSP.x86_64 > ksp_script_launch_output.txt &
+echo " "
+
+echo "==============================================================================================================="
+echo "Joplin"
+echo "---------------------------------------------------------------------------------------------------------------"
+echo "Starting Joplin..."
+~/.joplin/Joplin.AppImage &
+echo " "
 
 echo "==============================================================================================================="
 echo "VS Code"
-echo "-------------------------------------"
+echo "---------------------------------------------------------------------------------------------------------------"
+echo "Starting VC Code..."
 code
-echo "(TBC) To launch KKIM, hit F5..."

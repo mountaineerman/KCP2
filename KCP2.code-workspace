@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"editor.inlayHints.enabled": "off"
+		"editor.inlayHints.enabled": "off",
+		"java.configuration.updateBuildConfiguration": "interactive"
 	}
 }
