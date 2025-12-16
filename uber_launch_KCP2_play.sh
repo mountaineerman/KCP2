@@ -5,7 +5,6 @@ cd /home/anton/KerbalSpaceProgram/KSP_GameArchive/KSP_linux
 TERM=xterm ./KSP.x86_64 > ksp_script_launch_output.txt &
 
 #KKIM (via JAR)
-#echo "KKIM now (TODO)..."
-#cd /home/anton/KerbalSpaceProgram/KCP2/KKIM
-#java -jar KKIM.jar
+cd /home/anton/KerbalSpaceProgram/KCP2/KKIM
+java -jar KKIM.jar
 #TODO KKIM needs to handle being unable to connect to kRPC...
