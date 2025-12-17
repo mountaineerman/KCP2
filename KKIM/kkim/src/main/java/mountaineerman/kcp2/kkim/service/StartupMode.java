@@ -18,7 +18,7 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) {
 		kkimService.serialCommunicator.establishSerialLinkToKMega();
-		kkimService.kRPCCommunicator.establishKRPCLink();        
+		kkimService.kRPCCommunicator.establishKRPCLink();
 		//TODO Establish connection to phone
 		
 		try {
@@ -27,6 +27,7 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 
 		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {
 			kkimService.kRPCCommunicator.establishKRPCFlightHooks();
+			kkimService.kRPCCommunicator.establishKRPCStreams();
 			kkimService.controlPanel.moduleH.glassCL_LED.setPWM(KKIMProp.getkmegaDimPWM());//KMega Diagnostic Mode
 			kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaDimPWM());//KKIM Diagnostic Mode
 			kkimService.controlPanel.moduleH.glassBR_LED.setPWM(KKIMProp.getkmegaDimPWM());//Graceful Shutdown

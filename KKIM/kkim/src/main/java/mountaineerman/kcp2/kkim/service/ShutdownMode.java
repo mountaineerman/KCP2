@@ -15,7 +15,7 @@ public final class ShutdownMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) {
 		kkimService.serialCommunicator.teardownSerialLinkToKMega();
-		kkimService.kRPCCommunicator.closeKRPCLink();
+		kkimService.kRPCCommunicator.closeKRPCLink(); //kRPC Note: "All of a clients streams are automatically stopped when it disconnects."
 		System.exit(0);
     }
 }

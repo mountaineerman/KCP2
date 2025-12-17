@@ -4,17 +4,21 @@ import java.io.IOException;
 
 import krpc.client.Connection;
 import krpc.client.RPCException;
+import krpc.client.Stream;
+import krpc.client.StreamException;
 import krpc.client.services.SpaceCenter;
 import krpc.client.services.KRPC;
 import krpc.client.services.KRPC.GameScene;
 import krpc.client.services.SpaceCenter.Control;
 import krpc.client.services.SpaceCenter.Flight;
 import krpc.client.services.SpaceCenter.Orbit;
-import krpc.client.services.SpaceCenter.Part;
+import krpc.client.services.SpaceCenter.Parts;
 import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
+import krpc.client.services.SpaceCenter.VesselSituation;
 import krpc.client.services.SpaceCenter.Camera;
 import krpc.client.services.SpaceCenter.CameraMode;
+import krpc.client.services.SpaceCenter.CelestialBody;
 import krpc.client.services.SpaceCenter.SASMode;
 import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
@@ -24,6 +28,7 @@ import mountaineerman.kcp2.kkim.model.SP3TPosition;
 public class KRPCCommunicator {
 	
 	private ControlPanel controlPanel;
+	
 	private Connection connection = null;
 	private KRPC kRPC = null;
 	private SpaceCenter spaceCenter = null;
@@ -34,10 +39,40 @@ public class KRPCCommunicator {
 	private Orbit orbit = null;
 	private Control control = null;
 	private Camera camera = null;
-	private Resources currentStageResources = null;
-	private Resources vesselResources = null;
 	
-	
+	private Stream<Integer> stream_currentStageNumber = null;
+	//private Stream<Resources> stream_currentStageResources = null;
+	private Stream<Resources> stream_vesselResources = null;
+	private Stream<Parts> stream_vesselParts = null;
+	private Stream<Float> stream_vesselFoodAmount = null;
+	private Stream<Float> stream_vesselFoodMax = null;
+	private Stream<Float> stream_vesselWaterAmount = null;
+	private Stream<Float> stream_vesselWaterMax = null;
+	private Stream<Float> stream_vesselOxygenAmount = null;
+	private Stream<Float> stream_vesselOxygenMax = null;
+	private Stream<Float> stream_gForce = null;
+	private Stream<Float> stream_mach = null;
+	private Stream<Float> stream_pitch = null;
+	private Stream<Float> stream_heading = null;
+	private Stream<Float> stream_stageLiquidFuelAmount = null;
+	private Stream<Float> stream_stageLiquidFuelMax = null;
+	private Stream<Float> stream_stageSolidFuelAmount = null;
+	private Stream<Float> stream_stageSolidFuelMax = null;
+	private Stream<Float> stream_vesselElectricChargeAmount = null;
+	private Stream<Float> stream_vesselElectricChargeMax = null;
+	private Stream<Float> stream_vesselMonopropellantAmount = null;
+	private Stream<Float> stream_vesselMonopropellantMax = null;
+	private Stream<Float> stream_currentAirDensity = null;
+	private Stream<CelestialBody> stream_orbitBody = null;
+	private Stream<Double> stream_surfaceReferenceFrame_speed = null;
+	private Stream<Double> stream_surfaceReferenceFrame_verticalSpeed = null;
+	private Stream<Double> stream_orbitalReferenceFrame_speed = null;
+	private Stream<Double> stream_orbitalReferenceFrame_verticalSpeed = null;
+	private Stream<VesselSituation> stream_vesselSituation = null;
+	private Stream<Double> stream_altitudeAboveSurface = null;
+	private Stream<Double> stream_altitudeAboveSeaLevel = null;
+	private Stream<SASMode> stream_SASMode = null;
+
 	public KRPCCommunicator(ControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
 	}
@@ -91,6 +126,56 @@ public class KRPCCommunicator {
 		}
 	}
 
+	/**
+	 * Create Streams for all information needed from KSP
+	 */
+	public void establishKRPCStreams() {
+		try{
+			this.stream_currentStageNumber = this.connection.addStream(this.control, "getCurrentStage");
+			this.stream_vesselResources = this.connection.addStream(this.vessel, "getResources");
+			this.stream_vesselParts = this.connection.addStream(this.vessel, "getParts");
+			Resources vesselResources = this.stream_vesselResources.get();
+			this.stream_vesselFoodAmount = this.connection.addStream(vesselResources, "amount", "Food");
+			this.stream_vesselFoodMax    = this.connection.addStream(vesselResources, "max", "Food");
+			this.stream_vesselWaterAmount = this.connection.addStream(vesselResources, "amount", "Water");
+			this.stream_vesselWaterMax    = this.connection.addStream(vesselResources, "max", "Water");
+			this.stream_vesselOxygenAmount = this.connection.addStream(vesselResources, "amount", "Oxygen");
+			this.stream_vesselOxygenMax    = this.connection.addStream(vesselResources, "max", "Oxygen");
+			this.stream_gForce = this.connection.addStream(this.flight, "getGForce");
+			this.stream_mach = this.connection.addStream(this.flight, "getMach");
+			this.stream_pitch = this.connection.addStream(this.flight, "getPitch");
+			this.stream_heading = this.connection.addStream(this.flight, "getHeading");
+			Resources currentStageResources = this.vessel.resourcesInDecoupleStage(this.stream_currentStageNumber.get()-1, false);
+			this.stream_stageLiquidFuelAmount = connection.addStream(currentStageResources, "amount", "LiquidFuel");
+			this.stream_stageLiquidFuelMax    = connection.addStream(currentStageResources, "max", "LiquidFuel");
+			this.stream_stageSolidFuelAmount  = connection.addStream(currentStageResources, "amount", "SolidFuel");
+			this.stream_stageSolidFuelMax     = connection.addStream(currentStageResources, "max", "SolidFuel");
+			this.stream_vesselElectricChargeAmount = this.connection.addStream(vesselResources, "amount", "ElectricCharge");
+			this.stream_vesselElectricChargeMax    = this.connection.addStream(vesselResources, "max", "ElectricCharge");
+			this.stream_vesselMonopropellantAmount = this.connection.addStream(vesselResources, "amount", "MonoPropellant");
+			this.stream_vesselMonopropellantMax    = this.connection.addStream(vesselResources, "max", "MonoPropellant");
+			this.stream_currentAirDensity = this.connection.addStream(this.flight, "getAtmosphereDensity");
+			this.stream_orbitBody = this.connection.addStream(this.orbit, "getBody");
+			this.stream_surfaceReferenceFrame_speed = this.connection.addStream(this.flight_OrbitBody_NormalReferenceFrame, "getSpeed");
+			this.stream_surfaceReferenceFrame_verticalSpeed = this.connection.addStream(this.flight_OrbitBody_NormalReferenceFrame, "getVerticalSpeed");
+			this.stream_orbitalReferenceFrame_speed = this.connection.addStream(flight_OrbitBody_OrbitalReferenceFrame, "getSpeed");
+			this.stream_orbitalReferenceFrame_verticalSpeed = this.connection.addStream(flight_OrbitBody_OrbitalReferenceFrame, "getVerticalSpeed");
+			this.stream_vesselSituation = this.connection.addStream(this.vessel, "getSituation");
+			this.stream_altitudeAboveSurface = this.connection.addStream(this.flight, "getSurfaceAltitude");
+			this.stream_altitudeAboveSeaLevel = this.connection.addStream(this.flight, "getMeanAltitude");
+			this.stream_SASMode = this.connection.addStream(this.control, "getSASMode");
+		} catch (StreamException | RPCException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Removes all Streams (which send data from KSP to KKIM)
+	 */
+	public void terminateKRPCStreams() {
+		//TODO: Stream.remove() https://krpc.github.io/krpc/java/client.html
+	}
+
 	public void closeKRPCLink() {
 		
 		System.out.print("Closing connection to kRPC... ");
@@ -102,7 +187,7 @@ public class KRPCCommunicator {
 		System.out.print("DONE");
 	}
 
-	public void pullInfoFromKSPIntoModel() {//TODO Rewrite
+	public void pullInfoFromKSPIntoModel() {
 
 		/*
 		 * See: https://krpc.github.io/krpc/java/api/space-center/vessel.html
@@ -113,56 +198,117 @@ public class KRPCCommunicator {
 		 */
 		
 		try {
-			this.currentStageResources = this.vessel.resourcesInDecoupleStage(this.control.getCurrentStage()-1, false);
-			//System.out.println("Current Stage Resources: " + this.currentStageResources.getNames());
-			this.vesselResources = this.vessel.getResources();
-			//System.out.println("Vessel Resources: " + this.vesselResources.getNames());
+
+			long time_3 = System.currentTimeMillis();
+			//FIXME Temperature temporarily disabled because it is taking 260-360 milliseconds to run through (see "TROUBLESHOOTING: (Linux) KMega Inputs not transferring to game").
+			// int highestPercentTemperature = 0;
+			// for (Part part : this.stream_vesselParts.get().getAll()) {
+			// 	int t1 = (int) (part.getTemperature() / part.getMaxTemperature() * 100);
+			// 	if (t1 > highestPercentTemperature) {
+			// 		highestPercentTemperature = t1;
+			// 	}
+			// 	int t2 = (int) (part.getSkinTemperature() / part.getMaxSkinTemperature() * 100);
+			// 	if (t2 > highestPercentTemperature) {
+			// 		highestPercentTemperature = t1;
+			// 	}
+			// }
+			// this.controlPanel.percentTemperatureHealth = 100 - highestPercentTemperature;
 			
-			int highestPercentTemperature = 0;
-			for (Part part : this.vessel.getParts().getAll()) {
-				int t1 = (int) (part.getTemperature() / part.getMaxTemperature() * 100);
-				if (t1 > highestPercentTemperature) {
-					highestPercentTemperature = t1;
-				}
-				int t2 = (int) (part.getSkinTemperature() / part.getMaxSkinTemperature() * 100);
-				if (t2 > highestPercentTemperature) {
-					highestPercentTemperature = t1;
-				}
-			}
-			this.controlPanel.percentTemperatureHealth = 100 - highestPercentTemperature;
-			
-			this.controlPanel.currentFood = this.vesselResources.amount("Food");
-			this.controlPanel.maxFood = this.vesselResources.max("Food");
-			this.controlPanel.currentWater = this.vesselResources.amount("Water");
-			this.controlPanel.maxWater = this.vesselResources.max("Water");
-			this.controlPanel.currentOxygen = this.vesselResources.amount("Oxygen");
-			this.controlPanel.maxOxygen = this.vesselResources.max("Oxygen");
-			this.controlPanel.gforce = this.flight.getGForce();
-			this.controlPanel.mach = this.flight.getMach();
-			this.controlPanel.pitch = this.flight.getPitch();
-			this.controlPanel.heading = this.flight.getHeading();
-			this.controlPanel.currentLiquidFuel = this.currentStageResources.amount("LiquidFuel");
-			this.controlPanel.maxLiquidFuel = this.currentStageResources.max("LiquidFuel");
-			this.controlPanel.currentSolidFuel = this.currentStageResources.amount("SolidFuel");
-			this.controlPanel.maxSolidFuel = this.currentStageResources.max("SolidFuel");
-			this.controlPanel.currentElectricCharge = this.vesselResources.amount("ElectricCharge");
-			this.controlPanel.maxElectricCharge = this.vesselResources.max("ElectricCharge");
-			this.controlPanel.currentMonopropellant = this.vesselResources.amount("MonoPropellant");
-			this.controlPanel.maxMonopropellant = this.vesselResources.max("MonoPropellant");
+			long time_4 = System.currentTimeMillis();
+			this.controlPanel.currentFood = this.stream_vesselFoodAmount.get();
+			long time_5 = System.currentTimeMillis();
+			this.controlPanel.maxFood = this.stream_vesselFoodMax.get();
+			long time_6 = System.currentTimeMillis();
+			this.controlPanel.currentWater = this.stream_vesselWaterAmount.get();
+			long time_7 = System.currentTimeMillis();
+			this.controlPanel.maxWater = this.stream_vesselWaterMax.get();
+			long time_8 = System.currentTimeMillis();
+			this.controlPanel.currentOxygen = this.stream_vesselOxygenAmount.get();
+			long time_9 = System.currentTimeMillis();
+			this.controlPanel.maxOxygen = this.stream_vesselOxygenMax.get();
+			long time_10 = System.currentTimeMillis();
+			this.controlPanel.gforce = this.stream_gForce.get();
+			long time_11 = System.currentTimeMillis();
+			this.controlPanel.mach = this.stream_mach.get();
+			long time_12 = System.currentTimeMillis();
+			this.controlPanel.pitch = this.stream_pitch.get();
+			long time_13 = System.currentTimeMillis();
+			this.controlPanel.heading = this.stream_heading.get();
+			long time_14 = System.currentTimeMillis();
+			this.controlPanel.currentLiquidFuel = this.stream_stageLiquidFuelAmount.get();
+			long time_15 = System.currentTimeMillis();
+			this.controlPanel.maxLiquidFuel = this.stream_stageLiquidFuelMax.get();
+			long time_16 = System.currentTimeMillis();
+			this.controlPanel.currentSolidFuel = this.stream_stageSolidFuelAmount.get();
+			long time_17 = System.currentTimeMillis();
+			this.controlPanel.maxSolidFuel = this.stream_stageSolidFuelMax.get();
+			long time_18 = System.currentTimeMillis();
+			this.controlPanel.currentElectricCharge = this.stream_vesselElectricChargeAmount.get();
+			long time_19 = System.currentTimeMillis();
+			this.controlPanel.maxElectricCharge = this.stream_vesselElectricChargeMax.get();
+			long time_20 = System.currentTimeMillis();
+			this.controlPanel.currentMonopropellant = this.stream_vesselMonopropellantAmount.get();
+			long time_21 = System.currentTimeMillis();
+			this.controlPanel.maxMonopropellant = this.stream_vesselMonopropellantMax.get();
+			long time_22 = System.currentTimeMillis();
 			//FIXME Use Intake part: Flow instead: https://krpc.github.io/krpc/csharp/api/space-center/parts.html#intake
 			//for (Intake intake : this.vessel.getParts().getIntakes()) {	
 			//}
-			this.controlPanel.currentAirDensity = this.flight.getAtmosphereDensity();
-			this.controlPanel.maxAirDensity = (float) this.orbit.getBody().densityAt(0.0);
-			this.controlPanel.surfaceReferenceFrame_speed         = flight_OrbitBody_NormalReferenceFrame.getSpeed();
-			this.controlPanel.surfaceReferenceFrame_verticalSpeed = flight_OrbitBody_NormalReferenceFrame.getVerticalSpeed();
-			this.controlPanel.orbitalReferenceFrame_speed         = flight_OrbitBody_OrbitalReferenceFrame.getSpeed();
-			this.controlPanel.orbitalReferenceFrame_verticalSpeed = flight_OrbitBody_OrbitalReferenceFrame.getVerticalSpeed();
-			this.controlPanel.vesselSituation = this.vessel.getSituation();
-			this.controlPanel.altitudeAboveSurface = this.flight.getSurfaceAltitude();
-			this.controlPanel.altitudeAboveSeaLevel = this.flight.getMeanAltitude();
-			this.controlPanel.currentSASMode = this.control.getSASMode();
-		} catch (RPCException e) {
+			this.controlPanel.currentAirDensity = this.stream_currentAirDensity.get();
+			long time_23 = System.currentTimeMillis();
+			this.controlPanel.maxAirDensity = (float) this.stream_orbitBody.get().densityAt(0.0);
+			long time_24 = System.currentTimeMillis();
+			this.controlPanel.surfaceReferenceFrame_speed         = this.stream_surfaceReferenceFrame_speed.get();
+			long time_25 = System.currentTimeMillis();
+			this.controlPanel.surfaceReferenceFrame_verticalSpeed = this.stream_surfaceReferenceFrame_verticalSpeed.get();
+			long time_26 = System.currentTimeMillis();
+			this.controlPanel.orbitalReferenceFrame_speed         = this.stream_orbitalReferenceFrame_speed.get();
+			long time_27 = System.currentTimeMillis();
+			this.controlPanel.orbitalReferenceFrame_verticalSpeed = this.stream_orbitalReferenceFrame_verticalSpeed.get();
+			long time_28 = System.currentTimeMillis();
+			this.controlPanel.vesselSituation = this.stream_vesselSituation.get();
+			long time_29 = System.currentTimeMillis();
+			this.controlPanel.altitudeAboveSurface = this.stream_altitudeAboveSurface.get();
+			long time_30 = System.currentTimeMillis();
+			this.controlPanel.altitudeAboveSeaLevel = this.stream_altitudeAboveSeaLevel.get();
+			long time_31 = System.currentTimeMillis();
+		 	this.controlPanel.currentSASMode = this.stream_SASMode.get();
+			long time_32 = System.currentTimeMillis();
+
+			if ( KKIMProp.getkkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation() ) {
+				System.out.println("------------------------------------------------------------");
+				System.out.println("Parts+Temperature: " + (time_4 - time_3));
+				System.out.println("currentFood: " + (time_5 - time_4));
+				System.out.println("maxFood: " + (time_6 - time_5));
+				System.out.println("currentWater: " + (time_7 - time_6));
+				System.out.println("maxWater: " + (time_8 - time_7));
+				System.out.println("currentOxygen: " + (time_9 - time_8));
+				System.out.println("maxOxygen: " + (time_10 - time_9));
+				System.out.println("gforce: " + (time_11 - time_10));
+				System.out.println("mach: " + (time_12 - time_11));
+				System.out.println("pitch: " + (time_13 - time_12));
+				System.out.println("heading: " + (time_14 - time_13));
+				System.out.println("currentLiquidFuel: " + (time_15 - time_14));
+				System.out.println("maxLiquidFuel: " + (time_16 - time_15));
+				System.out.println("currentSolidFuel: " + (time_17 - time_16));
+				System.out.println("maxSolidFuel: " + (time_18 - time_17));
+				System.out.println("currentElectricCharge: " + (time_19 - time_18));
+				System.out.println("maxElectricCharge: " + (time_20 - time_19));
+				System.out.println("currentMonopropellant: " + (time_21 - time_20));
+				System.out.println("maxMonopropellant: " + (time_22 - time_21));
+				System.out.println("currentAirDensity: " + (time_23 - time_22));
+				System.out.println("maxAirDensity: " + (time_24 - time_23));
+				System.out.println("surfaceReferenceFrame_speed: " + (time_25 - time_24));
+				System.out.println("surfaceReferenceFrame_verticalSpeed: " + (time_26 - time_25));
+				System.out.println("orbitalReferenceFrame_speed: " + (time_27 - time_26));
+				System.out.println("orbitalReferenceFrame_verticalSpeed: " + (time_28 - time_27));
+				System.out.println("vesselSituation: " + (time_29 - time_28));
+				System.out.println("altitudeAboveSurface: " + (time_30 - time_29));
+				System.out.println("altitudeAboveSeaLevel: " + (time_31 - time_30));
+				System.out.println("currentSASMode: " + (time_32 - time_31));
+			}
+
+		} catch (StreamException | RPCException e) {
 			e.printStackTrace();
 		}
 	}

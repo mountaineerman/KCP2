@@ -27,6 +27,7 @@ public final class IdleMode implements OperatingMode { //SINGLETON
         System.out.println("GameScene: " + scene);
 		if (scene == GameScene.FLIGHT) {
             kkimService.kRPCCommunicator.establishKRPCFlightHooks();
+            kkimService.kRPCCommunicator.establishKRPCStreams();
 			kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
 		} else { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
             kkimService.setCurrentOperatingMode(IdleMode.getInstance());

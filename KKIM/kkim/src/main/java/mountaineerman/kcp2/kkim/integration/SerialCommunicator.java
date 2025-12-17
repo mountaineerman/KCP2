@@ -170,6 +170,7 @@ public class SerialCommunicator {
 	}
 	
 	public void printCommunicationsDiagnosticInformation() {
+		System.out.println("------------------------------------------------------------");
 		System.out.println("numberOfRejectedIncomingBytes: " + numberOfRejectedIncomingBytes);
 		System.out.println("numberOfRejectedInputRefreshPackets: " + numberOfRejectedInputRefreshPackets);
 		System.out.println("numberOfAcceptedInputRefreshPackets: " + numberOfAcceptedInputRefreshPackets);

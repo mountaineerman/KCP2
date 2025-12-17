@@ -32,7 +32,10 @@ public class KKIMProp {
 	private static int kkimJoystickCenterDeadzoneMinLimit = 0;
 	private static int kkimJoystickCenterDeadzoneMaxLimit = 0;
 	private static int kkimSwitchMomDebounceTimeInMilliseconds = 0;
-	private static boolean kkimDisplayStepperMotorDigitalValues = false;	
+	private static boolean kkimDisplayCommunicationsDiagnosticInformation = false;
+	private static boolean kkimDisplayTaskDurationsDiagnosticInformation = false;
+	private static boolean kkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation = false;
+	private static boolean kkimDisplayStepperMotorDigitalValues = false;
 	
 	public static void initializeProperties () {
 		
@@ -67,6 +70,9 @@ public class KKIMProp {
 		kkimJoystickCenterDeadzoneMinLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMinLimit"));
 		kkimJoystickCenterDeadzoneMaxLimit = Integer.valueOf(properties.getProperty("kkim.joystick.centerDeadzoneMaxLimit"));
 		kkimSwitchMomDebounceTimeInMilliseconds = Integer.valueOf(properties.getProperty("kkim.switchMom.debounceTimeInMilliseconds"));
+		kkimDisplayCommunicationsDiagnosticInformation = Boolean.valueOf(properties.getProperty("kkim.displayCommunicationsDiagnosticInformation"));
+		kkimDisplayTaskDurationsDiagnosticInformation = Boolean.valueOf(properties.getProperty("kkim.displayTaskDurationsDiagnosticInformation"));
+		kkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation = Boolean.valueOf(properties.getProperty("kkim.pullInfoFromKSPIntoModel.displayTimeDiagnosticInformation"));
 		kkimDisplayStepperMotorDigitalValues = Boolean.valueOf(properties.getProperty("kkim.displayStepperMotorDigitalValues"));
 		
 		System.out.println("DONE");
@@ -183,6 +189,18 @@ public class KKIMProp {
 
 	public static int getkkimSwitchMomDebounceTimeInMilliseconds() {
 		return kkimSwitchMomDebounceTimeInMilliseconds;
+	}
+
+	public static boolean getkkimDisplayCommunicationsDiagnosticInformation() {
+		return kkimDisplayCommunicationsDiagnosticInformation;
+	}
+
+	public static boolean getkkimDisplayTaskDurationsDiagnosticInformation() {
+		return kkimDisplayTaskDurationsDiagnosticInformation;
+	}
+
+	public static boolean getkkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation() {
+		return kkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation;
 	}
 
 	public static boolean getkkimDisplayStepperMotorDigitalValues() {
