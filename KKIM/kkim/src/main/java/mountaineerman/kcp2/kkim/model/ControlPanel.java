@@ -520,24 +520,25 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			verticalSpeed = (float) 0.0;
 		}
 		
-		/* Speed calibration settings:
-		 * 		Speed (m/s)	| Stepper Position
-		 *     =============|==================
-		 * 			  0		|		0
-		 * 			100		|	1,060
-		 * 			500		|	2,130
-		 * 		  3,000		|	3,540
-		 * 			TRB		|	3,779
-		 */
+		// Speed calibration settings:
+		//                                       Previous
+		//                             Stepper   Stepper
+		//               Speed (m/s)   Position  Position
+		   int speedGauge_position_0 = 50;		// 0
+		 int speedGauge_position_100 = 1120;	// 1060
+		 int speedGauge_position_500 = 2180;	// 2130
+		int speedGauge_position_3000 = 3590;	// 3540
+		 int speedGauge_position_TRB = 3779;	// 3779
+
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("speed: " + speed);}
 		if (speed > 3000.0) {
-			this.moduleGT.stepper_Speed.setDesiredPosition(3779);//TRB
+			this.moduleGT.stepper_Speed.setDesiredPosition(speedGauge_position_TRB);
 		} else if (speed > 500.0) {
-			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 500.0, (float) 3000.0, 2130, 3540);
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 500.0, (float) 3000.0, speedGauge_position_500, speedGauge_position_3000);
 		} else if (speed > 100.0) {
-			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 100.0, (float) 500.0, 1060, 2130);
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 100.0, (float) 500.0, speedGauge_position_100, speedGauge_position_500);
 		} else if (speed > 0.0) {
-			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 0.0, (float) 100.0, 0, 1060);
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 0.0, (float) 100.0, speedGauge_position_0, speedGauge_position_100);
 		} else {
 			this.moduleGT.stepper_Speed.setDesiredPosition(0);//0
 		}
@@ -560,21 +561,21 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
 		}
 		
-		/* Vertical Speed calibration settings:
-		 * 	  V.Speed (m/s)	| Stepper Position
-		 *   ===============|==================
-		 * 		   -200		|		0
-		 * 			-50		|	  835
-		 * 			 50		|	2,965
-		 * 		  	200		|	3,770
-		 */
+		// Vertical Speed calibration settings:
+		//                                               Previous
+		//                                     Stepper   Stepper
+		//              Vertical Speed (m/s)   Position  Position
+		int vertSpeedGauge_position_minus200 = 0;		// 0       //NOTE: Calibration cannot quite reach the exact -200 mark (but very close)
+		 int vertSpeedGauge_position_minus50 = 810;		// 835
+		  int vertSpeedGauge_position_plus50 = 2940;	// 2965
+		 int vertSpeedGauge_position_plus200 = 3755;	// 3770
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("verticalSpeed: " + verticalSpeed);}
 		if (verticalSpeed > 50.0) {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, 2965, 3770);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, vertSpeedGauge_position_plus50, vertSpeedGauge_position_plus200);
 		} else if (verticalSpeed > -50.0) {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -50.0, (float) 50.0, 835, 2965);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -50.0, (float) 50.0, vertSpeedGauge_position_minus50, vertSpeedGauge_position_plus50);
 		} else {
-			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -200.0, (float) -50.0, 0, 835);
+			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) -200.0, (float) -50.0, vertSpeedGauge_position_minus200, vertSpeedGauge_position_minus50);
 		}
 
 		if (verticalSpeed > 50.0) {
@@ -590,7 +591,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		// ----- Radar Altitude ----------------------
-		/* Radar Altitude calibration settings:
+		/* 
 		 * 		  R.Alt (m)	| Stepper Position
 		 *       ===========|==================
 		 * 		   		0	|		110
@@ -600,22 +601,34 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		 * 			  ATM	|	  3,570
 		 * 			  SPC	|	  3,720
 		 */
+
+		// Radar Altitude calibration settings:
+		//                                     Previous
+		//                           Stepper   Stepper
+		//      Radar Altitude (m)   Position  Position: 2025-12-17: No change since last calibration.
+		   int radarAlt_position_0 = 110;	// 110
+		 int radarAlt_position_100 = 1210;	// 1210
+		 int radarAlt_position_500 = 2300;	// 2300
+		int radarAlt_position_5000 = 3365;	// 3365
+		 int radarAlt_position_ATM = 3570;	// 3570
+		 int radarAlt_position_SPC = 3720;	// 3720
+
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("altitudeAboveSurface: " + this.altitudeAboveSurface);}
 		if (this.altitudeAboveSurface > 5000.0) {
 			if (this.vesselSituation == VesselSituation.FLYING) {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);
-				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(3570);//ATM
+				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(radarAlt_position_ATM);
 			} else { //Some form of "in space"
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.BLUE);
-				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(3720);//SPC
+				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(radarAlt_position_SPC);
 			}
 		} else {
 			if (this.altitudeAboveSurface > 500.0) {
-				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 500.0, (float) 5000.0, 2300, 3365);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 500.0, (float) 5000.0, radarAlt_position_500, radarAlt_position_5000);
 			} else if (this.altitudeAboveSurface > 100.0) {
-				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 100.0, (float) 500.0, 1210, 2300);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 100.0, (float) 500.0, radarAlt_position_100, radarAlt_position_500);
 			} else {
-				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 0.0, (float) 100.0, 110, 1210);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 0.0, (float) 100.0, radarAlt_position_0, radarAlt_position_100);
 			}
 
 			if (this.vesselSituation == VesselSituation.PRE_LAUNCH ||

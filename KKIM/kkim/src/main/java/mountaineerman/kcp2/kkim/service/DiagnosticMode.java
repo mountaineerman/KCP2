@@ -128,7 +128,11 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		while (userInput != -1) {
 			CommonUtilities.clearScreen();
 			System.out.println(motor.getName() + " selected.");
-			System.out.println("  desiredPosition: " + motor.getDesiredPosition());
+			System.out.println("  calibrationCCWLimit: " + motor.getCalibrationCCWLimit());
+			System.out.println("      desiredPosition: " + motor.getDesiredPosition());
+			System.out.println("   calibrationCWLimit: " + motor.getCalibrationCWLimit());
+			System.out.println();
+			System.out.println("Note: Stepper Calibration Limits are defined in OP.java. To quickly open file, use CTRL+P.");
 			System.out.println();
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");

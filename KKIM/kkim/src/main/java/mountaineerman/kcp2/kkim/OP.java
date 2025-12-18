@@ -121,19 +121,19 @@ public enum OP {
 	StepperLED_RadarAltitude_Green	(164,		165,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Green"),
 	StepperLED_RadarAltitude_Blue	(166,		167,		ModuleID.GT,	-1,			-1,			"Stepper LED: Radar Altitude: Blue"),
 
-//Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName
-	Stepper_HeatLife				(168,		169,		ModuleID.C,		120,		3722,		"Heat/Life Support Stepper Motor"),
-	Stepper_Gforce					(170,		171,		ModuleID.C,		224,		3470,		"G-Force Stepper Motor"),
+//Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName                            NOTE: Recalibrated on 2025-12-17
+	Stepper_HeatLife				(168,		169,		ModuleID.C,		70,			3680,		"Heat/Life Support Stepper Motor"), //Previous limits: CCW:120, CW:3722
+	Stepper_Gforce					(170,		171,		ModuleID.C,		170,		3425,		"G-Force Stepper Motor"),			//Previous limits: CCW:224, CW:3470
 
-	Stepper_Mach					(172,		173,		ModuleID.G,		0,			3219,		"Mach Number Stepper Motor"), //Note: calibCWLim is for Mach 24
-	Stepper_Pitch					(174,		175,		ModuleID.G,		1210,		3364,		"Pitch Stepper Motor"),
-	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),
+	Stepper_Mach					(172,		173,		ModuleID.G,		130,		3410,		"Mach Number Stepper Motor"),		//Previous limits: CCW:0,   CW:3219
+	Stepper_Pitch					(174,		175,		ModuleID.G,		1160,		3320,		"Pitch Stepper Motor"),				//Previous limits: CCW:1210,CW:3364
+	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),//NOTE: Motor is meant to point NORTH(TBC) when reset
 
-	Stepper_Fuel					(178,		179,		ModuleID.I,		80,			3760,		"Fuel Stepper Motor"),
-	Stepper_Charge					(180,		181,		ModuleID.I,		55,			3660,		"Charge Stepper Motor"),
-	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		80,			3680,		"Monopropellant/Intake Air Stepper Motor"),
+	Stepper_Fuel					(178,		179,		ModuleID.I,		30,			3635,		"Fuel Stepper Motor"),				//Previous limits: CCW:80,  CW:3760    NOTE: Appears prone to de-calibrating if jumping from "near edge-to-edge"
+	Stepper_Charge					(180,		181,		ModuleID.I,		55,			3670,		"Charge Stepper Motor"),			//Previous limits: CCW:55,  CW:3660	   NOTE: Appears prone to "slipping" ***
+	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		75,			3680,		"Monopropellant/Intake Air Stepper Motor"),	//Previous limits: CCW:80, CW:3680
 
-	Stepper_AirDensity				(184,		185,		ModuleID.GT,	55,			3660,		"AirDensity Stepper Motor"),
+	Stepper_AirDensity				(184,		185,		ModuleID.GT,	55,			3660,		"AirDensity Stepper Motor"),		//Previous limits: CCW:55, CW:3660 (SAME)
 	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),//See ControlPanel for "Speed calibration settings"
 	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),//See ControlPanel for "Vertical Speed calibration settings"
 	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),//See ControlPanel for "Radar Altitude calibration settings"

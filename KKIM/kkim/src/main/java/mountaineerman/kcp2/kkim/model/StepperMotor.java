@@ -149,4 +149,12 @@ public class StepperMotor extends Part {
 	public int getDesiredPosition() {
 		return desiredPosition;
 	}
+
+	public int getCalibrationCCWLimit() {
+		return this.calibrationCCWLimit;
+	}
+	
+	public int getCalibrationCWLimit() {
+		return this.calibrationCWLimit;
+	}
 }
