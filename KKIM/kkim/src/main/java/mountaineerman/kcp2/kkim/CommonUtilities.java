@@ -3,9 +3,7 @@ package mountaineerman.kcp2.kkim;
 public class CommonUtilities {
 	
 	public static void clearScreen() {
-		
-		//Note: works in VS Code, does not work in Eclipse:
-		System.out.print("\033[H\033[2J");  
+		System.out.print("\033[H\033[2J\033[3J");
 		System.out.flush();
 	}
 	

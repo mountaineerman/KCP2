@@ -174,17 +174,22 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		this.percentLifeSupport = Math.min(this.percentFood, this.percentWater);
 		this.percentLifeSupport = Math.min(this.percentLifeSupport, this.percentOxygen);
 		
-		if (this.moduleG.heatLifeSwitch.getStatus()) {//Life Support selected
-			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
-			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
-			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
-			this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
-		} else {//Heat selected
-			refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.BRIGHT, this.percentTemperatureHealth);
-			refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
-			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);}
-			this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentTemperatureHealth, (float) 0, (float) 100);
-		}
+		//The following logic is disabled because kRPC support for (OVER)HEAT has been disabled, due to performance problems.
+		// if (this.moduleG.heatLifeSwitch.getStatus()) {//Life Support selected
+		// 	refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
+		// 	refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
+		// 	if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
+		// 	this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
+		// } else {//Heat selected
+		// 	refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.BRIGHT, this.percentTemperatureHealth);
+		// 	refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
+		// 	if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);}
+		// 	this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentTemperatureHealth, (float) 0, (float) 100);
+		// }
+		//Temporary:
+		refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
+		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
+		this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
 		
 		// ----- G-Force ----------------------
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("gforce: " + this.gforce);}
