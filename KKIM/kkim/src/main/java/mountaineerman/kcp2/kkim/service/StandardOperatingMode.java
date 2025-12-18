@@ -25,7 +25,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		//TODO Confirm connection to kRPC, KMega, and KPhone
 
 		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() != GameScene.FLIGHT) { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
-			kkimService.kRPCCommunicator.terminateKRPCStreams();
+			kkimService.kRPCCommunicator.terminateAllKRPCStreams();
 			kkimService.setCurrentOperatingMode(IdleMode.getInstance());
 			return;
 		}

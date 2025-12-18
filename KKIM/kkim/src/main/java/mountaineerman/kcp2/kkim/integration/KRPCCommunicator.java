@@ -12,7 +12,7 @@ import krpc.client.services.KRPC.GameScene;
 import krpc.client.services.SpaceCenter.Control;
 import krpc.client.services.SpaceCenter.Flight;
 import krpc.client.services.SpaceCenter.Orbit;
-import krpc.client.services.SpaceCenter.Parts;
+//import krpc.client.services.SpaceCenter.Parts;
 import krpc.client.services.SpaceCenter.Resources;
 import krpc.client.services.SpaceCenter.Vessel;
 import krpc.client.services.SpaceCenter.VesselSituation;
@@ -41,9 +41,8 @@ public class KRPCCommunicator {
 	private Camera camera = null;
 	
 	private Stream<Integer> stream_currentStageNumber = null;
-	//private Stream<Resources> stream_currentStageResources = null;
 	private Stream<Resources> stream_vesselResources = null;
-	private Stream<Parts> stream_vesselParts = null;
+	//private Stream<Parts> stream_vesselParts = null;
 	private Stream<Float> stream_vesselFoodAmount = null;
 	private Stream<Float> stream_vesselFoodMax = null;
 	private Stream<Float> stream_vesselWaterAmount = null;
@@ -129,41 +128,100 @@ public class KRPCCommunicator {
 	/**
 	 * Create Streams for all information needed from KSP
 	 */
-	public void establishKRPCStreams() {
+	public void establishAllKRPCStreams() {
 		try{
-			this.stream_currentStageNumber = this.connection.addStream(this.control, "getCurrentStage");
+
 			this.stream_vesselResources = this.connection.addStream(this.vessel, "getResources");
-			this.stream_vesselParts = this.connection.addStream(this.vessel, "getParts");
+			this.stream_vesselResources.startAndWait();
+			//this.stream_vesselParts = this.connection.addStream(this.vessel, "getParts");
 			Resources vesselResources = this.stream_vesselResources.get();
+
 			this.stream_vesselFoodAmount = this.connection.addStream(vesselResources, "amount", "Food");
+			this.stream_vesselFoodAmount.start();
+			
 			this.stream_vesselFoodMax    = this.connection.addStream(vesselResources, "max", "Food");
+			this.stream_vesselFoodMax.start();
+			
 			this.stream_vesselWaterAmount = this.connection.addStream(vesselResources, "amount", "Water");
+			this.stream_vesselWaterAmount.start();
+			
 			this.stream_vesselWaterMax    = this.connection.addStream(vesselResources, "max", "Water");
+			this.stream_vesselWaterMax.start();
+			
 			this.stream_vesselOxygenAmount = this.connection.addStream(vesselResources, "amount", "Oxygen");
+			this.stream_vesselOxygenAmount.start();
+			
 			this.stream_vesselOxygenMax    = this.connection.addStream(vesselResources, "max", "Oxygen");
-			this.stream_gForce = this.connection.addStream(this.flight, "getGForce");
-			this.stream_mach = this.connection.addStream(this.flight, "getMach");
-			this.stream_pitch = this.connection.addStream(this.flight, "getPitch");
-			this.stream_heading = this.connection.addStream(this.flight, "getHeading");
-			Resources currentStageResources = this.vessel.resourcesInDecoupleStage(this.stream_currentStageNumber.get()-1, false);
-			this.stream_stageLiquidFuelAmount = connection.addStream(currentStageResources, "amount", "LiquidFuel");
-			this.stream_stageLiquidFuelMax    = connection.addStream(currentStageResources, "max", "LiquidFuel");
-			this.stream_stageSolidFuelAmount  = connection.addStream(currentStageResources, "amount", "SolidFuel");
-			this.stream_stageSolidFuelMax     = connection.addStream(currentStageResources, "max", "SolidFuel");
+			this.stream_vesselOxygenMax.start();
+			
 			this.stream_vesselElectricChargeAmount = this.connection.addStream(vesselResources, "amount", "ElectricCharge");
+			this.stream_vesselElectricChargeAmount.start();
+			
 			this.stream_vesselElectricChargeMax    = this.connection.addStream(vesselResources, "max", "ElectricCharge");
+			this.stream_vesselElectricChargeMax.start();
+			
 			this.stream_vesselMonopropellantAmount = this.connection.addStream(vesselResources, "amount", "MonoPropellant");
+			this.stream_vesselMonopropellantAmount.start();
+			
 			this.stream_vesselMonopropellantMax    = this.connection.addStream(vesselResources, "max", "MonoPropellant");
+			this.stream_vesselMonopropellantMax.start();
+
+			this.stream_gForce = this.connection.addStream(this.flight, "getGForce");
+			this.stream_gForce.start();
+
+			this.stream_mach = this.connection.addStream(this.flight, "getMach");
+			this.stream_mach.start();
+
+			this.stream_pitch = this.connection.addStream(this.flight, "getPitch");
+			this.stream_pitch.start();
+
+			this.stream_heading = this.connection.addStream(this.flight, "getHeading");
+			this.stream_heading.start();
+
 			this.stream_currentAirDensity = this.connection.addStream(this.flight, "getAtmosphereDensity");
+			this.stream_currentAirDensity.start();
+
 			this.stream_orbitBody = this.connection.addStream(this.orbit, "getBody");
+			this.stream_orbitBody.addCallback((CelestialBody newOrbitBody) -> {
+				System.out.println("New orbit body: " + newOrbitBody + ". TODO: Update hooks/streams that depend on orbit body.");
+				//TODO Update hooks/streams that depend on orbit body
+			});
+			this.stream_orbitBody.start();
+
 			this.stream_surfaceReferenceFrame_speed = this.connection.addStream(this.flight_OrbitBody_NormalReferenceFrame, "getSpeed");
+			this.stream_surfaceReferenceFrame_speed.start();
+
 			this.stream_surfaceReferenceFrame_verticalSpeed = this.connection.addStream(this.flight_OrbitBody_NormalReferenceFrame, "getVerticalSpeed");
+			this.stream_surfaceReferenceFrame_verticalSpeed.start();
+
 			this.stream_orbitalReferenceFrame_speed = this.connection.addStream(flight_OrbitBody_OrbitalReferenceFrame, "getSpeed");
+			this.stream_orbitalReferenceFrame_speed.start();
+
 			this.stream_orbitalReferenceFrame_verticalSpeed = this.connection.addStream(flight_OrbitBody_OrbitalReferenceFrame, "getVerticalSpeed");
+			this.stream_orbitalReferenceFrame_verticalSpeed.start();
+
 			this.stream_vesselSituation = this.connection.addStream(this.vessel, "getSituation");
+			this.stream_vesselSituation.start();
+
 			this.stream_altitudeAboveSurface = this.connection.addStream(this.flight, "getSurfaceAltitude");
+			this.stream_altitudeAboveSurface.start();
+
 			this.stream_altitudeAboveSeaLevel = this.connection.addStream(this.flight, "getMeanAltitude");
+			this.stream_altitudeAboveSeaLevel.start();
+
 			this.stream_SASMode = this.connection.addStream(this.control, "getSASMode");
+			this.stream_SASMode.start();
+
+			this.stream_currentStageNumber = this.connection.addStream(this.control, "getCurrentStage");
+			this.stream_currentStageNumber.addCallback((Integer newStageNumber) -> {
+				System.out.println("New stage number: " + newStageNumber);
+				this.terminateStageSpecificKRPCStreams();
+				this.establishStageSpecificKRPCStreams();
+			});
+			this.stream_currentStageNumber.startAndWait();
+
+			this.establishStageSpecificKRPCStreams();
+
 		} catch (StreamException | RPCException e) {
 			e.printStackTrace();
 		}
@@ -172,8 +230,82 @@ public class KRPCCommunicator {
 	/**
 	 * Removes all Streams (which send data from KSP to KKIM)
 	 */
-	public void terminateKRPCStreams() {
-		//TODO: Stream.remove() https://krpc.github.io/krpc/java/client.html
+	public void terminateAllKRPCStreams() {
+
+		this.terminateStream(this.stream_currentStageNumber);
+		this.terminateStream(this.stream_vesselResources);
+		//this.stream_vesselParts.remove();
+		this.terminateStream(this.stream_vesselFoodAmount);
+		this.terminateStream(this.stream_vesselFoodMax);
+		this.terminateStream(this.stream_vesselWaterAmount);
+		this.terminateStream(this.stream_vesselWaterMax);
+		this.terminateStream(this.stream_vesselOxygenAmount);
+		this.terminateStream(this.stream_vesselOxygenMax);
+		this.terminateStream(this.stream_vesselElectricChargeAmount);
+		this.terminateStream(this.stream_vesselElectricChargeMax);
+		this.terminateStream(this.stream_vesselMonopropellantAmount);
+		this.terminateStream(this.stream_vesselMonopropellantMax);
+		this.terminateStream(this.stream_gForce);
+		this.terminateStream(this.stream_mach);
+		this.terminateStream(this.stream_pitch);
+		this.terminateStream(this.stream_heading);
+		this.terminateStream(this.stream_currentAirDensity);
+		this.terminateStream(this.stream_orbitBody);
+		this.terminateStream(this.stream_surfaceReferenceFrame_speed);
+		this.terminateStream(this.stream_surfaceReferenceFrame_verticalSpeed);
+		this.terminateStream(this.stream_orbitalReferenceFrame_speed);
+		this.terminateStream(this.stream_orbitalReferenceFrame_verticalSpeed);
+		this.terminateStream(this.stream_vesselSituation);
+		this.terminateStream(this.stream_altitudeAboveSurface);
+		this.terminateStream(this.stream_altitudeAboveSeaLevel);
+		this.terminateStream(this.stream_SASMode);
+
+		this.terminateStageSpecificKRPCStreams();
+	}
+
+	/**
+	 * Create Streams for all information that is specific to the currently active stage
+	 */
+	public void establishStageSpecificKRPCStreams() {
+		try{
+
+			Resources currentStageResources = this.vessel.resourcesInDecoupleStage(this.stream_currentStageNumber.get()-1, false);
+			
+			this.stream_stageLiquidFuelAmount = connection.addStream(currentStageResources, "amount", "LiquidFuel");
+			this.stream_stageLiquidFuelAmount.start();
+			
+			this.stream_stageLiquidFuelMax    = connection.addStream(currentStageResources, "max", "LiquidFuel");
+			this.stream_stageLiquidFuelMax.start();
+
+			this.stream_stageSolidFuelAmount  = connection.addStream(currentStageResources, "amount", "SolidFuel");
+			this.stream_stageSolidFuelAmount.start();
+
+			this.stream_stageSolidFuelMax     = connection.addStream(currentStageResources, "max", "SolidFuel");
+			this.stream_stageSolidFuelMax.start();
+
+		} catch (StreamException | RPCException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Removes Streams for all information that is specific to the currently active stage
+	 */
+	public void terminateStageSpecificKRPCStreams() {
+		this.terminateStream(this.stream_stageLiquidFuelAmount);
+		this.terminateStream(this.stream_stageLiquidFuelMax);
+		this.terminateStream(this.stream_stageSolidFuelAmount);
+		this.terminateStream(this.stream_stageSolidFuelMax);
+	}
+
+	public void terminateStream(Stream<?> stream) {
+		if(stream != null) {
+			try {
+				stream.remove();
+			} catch (RPCException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void closeKRPCLink() {
@@ -309,7 +441,8 @@ public class KRPCCommunicator {
 			}
 
 		} catch (StreamException | RPCException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("KRPCCommunicator:pullInfoFromKSPIntoModel(): Exception: " + e.getMessage());
 		}
 	}
 

@@ -27,7 +27,7 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 
 		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {
 			kkimService.kRPCCommunicator.establishKRPCFlightHooks();
-			kkimService.kRPCCommunicator.establishKRPCStreams();
+			kkimService.kRPCCommunicator.establishAllKRPCStreams();
 			kkimService.controlPanel.moduleH.glassCL_LED.setPWM(KKIMProp.getkmegaDimPWM());//KMega Diagnostic Mode
 			kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaDimPWM());//KKIM Diagnostic Mode
 			kkimService.controlPanel.moduleH.glassBR_LED.setPWM(KKIMProp.getkmegaDimPWM());//Graceful Shutdown
