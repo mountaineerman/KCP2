@@ -21,6 +21,36 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public ModuleI moduleI = null;
 	public ModuleGT moduleGT = null;
 	
+	// Speed calibration settings:
+	//                                                     Previous
+	//                                           Stepper   Stepper
+	//                             Speed (m/s)   Position  Position
+	   private final int speedGauge_position_0 = 50;	// 0
+	 private final int speedGauge_position_100 = 1120;	// 1060
+	 private final int speedGauge_position_500 = 2180;	// 2130
+	private final int speedGauge_position_3000 = 3590;	// 3540
+	 private final int speedGauge_position_TRB = 3779;	// 3779
+	
+	// Vertical Speed calibration settings:
+	//                                                             Previous
+	//                                                   Stepper   Stepper
+	//                            Vertical Speed (m/s)   Position  Position
+	private final int vertSpeedGauge_position_minus200 = 0;		// 0       //NOTE: Calibration cannot quite reach the exact -200 mark (but very close)
+	 private final int vertSpeedGauge_position_minus50 = 810;	// 835
+	  private final int vertSpeedGauge_position_plus50 = 2940;	// 2965
+	 private final int vertSpeedGauge_position_plus200 = 3755;	// 3770
+	
+	// Radar Altitude calibration settings:
+	//                                                        Previous
+	//                                              Stepper   Stepper
+	//                         Radar Altitude (m)   Position  Position: 2025-12-17: No change since last calibration.
+	   private final int radarAltGauge_position_0 = 110;	// 110
+	 private final int radarAltGauge_position_100 = 1210;	// 1210
+	 private final int radarAltGauge_position_500 = 2300;	// 2300
+	private final int radarAltGauge_position_5000 = 3365;	// 3365
+	 private final int radarAltGauge_position_ATM = 3570;	// 3570
+	 private final int radarAltGauge_position_SPC = 3720;	// 3720
+
 	//TODO WRAP IN KMEGA class:
 	public SwitchSP2T brake = null;
 	public float throttleLever = 0;	 //Range: 0(OFF) to 1(Max Thrust)
@@ -520,16 +550,6 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			verticalSpeed = (float) 0.0;
 		}
 		
-		// Speed calibration settings:
-		//                                       Previous
-		//                             Stepper   Stepper
-		//               Speed (m/s)   Position  Position
-		   int speedGauge_position_0 = 50;		// 0
-		 int speedGauge_position_100 = 1120;	// 1060
-		 int speedGauge_position_500 = 2180;	// 2130
-		int speedGauge_position_3000 = 3590;	// 3540
-		 int speedGauge_position_TRB = 3779;	// 3779
-
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("speed: " + speed);}
 		if (speed > 3000.0) {
 			this.moduleGT.stepper_Speed.setDesiredPosition(speedGauge_position_TRB);
@@ -560,15 +580,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
 		}
-		
-		// Vertical Speed calibration settings:
-		//                                               Previous
-		//                                     Stepper   Stepper
-		//              Vertical Speed (m/s)   Position  Position
-		int vertSpeedGauge_position_minus200 = 0;		// 0       //NOTE: Calibration cannot quite reach the exact -200 mark (but very close)
-		 int vertSpeedGauge_position_minus50 = 810;		// 835
-		  int vertSpeedGauge_position_plus50 = 2940;	// 2965
-		 int vertSpeedGauge_position_plus200 = 3755;	// 3770
+
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("verticalSpeed: " + verticalSpeed);}
 		if (verticalSpeed > 50.0) {
 			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, vertSpeedGauge_position_plus50, vertSpeedGauge_position_plus200);
@@ -589,46 +601,23 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.RED);
 		}
-		
-		// ----- Radar Altitude ----------------------
-		/* 
-		 * 		  R.Alt (m)	| Stepper Position
-		 *       ===========|==================
-		 * 		   		0	|		110
-		 * 			  100	|	  1,210
-		 * 			  500	|	  2,300
-		 * 		  	5,000	|	  3,365
-		 * 			  ATM	|	  3,570
-		 * 			  SPC	|	  3,720
-		 */
-
-		// Radar Altitude calibration settings:
-		//                                     Previous
-		//                           Stepper   Stepper
-		//      Radar Altitude (m)   Position  Position: 2025-12-17: No change since last calibration.
-		   int radarAlt_position_0 = 110;	// 110
-		 int radarAlt_position_100 = 1210;	// 1210
-		 int radarAlt_position_500 = 2300;	// 2300
-		int radarAlt_position_5000 = 3365;	// 3365
-		 int radarAlt_position_ATM = 3570;	// 3570
-		 int radarAlt_position_SPC = 3720;	// 3720
 
 		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("altitudeAboveSurface: " + this.altitudeAboveSurface);}
 		if (this.altitudeAboveSurface > 5000.0) {
 			if (this.vesselSituation == VesselSituation.FLYING) {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);
-				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(radarAlt_position_ATM);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(radarAltGauge_position_ATM);
 			} else { //Some form of "in space"
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.BLUE);
-				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(radarAlt_position_SPC);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPosition(radarAltGauge_position_SPC);
 			}
 		} else {
 			if (this.altitudeAboveSurface > 500.0) {
-				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 500.0, (float) 5000.0, radarAlt_position_500, radarAlt_position_5000);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 500.0, (float) 5000.0, radarAltGauge_position_500, radarAltGauge_position_5000);
 			} else if (this.altitudeAboveSurface > 100.0) {
-				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 100.0, (float) 500.0, radarAlt_position_100, radarAlt_position_500);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 100.0, (float) 500.0, radarAltGauge_position_100, radarAltGauge_position_500);
 			} else {
-				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 0.0, (float) 100.0, radarAlt_position_0, radarAlt_position_100);
+				this.moduleGT.stepper_RadarAltitude.setDesiredPositionUsingCustomLimits((float) altitudeAboveSurface, (float) 0.0, (float) 100.0, radarAltGauge_position_0, radarAltGauge_position_100);
 			}
 
 			if (this.vesselSituation == VesselSituation.PRE_LAUNCH ||
@@ -756,7 +745,52 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 	}
 	
-	public void setAllSteppersCCW() {
+	/**
+	 * Set all stepper motors to the first "tick" near CCW. Set the HEADING gauge to the NORTH position.
+	 */
+	public void setAllSteppersToCCWTick() {
+		this.moduleC.stepper_HeatLife.setDesiredPosition(this.moduleC.stepper_HeatLife.getCalibrationCCWLimit());
+		this.moduleC.stepper_Gforce.setDesiredPosition(this.moduleC.stepper_Gforce.getCalibrationCCWLimit());
+		
+		this.moduleG.stepper_Mach.setDesiredPosition(this.moduleG.stepper_Mach.getCalibrationCCWLimit());
+		this.moduleG.stepper_Pitch.setDesiredPosition(this.moduleG.stepper_Pitch.getCalibrationCCWLimit());
+		this.moduleG.stepper_Heading.setDesiredPosition(0);
+
+		this.moduleI.stepper_Fuel.setDesiredPosition(this.moduleI.stepper_Fuel.getCalibrationCCWLimit());
+		this.moduleI.stepper_Charge.setDesiredPosition(this.moduleI.stepper_Charge.getCalibrationCCWLimit());
+		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(this.moduleI.stepper_MonopropellantIntake.getCalibrationCCWLimit());
+
+		this.moduleGT.stepper_AirDensity.setDesiredPosition(this.moduleGT.stepper_AirDensity.getCalibrationCCWLimit());
+		this.moduleGT.stepper_Speed.setDesiredPosition(this.speedGauge_position_0);
+		this.moduleGT.stepper_VerticalSpeed.setDesiredPosition(this.vertSpeedGauge_position_minus200);
+		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(this.radarAltGauge_position_0);
+	}
+
+	/**
+	 * Set all stepper motors to the last "tick" near CW. Set the HEADING gauge to the NORTH position.
+	 */
+	public void setAllSteppersToCWTick() {
+		this.moduleC.stepper_HeatLife.setDesiredPosition(this.moduleC.stepper_HeatLife.getCalibrationCWLimit());
+		this.moduleC.stepper_Gforce.setDesiredPosition(this.moduleC.stepper_Gforce.getCalibrationCWLimit());
+		
+		this.moduleG.stepper_Mach.setDesiredPosition(this.moduleG.stepper_Mach.getCalibrationCWLimit());
+		this.moduleG.stepper_Pitch.setDesiredPosition(this.moduleG.stepper_Pitch.getCalibrationCWLimit());
+		this.moduleG.stepper_Heading.setDesiredPosition(0);
+
+		this.moduleI.stepper_Fuel.setDesiredPosition(this.moduleI.stepper_Fuel.getCalibrationCWLimit());
+		this.moduleI.stepper_Charge.setDesiredPosition(this.moduleI.stepper_Charge.getCalibrationCWLimit());
+		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(this.moduleI.stepper_MonopropellantIntake.getCalibrationCWLimit());
+
+		this.moduleGT.stepper_AirDensity.setDesiredPosition(this.moduleGT.stepper_AirDensity.getCalibrationCWLimit());
+		this.moduleGT.stepper_Speed.setDesiredPosition(this.speedGauge_position_3000);
+		this.moduleGT.stepper_VerticalSpeed.setDesiredPosition(this.vertSpeedGauge_position_plus200);
+		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(this.radarAltGauge_position_5000);
+	}
+
+	/**
+	 * Set all stepper motors to their most counter-clockwise travel position, as defined in config.properties (kmega.steppers.ccwLimit).
+	 */
+	public void setAllSteppersToMaxCCW() {
 		this.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
 		this.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
 		

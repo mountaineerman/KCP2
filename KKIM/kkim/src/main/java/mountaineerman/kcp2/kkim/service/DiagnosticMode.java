@@ -28,7 +28,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		this.sleepForMilliseconds(5000);
 		kkimService.controlPanel.setAllLEDsOff();
 		kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaMaxPWM());//KKIM Diagnostic Mode
-		kkimService.controlPanel.setAllSteppersCCW();
+		kkimService.controlPanel.setAllSteppersToMaxCCW();
 		byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 		kkimService.serialCommunicator.flushInputOutputBuffers();
 		kkimService.serialCommunicator.sendPacket(packet);
@@ -57,7 +57,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 				case 0:
 					System.out.println("!!! REMINDER: Power cycle the Nano Gauge Helpers to clear their \"Coffee Mode\" !!!");
 					kkimService.controlPanel.setAllLEDsOff();
-					kkimService.controlPanel.setAllSteppersCCW();
+					kkimService.controlPanel.setAllSteppersToMaxCCW();
 					byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 					kkimService.serialCommunicator.flushInputOutputBuffers();
 					kkimService.serialCommunicator.sendPacket(packet);
@@ -76,7 +76,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		int userInput = -1;
 		while (userInput != 0) {
 			CommonUtilities.clearScreen();
-			System.out.println("Testing Stepper Motors. Select a motor:");
+			System.out.println("Testing Stepper Motors. Select an option:");
 			System.out.println("[0] Return to previous menu");
 			System.out.println("[1] Heat/Life");
 			System.out.println("[2] G-Force");
@@ -90,6 +90,8 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("[10] Speed");
 			System.out.println("[11] Vertical Speed");
 			System.out.println("[12] Radar Altitude");
+			System.out.println("[13] Move all stepper motors to first (CCW) tick");
+			System.out.println("[14] Move all stepper motors to last (CW) tick");
 			userInput = this.scanner.nextInt();
 			switch (userInput) {
 				case 1:
@@ -116,6 +118,10 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_VerticalSpeed); break;
 				case 12:
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
+				case 13:
+					kkimService.controlPanel.setAllSteppersToCCWTick(); break;
+				case 14:
+					kkimService.controlPanel.setAllSteppersToCWTick(); break;
 				default:
 					break;
 			}
