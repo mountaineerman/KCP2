@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <ModuleGT.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 
 
 

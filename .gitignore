@@ -1,13 +1,10 @@
-# Ignore Symlink to Arduino directory
-#TODO
-#Arduino.lnk
-
 # Ignore Arduino Library Test
 LibraryExperiment
 
 # VS Code
 .vscode
 
-# Ignore "handy" files
+# Ignore "handy" files/folders
 ksp
 Java
+Arduino

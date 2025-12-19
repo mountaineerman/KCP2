@@ -38,10 +38,11 @@ void NGHService::run() {
 
 void NGHService::startupMode() {
 
-	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CW_LIMIT, 500);
-	delay(200);
-	this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
-	
+	// this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CW_LIMIT, 500);
+	// delay(200);
+	// this->controlPanel.blockRunAllGearedSteppersToPosition(STEPPER_CCW_LIMIT, 500);
+	delay(2000);
+
 	this->serialCommunicator.establishKMegaSerialLink();
 
 	this->nextMode = NGHOperatingMode::STANDARD;

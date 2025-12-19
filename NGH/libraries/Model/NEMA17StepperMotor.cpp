@@ -1,6 +1,6 @@
 //[GaugePacketA] (does not apply to [GaugePacketB])
 #include <Arduino.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 #include <NEMA17StepperMotor.h>
 
 

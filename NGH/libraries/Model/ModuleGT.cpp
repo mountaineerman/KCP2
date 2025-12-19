@@ -1,7 +1,7 @@
 // //[GaugePacketB] (does not apply to [GaugePacketA])
 // #include <Arduino.h>
 // #include <ModuleGT.h>
-// #include "..\..\configuration.h"
+// #include "../../configuration.h"
 
 
 // ModuleGT::ModuleGT()

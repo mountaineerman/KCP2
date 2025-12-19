@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <StepperMotor2.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 
 
 
