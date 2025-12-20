@@ -541,6 +541,24 @@ public class KRPCCommunicator {
 		}
 
 		//Module E
+		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(1);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
+		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(2);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
+		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
+			try {
+				this.control.toggleActionGroup(3);
+			} catch (RPCException e) {e.printStackTrace();}
+		}
+		
 		if (this.controlPanel.moduleE.scienceSwitch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(4);
@@ -564,29 +582,7 @@ public class KRPCCommunicator {
 				this.control.toggleActionGroup(7);
 			} catch (RPCException e) {e.printStackTrace();}
 		}
-		
-//		if (this.controlPanel.moduleE.atnvSwitch.getDebouncedStatus()) {
-//			//TBD
-//		}
-		
-		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
-			try {
-				this.control.toggleActionGroup(1);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
-			try {
-				this.control.toggleActionGroup(2);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
-		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
-			try {
-				this.control.toggleActionGroup(3);
-			} catch (RPCException e) {e.printStackTrace();}
-		}
-		
+
 		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(8);
@@ -598,6 +594,10 @@ public class KRPCCommunicator {
 				this.control.toggleActionGroup(9);
 			} catch (RPCException e) {e.printStackTrace();}
 		}
+
+//		if (this.controlPanel.moduleE.atnvSwitch.getDebouncedStatus()) {
+//			//TODO. Note: Action Group 10 is UNASSIGNED, could be used by ATNV.
+//		}
 		
 		//Module F
 		//TODO Trim...
