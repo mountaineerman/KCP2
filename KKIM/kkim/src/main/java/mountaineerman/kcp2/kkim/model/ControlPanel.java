@@ -238,6 +238,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		//Module D ============================================================
 		//Brake: see Module A
+		//MUTE: see end of this method.
 
 		//Autopilot modes:
 		if (this.moduleD.sasSwitch.statusChanged() && !this.moduleD.sasSwitch.getStatus()) {
@@ -638,6 +639,11 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.VIOLET);
 			}
 		}
+
+		//Module D: MUTE Switch
+		if(this.moduleD.muteSwitch.getStatus()) {
+			this.setAllLEDsOff();
+		}
 	}
 	
 	public void refreshPercentRGBLED(LED_PWM_RGB led, LED_RGB_Brightness brightness, int percentage) { //TODO REMOVE (see below)
@@ -728,6 +734,12 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				//this.brake.toString();
 	}
 	
+	/**
+	 * Update LED status for all LEDs in model to OFF. Does not send an OutputRefreshPacket.
+	 * Exceptions:
+	 *    1) Electrical Wiring: ...
+	 *    2) COMMS LED (controlled by KMega).
+	 */
 	public void setAllLEDsOff() {
 		this.moduleA.setAllLEDsOff();
 		//Module B: N/A
