@@ -153,12 +153,12 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Module A (+D+F) =====================================================
 		if (this.moduleA.brakeButton.getStatus() ^ this.moduleD.brakeSwitch.getStatus()) {//XOR
 			this.brake.setStatus(true);
-			this.moduleA.brakeLED.setPWM(KKIMProp.kmegaMaxPWM);
-			this.moduleD.brakeLED.setPWM(KKIMProp.kmegaMaxPWM);
+			this.moduleA.brakeLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+			this.moduleD.brakeLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 		} else {
 			this.brake.setStatus(false);
-			this.moduleA.brakeLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.brakeLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleA.brakeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.brakeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 		}
 
 		if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
@@ -241,81 +241,81 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 
 		//Autopilot modes:
 		if (this.moduleD.sasSwitch.statusChanged() && !this.moduleD.sasSwitch.getStatus()) {
-			this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
-			this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+			this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 		}
 
 		if (this.moduleD.sasSwitch.getStatus()) {
 			
 			// Dim all autopilot LEDs:
-			this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
-			this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
+			this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaLEDDimPWM / 5);
 
 			// Brighten the LED corresponding to the current SASMode:
 			switch (this.currentSASMode) {
 				case STABILITY_ASSIST:
-					this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case PROGRADE:
-					this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case RETROGRADE:
-					this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case NORMAL:
-					this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaMaxPWM);
-					this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+					this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case ANTI_NORMAL:
-					this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaMaxPWM);
-					this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+					this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case RADIAL:
-					this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaMaxPWM);
-					this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+					this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case ANTI_RADIAL:
-					this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaMaxPWM);
-					this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+					this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case TARGET:
-					this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaMaxPWM);
-					this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+					this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case ANTI_TARGET:
-					this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaMaxPWM);
-					this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+					this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				case MANEUVER:
-					this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 					break;
 				default:
 					break;
@@ -325,15 +325,15 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		//Module E (+G +GT) ===================================================
 		if (this.moduleE.fairingButton.getRawStatus() == true) {
-			this.moduleE.fairingLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleE.fairingLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 		} else {
-			this.moduleE.fairingLED.setPWM(KKIMProp.kmegaMaxPWM);
+			this.moduleE.fairingLED.setPWM(KKIMProp.kmegaLEDMaxPWM);
 		}
 		
 		if (this.moduleE.chuteButton.getRawStatus() == true) {
-			this.moduleE.parachuteLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleE.parachuteLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 		} else {
-			this.moduleE.parachuteLED.setPWM(KKIMProp.kmegaMaxPWM);
+			this.moduleE.parachuteLED.setPWM(KKIMProp.kmegaLEDMaxPWM);
 		}
 		
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
@@ -486,11 +486,11 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
 		if (this.currentElectricCharge > this.previousElectricCharge) {
-			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.GREEN);
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.DIM_GREEN);
 		} else if (this.currentElectricCharge == this.previousElectricCharge) {
-			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.WHITE);
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.DIM_WHITE);
 		} else {
-			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.RED);
+			this.moduleI.stepperLED_deltaCharge.setMode(LED_RGB_Mode.DIM_RED);
 		}
 		this.previousElectricCharge = this.currentElectricCharge;
 		

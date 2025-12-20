@@ -597,7 +597,7 @@ public class KRPCCommunicator {
 
 //		if (this.controlPanel.moduleE.atnvSwitch.getDebouncedStatus()) {
 //			//TODO. Note: Action Group 10 is UNASSIGNED, could be used by ATNV.
-//		}
+//		}  
 		
 		//Module F
 		//TODO Trim...

@@ -85,23 +85,23 @@ public class ModuleD implements LEDAggregator {
 
 	@Override
 	public void setAllLEDsOff() {
-		this.brakeLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoHoldLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoProgradeLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoRetrogradeLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoManeuverLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoRadialInGrnLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoRadialInBluLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoRadialOutBluLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
-		this.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.brakeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoHoldLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoProgradeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoRetrogradeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoManeuverLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoNormalRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoNormalBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoRadialInGrnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoRadialInBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoRadialOutBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoTargetRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoTargetBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 	}
 
 	@Override

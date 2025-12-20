@@ -15,7 +15,7 @@ public class LED_PWM extends Part {
 	
 	public LED_PWM(OP op) {
 		super(op.partName, op.moduleID);
-		this.setPWM(KKIMProp.kmegaMinPWM);
+		this.setPWM(KKIMProp.kmegaLEDMinPWM);
 	}
 	
 //	public LED_PWM(String name, ModuleID moduleID) { //FIXME Remove after LED_PWM unit test is cleaned up 
@@ -28,7 +28,7 @@ public class LED_PWM extends Part {
 	}
 
 	public void setPWM(int pwm) {
-		validateValueIsInRange(pwm, "PWM", KKIMProp.kmegaMinPWM, KKIMProp.kmegaMaxPWM);
+		validateValueIsInRange(pwm, "PWM", KKIMProp.kmegaLEDMinPWM, KKIMProp.kmegaLEDMaxPWM);
 		this.pwm = pwm;
 	}
 	

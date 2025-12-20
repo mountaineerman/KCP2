@@ -44,16 +44,21 @@ public class KKIMProp {
 
 	/** The minimum PWM value sent to the TLC5947 LED Driver Chip, when the LED is OFF.
 	 * For more information, see: KMega:Adafruit_TLC5947.h or http://www.adafruit.com/products/1429 */
-	public static final int kmegaMinPWM = 0;
+	public static final int kmegaLEDMinPWM = 0;
 
 	/** The PWM value sent to an LED in order to dimly light it up. Used for backlighting but not to indicate when the LED is ON.
 	 * For more information, see: KMega:Adafruit_TLC5947.h or http://www.adafruit.com/products/1429 */
-	public static final int kmegaDimPWM = 100;
+	public static final int kmegaLEDDimPWM = 100;
 
-	/** The maximum PWM value sent to the TLC5947 LED Driver Chip. Used when the LED is ON.
-	 * Note: Absolute max: 4095. 
+	/** The PWM value sent to the TLC5947 LED Driver Chip for most LEDs when the LED is ON.
+	 * Exceptions: FRNG LED, CHUTE LED, Charge rate-of-change LED.
+	 * Note: Absolute max: 4095 (kmegaLEDMaxPWM).
 	 * For more information, see: KMega:Adafruit_TLC5947.h or http://www.adafruit.com/products/1429 */
-	public static final int kmegaMaxPWM = 1500;
+	public static final int kmegaLEDOnPWM = 500;
+
+	/** The maximum possible PWM value sent to the TLC5947 LED Driver Chip for an LED (hardware-defined).
+	 * For more information, see: KMega:Adafruit_TLC5947.h or http://www.adafruit.com/products/1429 */
+	public static final int kmegaLEDMaxPWM = 4095;
 
 	/** The minimum position of the geared stepper motors (CCW) and the NEMA17 motor (pointing "North"). */
 	public static final int kmegaSteppersCCWLimit = 0;

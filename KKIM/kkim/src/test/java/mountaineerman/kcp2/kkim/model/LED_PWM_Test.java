@@ -18,19 +18,19 @@ class LED_PWM_Test {
 		LED_PWM brakePWMLED = new LED_PWM(OP.ModuleABrakeLED);
 		
 		// VALID
-		brakePWMLED.setPWM(KKIMProp.kmegaMinPWM);
+		brakePWMLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 		//System.out.println(brakePWMLED.getPWM());
 		//FIXME brakePWMLED.setPWM(KKIMProp.kmegaMaxPWM-1); //FIXME (broke when switched constructor call from using Name + Module ID to OP enum)
 		//System.out.println(brakePWMLED.getPWM());
-		brakePWMLED.setPWM(KKIMProp.kmegaMaxPWM);
+		brakePWMLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 		//System.out.println(brakePWMLED.getPWM());
 		
 		// INVALID
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			brakePWMLED.setPWM(KKIMProp.kmegaMinPWM-1); // Too low
+			brakePWMLED.setPWM(KKIMProp.kmegaLEDMinPWM-1); // Too low
 		});
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			brakePWMLED.setPWM(KKIMProp.kmegaMaxPWM+1); // Too high
+			brakePWMLED.setPWM(KKIMProp.kmegaLEDOnPWM+1); // Too high
 		});
 	}
 
