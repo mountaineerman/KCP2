@@ -129,8 +129,11 @@ public enum OP {
 	Stepper_Pitch					(174,		175,		ModuleID.G,		1160,		3320,		"Pitch Stepper Motor"),				//Previous limits: CCW:1210,CW:3364
 	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),//NOTE: Motor is meant to point NORTH(TBC) when reset
 
-	Stepper_Fuel					(178,		179,		ModuleID.I,		30,			3635,		"Fuel Stepper Motor"),				//Previous limits: CCW:80,  CW:3760    NOTE: Appears prone to de-calibrating if jumping from "near edge-to-edge"
-	Stepper_Charge					(180,		181,		ModuleID.I,		55,			3670,		"Charge Stepper Motor"),			//Previous limits: CCW:55,  CW:3660	   NOTE: Appears prone to "slipping" ***
+	Stepper_Fuel					(178,		179,		ModuleID.I,		130,		3730,		"Fuel Stepper Motor"),				
+													 //Previous limits:		80			3760    	NOTE: Appears prone to de-calibrating if jumping from "near edge-to-edge"
+													 //						30			3635
+	Stepper_Charge					(180,		181,		ModuleID.I,		80,			3680,		"Charge Stepper Motor"),
+													 //Previous limits:		55			3670    	NOTE: Appears very prone to de-calibrating if jumping from "near edge-to-edge"
 	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		75,			3680,		"Monopropellant/Intake Air Stepper Motor"),	//Previous limits: CCW:80, CW:3680
 
 	Stepper_AirDensity				(184,		185,		ModuleID.GT,	55,			3660,		"AirDensity Stepper Motor"),		//Previous limits: CCW:55, CW:3660 (SAME)

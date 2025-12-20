@@ -58,7 +58,16 @@ public class KKIMProp {
 	/** The minimum position of the geared stepper motors (CCW) and the NEMA17 motor (pointing "North"). */
 	public static final int kmegaSteppersCCWLimit = 0;
 
-	//TODO CWLimit
+	/** The maximum position of the geared stepper motors (CW). Does not apply to the NEMA17 motor. */
+	public static final int kmegaSteppersCWLimit = 3779;
+
+	/** The maximum position of the NEMA17 stepper motor (CW). Does not apply to the geared stepper motors. */
+	public static final int kmegaNEMA17SteppersCWLimit = 1599;
+
+	/** The number of needle positions that a stepper motor can occupy. Used to lower the "resolution"
+	 * of the possible stepper positions. Added as part of stepper motor optimization at the time
+	 * that the Nano Gauge Helpers were added. */
+	public static final int kmegaSteppersNumberOfNeedlePositions = 1000; //TODO optimize
 
 	/** The Altitude KKIM instructs the Gauge Tower altimeter to display when it is in an error state */
 	public static final float kmegaAltitudeGaugeErrorAltitude = 9.99e11f;

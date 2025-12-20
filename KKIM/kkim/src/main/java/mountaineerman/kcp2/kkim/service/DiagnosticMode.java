@@ -90,9 +90,12 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("[10] Speed");
 			System.out.println("[11] Vertical Speed");
 			System.out.println("[12] Radar Altitude");
-			System.out.println("[13] Move all stepper motors to first (CCW) tick");
-			System.out.println("[14] Move all stepper motors to last (CW) tick");
+			System.out.println("[13] Move all stepper motors to maximum CCW position");
+			System.out.println("[14] Move all stepper motors to first (CCW) tick");
+			System.out.println("[15] Move all stepper motors to last (CW) tick");
+			System.out.println("[16] Move all stepper motors to maximum CW position");
 			userInput = this.scanner.nextInt();
+			byte[] packet = null;
 			switch (userInput) {
 				case 1:
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_HeatLife); break;
@@ -119,9 +122,27 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 				case 12:
 					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
 				case 13:
-					kkimService.controlPanel.setAllSteppersToCCWTick(); break;
+					kkimService.controlPanel.setAllSteppersToMaxCCW();
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
 				case 14:
-					kkimService.controlPanel.setAllSteppersToCWTick(); break;
+					kkimService.controlPanel.setAllSteppersToCCWTick();
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
+				case 15:
+					kkimService.controlPanel.setAllSteppersToCWTick();
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					break;
+				case 16:
+					kkimService.controlPanel.setAllSteppersToMaxCW();
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
 				default:
 					break;
 			}
@@ -143,10 +164,10 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
 			System.out.println("[-2] Perform \"decalibration\" test (cycle through 90% > 10% > 90% > ... several times)");
-			System.out.println("[0-3779] Select desired position of the motor");
+			System.out.println("[" + KKIMProp.kmegaSteppersCCWLimit + "-" + KKIMProp.kmegaSteppersCWLimit + "] Select desired position of the motor");
 			userInput = this.scanner.nextInt();
 			
-			if (userInput >= 0 && userInput <= 3779) {
+			if (userInput >= KKIMProp.kmegaSteppersCCWLimit && userInput <= KKIMProp.kmegaSteppersCWLimit) {
 				motor.setDesiredPosition(userInput);
 				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 				kkimService.serialCommunicator.flushInputOutputBuffers();

@@ -808,6 +808,27 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
 	}
 
+	/**
+	 * Set all stepper motors to their most clockwise travel position, as defined in KKIMProp.
+	 */
+	public void setAllSteppersToMaxCW() {
+		this.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		
+		this.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleG.stepper_Heading.setDesiredPosition(KKIMProp.kmegaNEMA17SteppersCWLimit);
+
+		this.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+
+		this.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.kmegaSteppersCWLimit);
+	}
+
 	public void activateLEDOverride() {//TODO
 		
 	}
