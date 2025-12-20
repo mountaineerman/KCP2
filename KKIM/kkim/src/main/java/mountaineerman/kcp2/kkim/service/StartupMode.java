@@ -22,15 +22,15 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 		//TODO Establish connection to phone
 		
 		try {
-			Thread.sleep(KKIMProp.getkkimStartupModeInitialStartupDelayInMilliseconds());
+			Thread.sleep(KKIMProp.kkimStartupModeInitialStartupDelayInMilliseconds);
 		} catch (InterruptedException e) {e.printStackTrace();}
 
 		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {
 			kkimService.kRPCCommunicator.establishKRPCFlightHooks();
 			kkimService.kRPCCommunicator.establishAllKRPCStreams();
-			kkimService.controlPanel.moduleH.glassCL_LED.setPWM(KKIMProp.getkmegaDimPWM());//KMega Diagnostic Mode
-			kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaDimPWM());//KKIM Diagnostic Mode
-			kkimService.controlPanel.moduleH.glassBR_LED.setPWM(KKIMProp.getkmegaDimPWM());//Graceful Shutdown
+			kkimService.controlPanel.moduleH.glassCL_LED.setPWM(KKIMProp.kmegaDimPWM);//KMega Diagnostic Mode
+			kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.kmegaDimPWM);//KKIM Diagnostic Mode
+			kkimService.controlPanel.moduleH.glassBR_LED.setPWM(KKIMProp.kmegaDimPWM);//Graceful Shutdown
 			kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
 		} else { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
             kkimService.setCurrentOperatingMode(IdleMode.getInstance());

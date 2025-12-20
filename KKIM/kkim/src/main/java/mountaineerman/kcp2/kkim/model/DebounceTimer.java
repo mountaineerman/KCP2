@@ -22,7 +22,7 @@ public class DebounceTimer {
             return false;
         } else {
             this.elapsedTime = System.currentTimeMillis() - this.startTime;
-            if (this.elapsedTime > KKIMProp.getkkimSwitchMomDebounceTimeInMilliseconds()) {
+            if (this.elapsedTime > KKIMProp.kkimSwitchMomDebounceTimeInMilliseconds) {
                 this.deactivate();
                 return false;
             } else {

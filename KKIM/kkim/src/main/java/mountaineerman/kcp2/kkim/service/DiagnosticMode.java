@@ -27,7 +27,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		//Sleep while waiting for KMega and NGHes to prepare for diagnostic mode
 		this.sleepForMilliseconds(5000);
 		kkimService.controlPanel.setAllLEDsOff();
-		kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaMaxPWM());//KKIM Diagnostic Mode
+		kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.kmegaMaxPWM);//KKIM Diagnostic Mode
 		kkimService.controlPanel.setAllSteppersToMaxCCW();
 		byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 		kkimService.serialCommunicator.flushInputOutputBuffers();

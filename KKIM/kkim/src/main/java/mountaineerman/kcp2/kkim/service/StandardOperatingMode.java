@@ -39,8 +39,8 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		long time_pullInfoFromKSPIntoModel_after = 0;
 		long time_controlPanelRefresh_before = 0;
 		long time_controlPanelRefresh_after = 0;
-		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
-			if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.getkMegaInputRefreshPacketReadRateInMilliseconds() ) {
+		if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
+			if ( (System.currentTimeMillis() - this.serialPortLastReadTimeInMilliseconds) > KKIMProp.kMegaInputRefreshPacketReadRateInMilliseconds ) {
 				time_ingestDataFromSerialPort_before = System.currentTimeMillis();
 				kkimService.serialCommunicator.ingestDataFromSerialPortToPacketBuffer();
 				time_ingestDataFromSerialPort_after = System.currentTimeMillis();
@@ -78,7 +78,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 							break;
 						case KKIM_TERMINAL_DISPLAY_PACKET:
 							byte[] kkimTerminalDisplayPacket = kkimService.serialCommunicator.getPacketBuffer();
-							String payload = new String(Arrays.copyOfRange(kkimTerminalDisplayPacket, KKIMProp.getallPacketsHeaderLengthInBytes(), kkimTerminalDisplayPacket.length));
+							String payload = new String(Arrays.copyOfRange(kkimTerminalDisplayPacket, KKIMProp.allPacketsHeaderLengthInBytes, kkimTerminalDisplayPacket.length));
 							System.out.println("KMEGA: " + payload);
 							kkimService.serialCommunicator.clearPacketBufferAndFriends();
 							break;
@@ -87,28 +87,28 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 					}
 				}
 			}
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
+		} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ||
+					KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) {
 			kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
 			kkimService.controlPanel.refresh();
 		} else {
-			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 		
 		//Send packet to KMega:
 		long time_sendPacketToKMega_before = 0;
 		long time_sendPacketToKMega_after = 0;
-		if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.getkMegaAllPacketsSendRateInMilliseconds()) {
+		if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.kMegaAllPacketsSendRateInMilliseconds) {
 			time_sendPacketToKMega_before = System.currentTimeMillis();
 			byte[] packet = null;
-			if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+			if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
 				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ) {
+			} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ) {
 				packet = kkimService.packetAssembler.assembleGaugePacketA();
-			} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
+			} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) {
 				packet = kkimService.packetAssembler.assembleGaugePacketB();
 			} else {
-				throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+				throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 			}
 
 			kkimService.serialCommunicator.sendPacket(packet);
@@ -121,10 +121,10 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		long time_sendInfoFromModelToKSP_after = 0;
 		
 		//Diagnostic Information:
-		if ( KKIMProp.getkkimDisplayCommunicationsDiagnosticInformation() ) {
+		if ( KKIMProp.kkimDisplayCommunicationsDiagnosticInformation ) {
 			kkimService.serialCommunicator.printCommunicationsDiagnosticInformation();
 		}
-		if ( KKIMProp.getkkimDisplayTaskDurationsDiagnosticInformation() ) {
+		if ( KKIMProp.kkimDisplayTaskDurationsDiagnosticInformation ) {
 			if(time_ingestDataFromSerialPort_before != 0 && time_unpackInputRefreshPacketIntoModel_before != 0 && time_sendPacketToKMega_before != 0) {
 				System.out.println("------------------------------------------------------------");
 				System.out.println("kkimService.serialCommunicator.ingestDataFromSerialPortToPacketBuffer(): " + (time_ingestDataFromSerialPort_after - time_ingestDataFromSerialPort_before));
@@ -137,7 +137,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 				System.out.println();
 				System.out.println("kkimService.kRPCCommunicator.sendInfoFromModelToKSP(): " + (time_sendInfoFromModelToKSP_after - time_sendInfoFromModelToKSP_before));
 				System.out.println();
-				System.out.println("Idle (TODO: optimize idleIfNecessary()): " + KKIMProp.getkkimRefreshFrequencyInMilliseconds());
+				System.out.println("Idle (TODO: optimize idleIfNecessary()): " + KKIMProp.kkimRefreshFrequencyInMilliseconds);
 			}
 		}
 

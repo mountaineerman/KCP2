@@ -142,7 +142,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public void refresh() {
 		//TODO make use of SwitchSP2T:statusChanged()
 		
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {CommonUtilities.clearScreen();}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {CommonUtilities.clearScreen();}
 
 		//Update inputs that are depended on by other Modules
 		this.moduleE.sp3tSpeedModeSwitch.updatePosition();
@@ -153,25 +153,25 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		//Module A (+D+F) =====================================================
 		if (this.moduleA.brakeButton.getStatus() ^ this.moduleD.brakeSwitch.getStatus()) {//XOR
 			this.brake.setStatus(true);
-			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
-			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleA.brakeLED.setPWM(KKIMProp.kmegaMaxPWM);
+			this.moduleD.brakeLED.setPWM(KKIMProp.kmegaMaxPWM);
 		} else {
 			this.brake.setStatus(false);
-			this.moduleA.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleA.brakeLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.brakeLED.setPWM(KKIMProp.kmegaMinPWM);
 		}
 
-		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+		if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
 			if (this.moduleA.analogInput_Throttle.getRawValue() > 925) {//TODO add configuration
 				throttleLever = (float) 0;
 			} else {
 				throttleLever = ((this.moduleA.analogInput_Throttle.getRescaledValue() * this.moduleF.sensitivitySwitch.getPercentSensitivity()) / 100) / (float) IP.AnalogInput_Throttle.maxRescaleLim;
 			}
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
+		} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ||
+					KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) {
 			throttleLever = 1;
 		} else {
-			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 		//System.out.println("throttleLever: " + throttleLever);
 
@@ -208,21 +208,21 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		// if (this.moduleG.heatLifeSwitch.getStatus()) {//Life Support selected
 		// 	refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.DIM, this.percentTemperatureHealth);
 		// 	refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
-		// 	if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
+		// 	if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
 		// 	this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
 		// } else {//Heat selected
 		// 	refreshPercentRGBLED(this.moduleC.stepperLED_Heat, LED_RGB_Brightness.BRIGHT, this.percentTemperatureHealth);
 		// 	refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.DIM, this.percentLifeSupport);
-		// 	if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);}
+		// 	if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("percentTemperatureHealth: " + this.percentTemperatureHealth);}
 		// 	this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentTemperatureHealth, (float) 0, (float) 100);
 		// }
 		//Temporary:
 		refreshPercentRGBLED(this.moduleC.stepperLED_LifeSupport, LED_RGB_Brightness.BRIGHT, this.percentLifeSupport);
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("percentLifeSupport: " + this.percentLifeSupport);}
 		this.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits(this.percentLifeSupport, (float) 0, (float) 100);
 		
 		// ----- G-Force ----------------------
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("gforce: " + this.gforce);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("gforce: " + this.gforce);}
 		this.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits(this.gforce, (float) 0, (float) 15);
 		if (this.gforce > 10.0) {
 			this.moduleC.stepperLED_GForce.setMode(LED_RGB_Mode.RED);
@@ -241,81 +241,81 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 
 		//Autopilot modes:
 		if (this.moduleD.sasSwitch.statusChanged() && !this.moduleD.sasSwitch.getStatus()) {
-			this.moduleD.autoHoldLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoProgradeLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-			this.moduleD.autoManeuverLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
+			this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaMinPWM);
 		}
 
 		if (this.moduleD.sasSwitch.getStatus()) {
 			
 			// Dim all autopilot LEDs:
-			this.moduleD.autoHoldLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoProgradeLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
-			this.moduleD.autoManeuverLED.setPWM(KKIMProp.getkmegaDimPWM() / 5);
+			this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaDimPWM / 5);
+			this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaDimPWM / 5);
 
 			// Brighten the LED corresponding to the current SASMode:
 			switch (this.currentSASMode) {
 				case STABILITY_ASSIST:
-					this.moduleD.autoHoldLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoHoldLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case PROGRADE:
-					this.moduleD.autoProgradeLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoProgradeLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case RETROGRADE:
-					this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoRetrogradeLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case NORMAL:
-					this.moduleD.autoNormalBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-					this.moduleD.autoNormalRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoNormalBluLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoNormalRedLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case ANTI_NORMAL:
-					this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-					this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case RADIAL:
-					this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-					this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoRadialOutBluLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case ANTI_RADIAL:
-					this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-					this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoRadialInBluLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoRadialInGrnLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case TARGET:
-					this.moduleD.autoTargetBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-					this.moduleD.autoTargetRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoTargetBluLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoTargetRedLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case ANTI_TARGET:
-					this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaMaxPWM());
-					this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaMaxPWM);
+					this.moduleD.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				case MANEUVER:
-					this.moduleD.autoManeuverLED.setPWM(KKIMProp.getkmegaMaxPWM());
+					this.moduleD.autoManeuverLED.setPWM(KKIMProp.kmegaMaxPWM);
 					break;
 				default:
 					break;
@@ -325,15 +325,15 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		//Module E (+G +GT) ===================================================
 		if (this.moduleE.fairingButton.getRawStatus() == true) {
-			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleE.fairingLED.setPWM(KKIMProp.kmegaMinPWM);
 		} else {
-			this.moduleE.fairingLED.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleE.fairingLED.setPWM(KKIMProp.kmegaMaxPWM);
 		}
 		
 		if (this.moduleE.chuteButton.getRawStatus() == true) {
-			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMinPWM());
+			this.moduleE.parachuteLED.setPWM(KKIMProp.kmegaMinPWM);
 		} else {
-			this.moduleE.parachuteLED.setPWM(KKIMProp.getkmegaMaxPWM());
+			this.moduleE.parachuteLED.setPWM(KKIMProp.kmegaMaxPWM);
 		}
 		
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
@@ -343,7 +343,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
 			this.altitudeToDisplay = (float) this.altitudeAboveSeaLevel;
 		} else {//INVALID
-			this.altitudeToDisplay = KKIMProp.getkmegaAltitudeGaugeErrorAltitude();
+			this.altitudeToDisplay = KKIMProp.kmegaAltitudeGaugeErrorAltitude;
 		}
 		
 		//TODO Move e.g., vehicle mode logic from KRPCCommunicator::sendInfoFromModelToKSP() to here?
@@ -357,7 +357,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		//Module G (+E) =======================================================
 		// ----- Mach ----------------------
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("mach: " + this.mach);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("mach: " + this.mach);}
 		this.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits(this.mach, (float) 0, (float) 24);
 		if (this.mach > 28.0) {
 			this.moduleG.stepperLED_Mach.setMode(LED_RGB_Mode.VIOLET);
@@ -379,7 +379,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		
 		// ----- Pitch ----------------------
 		if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.TOP) {//90 degrees
-			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("pitch (90 degree mode): " + this.pitch);}
+			if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("pitch (90 degree mode): " + this.pitch);}
 			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -90, (float) 90);
 			if (this.pitch > 60.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.BLUE);
@@ -399,7 +399,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.OFF);
 			}
 		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.CENTER) {//30 degrees
-			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("pitch (30 degree mode): " + this.pitch);}
+			if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("pitch (30 degree mode): " + this.pitch);}
 			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -30, (float) 30);
 			if (this.pitch > 30.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
@@ -421,7 +421,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_RED);
 			}
 		} else if (this.moduleE.sp3tPitchSwitch.getPosition() == SP3TPosition.BOTTOM) {//9 degrees
-			if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("pitch (9 degree mode): " + this.pitch);}
+			if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("pitch (9 degree mode): " + this.pitch);}
 			this.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits(this.pitch, (float) -9, (float) 9);
 			if (this.pitch > 9.0) {
 				this.moduleG.stepperLED_Pitch.setMode(LED_RGB_Mode.DIM_BLUE);
@@ -447,7 +447,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 		
 		// ----- Heading ----------------------
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("heading: " + this.heading);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("heading: " + this.heading);}
 		this.moduleG.stepper_Heading.setDesiredPosition(this.heading, (float) 0, (float) 360);
 		if ( (this.heading < 45.0) || (this.heading > 315.0) ) { //North quadrant
 			this.moduleG.stepperLED_Heading.setMode(LED_RGB_Mode.DIM_BLUE);
@@ -471,7 +471,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.percentFuel = 0;
 		}
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentFuel: " + this.percentFuel);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("percentFuel: " + this.percentFuel);}
 		this.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits(this.percentFuel, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Fuel, LED_RGB_Brightness.BRIGHT, this.percentFuel);
 		
@@ -481,7 +481,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.percentElectricCharge = -1;
 		}
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentElectricCharge: " + this.percentElectricCharge);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("percentElectricCharge: " + this.percentElectricCharge);}
 		this.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits(this.percentElectricCharge, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Charge, LED_RGB_Brightness.BRIGHT, this.percentElectricCharge);
 		
@@ -517,7 +517,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		// 	TODO percentIntakeAir:DIM
 		// 	this.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits(this.percentElectricCharge, (float) 0, (float) 100);
 		// }
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("percentMonopropellant: " + this.percentMonopropellant);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("percentMonopropellant: " + this.percentMonopropellant);}
 		this.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits(this.percentMonopropellant, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleI.stepperLED_Monopropellant, LED_RGB_Brightness.BRIGHT, this.percentMonopropellant);
 		
@@ -528,7 +528,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		} else {
 			this.invertedPercentAirDensity = -1;
 		}
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("invertedPercentAirDensity: " + this.invertedPercentAirDensity);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("invertedPercentAirDensity: " + this.invertedPercentAirDensity);}
 		this.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits(this.invertedPercentAirDensity, (float) 0, (float) 100);
 		refreshPercentRGBLED(this.moduleGT.stepperLED_AirDensity, LED_RGB_Brightness.BRIGHT, this.invertedPercentAirDensity);
 		
@@ -550,7 +550,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			verticalSpeed = (float) 0.0;
 		}
 		
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("speed: " + speed);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("speed: " + speed);}
 		if (speed > 3000.0) {
 			this.moduleGT.stepper_Speed.setDesiredPosition(speedGauge_position_TRB);
 		} else if (speed > 500.0) {
@@ -581,7 +581,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
 		}
 
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("verticalSpeed: " + verticalSpeed);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("verticalSpeed: " + verticalSpeed);}
 		if (verticalSpeed > 50.0) {
 			this.moduleGT.stepper_VerticalSpeed.setDesiredPositionUsingCustomLimits(verticalSpeed, (float) 50.0, (float) 200.0, vertSpeedGauge_position_plus50, vertSpeedGauge_position_plus200);
 		} else if (verticalSpeed > -50.0) {
@@ -602,7 +602,7 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			this.moduleGT.stepperLED_VerticalSpeed.setMode(LED_RGB_Mode.RED);
 		}
 
-		if (KKIMProp.getkkimDisplayStepperMotorDigitalValues()) {System.out.println("altitudeAboveSurface: " + this.altitudeAboveSurface);}
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("altitudeAboveSurface: " + this.altitudeAboveSurface);}
 		if (this.altitudeAboveSurface > 5000.0) {
 			if (this.vesselSituation == VesselSituation.FLYING) {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.CYAN);
@@ -788,24 +788,24 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	}
 
 	/**
-	 * Set all stepper motors to their most counter-clockwise travel position, as defined in config.properties (kmega.steppers.ccwLimit).
+	 * Set all stepper motors to their most counter-clockwise travel position, as defined in KKIMProp.
 	 */
 	public void setAllSteppersToMaxCCW() {
-		this.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
 		
-		this.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleG.stepper_Heading.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleG.stepper_Heading.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
 
-		this.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
 
-		this.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
+		this.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
+		this.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
 	}
 
 	public void activateLEDOverride() {//TODO

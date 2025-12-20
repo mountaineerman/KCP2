@@ -22,13 +22,13 @@ public class AnalogInput_Joystick extends AnalogInput {
 		super.setRawValueAndCalculateCalibratedValues(rawValue);
 		
 		
-		if(this.rescaledValue < KKIMProp.getkkimJoystickCenterDeadzoneMinLimit()) {
+		if(this.rescaledValue < KKIMProp.kkimJoystickCenterDeadzoneMinLimit) {
 			this.centerDeadzonedValue = CommonUtilities.rescaleValue(this.rescaledValue,
-																	 this.lowerRescaleLimit, KKIMProp.getkkimJoystickCenterDeadzoneMinLimit(),
+																	 this.lowerRescaleLimit, KKIMProp.kkimJoystickCenterDeadzoneMinLimit,
 					  												 this.lowerRescaleLimit, 0);
-		} else if (this.rescaledValue > KKIMProp.getkkimJoystickCenterDeadzoneMaxLimit()) {
+		} else if (this.rescaledValue > KKIMProp.kkimJoystickCenterDeadzoneMaxLimit) {
 			this.centerDeadzonedValue = CommonUtilities.rescaleValue(this.rescaledValue,
-																	 KKIMProp.getkkimJoystickCenterDeadzoneMaxLimit(), this.upperRescaleLimit,
+																	 KKIMProp.kkimJoystickCenterDeadzoneMaxLimit, this.upperRescaleLimit,
 					 												 0, this.upperRescaleLimit);
 		} else {
 			this.centerDeadzonedValue = 0;

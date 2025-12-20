@@ -40,40 +40,40 @@ public class SensitivitySwitch extends Part implements LEDAggregator {
 		if(this.sensorAB.getStatus() == true) {
 			if(this.sensorCD.getStatus() != true) {
 				this.sensitivityPercent = 25;
-				this.sensitivity25PercentLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.sensitivity50PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity75PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity100PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.sensitivity25PercentLED.setPWM(KKIMProp.kmegaMaxPWM);
+				this.sensitivity50PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity75PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity100PercentLED.setPWM(KKIMProp.kmegaDimPWM);
 			} else {
 				this.sensitivityPercent = 50;
-				this.sensitivity25PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity50PercentLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.sensitivity75PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity100PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.sensitivity25PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity50PercentLED.setPWM(KKIMProp.kmegaMaxPWM);
+				this.sensitivity75PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity100PercentLED.setPWM(KKIMProp.kmegaDimPWM);
 			}
 		} else {
 			if(this.sensorCD.getStatus() != true) {
 				this.sensitivityPercent = 75;
-				this.sensitivity25PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity50PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity75PercentLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.sensitivity100PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.sensitivity25PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity50PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity75PercentLED.setPWM(KKIMProp.kmegaMaxPWM);
+				this.sensitivity100PercentLED.setPWM(KKIMProp.kmegaDimPWM);
 			} else {
 				this.sensitivityPercent = 100;
-				this.sensitivity25PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity50PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity75PercentLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.sensitivity100PercentLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.sensitivity25PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity50PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity75PercentLED.setPWM(KKIMProp.kmegaDimPWM);
+				this.sensitivity100PercentLED.setPWM(KKIMProp.kmegaMaxPWM);
 			}
 		}	
 	}
 
 	@Override
 	public void setAllLEDsOff() { 
-		this.sensitivity25PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.sensitivity50PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.sensitivity75PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.sensitivity100PercentLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.sensitivity25PercentLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.sensitivity50PercentLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.sensitivity75PercentLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.sensitivity100PercentLED.setPWM(KKIMProp.kmegaMinPWM);
 	}
 
 	@Override

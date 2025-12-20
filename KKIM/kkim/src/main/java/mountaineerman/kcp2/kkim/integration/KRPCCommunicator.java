@@ -97,9 +97,9 @@ public class KRPCCommunicator {
 					System.exit(-1);
 				}
 
-				System.out.println("Sleeping for " + KKIMProp.getkkimStartupModeSleepIntervalInMilliseconds() + "ms, then trying again.");
+				System.out.println("Sleeping for " + KKIMProp.kkimStartupModeSleepIntervalInMilliseconds + "ms, then trying again.");
 				try {
-					Thread.sleep(KKIMProp.getkkimStartupModeSleepIntervalInMilliseconds());
+					Thread.sleep(KKIMProp.kkimStartupModeSleepIntervalInMilliseconds);
 				} catch (InterruptedException i_e) {i_e.printStackTrace();}
 			}
 		}
@@ -407,7 +407,7 @@ public class KRPCCommunicator {
 		 	this.controlPanel.currentSASMode = this.stream_SASMode.get();
 			long time_32 = System.currentTimeMillis();
 
-			if ( KKIMProp.getkkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation() ) {
+			if ( KKIMProp.kkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation ) {
 				System.out.println("------------------------------------------------------------");
 				System.out.println("Parts+Temperature: " + (time_4 - time_3));
 				System.out.println("currentFood: " + (time_5 - time_4));

@@ -7,7 +7,7 @@ import mountaineerman.kcp2.kkim.OP;
 public class LED_PWM extends Part {
 	
 	/** The PWM value sent to the TLC5947 LED Driver Chip. 
-	 *  Range: [0-4095] [KKIMProp.getkmegaMinPWM()-KKIMProp.getkmegaMaxPWM()]
+	 *  Range: [0-4095] [KKIMProp.kmegaMinPWM-KKIMProp.kmegaMaxPWM]
 	 *  For more information, see:
 	 *     -Adafruit_TLC5947.h
 	 *     -http://www.adafruit.com/products/1429 */
@@ -15,12 +15,12 @@ public class LED_PWM extends Part {
 	
 	public LED_PWM(OP op) {
 		super(op.partName, op.moduleID);
-		this.setPWM(KKIMProp.getkmegaMinPWM());
+		this.setPWM(KKIMProp.kmegaMinPWM);
 	}
 	
 //	public LED_PWM(String name, ModuleID moduleID) { //FIXME Remove after LED_PWM unit test is cleaned up 
 //		super(name, moduleID);
-//		this.setPWM(KKIMProp.getkmegaMinPWM());
+//		this.setPWM(KKIMProp.kmegaMinPWM);
 //	}
 
 	public int getPWM() {
@@ -28,7 +28,7 @@ public class LED_PWM extends Part {
 	}
 
 	public void setPWM(int pwm) {
-		validateValueIsInRange(pwm, "PWM", KKIMProp.getkmegaMinPWM(), KKIMProp.getkmegaMaxPWM());
+		validateValueIsInRange(pwm, "PWM", KKIMProp.kmegaMinPWM, KKIMProp.kmegaMaxPWM);
 		this.pwm = pwm;
 	}
 	

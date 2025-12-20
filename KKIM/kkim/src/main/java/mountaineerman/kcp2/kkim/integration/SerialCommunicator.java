@@ -19,10 +19,10 @@ public class SerialCommunicator {
 	
 	//All Packets:
 	private byte[] oneByteBuffer = new byte[1];
-	private byte receivedByte = KKIMProp.getallPacketsNullByte();
+	private byte receivedByte = KKIMProp.allPacketsNullByte;
 	private int delimiterByteCounter = 0;
 	private int packetBufferByteCounter = 0;
-	private byte[] packetHeaderBuffer = new byte[KKIMProp.getallPacketsHeaderLengthInBytes()];
+	private byte[] packetHeaderBuffer = new byte[KKIMProp.allPacketsHeaderLengthInBytes];
 	private int packetLength = 0;
 	private PacketType packetType = PacketType.INVALID;
 	private byte[] packetBuffer = new byte[0];
@@ -44,7 +44,7 @@ public class SerialCommunicator {
 	
  	public void establishSerialLinkToKMega() throws RuntimeException {
  		
- 		System.out.println("Establishing serial connection to KMega on " + KKIMProp.getkMegaPortNumber() + "...");
+ 		System.out.println("Establishing serial connection to KMega on " + KKIMProp.kMegaPortNumber + "...");
  		
  		SerialPort[] serialPorts = SerialPort.getCommPorts();
  		boolean desiredPortIsOpen = false;
@@ -56,7 +56,7 @@ public class SerialCommunicator {
             	portName = p.getSystemPortName();
             	System.out.println("    Port: '" + portName + "'");
                 
-                if (portName.equals(KKIMProp.getkMegaPortNumber())) {
+                if (portName.equals(KKIMProp.kMegaPortNumber)) {
                 	desiredPortIsOpen = true;
                 	this.serialPort = p;
                 } else {
@@ -66,13 +66,13 @@ public class SerialCommunicator {
         }
         
         if (!desiredPortIsOpen) {
-        	System.out.println("ERROR: Desired COM port (" + KKIMProp.getkMegaPortNumber() + ") is not open. Aborting...");
+        	System.out.println("ERROR: Desired COM port (" + KKIMProp.kMegaPortNumber + ") is not open. Aborting...");
         	System.exit(-1);
         }
         
-		System.out.print("  " + KKIMProp.getkMegaPortNumber() + " is open. Updating Baud Rate and flushing buffers... ");
+		System.out.print("  " + KKIMProp.kMegaPortNumber + " is open. Updating Baud Rate and flushing buffers... ");
 		this.serialPort.closePort();
-		this.serialPort.setBaudRate(KKIMProp.getkMegaPortBaudrate());
+		this.serialPort.setBaudRate(KKIMProp.kMegaPortBaudrate);
 		this.serialPort.openPort();
  		this.serialPort.flushIOBuffers();
  		
@@ -101,26 +101,26 @@ public class SerialCommunicator {
 			this.serialPort.readBytes(this.oneByteBuffer, 1);
 			this.receivedByte = this.oneByteBuffer[0];
 			
-			if (0 <= this.delimiterByteCounter && this.delimiterByteCounter < KKIMProp.getallPacketsNumberOfDelimiterBytes()) { //Packet has not started yet
-				if (this.receivedByte == KKIMProp.getallPacketsDelimiterByte()) {
+			if (0 <= this.delimiterByteCounter && this.delimiterByteCounter < KKIMProp.allPacketsNumberOfDelimiterBytes) { //Packet has not started yet
+				if (this.receivedByte == KKIMProp.allPacketsDelimiterByte) {
 					this.delimiterByteCounter++;
 				} else {
-					//System.out.println("Rejected byte: [" + this.receivedByte + "]. Expected: [" + KKIMProp.getallPacketsDelimiterByte() + "].");
+					//System.out.println("Rejected byte: [" + this.receivedByte + "]. Expected: [" + KKIMProp.allPacketsDelimiterByte + "].");
 					this.delimiterByteCounter = 0;
 					this.numberOfRejectedIncomingBytes++;
 				}
-			} else if (this.delimiterByteCounter == KKIMProp.getallPacketsNumberOfDelimiterBytes()) { //Packet read in progress
+			} else if (this.delimiterByteCounter == KKIMProp.allPacketsNumberOfDelimiterBytes) { //Packet read in progress
 				this.packetBufferByteCounter++;
-				if (this.packetBufferByteCounter < KKIMProp.getallPacketsHeaderLengthInBytes()) {//Header read in progress
+				if (this.packetBufferByteCounter < KKIMProp.allPacketsHeaderLengthInBytes) {//Header read in progress
 					this.packetHeaderBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
-				} else if (this.packetBufferByteCounter == KKIMProp.getallPacketsHeaderLengthInBytes()) {//Header read complete
+				} else if (this.packetBufferByteCounter == KKIMProp.allPacketsHeaderLengthInBytes) {//Header read complete
 					this.packetHeaderBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
 					this.determinePacketTypeBasedOnHeader(this.getIntegerInPacketAtByteNumber(this.packetHeaderBuffer, 2));
 					//System.out.println("packetType: " + this.packetType);
 					this.packetLength = this.getIntegerInPacketAtByteNumber(this.packetHeaderBuffer, 3);
 					this.packetBuffer = new byte[this.packetLength];
-					Arrays.fill(this.packetBuffer, KKIMProp.getallPacketsNullByte());
-					System.arraycopy(this.packetHeaderBuffer, 0, this.packetBuffer, 0, KKIMProp.getallPacketsHeaderLengthInBytes());
+					Arrays.fill(this.packetBuffer, KKIMProp.allPacketsNullByte);
+					System.arraycopy(this.packetHeaderBuffer, 0, this.packetBuffer, 0, KKIMProp.allPacketsHeaderLengthInBytes);
 				} else {//Payload read in progress
 					this.packetBuffer[this.packetBufferByteCounter-1] = this.receivedByte;
 					if (this.packetBufferByteCounter == this.packetLength) { //A full packet is in the packetBuffer
@@ -152,7 +152,7 @@ public class SerialCommunicator {
 					}
 				}
 			} else {
-				throw new RuntimeException("SerialCommunicator's delimiterByteCounter is outside of permitted range [0-" + KKIMProp.getallPacketsNumberOfDelimiterBytes() + "]: " + this.delimiterByteCounter);					
+				throw new RuntimeException("SerialCommunicator's delimiterByteCounter is outside of permitted range [0-" + KKIMProp.allPacketsNumberOfDelimiterBytes + "]: " + this.delimiterByteCounter);					
 			}
 		}
 	}
@@ -186,14 +186,14 @@ public class SerialCommunicator {
 
 	//Clear the inputRefreshPacketBuffer and reset associated variables
 	public void clearPacketBufferAndFriends() {
-		Arrays.fill(this.oneByteBuffer, KKIMProp.getallPacketsNullByte());
-		this.receivedByte = KKIMProp.getallPacketsNullByte();
+		Arrays.fill(this.oneByteBuffer, KKIMProp.allPacketsNullByte);
+		this.receivedByte = KKIMProp.allPacketsNullByte;
 		this.delimiterByteCounter = 0;
 		this.packetBufferByteCounter = 0;	
-		Arrays.fill(this.packetHeaderBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.packetHeaderBuffer, KKIMProp.allPacketsNullByte);
 		this.packetLength = 0;
 		this.packetType = PacketType.INVALID;
-		Arrays.fill(this.packetBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.packetBuffer, KKIMProp.allPacketsNullByte);
 		this.isValidPacketInPacketBuffer = false;
 	}
 
@@ -201,18 +201,18 @@ public class SerialCommunicator {
 	 */
 	public void sendPacket(byte[] packet) {
 		
-		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
-			int numberOfBytesWritten = this.serialPort.writeBytes(packet, KKIMProp.getkMegaOutputRefreshPacketLengthInBytes());
-			if (numberOfBytesWritten == KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()) {
+		if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
+			int numberOfBytesWritten = this.serialPort.writeBytes(packet, KKIMProp.kMegaOutputRefreshPacketLengthInBytes);
+			if (numberOfBytesWritten == KKIMProp.kMegaOutputRefreshPacketLengthInBytes) {
 				this.numberOfSentOutputRefreshPackets++;
 			} else {
 				this.numberOfOutputRefreshPacketsNotSent++;
 			}
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) { 
-			this.serialPort.writeBytes(packet, KKIMProp.getkMegaGaugePacketLengthInBytes());
+		} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ||
+					KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) { 
+			this.serialPort.writeBytes(packet, KKIMProp.kMegaGaugePacketLengthInBytes);
 		} else {
-			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 	}
 		

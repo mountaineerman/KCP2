@@ -85,23 +85,23 @@ public class ModuleD implements LEDAggregator {
 
 	@Override
 	public void setAllLEDsOff() {
-		this.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoHoldLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoProgradeLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoRetrogradeLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoManeuverLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoAntiNormalRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoAntiNormalBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoRadialInGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoRadialInBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoRadialOutGrnLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoRadialOutBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoAntiTargetRedLED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.autoAntiTargetBluLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.brakeLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoHoldLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoProgradeLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoRetrogradeLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoManeuverLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoAntiNormalRedLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoAntiNormalBluLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoRadialInGrnLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoRadialInBluLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoRadialOutGrnLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoRadialOutBluLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoAntiTargetRedLED.setPWM(KKIMProp.kmegaMinPWM);
+		this.autoAntiTargetBluLED.setPWM(KKIMProp.kmegaMinPWM);
 	}
 
 	@Override
