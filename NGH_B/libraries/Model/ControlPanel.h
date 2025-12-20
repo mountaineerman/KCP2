@@ -5,8 +5,11 @@
 
 #include <Interface_StepperMotorAggregator.h>
 
-#include <ModuleC.h>
-#include <ModuleG.h>
+// //[GaugePacketA]
+// #include <ModuleC.h>
+// #include <ModuleG.h>
+// #include <ModuleI.h>
+//[GaugePacketB]
 #include <ModuleI.h>
 #include <ModuleGT.h>
 

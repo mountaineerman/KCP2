@@ -30,52 +30,52 @@ static const int NEMA17_STEPPER_MIN_TIME_INTERVAL_BETWEEN_STEPS_IN_MICROSECONDS 
 //===========================================================================================================================================================================
 //Pins
 
-//[GaugePacketA]
-//NGH A RX0 ---	connected to --- Arduino Mega TX2 (pin 16)
-//NGH A TX1 ---	connected to --- Arduino Mega RX2 (pin 17)
-static const int PIN_EASYDRIVER_SLP = 2;
-static const int PIN_EASYDRIVER_MS1 = 3;
-static const int PIN_EASYDRIVER_MS2 = 4;
-static const int PIN_EASYDRIVER_STEP = 5;
-static const int PIN_EASYDRIVER_DIR = 6;
-static const int PIN_VID6606_1_FREQUENCY_HEATLIFE = 7;
-static const int PIN_VID6606_1_DIRECTION_HEATLIFE = 8;
-static const int PIN_VID6606_1_FREQUENCY_GFORCE = 9;
-static const int PIN_VID6606_1_DIRECTION_GFORCE = 10;
-static const int PIN_VID6606_1_FREQUENCY_MACH = 11;
-static const int PIN_VID6606_1_DIRECTION_MACH = 12;
-//13 UNASSIGNED
-static const int PIN_VID6606_1_FREQUENCY_PITCH = A0;
-static const int PIN_VID6606_1_DIRECTION_PITCH = A1;
-static const int PIN_VID6606_2_FREQUENCY_FUEL = A2;
-static const int PIN_VID6606_2_DIRECTION_FUEL = A3;
-//A4 UNASSIGNED
-//A5 UNASSIGNED
-//A6 UNASSIGNED
-//A7 UNASSIGNED
-
-// //[GaugePacketB]
-// //NGH B RX0 ---	connected to --- Arduino Mega TX3 (pin 14)
-// //NGH B TX1 ---	connected to --- Arduino Mega RX3 (pin 15)
-// static const int PIN_VID6606_2_FREQUENCY_CHARGE = 2;
-// static const int PIN_VID6606_2_DIRECTION_CHARGE = 3;
-// static const int PIN_VID6606_2_FREQUENCY_MNPINT = 4;
-// static const int PIN_VID6606_2_DIRECTION_MNPINT = 5;
-// static const int PIN_VID6606_3_FREQUENCY_DENSITY = 6;
-// static const int PIN_VID6606_3_DIRECTION_DENSITY = 7;
-// static const int PIN_VID6606_3_FREQUENCY_SPEED = 8;
-// static const int PIN_VID6606_3_DIRECTION_SPEED = 9;
-// static const int PIN_VID6606_3_FREQUENCY_VERTICALSPEED = 10;
-// static const int PIN_VID6606_3_DIRECTION_VERTICALSPEED = 11;
-// //12 UNASSIGNED
+// //[GaugePacketA]
+// //NGH A RX0 ---	connected to --- Arduino Mega TX2 (pin 16)
+// //NGH A TX1 ---	connected to --- Arduino Mega RX2 (pin 17)
+// static const int PIN_EASYDRIVER_SLP = 2;
+// static const int PIN_EASYDRIVER_MS1 = 3;
+// static const int PIN_EASYDRIVER_MS2 = 4;
+// static const int PIN_EASYDRIVER_STEP = 5;
+// static const int PIN_EASYDRIVER_DIR = 6;
+// static const int PIN_VID6606_1_FREQUENCY_HEATLIFE = 7;
+// static const int PIN_VID6606_1_DIRECTION_HEATLIFE = 8;
+// static const int PIN_VID6606_1_FREQUENCY_GFORCE = 9;
+// static const int PIN_VID6606_1_DIRECTION_GFORCE = 10;
+// static const int PIN_VID6606_1_FREQUENCY_MACH = 11;
+// static const int PIN_VID6606_1_DIRECTION_MACH = 12;
 // //13 UNASSIGNED
-// static const int PIN_VID6606_3_FREQUENCY_RADARALTITUDE = A0;
-// static const int PIN_VID6606_3_DIRECTION_RADARALTITUDE = A1;
-// //A2 UNASSIGNED
-// //A3 UNASSIGNED
+// static const int PIN_VID6606_1_FREQUENCY_PITCH = A0;
+// static const int PIN_VID6606_1_DIRECTION_PITCH = A1;
+// static const int PIN_VID6606_2_FREQUENCY_FUEL = A2;
+// static const int PIN_VID6606_2_DIRECTION_FUEL = A3;
 // //A4 UNASSIGNED
 // //A5 UNASSIGNED
 // //A6 UNASSIGNED
 // //A7 UNASSIGNED
+
+//[GaugePacketB]
+//NGH B RX0 ---	connected to --- Arduino Mega TX3 (pin 14)
+//NGH B TX1 ---	connected to --- Arduino Mega RX3 (pin 15)
+static const int PIN_VID6606_2_FREQUENCY_CHARGE = 2;
+static const int PIN_VID6606_2_DIRECTION_CHARGE = 3;
+static const int PIN_VID6606_2_FREQUENCY_MNPINT = 4;
+static const int PIN_VID6606_2_DIRECTION_MNPINT = 5;
+static const int PIN_VID6606_3_FREQUENCY_DENSITY = 6;
+static const int PIN_VID6606_3_DIRECTION_DENSITY = 7;
+static const int PIN_VID6606_3_FREQUENCY_SPEED = 8;
+static const int PIN_VID6606_3_DIRECTION_SPEED = 9;
+static const int PIN_VID6606_3_FREQUENCY_VERTICALSPEED = 10;
+static const int PIN_VID6606_3_DIRECTION_VERTICALSPEED = 11;
+//12 UNASSIGNED
+//13 UNASSIGNED
+static const int PIN_VID6606_3_FREQUENCY_RADARALTITUDE = A0;
+static const int PIN_VID6606_3_DIRECTION_RADARALTITUDE = A1;
+//A2 UNASSIGNED
+//A3 UNASSIGNED
+//A4 UNASSIGNED
+//A5 UNASSIGNED
+//A6 UNASSIGNED
+//A7 UNASSIGNED
 
 #endif
