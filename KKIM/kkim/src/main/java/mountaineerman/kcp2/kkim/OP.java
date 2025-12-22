@@ -123,20 +123,20 @@ public enum OP {
 
 //Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName                            NOTE: Recalibrated on 2025-12-17
 	Stepper_HeatLife				(168,		169,		ModuleID.C,		70,			3680,		"Heat/Life Support Stepper Motor"), //Previous limits: CCW:120, CW:3722
-	Stepper_Gforce					(170,		171,		ModuleID.C,		190,		3450,		"G-Force Stepper Motor"),			//Previous limits: CCW:224, CW:3470
+	Stepper_Gforce					(170,		171,		ModuleID.C,		180,		3425,		"G-Force Stepper Motor"),			//Previous limits: CCW:224, CW:3470
 
-	Stepper_Mach					(172,		173,		ModuleID.G,		145,		3440,		"Mach Number Stepper Motor"),		//Previous limits: CCW:0,   CW:3219
-	Stepper_Pitch					(174,		175,		ModuleID.G,		1210,		3370,		"Pitch Stepper Motor"),				//Previous limits: CCW:1210,CW:3364
+	Stepper_Mach					(172,		173,		ModuleID.G,		130,		3400,		"Mach Number Stepper Motor"),		//Previous limits: CCW:0,   CW:3219
+	Stepper_Pitch					(174,		175,		ModuleID.G,		1150,		3320,		"Pitch Stepper Motor"),				//Previous limits: CCW:1210,CW:3364
 	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),//NOTE: Motor is meant to point NORTH(TBC) when reset
 
-	Stepper_Fuel					(178,		179,		ModuleID.I,		110,		3750,		"Fuel Stepper Motor"),				
+	Stepper_Fuel					(178,		179,		ModuleID.I,		85,			3700,		"Fuel Stepper Motor"),				
 													 //Previous limits:		80			3760    	NOTE: Appears prone to de-calibrating if jumping from "near edge-to-edge"
 													 //						30			3635
-	Stepper_Charge					(180,		181,		ModuleID.I,		80,			3680,		"Charge Stepper Motor"),
+	Stepper_Charge					(180,		181,		ModuleID.I,		60,			3680,		"Charge Stepper Motor"),
 													 //Previous limits:		55			3670    	NOTE: Appears very prone to de-calibrating if jumping from "near edge-to-edge"
-	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		75,			3680,		"Monopropellant/Intake Air Stepper Motor"),	//Previous limits: CCW:80, CW:3680
+	Stepper_MonopropellantIntake	(182,		183,		ModuleID.I,		85,			3700,		"Monopropellant/Intake Air Stepper Motor"),	//Previous limits: CCW:80, CW:3680
 
-	Stepper_AirDensity				(184,		185,		ModuleID.GT,	55,			3660,		"AirDensity Stepper Motor"),		//Previous limits: CCW:55, CW:3660 (SAME)
+	Stepper_AirDensity				(184,		185,		ModuleID.GT,	65,			3660,		"AirDensity Stepper Motor"),		//Previous limits: CCW:55, CW:3660 (SAME)
 	Stepper_Speed					(186,		187,		ModuleID.GT,	-1,			-1,			"Speed Stepper Motor"),//See ControlPanel for "Speed calibration settings"
 	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),//See ControlPanel for "Vertical Speed calibration settings"
 	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),//See ControlPanel for "Radar Altitude calibration settings"

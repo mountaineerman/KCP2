@@ -25,10 +25,10 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	//                                                     Previous
 	//                                           Stepper   Stepper
 	//                             Speed (m/s)   Position  Position
-	   private final int speedGauge_position_0 = 50;	// 0
-	 private final int speedGauge_position_100 = 1120;	// 1060
-	 private final int speedGauge_position_500 = 2180;	// 2130
-	private final int speedGauge_position_3000 = 3590;	// 3540
+	   private final int speedGauge_position_0 = 80;	// 0
+	 private final int speedGauge_position_100 = 1150;	// 1060
+	 private final int speedGauge_position_500 = 2210;	// 2130
+	private final int speedGauge_position_3000 = 3600;	// 3540
 	 private final int speedGauge_position_TRB = 3779;	// 3779
 	
 	// Vertical Speed calibration settings:
