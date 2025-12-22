@@ -164,6 +164,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
 			System.out.println("[-2] Perform \"decalibration\" test (cycle through 90% > 10% > 90% > ... several times)");
+			System.out.println("[-3] Perform \"decalibration\" thrashing test (same as decalibration, but with less sleep time, causing sudden direction changes)");
 			System.out.println("[" + KKIMProp.kmegaSteppersCCWLimit + "-" + KKIMProp.kmegaSteppersCWLimit + "] Select desired position of the motor");
 			userInput = this.scanner.nextInt();
 			
@@ -174,7 +175,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 				kkimService.serialCommunicator.sendPacket(packet);
 			} else if (userInput == -2) {
 				byte[] packet = null;
-				motor.setDesiredPositionUsingCalibrationLimits((float) 0.0, (float) 0, (float) 100);
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
 				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 				kkimService.serialCommunicator.flushInputOutputBuffers();
 				kkimService.serialCommunicator.sendPacket(packet);
@@ -233,6 +234,74 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 				kkimService.serialCommunicator.flushInputOutputBuffers();
 				kkimService.serialCommunicator.sendPacket(packet);
 				this.sleepForMilliseconds(1500);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+			} else if (userInput == -3) {
+				byte[] packet = null;
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(3000);
+
+				int sleepTime = 500;
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+				
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+				
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+
+				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
+				
+				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+				kkimService.serialCommunicator.flushInputOutputBuffers();
+				kkimService.serialCommunicator.sendPacket(packet);
+				this.sleepForMilliseconds(sleepTime);
 
 				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
 				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
