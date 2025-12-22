@@ -641,8 +641,14 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		}
 
 		//Module D: MUTE Switch
-		if(this.moduleD.muteSwitch.getStatus()) {
-			this.setAllLEDsOff();
+		if (this.moduleD.muteSwitch.statusChanged()) {
+			if(this.moduleD.muteSwitch.getStatus()) {
+				this.setAllLEDsOff();
+			} else {
+				this.moduleH.glassCL_LED.setPWM(KKIMProp.kmegaLEDDimPWM);//KMega Diagnostic Mode
+				this.moduleH.glassCR_LED.setPWM(KKIMProp.kmegaLEDDimPWM);//KKIM Diagnostic Mode
+				this.moduleH.glassBR_LED.setPWM(KKIMProp.kmegaLEDDimPWM);//Graceful Shutdown
+			}
 		}
 	}
 	
