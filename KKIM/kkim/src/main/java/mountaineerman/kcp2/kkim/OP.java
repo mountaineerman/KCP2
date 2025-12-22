@@ -123,13 +123,13 @@ public enum OP {
 
 //Stepper Motors					 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName                            NOTE: Recalibrated on 2025-12-17
 	Stepper_HeatLife				(168,		169,		ModuleID.C,		70,			3680,		"Heat/Life Support Stepper Motor"), //Previous limits: CCW:120, CW:3722
-	Stepper_Gforce					(170,		171,		ModuleID.C,		170,		3425,		"G-Force Stepper Motor"),			//Previous limits: CCW:224, CW:3470
+	Stepper_Gforce					(170,		171,		ModuleID.C,		190,		3450,		"G-Force Stepper Motor"),			//Previous limits: CCW:224, CW:3470
 
-	Stepper_Mach					(172,		173,		ModuleID.G,		130,		3410,		"Mach Number Stepper Motor"),		//Previous limits: CCW:0,   CW:3219
-	Stepper_Pitch					(174,		175,		ModuleID.G,		1160,		3320,		"Pitch Stepper Motor"),				//Previous limits: CCW:1210,CW:3364
+	Stepper_Mach					(172,		173,		ModuleID.G,		145,		3440,		"Mach Number Stepper Motor"),		//Previous limits: CCW:0,   CW:3219
+	Stepper_Pitch					(174,		175,		ModuleID.G,		1210,		3370,		"Pitch Stepper Motor"),				//Previous limits: CCW:1210,CW:3364
 	Stepper_Heading					(176,		177,		ModuleID.G,		-1,			-1,			"Heading NEMA17 Stepper Motor"),//NOTE: Motor is meant to point NORTH(TBC) when reset
 
-	Stepper_Fuel					(178,		179,		ModuleID.I,		130,		3730,		"Fuel Stepper Motor"),				
+	Stepper_Fuel					(178,		179,		ModuleID.I,		110,		3750,		"Fuel Stepper Motor"),				
 													 //Previous limits:		80			3760    	NOTE: Appears prone to de-calibrating if jumping from "near edge-to-edge"
 													 //						30			3635
 	Stepper_Charge					(180,		181,		ModuleID.I,		80,			3680,		"Charge Stepper Motor"),
