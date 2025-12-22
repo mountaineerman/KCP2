@@ -1,30 +1,26 @@
-#ifndef MODULE_I_h
-#define MODULE_I_h
+//[GaugePacketA] (does not apply to [GaugePacketB])
+#ifndef MODULE_Ia_h
+#define MODULE_Ia_h
 
 #include <Arduino.h>
 #include <Interface_StepperMotorAggregator.h>
 #include <StepperMotor2.h>
 
 
-/* Module I
- * Stepper motors: Fuel, Charge, Monopropellant/Intake Air
+/* Module Ia
+ * 	NGH_A Stepper motors: Fuel
+ * 	NGH_B Stepper motors: Charge, Monopropellant/Intake Air
  */
-class ModuleI : public Interface_StepperMotorAggregator
+class ModuleIa : public Interface_StepperMotorAggregator
 {
 public:
-	ModuleI();
+	ModuleIa();
 	
 	//Check if any stepper in the Module needs to move. Move them one step if they do. Returns true if any motor is still running to its desired position.
 	bool runStepperIfNecessary();
 	
 	//Parts:
-
-	//[GaugePacketA]
 	StepperMotor2 stepper_Fuel;
-
-	// //[GaugePacketB]
-	// StepperMotor2 stepper_Charge;
-	// StepperMotor2 stepper_MonopropellantIntake;
 };
 
 #endif

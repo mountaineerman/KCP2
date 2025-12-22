@@ -20,22 +20,24 @@ byte PacketUnpacker::unpackGaugePacketIntoModel() {
 		return command;
 	}
 
-	// [GaugePacketA]
-	controlPanel.moduleC.stepper_HeatLife.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(10,11) );
-	controlPanel.moduleC.stepper_Gforce.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(12,13) );
-	controlPanel.moduleG.stepper_Mach.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(14,15) );
-	controlPanel.moduleG.stepper_Pitch.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(16,17) );
-	controlPanel.moduleG.stepper_Heading.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(18,19) );
-	controlPanel.moduleI.stepper_Fuel.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(20,21) );
-
-	// // [GaugePacketB]
-	// controlPanel.moduleI.stepper_Charge.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(10,11) );
-	// controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(12,13) );
-	// controlPanel.moduleGT.stepper_Density.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(14,15) );
-	// controlPanel.moduleGT.stepper_Speed.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(16,17) );
-	// controlPanel.moduleGT.stepper_VertSpeed.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(18,19) );
-	// controlPanel.moduleGT.stepper_RadarAlt.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(20,21) );
-
+	if (NGH_A) {
+		// [GaugePacketA]
+		controlPanel.moduleC.stepper_HeatLife.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(10,11) );
+		controlPanel.moduleC.stepper_Gforce.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(12,13) );
+		controlPanel.moduleG.stepper_Mach.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(14,15) );
+		controlPanel.moduleG.stepper_Pitch.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(16,17) );
+		controlPanel.moduleG.stepper_Heading.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(18,19) );
+		controlPanel.moduleIa.stepper_Fuel.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(20,21) );
+	} else {
+		// [GaugePacketB]
+		controlPanel.moduleIb.stepper_Charge.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(10,11) );
+		controlPanel.moduleIb.stepper_MonopropellantIntake.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(12,13) );
+		controlPanel.moduleGT.stepper_Density.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(14,15) );
+		controlPanel.moduleGT.stepper_Speed.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(16,17) );
+		controlPanel.moduleGT.stepper_VertSpeed.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(18,19) );
+		controlPanel.moduleGT.stepper_RadarAlt.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(20,21) );
+	}
+	
 	this->clearGaugePacket();
 	return command;
 }

@@ -8,10 +8,10 @@
 //[GaugePacketA]
 #include <ModuleC.h>
 #include <ModuleG.h>
-#include <ModuleI.h>
-// //[GaugePacketB]
-// #include <ModuleI.h>
-// #include <ModuleGT.h>
+#include <ModuleIa.h>
+//[GaugePacketB]
+#include <ModuleIb.h>
+#include <ModuleGT.h>
 
 
 
@@ -32,11 +32,10 @@ public:
 	//[GaugePacketA]
 	ModuleC moduleC;
 	ModuleG moduleG;
-	ModuleI moduleI;
-
-	// //[GaugePacketB]
-	// ModuleI moduleI;
-	// ModuleGT moduleGT;
+	ModuleIa moduleIa;
+	//[GaugePacketB]
+	ModuleIb moduleIb;
+	ModuleGT moduleGT;
 };
 
 #endif
