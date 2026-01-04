@@ -11,7 +11,7 @@ import mountaineerman.kcp2.kkim.model.ControlPanel;
  * into an OutputRefreshPacket / GaugePacketA / GaugePacketB / KPhoPacket. */
 public class PacketAssembler {
 
-	private float delete_me = -1000; //TODO1
+	private float delete_me = (float) -1000; //TODO1
 	private ControlPanel controlPanel;
 	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.kMegaOutputRefreshPacketLengthInBytes];
 	private byte[] gaugePacketBuffer = new byte[KKIMProp.kMegaGaugePacketLengthInBytes];
