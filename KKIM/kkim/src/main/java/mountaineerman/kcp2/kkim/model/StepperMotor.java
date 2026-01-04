@@ -17,9 +17,7 @@ public class StepperMotor extends Part {
 	private int calibrationCWLimit;
 
 	/** A number describing the desired stepper motor position, in steps.
-	 * Range: [ KKIMProp.kmegaSteppersCCWLimit - KKIMProp.kmegaSteppersCWLimit ] //TODO1
-	 * e.g., desiredPosition of KKIMProp.kmegaSteppersCCWLimit is the farthest CCW position possible.
-	 * e.g., desiredPosition of KKIMProp.kmegaSteppersCWLimit is the farthest CW position possible. */
+	 * Range: [0-3779] (KKIMProp.kmegaSteppersCCWLimit - KKIMProp.kmegaSteppersCWLimit) */
 	private int desiredPosition;
 	
 	public StepperMotor(OP op) {
@@ -124,10 +122,10 @@ public class StepperMotor extends Part {
 		// System.out.println("floatValueInNeedlePositions: " + floatValueInNeedlePositions);
 		// System.out.println("integerValueInNeedlePositions: " + integerValueInNeedlePositions);
 
-		// (STEP 5) Scale up from [0,KKIMProp.kmegaSteppersNumberOfNeedlePositions] range to [rangeMinPosition,rangeMaxPosition]:
+		// (STEP 5) Scale up from [KKIMProp.kmegaSteppersCCWLimit,KKIMProp.kmegaSteppersNumberOfNeedlePositions] range to [rangeMinPosition,rangeMaxPosition]:
 		int requestedPosition = CommonUtilities.rescaleValue(
 			integerValueInNeedlePositions,
-			0, KKIMProp.kmegaSteppersNumberOfNeedlePositions, //TODO1
+			KKIMProp.kmegaSteppersCCWLimit, KKIMProp.kmegaSteppersNumberOfNeedlePositions,
 			rangeMinPosition, rangeMaxPosition);
 		// System.out.println("requestedPosition: " + requestedPosition);
 		// System.out.println();

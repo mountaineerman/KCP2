@@ -36,6 +36,8 @@ public class KPhoCommunicator {
         } catch (IOException e) {
             System.out.println("Failed to connect to KPho. Details:");
             e.printStackTrace();
+            System.out.println("Aborting...");
+            System.exit(-1);
         }
 
             // // You can now read/write data to/from the Android device via InputStream/OutputStream
