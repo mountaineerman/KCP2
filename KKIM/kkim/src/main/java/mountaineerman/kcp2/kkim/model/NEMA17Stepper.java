@@ -15,8 +15,8 @@ import mountaineerman.kcp2.kkim.OP;
 public class NEMA17Stepper extends Part {
 
 	/** A number describing the desired stepper motor position, in steps.
-	 * Range: [ KKIMProp.getkmegaSteppersCCWLimit() - KKIMProp.getkmegaNEMA17StepperMaxLimit() ] 
-	 * e.g., desiredPosition of KKIMProp.getkmegaSteppersCCWLimit() means the heading gauge is pointing North.
+	 * Range: [0-1599] [KKIMProp.kmegaSteppersCCWLimit-KKIMProp.kmegaNEMA17SteppersCWLimit] 
+	 * e.g., desiredPosition of 0 means the heading gauge is pointing North.
 	 * e.g., desiredPosition of 399 means the heading gauge is pointing East.
 	 * e.g., desiredPosition of 799 means the heading gauge is pointing South.
 	 * e.g., desiredPosition of 1199 means the heading gauge is pointing West.
@@ -32,7 +32,7 @@ public class NEMA17Stepper extends Part {
 
 	/** Sets the desired position of the stepper motor, based on:
 	 * 		a) valueInRange, and the limits of the associated range
-	 * 		b) The limits of the stepper: KKIMProp.getkmegaSteppersCCWLimit() and KKIMProp.getkmegaNEMA17StepperMaxLimit()
+	 * 		b) The limits of the stepper, KKIMProp.kmegaSteppersCCWLimit and KKIMProp.kmegaNEMA17SteppersCWLimit
 	 * 
 	 * 	If valueInRange is outside of [rangeMin,rangeMax], it is set to the applicable valid limit.
 	 */
@@ -55,8 +55,8 @@ public class NEMA17Stepper extends Part {
 		// (STEP 3) Calculate percentage-based location of valueInRange in [rangeMin,rangeMax]
 		float percent = valueInRange/rangeMax;
 
-		// (STEP 4) Scale up to range [ KKIMProp.getkmegaSteppersCCWLimit() , KKIMProp.getkmegaNEMA17StepperMaxLimit() ]
-		float floatDesiredPosition = percent * ((float) KKIMProp.getkmegaNEMA17StepperMaxLimit());
+		// (STEP 4) Scale up to range [KKIMProp.kmegaSteppersCCWLimit,KKIMProp.kmegaNEMA17SteppersCWLimit] (0-1599)
+		float floatDesiredPosition = percent * ((float) KKIMProp.kmegaNEMA17SteppersCWLimit);
 		int integerDesiredPosition = Math.round(floatDesiredPosition);
 		this.setDesiredPosition(integerDesiredPosition);
 	}
@@ -71,8 +71,8 @@ public class NEMA17Stepper extends Part {
 	
 	//TODO Ensure this triggers WARNING flag, not a hard crash
 	private void validatePosition(int position) {
-		if(position < KKIMProp.getkmegaSteppersCCWLimit() || position > KKIMProp.getkmegaNEMA17StepperMaxLimit()) {
-			String message = String.format("%s desiredPosition (%d) is outside of allowed range [%d-%d].", this.name, position, KKIMProp.getkmegaSteppersCCWLimit(), KKIMProp.getkmegaNEMA17StepperMaxLimit());
+		if(position < KKIMProp.kmegaSteppersCCWLimit || position > KKIMProp.kmegaNEMA17SteppersCWLimit) {
+			String message = String.format("%s desiredPosition (%d) is outside of allowed range [%d-%d].", this.name, position, KKIMProp.kmegaSteppersCCWLimit, KKIMProp.kmegaNEMA17SteppersCWLimit);
 			throw new IllegalArgumentException(message);
 		}
 	}

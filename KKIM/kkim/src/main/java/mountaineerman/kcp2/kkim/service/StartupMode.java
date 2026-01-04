@@ -18,12 +18,12 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 	
 	public void run(KKIMService kkimService) {
 		
-		if (KKIMProp.getkMegaIsOn()) {
+		if (KKIMProp.kMegaIsActive) {
 			kkimService.serialCommunicator.establishSerialLinkToKMega();
 		}
-		if (KKIMProp.getkPhoIsOn()) {
+		if (KKIMProp.kPhoIsActive) {
 			kkimService.kPhoCommunicator.establishBluetoothLinkToKPho();
-			while (true) {//FIXME
+			while (true) {//FIXME TODO1
 				// try {
 				// 	Thread.sleep(1000);
 				// } catch (InterruptedException e) {e.printStackTrace();}
@@ -32,14 +32,15 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 		kkimService.kRPCCommunicator.establishKRPCLink();        
 		
 		try {
-			Thread.sleep(KKIMProp.getkkimStartupModeInitialStartupDelayInMilliseconds());
+			Thread.sleep(KKIMProp.kkimStartupModeInitialStartupDelayInMilliseconds);
 		} catch (InterruptedException e) {e.printStackTrace();}
 
 		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {
 			kkimService.kRPCCommunicator.establishKRPCFlightHooks();
-			kkimService.controlPanel.moduleH.glassCL_LED.setPWM(KKIMProp.getkmegaDimPWM());//KMega Diagnostic Mode
-			kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaDimPWM());//KKIM Diagnostic Mode
-			kkimService.controlPanel.moduleH.glassBR_LED.setPWM(KKIMProp.getkmegaDimPWM());//Graceful Shutdown
+			kkimService.kRPCCommunicator.establishAllKRPCStreams();
+			kkimService.controlPanel.moduleH.glassCL_LED.setPWM(KKIMProp.kmegaLEDDimPWM);//KMega Diagnostic Mode
+			kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.kmegaLEDDimPWM);//KKIM Diagnostic Mode
+			kkimService.controlPanel.moduleH.glassBR_LED.setPWM(KKIMProp.kmegaLEDDimPWM);//Graceful Shutdown
 			kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
 		} else { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
             kkimService.setCurrentOperatingMode(IdleMode.getInstance());

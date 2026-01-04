@@ -13,29 +13,29 @@ import mountaineerman.kcp2.kkim.model.ControlPanel;
 public class PacketAssembler {
 
 	private ControlPanel controlPanel;
-	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.getkMegaOutputRefreshPacketLengthInBytes()];
-	private byte[] gaugePacketBuffer = new byte[KKIMProp.getkMegaGaugePacketLengthInBytes()];
+	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.kMegaOutputRefreshPacketLengthInBytes];
+	private byte[] gaugePacketBuffer = new byte[KKIMProp.kMegaGaugePacketLengthInBytes];
 	
 	public PacketAssembler(ControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
-		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
-		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.allPacketsNullByte);
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.allPacketsNullByte);
 	}
 	
 	//Assembles the status of the KKIM Model into an OutputRefreshPacket
 	public byte[] assembleOutputRefreshPacket() {
 
-		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.allPacketsNullByte);
 		
 		// (1) Populate Delimiter:
-		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
-			this.outputRefreshPacketBuffer[i] = KKIMProp.getallPacketsDelimiterByte();
+		for (int i = 0; i < KKIMProp.allPacketsNumberOfDelimiterBytes; i++) {
+			this.outputRefreshPacketBuffer[i] = KKIMProp.allPacketsDelimiterByte;
 		}
 		
 		// (2) Populate Header:
 		/* Originator */		this.saveByteToPacketBuffer(2, 1);
 		/* Packet Type */		this.saveByteToPacketBuffer(2, 2);
-		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaOutputRefreshPacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.kMegaOutputRefreshPacketLengthInBytes - KKIMProp.allPacketsNumberOfDelimiterBytes), 3);
 		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
 		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
 		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
@@ -157,17 +157,17 @@ public class PacketAssembler {
 	
 	public byte[] assembleGaugePacketA() {
         
-		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.allPacketsNullByte);
 		
 		// (1) Populate Delimiter:
-		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
-			this.gaugePacketBuffer[i] = KKIMProp.getallPacketsDelimiterByte();
+		for (int i = 0; i < KKIMProp.allPacketsNumberOfDelimiterBytes; i++) {
+			this.gaugePacketBuffer[i] = KKIMProp.allPacketsDelimiterByte;
 		}
 		
 		// (2) Populate Header:
 		/* Originator */		this.saveByteToPacketBuffer(2, 1);
 		/* Packet Type */		this.saveByteToPacketBuffer(6, 2);
-		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.kMegaGaugePacketLengthInBytes - KKIMProp.allPacketsNumberOfDelimiterBytes), 3);
 		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
 		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
 		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
@@ -188,17 +188,17 @@ public class PacketAssembler {
 
 	public byte[] assembleGaugePacketB() {
         
-		Arrays.fill(this.gaugePacketBuffer, KKIMProp.getallPacketsNullByte());
+		Arrays.fill(this.gaugePacketBuffer, KKIMProp.allPacketsNullByte);
 		
 		// (1) Populate Delimiter:
-		for (int i = 0; i < KKIMProp.getallPacketsNumberOfDelimiterBytes(); i++) {
-			this.gaugePacketBuffer[i] = KKIMProp.getallPacketsDelimiterByte();
+		for (int i = 0; i < KKIMProp.allPacketsNumberOfDelimiterBytes; i++) {
+			this.gaugePacketBuffer[i] = KKIMProp.allPacketsDelimiterByte;
 		}
 		
 		// (2) Populate Header:
 		/* Originator */		this.saveByteToPacketBuffer(2, 1);
 		/* Packet Type */		this.saveByteToPacketBuffer(6, 2);
-		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.getkMegaGaugePacketLengthInBytes() - KKIMProp.getallPacketsNumberOfDelimiterBytes()), 3);
+		/* Packet Length */		this.saveByteToPacketBuffer((KKIMProp.kMegaGaugePacketLengthInBytes - KKIMProp.allPacketsNumberOfDelimiterBytes), 3);
 		/* Requested Mode */	this.saveByteToPacketBuffer(0, 4);//TODO
 		/* Command */			this.saveByteToPacketBuffer(0, 5);//TODO
 		/* Parity Byte */		this.saveByteToPacketBuffer(0, 6);//TODO
@@ -223,26 +223,26 @@ public class PacketAssembler {
 		System.out.println(Arrays.toString(this.outputRefreshPacketBuffer));
 	}
 	
-	/** Saves theByte to the specified byteNumber in the relevant packet. See "ICD" in OneNote.
+	/** Saves theByte to the specified byteNumber in the relevant packet. See "ICD" in Joplin.
 	 * @param theByte number from 0-255
 	 * @param byteNumber 1-indexed position in Header or Payload
 	 */
 	private void saveByteToPacketBuffer(int theByte, int byteNumber) {
 		
-		int position = byteNumber - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
+		int position = byteNumber - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
 		
-		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+		if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
 			this.outputRefreshPacketBuffer[position] = (byte) theByte;
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
+		} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ||
+					KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) {
 			this.gaugePacketBuffer[position] = (byte) theByte;
 		} else {
-			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 	}
 	
 	/** Saves number value at the specified byte numbers (see ICD) to the relevant packet.
-	 * byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	 * byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	 */
 	private void saveTwoByteIntToPacketBufferAtByteNumbers(int byteNum1, int byteNum2, int twoByteInteger) {
 		
@@ -250,38 +250,38 @@ public class PacketAssembler {
 		int smallByteNum = 0;
 		
 		if (byteNum1 > byteNum2) {
-			largeByteNum = byteNum1 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
-			smallByteNum = byteNum2 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
+			largeByteNum = byteNum1 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+			smallByteNum = byteNum2 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
 		} else {
-			largeByteNum = byteNum2 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
-			smallByteNum = byteNum1 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
+			largeByteNum = byteNum2 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+			smallByteNum = byteNum1 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
 		}
 		
-		if ( KKIMProp.getkMegaSendPacketType().equals("outputRefreshPacket") ) {
+		if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
 			this.outputRefreshPacketBuffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
 			this.outputRefreshPacketBuffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
-		} else if ( KKIMProp.getkMegaSendPacketType().equals("gaugePacketA") ||
-					KKIMProp.getkMegaSendPacketType().equals("gaugePacketB") ) {
+		} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ||
+					KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) {
 			this.gaugePacketBuffer[smallByteNum] = (byte) (twoByteInteger & 0xFF);
 			this.gaugePacketBuffer[largeByteNum] = (byte) ((twoByteInteger >> 8) & 0xFF);
 		} else {
-			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.getkMegaSendPacketType());
+			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 	}
 	
 	//Saves float at the specified byte numbers (see ICD).
-	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Onenote). Byte numbers can be provided in any order.
+	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	private void saveFloatToOutputRefreshPacketBufferAtByteNumbers(int byteNum1, int byteNum2, float theFloat) {
 		
 		int largeByteNum = 0;
 		int smallByteNum = 0;
 		
 		if (byteNum1 > byteNum2) {
-			largeByteNum = byteNum1 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
-			smallByteNum = byteNum2 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
+			largeByteNum = byteNum1 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+			smallByteNum = byteNum2 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
 		} else {
-			largeByteNum = byteNum2 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
-			smallByteNum = byteNum1 - 1 + KKIMProp.getallPacketsNumberOfDelimiterBytes();
+			largeByteNum = byteNum2 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+			smallByteNum = byteNum1 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
 		}
 		
 		int intBits =  Float.floatToIntBits(theFloat);

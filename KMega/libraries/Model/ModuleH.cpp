@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <string.h>
 #include <ModuleH.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 
 
 

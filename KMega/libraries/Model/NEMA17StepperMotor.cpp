@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 #include <NEMA17StepperMotor.h>
 
 

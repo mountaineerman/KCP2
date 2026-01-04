@@ -1,5 +1,6 @@
 package mountaineerman.kcp2.kkim.service;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.KKIMProp;
@@ -27,8 +28,8 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		//Sleep while waiting for KMega and NGHes to prepare for diagnostic mode
 		this.sleepForMilliseconds(5000);
 		kkimService.controlPanel.setAllLEDsOff();
-		kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.getkmegaMaxPWM());//KKIM Diagnostic Mode
-		kkimService.controlPanel.setAllSteppersCCW();
+		kkimService.controlPanel.moduleH.glassCR_LED.setPWM(KKIMProp.kmegaLEDOnPWM);//KKIM Diagnostic Mode
+		kkimService.controlPanel.setAllSteppersToMaxCCW();
 		byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 		kkimService.serialCommunicator.flushInputOutputBuffers();
 		kkimService.serialCommunicator.sendPacket(packet);
@@ -52,21 +53,27 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("Diagnostic Mode activated. Select one of the following:");
 			System.out.println("[0] Shut down (KKIM only)");
 			System.out.println("[1] Test Stepper Motors");
-			userInput = this.scanner.nextInt();
-			switch (userInput) {
-				case 0:
-					System.out.println("!!! REMINDER: Power cycle the Nano Gauge Helpers to clear their \"Coffee Mode\" !!!");
-					kkimService.controlPanel.setAllLEDsOff();
-					kkimService.controlPanel.setAllSteppersCCW();
-					byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-					kkimService.serialCommunicator.flushInputOutputBuffers();
-					kkimService.serialCommunicator.sendPacket(packet);
-					break;
-				case 1:
-					testStepperMotors(kkimService);
-					break;
-				default:
-					break;
+
+			try {
+				userInput = this.scanner.nextInt();
+				switch (userInput) {
+					case 0:
+						System.out.println("!!! REMINDER: Power cycle the Nano Gauge Helpers to clear their \"Coffee Mode\" !!!");
+						kkimService.controlPanel.setAllLEDsOff();
+						kkimService.controlPanel.setAllSteppersToMaxCCW();
+						byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+						kkimService.serialCommunicator.flushInputOutputBuffers();
+						kkimService.serialCommunicator.sendPacket(packet);
+						break;
+					case 1:
+						testStepperMotors(kkimService);
+						break;
+					default:
+						break;
+				}
+			} catch (InputMismatchException | IllegalStateException e) {
+				System.out.println("Unexpected input caused exception:");
+				e.printStackTrace();
 			}
 		}
 	}
@@ -76,7 +83,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		int userInput = -1;
 		while (userInput != 0) {
 			CommonUtilities.clearScreen();
-			System.out.println("Testing Stepper Motors. Select a motor:");
+			System.out.println("Testing Stepper Motors. Select an option:");
 			System.out.println("[0] Return to previous menu");
 			System.out.println("[1] Heat/Life");
 			System.out.println("[2] G-Force");
@@ -91,104 +98,67 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println("[11] Vertical Speed");
 			System.out.println("[12] Radar Altitude");
 			System.out.println("====================================================================");
-			System.out.println("[21] Set all geared stepper motors to " + KKIMProp.getkmegaSteppersCCWLimit());
-			System.out.println("[22] Set all geared stepper motors to CCW edge mark");
-			System.out.println("[23] Set all geared stepper motors to CW edge mark");
-			System.out.println("[24] Set all geared stepper motors to " + KKIMProp.getkmegaGearedStepperCWLimit());
-			
-			userInput = this.scanner.nextInt();
-			byte[] packet = null;
-			switch (userInput) {
-				case 1:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_HeatLife); break;
-				case 2:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_Gforce); break;
-				case 3:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Mach); break;
-				case 4:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Pitch); break;
-				case 5:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Heading); break;
-				case 6:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_Fuel); break;
-				case 7:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_Charge); break;
-				case 8:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_MonopropellantIntake); break;
-				case 9:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_AirDensity); break;
-				case 10:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_Speed); break;
-				case 11:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_VerticalSpeed); break;
-				case 12:
-					controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
-				case 21:
-					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaSteppersCCWLimit());
-					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-					kkimService.serialCommunicator.flushInputOutputBuffers();
-					kkimService.serialCommunicator.sendPacket(packet);
-					break;
-				case 22:
-					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 15);
-					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 24);
-					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits((float) -90, (float) -90, (float) 90);
-					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits((float) 0,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaStepperSpeedPositionZero());
-					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaStepperVerticalSpeedPositionNegTwoHundred());
-					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaStepperRadarAltitudePositionZero());
-					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-					kkimService.serialCommunicator.flushInputOutputBuffers();
-					kkimService.serialCommunicator.sendPacket(packet);
-					break;
-				case 23:
-					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPositionUsingCalibrationLimits((float) 15,  (float) 0, (float) 15);
-					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPositionUsingCalibrationLimits((float) 24,  (float) 0, (float) 24);
-					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPositionUsingCalibrationLimits((float) 90, (float) -90, (float) 90);
-					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPositionUsingCalibrationLimits((float) 100,  (float) 0, (float) 100);
-					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaStepperSpeedPositionThreeThousand());
-					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaStepperVerticalSpeedPositionPosTwoHundred());
-					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaStepperRadarAltitudePositionFiveThousand());
-					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-					kkimService.serialCommunicator.flushInputOutputBuffers();
-					kkimService.serialCommunicator.sendPacket(packet);
-					break;
-				case 24:
-					kkimService.controlPanel.moduleC.stepper_HeatLife.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleC.stepper_Gforce.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleG.stepper_Mach.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleG.stepper_Pitch.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleI.stepper_Fuel.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleI.stepper_Charge.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleI.stepper_MonopropellantIntake.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_AirDensity.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_VerticalSpeed.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					kkimService.controlPanel.moduleGT.stepper_RadarAltitude.setDesiredPosition(KKIMProp.getkmegaGearedStepperCWLimit());
-					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-					kkimService.serialCommunicator.flushInputOutputBuffers();
-					kkimService.serialCommunicator.sendPacket(packet);
-					break;
-				default:
-					break;
+			System.out.println("[13] Move all stepper motors to maximum CCW position");
+			System.out.println("[14] Move all stepper motors to first (CCW) tick");
+			System.out.println("[15] Move all stepper motors to last (CW) tick");
+			System.out.println("[16] Move all stepper motors to maximum CW position");
+
+			try{
+				userInput = this.scanner.nextInt();
+				byte[] packet = null;
+				switch (userInput) {
+					case 1:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_HeatLife); break;
+					case 2:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleC.stepper_Gforce); break;
+					case 3:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Mach); break;
+					case 4:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Pitch); break;
+					case 5:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleG.stepper_Heading); break;
+					case 6:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_Fuel); break;
+					case 7:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_Charge); break;
+					case 8:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleI.stepper_MonopropellantIntake); break;
+					case 9:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_AirDensity); break;
+					case 10:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_Speed); break;
+					case 11:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_VerticalSpeed); break;
+					case 12:
+						controlStepperMotor(kkimService, kkimService.controlPanel.moduleGT.stepper_RadarAltitude); break;
+					case 13:
+						kkimService.controlPanel.setAllSteppersToMaxCCW();
+						packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+						kkimService.serialCommunicator.flushInputOutputBuffers();
+						kkimService.serialCommunicator.sendPacket(packet);
+					case 14:
+						kkimService.controlPanel.setAllSteppersToCCWTick();
+						packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+						kkimService.serialCommunicator.flushInputOutputBuffers();
+						kkimService.serialCommunicator.sendPacket(packet);
+						break;
+					case 15:
+						kkimService.controlPanel.setAllSteppersToCWTick();
+						packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+						kkimService.serialCommunicator.flushInputOutputBuffers();
+						kkimService.serialCommunicator.sendPacket(packet);
+						break;
+					case 16:
+						kkimService.controlPanel.setAllSteppersToMaxCW();
+						packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+						kkimService.serialCommunicator.flushInputOutputBuffers();
+						kkimService.serialCommunicator.sendPacket(packet);
+					default:
+						break;
+				}
+			} catch (InputMismatchException | IllegalStateException e) {
+				System.out.println("Unexpected input caused exception:");
+				e.printStackTrace();
 			}
 		}
 	}
@@ -199,85 +169,164 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 		while (userInput != -1) {
 			CommonUtilities.clearScreen();
 			System.out.println(motor.getName() + " selected.");
-			System.out.println("  desiredPosition: " + motor.getDesiredPosition());
+			System.out.println("  calibrationCCWLimit: " + motor.getCalibrationCCWLimit());
+			System.out.println("      desiredPosition: " + motor.getDesiredPosition());
+			System.out.println("   calibrationCWLimit: " + motor.getCalibrationCWLimit());
+			System.out.println();
+			System.out.println("Note: Stepper Calibration Limits are defined in OP.java. To quickly open file, use CTRL+P.");
 			System.out.println();
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
 			System.out.println("[-2] Perform \"decalibration\" test (cycle through 90% > 10% > 90% > ... several times)");
-			System.out.println("[" + KKIMProp.getkmegaSteppersCCWLimit() + "-" + KKIMProp.getkmegaGearedStepperCWLimit() + "] Select desired position of the motor");
-			userInput = this.scanner.nextInt();
-			
-			if (userInput >= KKIMProp.getkmegaSteppersCCWLimit() && userInput <= KKIMProp.getkmegaGearedStepperCWLimit()) {
-				motor.setDesiredPosition(userInput);
-				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-			} else if (userInput == -2) {
-				byte[] packet = null;
-				motor.setDesiredPositionUsingCalibrationLimits((float) 0.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(3000);
+			System.out.println("[-3] Perform \"decalibration\" thrashing test (same as decalibration, but with less sleep time, causing sudden direction changes)");
+			System.out.println("[" + KKIMProp.kmegaSteppersCCWLimit + "-" + KKIMProp.kmegaSteppersCWLimit + "] Select desired position of the motor");
 
-				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
-
-				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
-
-				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
-
-				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
+			try {
+				userInput = this.scanner.nextInt();
 				
-				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
+				if (userInput >= KKIMProp.kmegaSteppersCCWLimit && userInput <= KKIMProp.kmegaSteppersCWLimit) {
+					motor.setDesiredPosition(userInput);
+					byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+				} else if (userInput == -2) {
+					byte[] packet = null;
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(3000);
 
-				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
-				
-				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
 
-				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
-				
-				motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
-				this.sleepForMilliseconds(1500);
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
 
-				motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
-				packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+					
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+					
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+					
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(1500);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+				} else if (userInput == -3) {
+					byte[] packet = null;
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(3000);
+
+					int sleepTime = 500;
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+					
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+					
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+					
+					motor.setDesiredPositionUsingCalibrationLimits((float) 90.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+					this.sleepForMilliseconds(sleepTime);
+
+					motor.setDesiredPositionUsingCalibrationLimits((float) 10.0, (float) 0, (float) 100);
+					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+				}
+			} catch (InputMismatchException | IllegalStateException e) {
+				System.out.println("Unexpected input caused exception:");
+				e.printStackTrace();
 			}
 		}
 	}
@@ -292,14 +341,20 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 			System.out.println();
 			System.out.println("Select one of the following options:");
 			System.out.println("[-1] Return to previous menu");
-			System.out.println("[" + KKIMProp.getkmegaSteppersCCWLimit() + "-" + KKIMProp.getkmegaNEMA17StepperMaxLimit() + "] Select desired position of the motor");
-			userInput = this.scanner.nextInt();
+			System.out.println("[" + KKIMProp.kmegaSteppersCCWLimit + "-" + KKIMProp.kmegaNEMA17SteppersCWLimit + "] Select desired position of the motor");
 			
-			if (userInput >= KKIMProp.getkmegaSteppersCCWLimit() && userInput <= KKIMProp.getkmegaNEMA17StepperMaxLimit()) {
-				motor.setDesiredPosition(userInput);
-				byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
-				kkimService.serialCommunicator.flushInputOutputBuffers();
-				kkimService.serialCommunicator.sendPacket(packet);
+			try {
+				userInput = this.scanner.nextInt();
+				
+				if (userInput >= KKIMProp.kmegaSteppersCCWLimit && userInput <= KKIMProp.kmegaNEMA17SteppersCWLimit) {
+					motor.setDesiredPosition(userInput);
+					byte[] packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
+					kkimService.serialCommunicator.flushInputOutputBuffers();
+					kkimService.serialCommunicator.sendPacket(packet);
+				}
+			} catch (InputMismatchException | IllegalStateException e) {
+				System.out.println("Unexpected input caused exception:");
+				e.printStackTrace();
 			}
 		}
 	}

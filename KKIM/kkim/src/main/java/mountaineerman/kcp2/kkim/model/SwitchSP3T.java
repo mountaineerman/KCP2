@@ -40,20 +40,20 @@ public class SwitchSP3T extends Part implements LEDAggregator {
 		if(this.topSensor.getStatus() == true) {
 			if(this.bottomSensor.getStatus() == true) {
 				this.position = SP3TPosition.INVALID;
-				this.centerPositionLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.centerPositionLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				String message = String.format("%s is in an invalid position. Top and Bottom sensors are both ON.", this.name);
 				throw new IllegalArgumentException(message); //TODO Replace with better exception type; Handle exception gracefully...
 			} else {
 				this.position = SP3TPosition.TOP;
-				this.centerPositionLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.centerPositionLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 			}
 		} else {
 			if(this.bottomSensor.getStatus() == true) {
 				this.position = SP3TPosition.BOTTOM;
-				this.centerPositionLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.centerPositionLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 			} else {
 				this.position = SP3TPosition.CENTER;
-				this.centerPositionLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.centerPositionLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 			}
 		}
 	}

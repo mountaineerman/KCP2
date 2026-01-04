@@ -39,12 +39,12 @@ public class ModuleH implements LEDAggregator {
 	
 	@Override
 	public void setAllLEDsOff() {
-		this.glassTL_LED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.glassCL_LED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.glassBL_LED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.glassTR_LED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.glassCR_LED.setPWM(KKIMProp.getkmegaMinPWM());
-		this.glassBR_LED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.glassTL_LED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.glassCL_LED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.glassBL_LED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.glassTR_LED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.glassCR_LED.setPWM(KKIMProp.kmegaLEDMinPWM);
+		this.glassBR_LED.setPWM(KKIMProp.kmegaLEDMinPWM);
 	}
 
 	@Override

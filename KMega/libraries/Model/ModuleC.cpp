@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <ModuleC.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 
 
 

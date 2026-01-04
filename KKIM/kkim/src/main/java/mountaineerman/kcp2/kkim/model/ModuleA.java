@@ -20,7 +20,7 @@ public class ModuleA implements LEDAggregator {
 
 	@Override
 	public void setAllLEDsOff() {
-		this.brakeLED.setPWM(KKIMProp.getkmegaMinPWM());
+		this.brakeLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 	}
 
 	@Override

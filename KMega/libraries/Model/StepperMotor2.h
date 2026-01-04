@@ -17,7 +17,7 @@
 class StepperMotor2
 {
 public:
-	StepperMotor2(int speed, int ccwLimit, int cwLimit);
+	StepperMotor2(int maxStepperSpeed, int ccwLimit, int cwLimit);
 	
 	//Set the desired position
 	void setDesiredPosition(int desiredPosition);
@@ -25,9 +25,6 @@ public:
 	//Returns the desired position of the motor
 	int getDesiredPosition();
 	
-	void setSpeed(int speed);
-	int getSpeed();
-	long getTimeBetweenSteps();
 	int get_ccwLimit();
 	int get_cwLimit();
 	
@@ -37,10 +34,7 @@ private:
 	//CONFIGURATION PARAMETERS
 	
 	//Stepper Motor Speed (steps per second).
-	int speed;
-	
-	//Time (in microseconds) between motor steps. Directly proportional to "speed".
-	long timeBetweenSteps;
+	int maxStepperSpeed;
 	
 	//The step number associated with the counter-clockwise limit of the stepper motor.
 	int ccwLimit;

@@ -17,9 +17,9 @@ public class StepperMotor extends Part {
 	private int calibrationCWLimit;
 
 	/** A number describing the desired stepper motor position, in steps.
-	 * Range: [ KKIMProp.getkmegaSteppersCCWLimit() - KKIMProp.getkmegaGearedStepperCWLimit() ]
-	 * e.g., desiredPosition of KKIMProp.getkmegaSteppersCCWLimit() is the farthest CCW position possible.
-	 * e.g., desiredPosition of KKIMProp.getkmegaGearedStepperCWLimit() is the farthest CW position possible. */
+	 * Range: [ KKIMProp.kmegaSteppersCCWLimit - KKIMProp.kmegaSteppersCWLimit ] //TODO1
+	 * e.g., desiredPosition of KKIMProp.kmegaSteppersCCWLimit is the farthest CCW position possible.
+	 * e.g., desiredPosition of KKIMProp.kmegaSteppersCWLimit is the farthest CW position possible. */
 	private int desiredPosition;
 	
 	public StepperMotor(OP op) {
@@ -65,7 +65,7 @@ public class StepperMotor extends Part {
 	/**
 	 * Sets the desired position of the stepper motor, based on:
 	 * 		a) valueInRange, and the limits of the associated range: [rangeMin,rangeMax]
-	 * 		b) KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions()
+	 * 		b) KKIMProp.kmegaSteppersNumberOfNeedlePositions
 	 * 		c) The calibration limits of the gauge, calibrationCCWLimit and calibrationCWLimit, which are pulled from OP.java during instantiation.
 	 * 	If valueInRange is outside of [rangeMin,rangeMax], it is set to the applicable valid limit.
 	 * 
@@ -118,16 +118,16 @@ public class StepperMotor extends Part {
 		float percent = valueInRange/rangeMax;
 		// System.out.println("percent: " + percent);
 
-		// (STEP 4) Scale up to range [0,KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions()], lowering the "resolution" of the measurement:
-		float floatValueInNeedlePositions = percent * ((float) KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions());
+		// (STEP 4) Scale up to range [0,KKIMProp.kmegaSteppersNumberOfNeedlePositions], lowering the "resolution" of the measurement:
+		float floatValueInNeedlePositions = percent * ((float) KKIMProp.kmegaSteppersNumberOfNeedlePositions);
 		int integerValueInNeedlePositions = Math.round(floatValueInNeedlePositions);
 		// System.out.println("floatValueInNeedlePositions: " + floatValueInNeedlePositions);
 		// System.out.println("integerValueInNeedlePositions: " + integerValueInNeedlePositions);
 
-		// (STEP 5) Scale up from [0,KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions()] range to [rangeMinPosition,rangeMaxPosition]:
+		// (STEP 5) Scale up from [0,KKIMProp.kmegaSteppersNumberOfNeedlePositions] range to [rangeMinPosition,rangeMaxPosition]:
 		int requestedPosition = CommonUtilities.rescaleValue(
 			integerValueInNeedlePositions,
-			0, KKIMProp.getkmegaGearedStepperNumberOfNeedlePositions(),
+			0, KKIMProp.kmegaSteppersNumberOfNeedlePositions, //TODO1
 			rangeMinPosition, rangeMaxPosition);
 		// System.out.println("requestedPosition: " + requestedPosition);
 		// System.out.println();
@@ -136,13 +136,21 @@ public class StepperMotor extends Part {
 	
 	//TODO Ensure this triggers WARNING flag, not a hard crash
 	private void validatePosition(int position) {
-		if(position < KKIMProp.getkmegaSteppersCCWLimit() || position > KKIMProp.getkmegaGearedStepperCWLimit()) {
-			String message = String.format("%s desiredPosition (%d) is outside of allowed range [%d-%d].", this.name, position, KKIMProp.getkmegaSteppersCCWLimit(), KKIMProp.getkmegaGearedStepperCWLimit());
+		if(position < KKIMProp.kmegaSteppersCCWLimit || position > KKIMProp.kmegaSteppersCWLimit) {
+			String message = String.format("%s desiredPosition (%d) is outside of allowed range [%d-%d].", this.name, position, KKIMProp.kmegaSteppersCCWLimit, KKIMProp.kmegaSteppersCWLimit);
 			throw new IllegalArgumentException(message);
 		}
 	}
 
 	public int getDesiredPosition() {
 		return desiredPosition;
+	}
+
+	public int getCalibrationCCWLimit() {
+		return this.calibrationCCWLimit;
+	}
+	
+	public int getCalibrationCWLimit() {
+		return this.calibrationCWLimit;
 	}
 }

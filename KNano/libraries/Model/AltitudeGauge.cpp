@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <AltitudeGauge.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 
 
 AltitudeGauge::AltitudeGauge()

@@ -2,7 +2,7 @@
 #include <string.h>
 //#include <stdlib.h> //TODO remove?
 #include <ModuleB.h>
-#include "..\..\configuration.h"
+#include "../../configuration.h"
 
 
 

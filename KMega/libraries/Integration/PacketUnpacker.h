@@ -18,9 +18,9 @@ public:
 	void unpackOutputRefreshPacketIntoModel();
 
 private:
-	//Returns the integer stored in OutputRefreshPacket located at the specified byte numbers (see ICD in OneNote). Byte numbers can be provided in any order.
+	//Returns the integer stored in OutputRefreshPacket located at the specified byte numbers (see ICD in Joplin). Byte numbers can be provided in any order.
 	int convertTwoBytesInOutputRefreshPacketIntoInteger(int byteNum1, int byteNum2);
-	//Returns float number value stored in OutputRefreshPacket located at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Onenote).
+	//Returns float number value stored in OutputRefreshPacket located at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Joplin).
 	float convertFourBytesInOutputRefreshPacketIntoFloat(int firstByteNum, int lastByteNum);
 	
 	void clearOutputRefreshPacket();

@@ -17,7 +17,7 @@ public:
 	void unpackAltitudePacketIntoModel();
 
 private:
-	//Returns float number value stored in AltitudePacket located at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (OneNote).
+	//Returns float number value stored in AltitudePacket located at the specified byte numbers. firstByteNum and lastByteNum are "Byte Numbers" as defined in ICD (Joplin).
 	float convertFourBytesInAltitudePacketIntoFloat(int firstByteNum, int lastByteNum);
 	
 	void clearAltitudePacket();

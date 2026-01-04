@@ -18,15 +18,16 @@ public final class IdleMode implements OperatingMode { //SINGLETON
 
     public void run(KKIMService kkimService) {
 
-        System.out.println("In IdleMode. Sleeping for " + KKIMProp.getkkimIdleModeSleepIntervalInMilliseconds() + " milliseconds.");
+        System.out.println("In IdleMode. Sleeping for " + KKIMProp.kkimIdleModeSleepIntervalInMilliseconds + " milliseconds.");
         try {
-            Thread.sleep(KKIMProp.getkkimIdleModeSleepIntervalInMilliseconds());
+            Thread.sleep(KKIMProp.kkimIdleModeSleepIntervalInMilliseconds);
         } catch (InterruptedException e) {e.printStackTrace();}
         
         GameScene scene = kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP();
         System.out.println("GameScene: " + scene);
 		if (scene == GameScene.FLIGHT) {
             kkimService.kRPCCommunicator.establishKRPCFlightHooks();
+            kkimService.kRPCCommunicator.establishAllKRPCStreams();
 			kkimService.setCurrentOperatingMode(StandardOperatingMode.getInstance());
 		} else { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
             kkimService.setCurrentOperatingMode(IdleMode.getInstance());

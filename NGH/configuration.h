@@ -7,8 +7,10 @@
 #include <Arduino.h>
 
 //===========================================================================================================================================================================
+static const bool NGH_A = true;//true == NGH_A; false == NGH_B
+//===========================================================================================================================================================================
 //KMega Interface
-static const int BAUD_RATE = 9600;//Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
+static const int BAUD_RATE = 9600;//Did not work:115200 //Options: (from Arduino IDE Serial Monitor)  300  1,200  2,400  4,800  9,600  19,200  38,400  57,600  74,880  115,200  230,400  250,000  500,000  1,000,000  2,000,000
 static const int SERIAL_READ_TIMEOUT_IN_MILLISECONDS = 10000; //The maximum amount of time NGH will wait before timing out during a serial read operation
 static const byte PACKET_DELIMITER_BYTE = 0x3C; // 0x3C = '<'
 static const int NUMBER_OF_PACKET_DELIMITER_BYTES = 3; //The number of consecutive packet delimiter bytes that mark the beginning of a packet
@@ -17,11 +19,15 @@ static const int MAX_TIME_WITHOUT_PACKET_BEFORE_GAUGE_RESET_IN_MILLISECONDS = 50
 
 //===========================================================================================================================================================================
 //Stepper Motors
-static const int STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS = 2;
+static const int STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS = 2; //The delay used for the "step" pulse for geared and NEMA17 stepper motors. Affects gauge speed when using StepperMotor2::runStepperIfNecessary() and NEMA17StepperMotor::takeStep().
+static const int STEPPER_MINIMUM_WAIT_FOR_DIRECTION_CHANGE_IN_MICROSECONDS = 200;//TODO Optionally decrease for optimization. Google AI suggested 50 or 100 microseconds initially.
 static const int STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS = 22;
 static const int STEPPER_CCW_LIMIT = 0;
-static const int STEPPER_SPEED = 4000; // (steps per second)
 static const int STEPPER_CW_LIMIT = 3779;
+static const int MAX_GEARED_STEPPER_SPEED = 4000; // The maximum speed of the geared stepper motors (not NEMA17), in steps per second.
+static const int MIN_GEARED_STEPPER_SPEED = 400; // The minimum speed of the geared stepper motors (not NEMA17), in steps per second. Also the speed they start with from standstill.
+static const int GEARED_STEPPER_ACCELERATION_RATE = 20; //The rate by which the currentSpeed is increased/decreased for each iteration of runStepperIfNecessary()
+static const int GEARED_STEPPER_DECELERATION_PARAM = 10; //See StepperMotor2::runStepperIfNecessary()
 static const int NEMA17_STEPPER_MIN_POSITION = STEPPER_CCW_LIMIT;
 static const int NEMA17_STEPPER_HALF_OF_POSITIONS = 800;
 static const int NEMA17_STEPPER_MAX_POSITION = 1599;
@@ -54,28 +60,28 @@ static const int PIN_VID6606_2_DIRECTION_FUEL = A3;
 //A6 UNASSIGNED
 //A7 UNASSIGNED
 
-// //[GaugePacketB]
-// //NGH B RX0 ---	connected to --- Arduino Mega TX3 (pin 14)
-// //NGH B TX1 ---	connected to --- Arduino Mega RX3 (pin 15)
-// static const int PIN_VID6606_2_FREQUENCY_CHARGE = 2;
-// static const int PIN_VID6606_2_DIRECTION_CHARGE = 3;
-// static const int PIN_VID6606_2_FREQUENCY_MNPINT = 4;
-// static const int PIN_VID6606_2_DIRECTION_MNPINT = 5;
-// static const int PIN_VID6606_3_FREQUENCY_DENSITY = 6;
-// static const int PIN_VID6606_3_DIRECTION_DENSITY = 7;
-// static const int PIN_VID6606_3_FREQUENCY_SPEED = 8;
-// static const int PIN_VID6606_3_DIRECTION_SPEED = 9;
-// static const int PIN_VID6606_3_FREQUENCY_VERTICALSPEED = 10;
-// static const int PIN_VID6606_3_DIRECTION_VERTICALSPEED = 11;
-// //12 UNASSIGNED
-// //13 UNASSIGNED
-// static const int PIN_VID6606_3_FREQUENCY_RADARALTITUDE = A0;
-// static const int PIN_VID6606_3_DIRECTION_RADARALTITUDE = A1;
-// //A2 UNASSIGNED
-// //A3 UNASSIGNED
-// //A4 UNASSIGNED
-// //A5 UNASSIGNED
-// //A6 UNASSIGNED
-// //A7 UNASSIGNED
+//[GaugePacketB]
+//NGH B RX0 ---	connected to --- Arduino Mega TX3 (pin 14)
+//NGH B TX1 ---	connected to --- Arduino Mega RX3 (pin 15)
+static const int PIN_VID6606_2_FREQUENCY_CHARGE = 2;
+static const int PIN_VID6606_2_DIRECTION_CHARGE = 3;
+static const int PIN_VID6606_2_FREQUENCY_MNPINT = 4;
+static const int PIN_VID6606_2_DIRECTION_MNPINT = 5;
+static const int PIN_VID6606_3_FREQUENCY_DENSITY = 6;
+static const int PIN_VID6606_3_DIRECTION_DENSITY = 7;
+static const int PIN_VID6606_3_FREQUENCY_SPEED = 8;
+static const int PIN_VID6606_3_DIRECTION_SPEED = 9;
+static const int PIN_VID6606_3_FREQUENCY_VERTICALSPEED = 10;
+static const int PIN_VID6606_3_DIRECTION_VERTICALSPEED = 11;
+//12 UNASSIGNED
+//13 UNASSIGNED
+static const int PIN_VID6606_3_FREQUENCY_RADARALTITUDE = A0;
+static const int PIN_VID6606_3_DIRECTION_RADARALTITUDE = A1;
+//A2 UNASSIGNED
+//A3 UNASSIGNED
+//A4 UNASSIGNED
+//A5 UNASSIGNED
+//A6 UNASSIGNED
+//A7 UNASSIGNED
 
 #endif

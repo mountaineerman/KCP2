@@ -45,89 +45,89 @@ public class LED_PWM_RGB extends Part {
 		
 		switch(this.mode) {
 			case WHITE:
-				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 				break;
 			case VIOLET:
-				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 				break;
 			case BLUE:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 				break;
 			case CYAN:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMaxPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDOnPWM);
 				break;	
 			case GREEN:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case YELLOW:
-				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case ORANGE:
-				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMaxPWM()*1/4);
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDOnPWM*1/4);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case RED:
-				this.redLED.setPWM(KKIMProp.getkmegaMaxPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDOnPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case DIM_WHITE:
-				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDDimPWM);
 				break;
 			case DIM_VIOLET:
-				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDDimPWM);
 				break;
 			case DIM_BLUE:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDDimPWM);
 				break;
 			case DIM_CYAN:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaDimPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDDimPWM);
 				break;	
 			case DIM_GREEN:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case DIM_YELLOW:
-				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case DIM_ORANGE:
-				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaDimPWM()*1/4);
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDDimPWM*1/4);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case DIM_RED:
-				this.redLED.setPWM(KKIMProp.getkmegaDimPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDDimPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 			case OFF:
-				this.redLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.grnLED.setPWM(KKIMProp.getkmegaMinPWM());
-				this.bluLED.setPWM(KKIMProp.getkmegaMinPWM());
+				this.redLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.grnLED.setPWM(KKIMProp.kmegaLEDMinPWM);
+				this.bluLED.setPWM(KKIMProp.kmegaLEDMinPWM);
 				break;
 		}
 	}
