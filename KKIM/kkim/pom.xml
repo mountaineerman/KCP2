@@ -63,6 +63,12 @@
             <artifactId>bluecove</artifactId>
             <version>2.1.1</version> <!-- Necessary for Bluetooth Communication to KPho. See KPhoCommunicator. -->
         </dependency>
+        <dependency>
+            <groupId>net.sf.bluecove</groupId>
+            <artifactId>bluecove-gpl</artifactId> <!-- Necessary for Bluetooth for Linux -->
+            <version>2.1.0</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
 </project>
