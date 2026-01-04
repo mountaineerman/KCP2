@@ -138,9 +138,17 @@ public enum OP {
 	Stepper_VerticalSpeed			(188,		189,		ModuleID.GT,	-1,			-1,			"Vertical Speed Stepper Motor"),//See ControlPanel for "Vertical Speed calibration settings"
 	Stepper_RadarAltitude			(190,		191,		ModuleID.GT,	-1,			-1,			"Radar Altitude Stepper Motor"),//See ControlPanel for "Radar Altitude calibration settings"
 
-//Altitude
-	Altitude						(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)");
+//Altitude							 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName (Description)
+	Altitude						(192,		195,		ModuleID.GT,	-1,			-1,			"Altitude (float)"),
 
+//KPhoPacket						 firstByte	lastByte	moduleID		calibCCWLim	calibCWLim	partName (Description)
+	Apoapsis						(10,		13,			ModuleID.PHO,	-1,			-1,			"Apoapsis (meters). Float."),
+	KPhoAltitude					(14,		17,			ModuleID.PHO,	-1,			-1,			"Altitude (meters). Float."),
+	Periapsis						(18,		21,			ModuleID.PHO,	-1,			-1,			"Periapsis (meters). Float."),
+	TimeToApoPer					(22,		25,			ModuleID.PHO,	-1,			-1,			"Time To Apoapsis/Periapsis (seconds). Float."),
+	KPhoSpeed						(26,		29,			ModuleID.PHO,	-1,			-1,			"Speed (m/s). Float."),
+	CurrentFlow						(30,		31,			ModuleID.PHO,	-1,			-1,			"Current (mA). Short."),
+	NumberOfExceptions				(32,		33,			ModuleID.PHO,	-1,			-1,			"NumberOfKKIMExceptions. Short.");
 
 	
 	

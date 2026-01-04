@@ -104,10 +104,10 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		long time_sendPacketToKMega_before = 0;
 		long time_sendPacketToKMega_after = 0;
 		if (KKIMProp.kMegaIsActive) {
-			if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.kMegaAllPacketsSendRateInMilliseconds) {
+			if ( (System.currentTimeMillis() - this.outputRefreshPacketLastSentTimeInMilliseconds) > KKIMProp.kMegaAllPacketsSendRateInMilliseconds) { //TODO add function like kPhoCommunicator.enoughTimeHasPassedSinceLastKPhoPacketWasSent()
 				time_sendPacketToKMega_before = System.currentTimeMillis();
 				byte[] packet = null;
-				if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {
+				if ( KKIMProp.kMegaSendPacketType.equals("outputRefreshPacket") ) {//TODO Move into PacketAssembler to simplify StandardOperatingMode
 					packet = kkimService.packetAssembler.assembleOutputRefreshPacket();
 				} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ) {
 					packet = kkimService.packetAssembler.assembleGaugePacketA();
@@ -120,6 +120,14 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 				kkimService.serialCommunicator.sendPacket(packet);
 				this.outputRefreshPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
 				time_sendPacketToKMega_after = System.currentTimeMillis();
+			}
+		}
+
+		//Send packet to KPho:
+		if (KKIMProp.kPhoIsActive) {
+			if ( kkimService.kPhoCommunicator.enoughTimeHasPassedSinceLastKPhoPacketWasSent() ) {
+				byte[] kPhoPacket = kkimService.packetAssembler.assembleKPhoPacket();
+				kkimService.kPhoCommunicator.sendKPhoPacket(kPhoPacket);
 			}
 		}
 
@@ -153,17 +161,11 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 				System.out.println("kkimService.controlPanel.refresh(): " + (time_controlPanelRefresh_after - time_controlPanelRefresh_before));
 				System.out.println();
 				System.out.println("Send packet (usually outputRefreshPacket) to KMega: " + (time_sendPacketToKMega_after - time_sendPacketToKMega_before));
-				System.out.println();
+				System.out.println("Send packet to KPHo: TODO");//TODO
 				System.out.println("kkimService.kRPCCommunicator.sendInfoFromModelToKSP(): " + (time_sendInfoFromModelToKSP_after - time_sendInfoFromModelToKSP_before));
 				System.out.println();
 				System.out.println("Idle (TODO: optimize idleIfNecessary()): " + KKIMProp.kkimRefreshFrequencyInMilliseconds);
 			}
-		}
-
-		if (KKIMProp.kPhoIsActive) {
-			System.out.println("TODO: Send info to KPho.");
-			System.out.println("Aborting...");
-			System.exit(-1);
 		}
 		
         kkimService.idleIfNecessary();//TODO replace?

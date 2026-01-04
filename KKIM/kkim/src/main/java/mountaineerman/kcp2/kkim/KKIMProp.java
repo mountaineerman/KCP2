@@ -80,10 +80,17 @@ public class KKIMProp {
 	/** The Altitude KKIM instructs the Gauge Tower altimeter to display when it is in an error state */
 	public static final float kmegaAltitudeGaugeErrorAltitude = 9.99e11f;
 	
-	// # KMega /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// # KPho /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** If true, attempt to connect to KPho and send data. If false, pretend it does not exist. */
 	public static final boolean kPhoIsActive = true;
+
+	/** Send a packet to KPho no more frequently than once every X milliseconds.
+	 * Note: for kMega OutputRefreshPackets, 100 seems pretty snappy, 500 is noticeably too slow. */
+	public static final int kPhoPacketSendRateInMilliseconds = 50;
+
+	/** Note: Length includes Delimiter + Header + Payload. */
+	public static final int kPhoPacketLengthInBytes = 36;
 
 	// # KKIM /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

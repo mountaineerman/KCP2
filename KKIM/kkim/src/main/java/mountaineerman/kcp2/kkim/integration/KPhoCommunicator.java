@@ -1,28 +1,41 @@
 package mountaineerman.kcp2.kkim.integration;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
-import javax.bluetooth.*;
+//import javax.bluetooth.*; //OPTION 2?
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 public class KPhoCommunicator {
 
-    private LocalDevice localDevice = null;
-    private DiscoveryAgent agent = null;
-    private MyDiscoveryListener listener = null;
-    protected final Object inquiryEventCompleted = new Object(); // Used for synchronization
+    private long kPhoPacketLastSentTimeInMilliseconds = 0;
+    //OPTION 1: MANUAL CONNECTION
+    private StreamConnection streamConnection = null;
+    private OutputStream outputStream = null;
+
+    // //OPTION 2: AUTOMATED CONNECTION VIA DEVICE DISCOVERY
+    // private LocalDevice localDevice = null;
+    // private DiscoveryAgent agent = null;
+    // private MyDiscoveryListener listener = null;
+    // protected final Object inquiryEventCompleted = new Object(); // Used for synchronization
 
     public KPhoCommunicator() {
-        try {
-            this.localDevice = LocalDevice.getLocalDevice();
-            //System.out.println("Local Bluetooth Address: " + localDevice.getBluetoothAddress());
-            agent = this.localDevice.getDiscoveryAgent();
-        } catch (BluetoothStateException e) {
-            System.out.println("Bluetooth is not enabled.");
-            e.printStackTrace();
-        }
-        listener = new MyDiscoveryListener(inquiryEventCompleted);
+
+        this.kPhoPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
+
+        // //OPTION 2: AUTOMATED CONNECTION VIA DEVICE DISCOVERY
+        // try {
+        //     this.localDevice = LocalDevice.getLocalDevice();
+        //     //System.out.println("Local Bluetooth Address: " + localDevice.getBluetoothAddress());
+        //     agent = this.localDevice.getDiscoveryAgent();
+        // } catch (BluetoothStateException e) {
+        //     System.out.println("Bluetooth is not enabled.");
+        //     e.printStackTrace();
+        // }
+        // listener = new MyDiscoveryListener(inquiryEventCompleted);
     }
 
     public void establishBluetoothLinkToKPho() {
@@ -31,22 +44,16 @@ public class KPhoCommunicator {
         String url3 = "btspp://94652DC65B8D:4;authenticate=false;encrypt=false;master=false"; //TODO Windows used channel 5. First attempt on linux is using channel 4. Enhance to search using device discovery (below) or via terminal: "sdptool browse 94:65:2D:C6:5B:8D" and look for "Service Name: KPho" ...?
         //System.out.println(url3);
         try {
-            StreamConnection connection = (StreamConnection) Connector.open(url3);
-            System.out.println("Connected to KPho.");
+            System.out.print("Establishing connection to KPho... ");
+            this.streamConnection = (StreamConnection) Connector.open(url3);
+            this.outputStream = this.streamConnection.openOutputStream();
+            System.out.println("DONE");
         } catch (IOException e) {
-            System.out.println("Failed to connect to KPho. Details:");
+            System.out.println("FAILED. Details:");
             e.printStackTrace();
             System.out.println("Aborting...");
             System.exit(-1);
         }
-
-            // // You can now read/write data to/from the Android device via InputStream/OutputStream
-            // // For example:
-            // // InputStream inputStream = connection.openInputStream();
-            // // OutputStream outputStream = connection.openOutputStream();
-            
-            // // Close the connection once done
-            // connection.close();
 
 
 
@@ -94,5 +101,43 @@ public class KPhoCommunicator {
             
         //     // //Here you can send/receive data from the Android phone
         // }
+    }
+
+    public boolean enoughTimeHasPassedSinceLastKPhoPacketWasSent() {
+        if ( (System.currentTimeMillis() - this.kPhoPacketLastSentTimeInMilliseconds) > KKIMProp.kPhoPacketSendRateInMilliseconds) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void sendKPhoPacket(byte[] packet) {
+
+        if (this.outputStream == null) {
+            System.out.println("Cannot send KPhoPacket: Bluetooth output stream is null.");
+            return;
+        }
+
+        try {
+            this.outputStream.write(packet);
+            this.outputStream.flush();
+            System.out.println("KPhoPacket sent.");
+            this.kPhoPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
+        } catch (IOException e) {
+            System.out.println("KPhoCommunicator: Failed to write KPhoPacket. Details:");
+            e.printStackTrace();
+        }
+    }
+
+    public void teardownBluetoothLinkToKPho() {
+
+        System.out.print("TODO: Closing bluetooth connection to KPho... ");//TODO1
+        try {
+            this.streamConnection.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		//TODO1 ...
+		System.out.println("DONE");
     }
 }

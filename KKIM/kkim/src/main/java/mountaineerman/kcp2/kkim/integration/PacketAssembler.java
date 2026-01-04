@@ -6,20 +6,22 @@ import mountaineerman.kcp2.kkim.KKIMProp;
 import mountaineerman.kcp2.kkim.OP;
 import mountaineerman.kcp2.kkim.model.ControlPanel;
 
-/* Packet Assembler
- * Responsible for reading the relevant parts of the KKIM Model and assembling
- * them into an OutputRefreshPacket.
- */
+
+/** Responsible for reading the relevant information in the KKIM Model and assembling it 
+ * into an OutputRefreshPacket / GaugePacketA / GaugePacketB / KPhoPacket. */
 public class PacketAssembler {
 
+	private float delete_me = -1000; //TODO1
 	private ControlPanel controlPanel;
 	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.kMegaOutputRefreshPacketLengthInBytes];
 	private byte[] gaugePacketBuffer = new byte[KKIMProp.kMegaGaugePacketLengthInBytes];
+	private byte[] kPhoPacketBuffer = new byte[KKIMProp.kPhoPacketLengthInBytes];
 	
 	public PacketAssembler(ControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
 		Arrays.fill(this.outputRefreshPacketBuffer, KKIMProp.allPacketsNullByte);
 		Arrays.fill(this.gaugePacketBuffer, KKIMProp.allPacketsNullByte);
+		Arrays.fill(this.kPhoPacketBuffer, KKIMProp.allPacketsNullByte);
 	}
 	
 	//Assembles the status of the KKIM Model into an OutputRefreshPacket
@@ -149,7 +151,7 @@ public class PacketAssembler {
 		this.saveTwoByteIntToPacketBufferAtByteNumbers(OP.Stepper_RadarAltitude.firstByte, OP.Stepper_RadarAltitude.lastByte, controlPanel.moduleGT.stepper_RadarAltitude.getDesiredPosition());
 		
 		//Altitude
-		this.saveFloatToOutputRefreshPacketBufferAtByteNumbers(OP.Altitude.firstByte, OP.Altitude.lastByte, controlPanel.altitudeToDisplay);
+		this.saveFloatToPacketBufferAtByteNumbers(this.outputRefreshPacketBuffer, OP.Altitude.firstByte, OP.Altitude.lastByte, controlPanel.altitudeToDisplay);
 		
 		//this.displayOutputRefreshPacketBufferInDecimal();
 		return this.outputRefreshPacketBuffer;//TODO return copy instead of original
@@ -217,6 +219,38 @@ public class PacketAssembler {
 		return this.gaugePacketBuffer;
     }
 
+	public byte[] assembleKPhoPacket() {
+
+		Arrays.fill(this.kPhoPacketBuffer, KKIMProp.allPacketsNullByte);
+		
+		// (1) Populate Delimiter: //TODO Move to method
+		for (int i = 0; i < KKIMProp.allPacketsNumberOfDelimiterBytes; i++) {
+			this.kPhoPacketBuffer[i] = KKIMProp.allPacketsDelimiterByte;
+		}
+		
+		// (2) Populate Header:
+		/* Originator */		this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 2, 1);
+		/* Packet Type */		this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 8, 2);
+		/* Packet Length */		this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, (KKIMProp.kPhoPacketLengthInBytes - KKIMProp.allPacketsNumberOfDelimiterBytes), 3);
+		/* Requested Mode */	this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 4);//TODO
+		/* Command */			this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 5);//TODO
+		/* Parity Byte */		this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 6);//TODO
+		/* Empty */				this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 7);
+		/* Empty */				this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 8);
+		/* Empty */				this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 9);
+		
+		// (3) Populate Payload:
+		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.Apoapsis.firstByte, OP.Apoapsis.lastByte, this.delete_me++);//TODO1
+		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.KPhoAltitude.firstByte, OP.KPhoAltitude.lastByte, controlPanel.altitudeToDisplay);
+		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.Periapsis.firstByte, OP.Periapsis.lastByte, );
+		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.TimeToApoPer.firstByte, OP.TimeToApoPer.lastByte, );
+		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.KPhoSpeed.firstByte, OP.KPhoSpeed.lastByte, );
+		//this.saveTwoByteShortToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.CurrentFlow.firstByte, OP.CurrentFlow.lastByte, );
+		//this.saveTwoByteShortToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.NumberOfExceptions.firstByte, OP.NumberOfExceptions.lastByte, );
+
+		return this.kPhoPacketBuffer;
+	}
+
 	@SuppressWarnings("unused")
 	private void displayOutputRefreshPacketBufferInDecimal() {
 		System.out.println("PacketAssembler: Displaying outputRefreshPacketBuffer in decimal format:");
@@ -227,7 +261,7 @@ public class PacketAssembler {
 	 * @param theByte number from 0-255
 	 * @param byteNumber 1-indexed position in Header or Payload
 	 */
-	private void saveByteToPacketBuffer(int theByte, int byteNumber) {
+	private void saveByteToPacketBuffer(int theByte, int byteNumber) { //TODO migrate usage of this method to saveByteToPacketBufferAtByteNumber() instead
 		
 		int position = byteNumber - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
 		
@@ -240,11 +274,22 @@ public class PacketAssembler {
 			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 	}
+
+	/** Saves theByte in the specified packetBuffer at the specified byteNumber.
+	 * @param packetBuffer is the buffer to which the theByte will be saved.
+	 * @param byteNumber 1-indexed position in Header or Payload
+	 * @param theByte (number from 0-255)
+	 */
+	private void saveByteToPacketBufferAtByteNumber(byte[] packetBuffer, int theByte, int byteNumber) {
+		
+		int position = byteNumber - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;		
+		packetBuffer[position] = (byte) theByte;
+	}
 	
 	/** Saves number value at the specified byte numbers (see ICD) to the relevant packet.
 	 * byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
 	 */
-	private void saveTwoByteIntToPacketBufferAtByteNumbers(int byteNum1, int byteNum2, int twoByteInteger) {
+	private void saveTwoByteIntToPacketBufferAtByteNumbers(int byteNum1, int byteNum2, int twoByteInteger) { //TODO migrate usage of this method to saveTwoByteShortToPacketBufferAtByteNumbers() instead
 		
 		int largeByteNum = 0;
 		int smallByteNum = 0;
@@ -268,10 +313,39 @@ public class PacketAssembler {
 			throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
 		}
 	}
+
+	/** Saves (two byte) Short value in the specified packet buffer at the specified byte numbers.
+	 * Requires 2 bytes. byteNum1 and byteNum2 can be provided in any order (high first or low first).
+	 * @param packetBuffer is the buffer to which the theShort will be saved.
+	 * @param byteNum1 is the 1st byte number defining the range in the packet where theShort will be saved.
+	 * @param byteNum2 is the 2nd byte number defining the range in the packet where theShort will be saved.
+	 * @param theShort that will be saved.
+	 */
+	private void saveTwoByteShortToPacketBufferAtByteNumbers(byte[] packetBuffer, int byteNum1, int byteNum2, short theShort) {
+		
+		int largeByteNum = 0;
+		int smallByteNum = 0;
+		
+		if (byteNum1 > byteNum2) {
+			largeByteNum = byteNum1 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+			smallByteNum = byteNum2 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+		} else {
+			largeByteNum = byteNum2 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+			smallByteNum = byteNum1 - 1 + KKIMProp.allPacketsNumberOfDelimiterBytes;
+		}
+		
+		packetBuffer[smallByteNum] = (byte) (theShort & 0xFF);
+		packetBuffer[largeByteNum] = (byte) ((theShort >> 8) & 0xFF);
+	}
 	
-	//Saves float at the specified byte numbers (see ICD).
-	//byteNum1 and byteNum2 are "Byte Numbers" as defined in ICD (Joplin). Byte numbers can be provided in any order.
-	private void saveFloatToOutputRefreshPacketBufferAtByteNumbers(int byteNum1, int byteNum2, float theFloat) {
+	/** Saves float in the specified packet buffer at the specified byte numbers.
+	 * Requires 4 bytes. byteNum1 and byteNum2 can be provided in any order (high first or low first).
+	 * @param packetBuffer is the buffer to which the float will be saved.
+	 * @param byteNum1 is the 1st byte number defining the range in the packet where theFloat will be saved.
+	 * @param byteNum2 is the 2nd byte number defining the range in the packet where theFloat will be saved.
+	 * @param theFloat that will be saved.
+	 */
+	private void saveFloatToPacketBufferAtByteNumbers(byte[] packetBuffer, int byteNum1, int byteNum2, float theFloat) { //TODO Add more input validation
 		
 		int largeByteNum = 0;
 		int smallByteNum = 0;

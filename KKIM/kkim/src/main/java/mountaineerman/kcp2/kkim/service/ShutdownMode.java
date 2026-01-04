@@ -1,5 +1,7 @@
 package mountaineerman.kcp2.kkim.service;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 public final class ShutdownMode implements OperatingMode { //SINGLETON
 
 	private static ShutdownMode INSTANCE;
@@ -14,8 +16,9 @@ public final class ShutdownMode implements OperatingMode { //SINGLETON
     }
 	
 	public void run(KKIMService kkimService) {
-		kkimService.serialCommunicator.teardownSerialLinkToKMega();
-		kkimService.kRPCCommunicator.closeKRPCLink(); //kRPC Note: "All of a clients streams are automatically stopped when it disconnects."
+		if (KKIMProp.kMegaIsActive) {kkimService.serialCommunicator.teardownSerialLinkToKMega();}
+		if (KKIMProp.kPhoIsActive) {kkimService.kPhoCommunicator.teardownBluetoothLinkToKPho();}
+		kkimService.kRPCCommunicator.closeKRPCLink(); //kRPC Note: "All of a client's streams are automatically stopped when it disconnects."
 		System.exit(0);
     }
 }
