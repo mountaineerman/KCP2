@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Definitions ==============================================================================
         Button button_StartServer = findViewById(R.id.StartServerButton);
+        final View buttonHint_TL = findViewById(R.id.TL_Button_Hint);
 
         //Needed by KPhoService:
         BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
@@ -46,17 +47,22 @@ public class MainActivity extends AppCompatActivity {
         button_StartServer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Log.i("KPho", "User tapped the Start Server Button...");
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                Log.i("KPho", "User tapped the Launch button...");
 
                 kPhoService.hideStatusAndActionBars(getWindow().getDecorView(), getActionBar());
-                kPhoService.startBluetoothServer();
+                View mainLayout = findViewById(R.id.main);
+                //Remove top padding that prevents displaying at the top of the screen after the status bar is hidden:
+                mainLayout.setPadding(mainLayout.getPaddingLeft(), 0, 0, mainLayout.getPaddingBottom());
 
+                //Delay other actions by 1 second:
+                new android.os.Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        buttonHint_TL.setVisibility(View.VISIBLE);
+                        kPhoService.startBluetoothServer();
+                    }
+
+                }, 1000);
 
                 /* TODO:
                 APO: (Apoapsis)
