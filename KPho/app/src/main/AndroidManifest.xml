@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> --> <!-- (Required if you are doing any device discovery (scanning) on Android 10?) -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

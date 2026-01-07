@@ -1,6 +1,5 @@
 package com.example.kpho;
 
-import android.bluetooth.BluetoothManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.kpho.model.PhoneViewModel;
+import com.example.kpho.service.KPhoService;
 
 //Note: As of 2025-02-17, my phone is on Android 10 (API level 29)
 
 public class MainActivity extends AppCompatActivity {
 
-    KPhoService kPhoService = new KPhoService();
+    private KPhoService kPhoService = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +33,18 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //Definitions ==============================================================================
+        //Initialization ==============================================================================
+        PhoneViewModel phoneViewModel = new ViewModelProvider(this).get(PhoneViewModel.class);
         Button button_StartServer = findViewById(R.id.StartServerButton);
         final View buttonHint_TL = findViewById(R.id.TL_Button_Hint);
-
-        //Needed by KPhoService:
-        BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
         TextView textbox_KPhoStatus = findViewById(R.id.KPhoStatus);
         TextView textbox_Apoapsis = findViewById(R.id.centerBody1_APO);
-        kPhoService.initializeOutputs(
-                bluetoothManager,
-                textbox_KPhoStatus,
-                textbox_Apoapsis);
+
+        //Observe PhoneViewModel. Whenever it changes, update the TextViews
+        phoneViewModel.get_kPhoStatusText().observe(this, newText -> {textbox_KPhoStatus.setText(newText);});
+        phoneViewModel.get_apoapsisText().observe(this, newText -> {textbox_Apoapsis.setText(newText);});
+
+        kPhoService = new KPhoService(getApplicationContext(), phoneViewModel);
 
         // When the button is pressed
         button_StartServer.setOnClickListener(new View.OnClickListener() {
@@ -58,20 +61,10 @@ public class MainActivity extends AppCompatActivity {
                 new android.os.Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        buttonHint_TL.setVisibility(View.VISIBLE);
-                        kPhoService.startBluetoothServer();
+                        buttonHint_TL.setVisibility(View.VISIBLE);//TODO1 hide glass cockpit descriptions and unhide them here
+                        kPhoService.run();
                     }
-
                 }, 1000);
-
-                /* TODO:
-                APO: (Apoapsis)
-                ALT: (Altitude)
-                PER: (Periapsis)
-                ttA/P (time to Apoapsis/Periapsis)
-                Speed (m/s) + (speed type)
-                Current draw (mA)
-                 */
             }
         });
     }
