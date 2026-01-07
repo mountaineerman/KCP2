@@ -121,7 +121,7 @@ public class KPhoCommunicator {
         try {
             this.outputStream.write(packet);
             this.outputStream.flush();
-            System.out.println("KPhoPacket sent.");
+            //System.out.println("KPhoPacket sent.");
             this.kPhoPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
         } catch (IOException e) {
             System.out.println("KPhoCommunicator: Failed to write KPhoPacket. Details:");

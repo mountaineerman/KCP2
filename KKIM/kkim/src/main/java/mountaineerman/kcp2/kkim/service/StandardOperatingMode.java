@@ -24,10 +24,12 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 	public void run(KKIMService kkimService) {
 		//TODO Confirm connection to kRPC, KMega, and KPhone
 
-		if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() != GameScene.FLIGHT) { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
-			kkimService.kRPCCommunicator.terminateAllKRPCStreams();
-			kkimService.setCurrentOperatingMode(IdleMode.getInstance());
-			return;
+		if (KKIMProp.kRPCIsActive) {
+			if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() != GameScene.FLIGHT) { // (SPACE_CENTER, TRACKING_STATION, EDITOR_VAB, or EDITOR_SPH)
+				kkimService.kRPCCommunicator.terminateAllKRPCStreams();
+				kkimService.setCurrentOperatingMode(IdleMode.getInstance());
+				return;
+			}
 		}
 
 		//Pull Information from Serial Port (KMega):
@@ -79,7 +81,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 				}
 			} else if ( KKIMProp.kMegaSendPacketType.equals("gaugePacketA") ||
 						KKIMProp.kMegaSendPacketType.equals("gaugePacketB") ) {
-				kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
+				if (KKIMProp.kRPCIsActive) {kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();}
 				kkimService.controlPanel.refresh();
 			} else {
 				throw new RuntimeException("Unrecognized kMegaSendPacketType: " + KKIMProp.kMegaSendPacketType);
@@ -89,9 +91,11 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		//Pull Information from KSP:
 		long time_pullInfoFromKSPIntoModel_before = 0;
 		long time_pullInfoFromKSPIntoModel_after = 0;
-		time_pullInfoFromKSPIntoModel_before = System.currentTimeMillis();
-		kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
-		time_pullInfoFromKSPIntoModel_after = System.currentTimeMillis();
+		if (KKIMProp.kRPCIsActive) {
+			time_pullInfoFromKSPIntoModel_before = System.currentTimeMillis();
+			kkimService.kRPCCommunicator.pullInfoFromKSPIntoModel();
+			time_pullInfoFromKSPIntoModel_after = System.currentTimeMillis();
+		}
 
 		//Refresh control panel:
 		long time_controlPanelRefresh_before = 0;
@@ -134,7 +138,7 @@ public final class StandardOperatingMode implements OperatingMode { //SINGLETON
 		//Send Information to KSP:
 		long time_sendInfoFromModelToKSP_before = 0;
 		long time_sendInfoFromModelToKSP_after = 0;
-		if (KKIMProp.kMegaIsActive) {
+		if (KKIMProp.kRPCIsActive) {
 			time_sendInfoFromModelToKSP_before = System.currentTimeMillis();
 			kkimService.kRPCCommunicator.sendInfoFromModelToKSP();
 			time_sendInfoFromModelToKSP_after = System.currentTimeMillis();

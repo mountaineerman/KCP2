@@ -92,6 +92,11 @@ public class KKIMProp {
 	/** Note: Length includes Delimiter + Header + Payload. */
 	public static final int kPhoPacketLengthInBytes = 36;
 
+	// # kRPC /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/** If true, attempt to connect to kRPC (KSP). If false, ignore KSP. TODO: assess impact on model. *///TODO
+	public static final boolean kRPCIsActive = false;
+
 	// # KKIM /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** During Startup Mode, delay at the end before launching StandardOperatingMode. Needed for KMega to start happily. Exact time needed TBD. */
