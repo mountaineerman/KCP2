@@ -21,12 +21,18 @@ public class KPhoService {
         this.packetUnpacker = new PacketUnpacker(phoneViewModel);
     }
 
-    public void run() {
+    public void begin() {
 
-        //
-        this.bluetoothCommunicator.startBluetoothServer();
+        this.bluetoothCommunicator.startBluetoothServer(new BluetoothCommunicator.BluetoothConnectionCallback() {
+            @Override
+            public void onConnected() {
+                loop();
+            }
+        });
+    }
 
-        //Loop...
+    public void loop() {
+
     }
 
     public void hideStatusAndActionBars(View decorView, ActionBar actionBar) {

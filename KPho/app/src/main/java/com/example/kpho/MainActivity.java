@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         buttonHint_TL.setVisibility(View.VISIBLE);//TODO1 hide glass cockpit descriptions and unhide them here
-                        kPhoService.run();
+                        kPhoService.begin();
                     }
                 }, 1000);
             }
