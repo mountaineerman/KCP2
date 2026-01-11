@@ -5,7 +5,7 @@ public class KKIMProp {
 	// # KMega /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** If true, attempt to connect to KMega and exchange data. If false, pretend it does not exist. */
-	public static final boolean kMegaIsActive = false;
+	public static final boolean kMegaIsActive = true;
 
 	/** Baud Rate Options from Arduino IDE Serial Monitor: 300 1,200 2,400 4,800 9,600 19,200 38,400 57,600 74,880 115,200 230,400 250,000 500,000 1,000,000 2,000,000.
 	 * Note: Normal: 115,200. */
@@ -87,7 +87,7 @@ public class KKIMProp {
 
 	/** Send a packet to KPho no more frequently than once every X milliseconds.
 	 * Note: for kMega OutputRefreshPackets, 100 seems pretty snappy, 500 is noticeably too slow. */
-	public static final int kPhoPacketSendRateInMilliseconds = 50;
+	public static final int kPhoPacketSendRateInMilliseconds = 100;
 
 	/** Note: Length includes Delimiter + Header + Payload. */
 	public static final int kPhoPacketLengthInBytes = 36;
@@ -95,7 +95,7 @@ public class KKIMProp {
 	// # kRPC /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/** If true, attempt to connect to kRPC (KSP). If false, ignore KSP. TODO: assess impact on model. *///TODO
-	public static final boolean kRPCIsActive = false;
+	public static final boolean kRPCIsActive = true;
 
 	// # KKIM /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -132,4 +132,6 @@ public class KKIMProp {
 	/** During each ControlPanel.refresh(), clear the screen and display the digital values associated with all stepper motor gauges in the KKIM terminal. */
 	public static final boolean kkimDisplayStepperMotorDigitalValues = false;
 	
+	/** A running total of the number of "catch" blocks hit by KKIM during runtime */
+	public static short numberOfKKIMExceptions = 0;
 }

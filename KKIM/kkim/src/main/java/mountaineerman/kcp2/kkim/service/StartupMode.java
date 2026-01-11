@@ -26,7 +26,10 @@ public final class StartupMode implements OperatingMode { //SINGLETON
 
 			try {
 				Thread.sleep(KKIMProp.kkimStartupModeInitialStartupDelayInMilliseconds);
-			} catch (InterruptedException e) {e.printStackTrace();}
+			} catch (InterruptedException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 
 			if (kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP() == GameScene.FLIGHT) {
 				kkimService.kRPCCommunicator.establishKRPCFlightHooks();

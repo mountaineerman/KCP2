@@ -108,9 +108,17 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 	public double surfaceReferenceFrame_verticalSpeed = 0;//Units: meters/second.
 	public double orbitalReferenceFrame_speed = 0;//Units: meters/second.
 	public double orbitalReferenceFrame_verticalSpeed = 0;//Units: meters/second.
+	public float speedToDisplay = 0;//Units: meters/second. One of surfaceReferenceFrame_speed & orbitalReferenceFrame_speed, depending on position of SFC/ORB/TGT switch.
 	public double altitudeAboveSurface = 0;//Units: meters. Measured from the center of mass of the vessel.
 	public double altitudeAboveSeaLevel = 0;//Units: meters. Measured from the center of mass of the vessel.
 	public float altitudeToDisplay = 0;//altitudeAboveSurface or altitudeAboveSeaLevel, depending on the position of the SpeedMode SP3T Switch
+	public float apoapsis = 0;//Units: meters. Measured from the center of mass of the body being orbited. https://krpc.github.io/krpc/python/api/space-center/orbit.html#SpaceCenter.Orbit.apoapsis
+	public float periapsis = 0;//Units: meters. Measured from the center of mass of the body being orbited. https://krpc.github.io/krpc/python/api/space-center/orbit.html#SpaceCenter.Orbit.periapsis
+	public float secondsUntilApoapsis = 0;//https://krpc.github.io/krpc/python/api/space-center/orbit.html#SpaceCenter.Orbit.time_to_apoapsis
+	public float secondsUntilPeriapsis = 0;//https://krpc.github.io/krpc/python/api/space-center/orbit.html#SpaceCenter.Orbit.time_to_periapsis
+	public float secondsUntilApoPeri = 0;//Combination of secondsUntilApoapsis & secondsUntilPeriapsis: the closer of the two. Positive (+) if until Apo, negative (-) if until Peri.
+	public short currentDraw = 0;//Units: mA. Based on sensor in ModuleF.
+
 	public VesselSituation vesselSituation;
 	public SASMode currentSASMode = null;
 	
@@ -534,49 +542,48 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 		refreshPercentRGBLED(this.moduleGT.stepperLED_AirDensity, LED_RGB_Brightness.BRIGHT, this.invertedPercentAirDensity);
 		
 		// ----- Speed/Vertical Speed ----------------------
-		float speed = (float) -1.0;
 		float verticalSpeed = (float) -1.0;
 		if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.TOP) {//SFC
-			speed = (float) Math.abs((double) surfaceReferenceFrame_speed);
+			this.speedToDisplay = (float) Math.abs((double) surfaceReferenceFrame_speed);
 			verticalSpeed = (float) surfaceReferenceFrame_verticalSpeed;
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.CENTER) {//ORB
-			speed = (float) Math.abs((double) orbitalReferenceFrame_speed);
+			this.speedToDisplay = (float) Math.abs((double) orbitalReferenceFrame_speed);
 			verticalSpeed = (float) orbitalReferenceFrame_verticalSpeed;
 		} else if (this.moduleE.sp3tSpeedModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//TGT
 			//TODO
-			speed = (float) 0.0;
+			this.speedToDisplay = (float) 0.0;
 			verticalSpeed = (float) 0.0;
 		} else {//INVALID
-			speed = (float) 0.0;
+			this.speedToDisplay = (float) 0.0;
 			verticalSpeed = (float) 0.0;
 		}
 		
-		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("speed: " + speed);}
-		if (speed > 3000.0) {
+		if (KKIMProp.kkimDisplayStepperMotorDigitalValues) {System.out.println("speedToDisplay: " + this.speedToDisplay);}
+		if (this.speedToDisplay > 3000.0) {
 			this.moduleGT.stepper_Speed.setDesiredPosition(speedGauge_position_TRB);
-		} else if (speed > 500.0) {
-			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 500.0, (float) 3000.0, speedGauge_position_500, speedGauge_position_3000);
-		} else if (speed > 100.0) {
-			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 100.0, (float) 500.0, speedGauge_position_100, speedGauge_position_500);
-		} else if (speed > 0.0) {
-			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(speed, (float) 0.0, (float) 100.0, speedGauge_position_0, speedGauge_position_100);
+		} else if (this.speedToDisplay > 500.0) {
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(this.speedToDisplay, (float) 500.0, (float) 3000.0, speedGauge_position_500, speedGauge_position_3000);
+		} else if (this.speedToDisplay > 100.0) {
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(this.speedToDisplay, (float) 100.0, (float) 500.0, speedGauge_position_100, speedGauge_position_500);
+		} else if (this.speedToDisplay > 0.0) {
+			this.moduleGT.stepper_Speed.setDesiredPositionUsingCustomLimits(this.speedToDisplay, (float) 0.0, (float) 100.0, speedGauge_position_0, speedGauge_position_100);
 		} else {
 			this.moduleGT.stepper_Speed.setDesiredPosition(KKIMProp.kmegaSteppersCCWLimit);
 		}
 
-		if (speed > 3000.0) {
+		if (this.speedToDisplay > 3000.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.VIOLET);
-		} else if (speed > 2000.0) {
+		} else if (this.speedToDisplay > 2000.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.BLUE);
-		} else if (speed > 1000.0) {
+		} else if (this.speedToDisplay > 1000.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.CYAN);
-		} else if (speed > 500.0) {
+		} else if (this.speedToDisplay > 500.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.GREEN);
-		} else if (speed > 100.0) {
+		} else if (this.speedToDisplay > 100.0) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.ORANGE);
-		} else if (speed > 0.1) {
+		} else if (this.speedToDisplay > 0.1) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.YELLOW);
-		} else if (speed > -0.1) {
+		} else if (this.speedToDisplay > -0.1) {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.WHITE);
 		} else {
 			this.moduleGT.stepperLED_Speed.setMode(LED_RGB_Mode.RED);
@@ -638,6 +645,13 @@ public class ControlPanel implements LEDAggregator, StepperMotorAggregator {
 			} else {
 				this.moduleGT.stepperLED_RadarAltitude.setMode(LED_RGB_Mode.VIOLET);
 			}
+		}
+
+		//Phone
+		if (this.secondsUntilApoapsis < this.secondsUntilPeriapsis) {
+			this.secondsUntilApoPeri = this.secondsUntilApoapsis;
+		} else {
+			this.secondsUntilApoPeri = -1 * this.secondsUntilPeriapsis;
 		}
 
 		//Module D: MUTE Switch

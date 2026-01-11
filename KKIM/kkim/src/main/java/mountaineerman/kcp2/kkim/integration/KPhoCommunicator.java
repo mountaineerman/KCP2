@@ -49,6 +49,7 @@ public class KPhoCommunicator {
             this.outputStream = this.streamConnection.openOutputStream();
             System.out.println("DONE");
         } catch (IOException e) {
+            KKIMProp.numberOfKKIMExceptions++;
             System.out.println("FAILED. Details:");
             e.printStackTrace();
             System.out.println("Aborting...");
@@ -124,6 +125,7 @@ public class KPhoCommunicator {
             //System.out.println("KPhoPacket sent.");
             this.kPhoPacketLastSentTimeInMilliseconds = System.currentTimeMillis();
         } catch (IOException e) {
+            KKIMProp.numberOfKKIMExceptions++;
             System.out.println("KPhoCommunicator: Failed to write KPhoPacket. Details:");
             e.printStackTrace();
         }
@@ -131,13 +133,13 @@ public class KPhoCommunicator {
 
     public void teardownBluetoothLinkToKPho() {
 
-        System.out.print("TODO: Closing bluetooth connection to KPho... ");//TODO1
+        System.out.print("TODO: Closing bluetooth connection to KPho... ");//TODO
         try {
             this.streamConnection.close();
         } catch (IOException e) {
+            KKIMProp.numberOfKKIMExceptions++;
             e.printStackTrace();
         }
-		//TODO1 ...
 		System.out.println("DONE");
     }
 }

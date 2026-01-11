@@ -71,6 +71,10 @@ public class KRPCCommunicator {
 	private Stream<Double> stream_altitudeAboveSurface = null;
 	private Stream<Double> stream_altitudeAboveSeaLevel = null;
 	private Stream<SASMode> stream_SASMode = null;
+	private Stream<Double> stream_apoapsis = null;
+	private Stream<Double> stream_periapsis = null;
+	private Stream<Double> stream_secondsUntilApoapsis = null;
+	private Stream<Double> stream_secondsUntilPeriapsis = null;
 
 	public KRPCCommunicator(ControlPanel controlPanel) {
 		this.controlPanel = controlPanel;
@@ -89,6 +93,7 @@ public class KRPCCommunicator {
 				break;
 			} catch (IOException io_e) {
 				
+				KKIMProp.numberOfKKIMExceptions++;
 				System.out.println("FAILED. Message: \"" + io_e.getMessage() + "\"");
 
 				if (numberOfAttempts >= maxTries) {
@@ -100,7 +105,10 @@ public class KRPCCommunicator {
 				System.out.println("Sleeping for " + KKIMProp.kkimStartupModeSleepIntervalInMilliseconds + "ms, then trying again.");
 				try {
 					Thread.sleep(KKIMProp.kkimStartupModeSleepIntervalInMilliseconds);
-				} catch (InterruptedException i_e) {i_e.printStackTrace();}
+				} catch (InterruptedException i_e) {
+					KKIMProp.numberOfKKIMExceptions++;
+					i_e.printStackTrace();
+				}
 			}
 		}
 		this.kRPC = KRPC.newInstance(connection);
@@ -120,6 +128,7 @@ public class KRPCCommunicator {
 			this.control = this.vessel.getControl();
 			this.camera = this.spaceCenter.getCamera();
 		} catch (RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -212,6 +221,18 @@ public class KRPCCommunicator {
 			this.stream_SASMode = this.connection.addStream(this.control, "getSASMode");
 			this.stream_SASMode.start();
 
+			this.stream_apoapsis = this.connection.addStream(this.orbit, "getApoapsisAltitude");
+			this.stream_apoapsis.start();
+
+			this.stream_periapsis = this.connection.addStream(this.orbit, "getPeriapsisAltitude");
+			this.stream_periapsis.start();
+
+			this.stream_secondsUntilApoapsis = this.connection.addStream(this.orbit, "getTimeToApoapsis");
+			this.stream_secondsUntilApoapsis.start();
+
+			this.stream_secondsUntilPeriapsis = this.connection.addStream(this.orbit, "getTimeToPeriapsis");
+			this.stream_secondsUntilPeriapsis.start();
+
 			this.stream_currentStageNumber = this.connection.addStream(this.control, "getCurrentStage");
 			this.stream_currentStageNumber.addCallback((Integer newStageNumber) -> {
 				System.out.println("New stage number: " + newStageNumber);
@@ -223,6 +244,7 @@ public class KRPCCommunicator {
 			this.establishStageSpecificKRPCStreams();
 
 		} catch (StreamException | RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
 			e.printStackTrace();
 		}
 	}
@@ -259,6 +281,10 @@ public class KRPCCommunicator {
 		this.terminateStream(this.stream_altitudeAboveSurface);
 		this.terminateStream(this.stream_altitudeAboveSeaLevel);
 		this.terminateStream(this.stream_SASMode);
+		this.terminateStream(this.stream_apoapsis);
+		this.terminateStream(this.stream_periapsis);
+		this.terminateStream(this.stream_secondsUntilApoapsis);
+		this.terminateStream(this.stream_secondsUntilPeriapsis);
 
 		this.terminateStageSpecificKRPCStreams();
 	}
@@ -284,6 +310,7 @@ public class KRPCCommunicator {
 			this.stream_stageSolidFuelMax.start();
 
 		} catch (StreamException | RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
 			e.printStackTrace();
 		}
 	}
@@ -303,6 +330,7 @@ public class KRPCCommunicator {
 			try {
 				stream.remove();
 			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
 				e.printStackTrace();
 			}
 		}
@@ -314,6 +342,7 @@ public class KRPCCommunicator {
 		try {
 			this.connection.close();
 		} catch (IOException e) {
+			KKIMProp.numberOfKKIMExceptions++;
 			e.printStackTrace();
 		}
 		System.out.print("DONE");
@@ -406,6 +435,10 @@ public class KRPCCommunicator {
 			long time_31 = System.currentTimeMillis();
 		 	this.controlPanel.currentSASMode = this.stream_SASMode.get();
 			long time_32 = System.currentTimeMillis();
+			this.controlPanel.apoapsis = this.stream_apoapsis.get().floatValue();
+			this.controlPanel.periapsis = this.stream_periapsis.get().floatValue();
+			this.controlPanel.secondsUntilApoapsis = this.stream_secondsUntilApoapsis.get().floatValue();
+			this.controlPanel.secondsUntilPeriapsis = this.stream_secondsUntilPeriapsis.get().floatValue();
 
 			if ( KKIMProp.kkimPullInfoFromKSPIntoModelDisplayTimeDiagnosticInformation ) {
 				System.out.println("------------------------------------------------------------");
@@ -438,9 +471,14 @@ public class KRPCCommunicator {
 				System.out.println("altitudeAboveSurface: " + (time_30 - time_29));
 				System.out.println("altitudeAboveSeaLevel: " + (time_31 - time_30));
 				System.out.println("currentSASMode: " + (time_32 - time_31));
+				System.out.println("apoapsis: TODO");//TODO
+				System.out.println("periapsis: TODO");//TODO
+				System.out.println("secondsUntilApoapsis: TODO");//TODO
+				System.out.println("secondsUntilPeriapsis: TODO");//TODO
 			}
 
 		} catch (StreamException | RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
 			//e.printStackTrace();
 			System.out.println("KRPCCommunicator:pullInfoFromKSPIntoModel(): Exception: " + e.getMessage());
 		}
@@ -450,7 +488,10 @@ public class KRPCCommunicator {
 		GameScene scene = null;
 		try{
 			scene = this.kRPC.getCurrentGameScene();
-		} catch (RPCException e) {e.printStackTrace();}
+		} catch (RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
+			e.printStackTrace();
+		}
 		return scene;
 	}
 
@@ -460,14 +501,20 @@ public class KRPCCommunicator {
 		if (this.controlPanel.moduleA.stagingButton.getDebouncedStatus()) {
 			try {
 				this.control.activateNextStage();
-			} catch (RPCException e) {e.printStackTrace();}	
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		//Module B
 		if (this.controlPanel.moduleB.abortButton.getDebouncedStatus()) {
 			try {
 				this.control.activateNextStage();
-			} catch (RPCException e) {e.printStackTrace();}	
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		if (this.controlPanel.moduleB.timeWarpDownButton.getDebouncedStatus()) {
 			this.requestLowerTimeWarp();
@@ -480,7 +527,10 @@ public class KRPCCommunicator {
 		if (this.controlPanel.moduleD.sasSwitch.statusChanged()) {
 			try {
 				this.control.setSAS(this.controlPanel.moduleD.sasSwitch.getStatus());
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 
 		if (this.controlPanel.moduleD.sasSwitch.getStatus()) {
@@ -508,26 +558,38 @@ public class KRPCCommunicator {
 						this.control.setSASMode(SASMode.MANEUVER);
 					}
 				} catch (UnsupportedOperationException uo_e) {} //If unable to switch to requested SASMode, do nothing
-			} catch (RPCException rpc_e) {rpc_e.printStackTrace();}
+			} catch (RPCException rpc_e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				rpc_e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleD.rcsSwitch.statusChanged()) {
 			try {
 				this.control.setRCS(this.controlPanel.moduleD.rcsSwitch.getStatus());
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleD.lightsSwitch.statusChanged()) {
 			try {
 				this.control.setLights(this.controlPanel.moduleD.lightsSwitch.getStatus());
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleD.gearSwitch.statusChanged()) {
 			try {
 				this.control.setGear(this.controlPanel.moduleD.gearSwitch.getStatus());
 				this.control.setLegs(this.controlPanel.moduleD.gearSwitch.getStatus());
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleD.mapSwitch.statusChanged()) {
@@ -537,62 +599,92 @@ public class KRPCCommunicator {
 				} else {
 					this.camera.setMode(CameraMode.AUTOMATIC);
 				}
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 
 		//Module E
 		if (this.controlPanel.moduleE.ag1Switch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(1);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleE.ag2Switch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(2);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleE.ag3Switch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(3);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleE.scienceSwitch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(4);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleE.resetSwitch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(5);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}		
 	
 		if (this.controlPanel.moduleE.solarSwitch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(6);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleE.ladderSwitch.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(7);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 
 		if (this.controlPanel.moduleE.fairingButton.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(8);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		if (this.controlPanel.moduleE.chuteButton.getDebouncedStatus()) {
 			try {
 				this.control.toggleActionGroup(9);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 
 //		if (this.controlPanel.moduleE.atnvSwitch.getDebouncedStatus()) {
@@ -607,62 +699,107 @@ public class KRPCCommunicator {
 		if (this.controlPanel.brake.statusChanged()) {
 			try {
 				this.control.setBrakes(this.controlPanel.brake.getStatus());
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		}
 		
 		//TODO Disable other controls when switching between modes...
 		if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.TOP) {//RKT
 			try {
 				this.control.setThrottle(this.controlPanel.throttleLever);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			
 			//Rotation Mode
 			try {
 				this.control.setPitch(this.controlPanel.joystick_FwdBck);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			try {
 				this.control.setYaw(this.controlPanel.joystick_LftRgh);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			try {
 				this.control.setRoll(this.controlPanel.joystick_Twist);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			
 //			//TODO Translation Mode
 //			try {
 //				this.control.setForward(this.controlPanel.joystick_Twist);
-//			} catch (RPCException e) {e.printStackTrace();}
+//			} catch (RPCException e) {
+// 				KKIMProp.numberOfKKIMExceptions++;
+// 				e.printStackTrace();
+//			}
 //			try {
 //				this.control.setUp(this.controlPanel.joystick_FwdBck);
-//			} catch (RPCException e) {e.printStackTrace();}
+//			} catch (RPCException e) {
+// 				KKIMProp.numberOfKKIMExceptions++;
+// 				e.printStackTrace();
+//			}
 //			try {
 //				this.control.setRight(this.controlPanel.joystick_LftRgh);
-//			} catch (RPCException e) {e.printStackTrace();}
+//			} catch (RPCException e) {
+// 				KKIMProp.numberOfKKIMExceptions++;
+// 				e.printStackTrace();
+//			}
 		} else if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.CENTER) {//PLN
 			try {
 				this.control.setThrottle(this.controlPanel.throttleLever);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			try {
 				this.control.setPitch(-this.controlPanel.joystick_FwdBck);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			try {
 				this.control.setYaw(this.controlPanel.joystick_Twist);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			try {
 				this.control.setRoll(this.controlPanel.joystick_LftRgh);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 		} else if (this.controlPanel.moduleE.sp3tVehicleModeSwitch.getPosition() == SP3TPosition.BOTTOM) {//RVR
 			try {
 				this.control.setWheelSteering(this.controlPanel.joystick_LftRgh);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			
 			//Forward "Gear"
 			try {
 				this.control.setWheelThrottle(this.controlPanel.throttleLever);
-			} catch (RPCException e) {e.printStackTrace();}
+			} catch (RPCException e) {
+				KKIMProp.numberOfKKIMExceptions++;
+				e.printStackTrace();
+			}
 			//TODO Reverse "Gear"
 //			try {
 //				this.control.setWheelThrottle(this.controlPanel.throttleLever * -1);
-//			} catch (RPCException e) {e.printStackTrace();}
+//			} catch (RPCException e) {
+//				KKIMProp.numberOfKKIMExceptions++;
+//				e.printStackTrace();
+//			}
 		} else {//INVALID
 			//TODO
 		}
@@ -699,7 +836,10 @@ public class KRPCCommunicator {
 					spaceCenter.setPhysicsWarpFactor(currentWarp-1);
 				}
 			}
-		} catch (RPCException e) {e.printStackTrace();}	
+		} catch (RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
+			e.printStackTrace();
+		}
 	}
 
 	private void requestHigherTimeWarp() {
@@ -716,6 +856,9 @@ public class KRPCCommunicator {
 					spaceCenter.setPhysicsWarpFactor(currentWarp+1);
 				}
 			}
-		} catch (RPCException e) {e.printStackTrace();}	
+		} catch (RPCException e) {
+			KKIMProp.numberOfKKIMExceptions++;
+			e.printStackTrace();
+		}
 	}
 }

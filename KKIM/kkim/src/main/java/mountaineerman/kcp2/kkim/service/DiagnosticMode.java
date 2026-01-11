@@ -42,7 +42,10 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 	private void sleepForMilliseconds(long milliseconds) {
 		try {
 			Thread.sleep(milliseconds);
-		} catch (InterruptedException i_e) {i_e.printStackTrace();}
+		} catch (InterruptedException i_e) {
+			KKIMProp.numberOfKKIMExceptions++;
+			i_e.printStackTrace();
+		}
 	}
 
 	private void mainMenu(KKIMService kkimService) {
@@ -72,6 +75,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 						break;
 				}
 			} catch (InputMismatchException | IllegalStateException e) {
+				KKIMProp.numberOfKKIMExceptions++;
 				System.out.println("Unexpected input caused exception:");
 				e.printStackTrace();
 			}
@@ -157,6 +161,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 						break;
 				}
 			} catch (InputMismatchException | IllegalStateException e) {
+				KKIMProp.numberOfKKIMExceptions++;
 				System.out.println("Unexpected input caused exception:");
 				e.printStackTrace();
 			}
@@ -325,6 +330,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 					kkimService.serialCommunicator.sendPacket(packet);
 				}
 			} catch (InputMismatchException | IllegalStateException e) {
+				KKIMProp.numberOfKKIMExceptions++;
 				System.out.println("Unexpected input caused exception:");
 				e.printStackTrace();
 			}
@@ -353,6 +359,7 @@ public final class DiagnosticMode implements OperatingMode { //SINGLETON
 					kkimService.serialCommunicator.sendPacket(packet);
 				}
 			} catch (InputMismatchException | IllegalStateException e) {
+				KKIMProp.numberOfKKIMExceptions++;
 				System.out.println("Unexpected input caused exception:");
 				e.printStackTrace();
 			}

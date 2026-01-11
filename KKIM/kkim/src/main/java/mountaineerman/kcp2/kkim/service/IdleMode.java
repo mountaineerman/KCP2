@@ -21,7 +21,10 @@ public final class IdleMode implements OperatingMode { //SINGLETON
         System.out.println("In IdleMode. Sleeping for " + KKIMProp.kkimIdleModeSleepIntervalInMilliseconds + " milliseconds.");
         try {
             Thread.sleep(KKIMProp.kkimIdleModeSleepIntervalInMilliseconds);
-        } catch (InterruptedException e) {e.printStackTrace();}
+        } catch (InterruptedException e) {
+            KKIMProp.numberOfKKIMExceptions++;
+            e.printStackTrace();
+        }
         
         GameScene scene = kkimService.kRPCCommunicator.fetchCurrentGameSceneInKSP();
         System.out.println("GameScene: " + scene);

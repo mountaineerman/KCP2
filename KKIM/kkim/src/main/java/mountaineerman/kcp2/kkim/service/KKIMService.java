@@ -40,6 +40,11 @@ public class KKIMService {
 	}
 	
 	protected void idleIfNecessary() {
-		try {Thread.sleep(KKIMProp.kkimRefreshFrequencyInMilliseconds);} catch (InterruptedException e) {e.printStackTrace();}
+		try {
+			Thread.sleep(KKIMProp.kkimRefreshFrequencyInMilliseconds);
+		} catch (InterruptedException e) {
+			KKIMProp.numberOfKKIMExceptions++;
+			e.printStackTrace();
+		}
 	}
 }

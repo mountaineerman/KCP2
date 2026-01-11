@@ -6,6 +6,8 @@ import javax.bluetooth.*;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 
+import mountaineerman.kcp2.kkim.KKIMProp;
+
 public class MyDiscoveryListener implements DiscoveryListener {
 
     private String kPhoBluetoothAddress = "94652DC65B8D";//94:65:2D:C6:5B:8D
@@ -24,7 +26,8 @@ public class MyDiscoveryListener implements DiscoveryListener {
             bluetoothAddress = btDevice.getBluetoothAddress();
             System.out.println("Found device: " + bluetoothAddress + " - " + btDevice.getFriendlyName(true));
         } catch (IOException e) {
-            e.printStackTrace();
+			KKIMProp.numberOfKKIMExceptions++;
+			e.printStackTrace();
         }
 
         if (bluetoothAddress.equals(this.kPhoBluetoothAddress)) {
@@ -36,6 +39,7 @@ public class MyDiscoveryListener implements DiscoveryListener {
                 System.out.println(url);
                 StreamConnection connection = (StreamConnection) Connector.open(url);
             } catch (IOException e) {
+                KKIMProp.numberOfKKIMExceptions++;
                 e.printStackTrace();
             }
 
@@ -45,6 +49,7 @@ public class MyDiscoveryListener implements DiscoveryListener {
                 UUID[] uuidSet = new UUID[] { new UUID(0x1101) };  // UUID for Serial Port Profile (SPP)
                 agent.searchServices(null, uuidSet, btDevice, this);  // Start searching for services on the device
             } catch (BluetoothStateException e) {
+                KKIMProp.numberOfKKIMExceptions++;
                 e.printStackTrace();
             }
         }     
@@ -80,6 +85,7 @@ public class MyDiscoveryListener implements DiscoveryListener {
             try {
                 StreamConnection conn = (StreamConnection) Connector.open(url2);
             } catch (IOException e) {
+                KKIMProp.numberOfKKIMExceptions++;
                 e.printStackTrace();
             }
         }

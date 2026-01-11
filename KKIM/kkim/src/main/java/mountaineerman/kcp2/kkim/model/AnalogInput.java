@@ -2,6 +2,7 @@ package mountaineerman.kcp2.kkim.model;
 
 import mountaineerman.kcp2.kkim.CommonUtilities;
 import mountaineerman.kcp2.kkim.IP;
+import mountaineerman.kcp2.kkim.KKIMProp;
 
 public class AnalogInput extends Part {
 
@@ -80,7 +81,10 @@ public class AnalogInput extends Part {
 		
 		try {
 			validateAnalogValue(rawValue, "rawValue");
-		} catch (IllegalArgumentException e) {e.printStackTrace();}
+		} catch (IllegalArgumentException e) {
+			KKIMProp.numberOfKKIMExceptions++;
+			e.printStackTrace();
+		}
 		this.rawValue = rawValue;
 		
 		if(this.rawValue < this.lowerCalibrationLimit) {

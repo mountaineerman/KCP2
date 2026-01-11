@@ -11,7 +11,6 @@ import mountaineerman.kcp2.kkim.model.ControlPanel;
  * into an OutputRefreshPacket / GaugePacketA / GaugePacketB / KPhoPacket. */
 public class PacketAssembler {
 
-	private float delete_me = (float) -1000; //TODO1
 	private ControlPanel controlPanel;
 	private byte[] outputRefreshPacketBuffer = new byte[KKIMProp.kMegaOutputRefreshPacketLengthInBytes];
 	private byte[] gaugePacketBuffer = new byte[KKIMProp.kMegaGaugePacketLengthInBytes];
@@ -240,13 +239,14 @@ public class PacketAssembler {
 		/* Empty */				this.saveByteToPacketBufferAtByteNumber(this.kPhoPacketBuffer, 0, 9);
 		
 		// (3) Populate Payload:
-		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.Apoapsis.firstByte, OP.Apoapsis.lastByte, this.delete_me++);//TODO1
-		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.KPhoAltitude.firstByte, OP.KPhoAltitude.lastByte, controlPanel.altitudeToDisplay);
-		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.Periapsis.firstByte, OP.Periapsis.lastByte, );
-		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.TimeToApoPer.firstByte, OP.TimeToApoPer.lastByte, );
-		//this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.KPhoSpeed.firstByte, OP.KPhoSpeed.lastByte, );
-		//this.saveTwoByteShortToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.CurrentFlow.firstByte, OP.CurrentFlow.lastByte, );
-		//this.saveTwoByteShortToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.NumberOfExceptions.firstByte, OP.NumberOfExceptions.lastByte, );
+		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.Apoapsis.firstByte, OP.Apoapsis.lastByte, controlPanel.apoapsis);
+		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.KPhoAltitude.firstByte, OP.KPhoAltitude.lastByte, controlPanel.altitudeToDisplay);
+		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.Periapsis.firstByte, OP.Periapsis.lastByte, controlPanel.periapsis);
+		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.TimeToApoPer.firstByte, OP.TimeToApoPer.lastByte, controlPanel.secondsUntilApoPeri);
+		this.saveFloatToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.KPhoSpeed.firstByte, OP.KPhoSpeed.lastByte, controlPanel.speedToDisplay);
+		short current = (short) controlPanel.moduleF.analogInput_Current.getRescaledValue();
+		this.saveTwoByteShortToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.CurrentFlow.firstByte, OP.CurrentFlow.lastByte, current);
+		this.saveTwoByteShortToPacketBufferAtByteNumbers(this.kPhoPacketBuffer, OP.NumberOfExceptions.firstByte, OP.NumberOfExceptions.lastByte, KKIMProp.numberOfKKIMExceptions);
 
 		return this.kPhoPacketBuffer;
 	}
@@ -359,9 +359,9 @@ public class PacketAssembler {
 		}
 		
 		int intBits =  Float.floatToIntBits(theFloat);
-		this.outputRefreshPacketBuffer[smallByteNum]   = (byte) (intBits >> 24);
-		this.outputRefreshPacketBuffer[smallByteNum+1] = (byte) (intBits >> 16);
-		this.outputRefreshPacketBuffer[smallByteNum+2] = (byte) (intBits >> 8);
-		this.outputRefreshPacketBuffer[largeByteNum]   = (byte) (intBits);
+		packetBuffer[smallByteNum]   = (byte) (intBits >> 24);
+		packetBuffer[smallByteNum+1] = (byte) (intBits >> 16);
+		packetBuffer[smallByteNum+2] = (byte) (intBits >> 8);
+		packetBuffer[largeByteNum]   = (byte) (intBits);
 	}
 }
