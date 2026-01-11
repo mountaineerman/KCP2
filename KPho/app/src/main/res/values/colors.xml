@@ -3,4 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="glass_cockpit_background_dark_grey">#55565B</color>
+    <color name="center_readings_background_dark">#292929</color>
+    <color name="center_readings_background_light">#404040</color>
+    <color name="button_green">#3F704D</color>
+    <color name="button_grey">#55565B</color>
+    <color name="button_blue">#1134A6</color>
 </resources>

@@ -8,8 +8,9 @@ android {
 
     defaultConfig {
         applicationId = "com.example.kpho"
-        minSdk = 24
-        targetSdk = 35 //29
+        minSdk = 29
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk = 29
         versionCode = 1
         versionName = "1.0"
 

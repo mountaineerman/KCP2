@@ -5,4 +5,12 @@
     <dimen name="glass_cockpit_textbox_width">140dp</dimen>
     <dimen name="glass_cockpit_text_size">25sp</dimen>
     <dimen name="glass_cockpit_text_padding">5dp</dimen>
+    <dimen name="center_readings_header_text_size">29sp</dimen>
+    <dimen name="center_readings_header_width">200dp</dimen>
+    <dimen name="center_readings_height">44dp</dimen>
+    <dimen name="center_readings_body_text_size">24sp</dimen>
+    <dimen name="center_readings_main_body_width">280dp</dimen>
+    <dimen name="center_readings_secondary_body_width">180dp</dimen>
+    <dimen name="center_readings_vertical_spacing">0dp</dimen>
+    <dimen name="center_readings_body_start_margin">10dp</dimen>
 </resources>
