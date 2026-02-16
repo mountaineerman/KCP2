@@ -7,14 +7,8 @@ git status
 sleep 6s
 echo " "
 
-echo "==============================================================================================================="
-echo "KSP"
-echo "---------------------------------------------------------------------------------------------------------------"
-cd /home/anton/KerbalSpaceProgram/KSP_GameArchive/KSP_linux
-echo "Overwriting settings.cfg file and launching KSP..."
-cp -p /home/anton/KerbalSpaceProgram/KCP2/LaunchScripts/settings.cfg.dev settings.cfg
-TERM=xterm ./KSP.x86_64 > ksp_script_launch_output.txt &
-echo " "
+#KSP
+./uber_launch_ksp_dev.sh -d
 
 echo "==============================================================================================================="
 echo "Joplin"
@@ -26,5 +20,5 @@ echo " "
 echo "==============================================================================================================="
 echo "VS Code"
 echo "---------------------------------------------------------------------------------------------------------------"
-echo "Starting VC Code..."
+echo "Starting VS Code..."
 code
