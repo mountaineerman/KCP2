@@ -1,11 +1,12 @@
+
 #ifndef StepperMotor2_h
 #define StepperMotor2_h
 
 #include <Arduino.h>
+#include "../../configuration.h"
 #include <Interface_StepperMotorAggregator.h>
 
-enum TravelStatus {MOVING, STOPPED};
-enum TravelDirection {CW, CCW};
+enum ClockTravelDirection {CW, CCW};
 
 /* x27.168 Geared Stepper Motor controlled via VID6606 Driver Chip.
  *
@@ -32,15 +33,13 @@ public:
 	//Check if the stepper needs to move. Move it one step if it does. Returns true if the motor is still running to the desired position.
 	bool runStepperIfNecessary();
 	
-	//Move the stepper. Block until it is in position.
-	void blockRunToDesiredPosition();
-	
 	//Returns the current position of the motor, according to the driver (not equal to desiredPosition)
 	int getCurrentPosition();
 	
 private:
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	//CONFIGURATION PARAMETERS
 	//The Step input to the driver. Low to High transition means to step.
 	uint8_t pinStep;
@@ -62,6 +61,7 @@ private:
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//DYNAMIC PARAMETERS
+
 	/* A number describing the desired stepper motor position, in steps.
 	 * Range: [0-3779] [STEPPER_CCW_LIMIT-STEPPER_CW_LIMIT]
 	 * e.g., desiredPosition of 0 is the farthest CCW position possible.
@@ -78,7 +78,7 @@ private:
 	long minTimeBetweenStepsInMicroseconds;
 
 	//The direction the stepper motor is moving in. Note: Pitch and Radar Altitude gauges are reversed. StepperMotor2 does not account for this, because the majority of gauges are not like this.
-	TravelDirection activeTravelDirection;
+	ClockTravelDirection activeTravelDirection;
 
 	//Is the stepper MOVING or STOPPED?
 	TravelStatus travelStatus;

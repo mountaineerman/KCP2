@@ -26,7 +26,7 @@ byte PacketUnpacker::unpackGaugePacketIntoModel() {
 		controlPanel.moduleC.stepper_Gforce.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(12,13) );
 		controlPanel.moduleG.stepper_Mach.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(14,15) );
 		controlPanel.moduleG.stepper_Pitch.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(16,17) );
-		controlPanel.moduleG.stepper_Heading.setDesiredPosition( this->convertTwoBytesInGaugePacketIntoInteger(18,19) );
+		controlPanel.moduleG.stepper_Heading.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(18,19) );
 		controlPanel.moduleIa.stepper_Fuel.setDesiredPositionAndTravelStatus( this->convertTwoBytesInGaugePacketIntoInteger(20,21) );
 	} else {
 		// [GaugePacketB]

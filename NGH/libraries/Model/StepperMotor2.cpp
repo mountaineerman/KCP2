@@ -1,7 +1,7 @@
+
 #include <Arduino.h>
 #include <StepperMotor2.h>
 #include "../../configuration.h"
-
 
 
 StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePinsInverted, int maxStepperSpeed, int ccwLimit, int cwLimit) {
@@ -12,16 +12,15 @@ StepperMotor2::StepperMotor2(uint8_t pinStep, uint8_t pinDirection, bool arePins
 	pinMode(this->pinStep, OUTPUT);
 	digitalWrite(this->pinStep, LOW);
 	
-	this->pinDirection = pinDirection;
-	pinMode(this->pinDirection, OUTPUT);
-	
 	this->maxStepperSpeed = maxStepperSpeed;
 	this->ccwLimit = ccwLimit;
 	this->cwLimit = cwLimit;
 	this->currentPosition = 0;
 	this->setDesiredPositionAndTravelStatus(0);
-
-	this->activeTravelDirection = TravelDirection::CW;
+	
+	this->activeTravelDirection = ClockTravelDirection::CW;
+	this->pinDirection = pinDirection;
+	pinMode(this->pinDirection, OUTPUT);
 	if (this->arePinsInverted) {
 		digitalWrite(this->pinDirection, HIGH);
 	} else {
@@ -50,7 +49,6 @@ void StepperMotor2::setDesiredPositionAndTravelStatus(int desiredPosition) {
 	} else {
 		this->travelStatus = TravelStatus::MOVING;
 	}
-	
 }
 
 void StepperMotor2::setActiveTravelDirectionAndPin() {
@@ -59,18 +57,18 @@ void StepperMotor2::setActiveTravelDirectionAndPin() {
 		return;
 	}
 
-	TravelDirection requiredTravelDirection;
+	ClockTravelDirection requiredTravelDirection;
 	if (this->currentPosition < this->desiredPosition ) {//desiredPosition is CW of currentPosition
-		requiredTravelDirection = TravelDirection::CW;
+		requiredTravelDirection = ClockTravelDirection::CW;
 	} else {//desiredPosition is CCW of currentPosition
-		requiredTravelDirection = TravelDirection::CCW;
+		requiredTravelDirection = ClockTravelDirection::CCW;
 	}
 
 	if (requiredTravelDirection == this->activeTravelDirection) {
 		return;
 	}
 
-	if (requiredTravelDirection == TravelDirection::CW) {
+	if (requiredTravelDirection == ClockTravelDirection::CW) {
 		if (this->arePinsInverted) {
 			digitalWrite(this->pinDirection, HIGH);
 		} else {
@@ -92,13 +90,13 @@ bool StepperMotor2::runStepperIfNecessary() {
 	// 1. Check if we are already there
 	if (this->currentPosition == this->desiredPosition) {
 		this->travelStatus = TravelStatus::STOPPED;
-		this->currentSpeed = 400; // Reset for next move
+		this->currentSpeed = MIN_GEARED_STEPPER_SPEED; // Reset for next move
 		return false;
 	} 
 	
 	// 2. Timing Gate: Has enough time passed since the last step to do another step?
 	unsigned long now = micros();
-    if (now - lastStepTimeInMicroseconds < this->minTimeBetweenStepsInMicroseconds) {
+    if (now - this->lastStepTimeInMicroseconds < this->minTimeBetweenStepsInMicroseconds) {
         return true; 
     }
 
@@ -109,9 +107,9 @@ bool StepperMotor2::runStepperIfNecessary() {
 	// 4. Detect if a mid-motion direction change has occurred
 	} else {//travelStatus == MOVING
 		if (this->brakeUntilSafeToChangeTravelDirection == false) {
-			if (this->currentPosition < this->desiredPosition && this->activeTravelDirection == TravelDirection::CCW) {
+			if (this->currentPosition < this->desiredPosition && this->activeTravelDirection == ClockTravelDirection::CCW) {
 				this->brakeUntilSafeToChangeTravelDirection = true;
-			} else if (this->currentPosition > this->desiredPosition && this->activeTravelDirection == TravelDirection::CW) {
+			} else if (this->currentPosition > this->desiredPosition && this->activeTravelDirection == ClockTravelDirection::CW) {
 				this->brakeUntilSafeToChangeTravelDirection = true;
 			}
 		}
@@ -146,20 +144,14 @@ bool StepperMotor2::runStepperIfNecessary() {
     digitalWrite(this->pinStep, LOW); //Reset for future steps
 
 	// 7. Update currentPosition
-	if (this->activeTravelDirection == TravelDirection::CW) {
+	if (this->activeTravelDirection == ClockTravelDirection::CW) {
 		this->currentPosition++;
 	} else {
 		this->currentPosition--;
 	}
 
     this->lastStepTimeInMicroseconds = now;
-    return true;	
-}
-
-void StepperMotor2::blockRunToDesiredPosition() {
-	while(this->runStepperIfNecessary()) {
-		delayMicroseconds(STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS);
-	}
+    return true;
 }
 
 int StepperMotor2::getCurrentPosition() {

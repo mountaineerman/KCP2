@@ -74,7 +74,7 @@ void NGHService::standardOperatingMode() {
 					this->controlPanel.moduleC.stepper_HeatLife.setDesiredPositionAndTravelStatus(STEPPER_CCW_LIMIT);
 					this->controlPanel.moduleC.stepper_Gforce.setDesiredPositionAndTravelStatus(STEPPER_CCW_LIMIT);
 					this->controlPanel.moduleG.stepper_Mach.setDesiredPositionAndTravelStatus(STEPPER_CCW_LIMIT);
-					this->controlPanel.moduleG.stepper_Heading.setDesiredPosition(NEMA17_STEPPER_MIN_POSITION);
+					this->controlPanel.moduleG.stepper_Heading.setDesiredPositionAndTravelStatus(NEMA17_STEPPER_MIN_POSITION);
 					this->controlPanel.moduleG.stepper_Pitch.setDesiredPositionAndTravelStatus(STEPPER_CCW_LIMIT);
 					this->controlPanel.moduleIa.stepper_Fuel.setDesiredPositionAndTravelStatus(STEPPER_CCW_LIMIT);
 				} else {

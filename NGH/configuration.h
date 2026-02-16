@@ -6,6 +6,8 @@
 
 #include <Arduino.h>
 
+enum TravelStatus {MOVING, STOPPED};
+
 //===========================================================================================================================================================================
 static const bool NGH_A = true;//true == NGH_A; false == NGH_B
 //===========================================================================================================================================================================
@@ -19,19 +21,23 @@ static const int MAX_TIME_WITHOUT_PACKET_BEFORE_GAUGE_RESET_IN_MILLISECONDS = 50
 
 //===========================================================================================================================================================================
 //Stepper Motors
-static const int STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS = 2; //The delay used for the "step" pulse for geared and NEMA17 stepper motors. Affects gauge speed when using StepperMotor2::runStepperIfNecessary() and NEMA17StepperMotor::takeStep().
-static const int STEPPER_MINIMUM_WAIT_FOR_DIRECTION_CHANGE_IN_MICROSECONDS = 200;//TODO Optionally decrease for optimization. Google AI suggested 50 or 100 microseconds initially.
+static const int STEPPER_MINIMUM_PULSE_WIDTH_IN_MICROSECONDS = 2; //The delay used for the "step" pulse for geared and NEMA17 stepper motors. Affects gauge speed when using StepperMotor2/NEMA17StepperMotor::runStepperIfNecessary().
+static const int STEPPER_MINIMUM_WAIT_FOR_DIRECTION_CHANGE_IN_MICROSECONDS = 200;//The delay to re-polarize the coil whenever a Geared or NEMA17 stepper changes direction //TODO Optionally decrease for optimization. Google AI suggested 50 or 100 microseconds initially.
 static const int STEPPER_AVERAGE_RUNSTEPPERIFNECESSARY_TIME_IN_MICROSECONDS = 22;
 static const int STEPPER_CCW_LIMIT = 0;
 static const int STEPPER_CW_LIMIT = 3779;
 static const int MAX_GEARED_STEPPER_SPEED = 4000; // The maximum speed of the geared stepper motors (not NEMA17), in steps per second.
 static const int MIN_GEARED_STEPPER_SPEED = 400; // The minimum speed of the geared stepper motors (not NEMA17), in steps per second. Also the speed they start with from standstill.
-static const int GEARED_STEPPER_ACCELERATION_RATE = 20; //The rate by which the currentSpeed is increased/decreased for each iteration of runStepperIfNecessary()
+static const int GEARED_STEPPER_ACCELERATION_RATE = 20; //The rate by which the currentSpeed is increased/decreased for each iteration of StepperMotor2::runStepperIfNecessary()
 static const int GEARED_STEPPER_DECELERATION_PARAM = 10; //See StepperMotor2::runStepperIfNecessary()
-static const int NEMA17_STEPPER_MIN_POSITION = STEPPER_CCW_LIMIT;
+static const int NEMA17_STEPPER_MIN_POSITION = 0;
 static const int NEMA17_STEPPER_HALF_OF_POSITIONS = 800;
 static const int NEMA17_STEPPER_MAX_POSITION = 1599;
-static const int NEMA17_STEPPER_MIN_TIME_INTERVAL_BETWEEN_STEPS_IN_MICROSECONDS = 1000;
+static const int NEMA17_TOTAL_NUMBER_OF_POSITIONS = 1600;
+static const int NEMA17_MAX_SPEED = 1600; // The maximum speed of the NEMA17 stepper motor, in steps per second.
+static const int NEMA17_MIN_SPEED = 100; // The minimum speed of the NEMA17 stepper motor, in steps per second. Also the speed it starts with from standstill.
+static const int NEMA17_ACCELERATION_RATE = 8; //The rate by which the currentSpeed is increased/decreased for each iteration of NEMA17StepperMotor::runStepperIfNecessary()
+static const int NEMA17_DECELERATION_PARAM = 4; //See NEMA17StepperMotor::runStepperIfNecessary()
 
 //===========================================================================================================================================================================
 //Pins
